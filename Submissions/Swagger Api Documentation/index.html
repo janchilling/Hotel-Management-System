@@ -1,0 +1,2061 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Hotel Management System API Specification - Janindu Pathirana</title>
+    <style type="text/css">
+      body {
+      	font-family: Trebuchet MS, sans-serif;
+      	font-size: 15px;
+      	color: #444;
+      	margin-right: 24px;
+      }
+      
+      h1	{
+      	font-size: 25px;
+      }
+      h2	{
+      	font-size: 20px;
+      }
+      h3	{
+      	font-size: 16px;
+      	font-weight: bold;
+      }
+      hr	{
+      	height: 1px;
+      	border: 0;
+      	color: #ddd;
+      	background-color: #ddd;
+      }
+      
+      .app-desc {
+        clear: both;
+        margin-left: 20px;
+      }
+      .param-name {
+        width: 100%;
+      }
+      .license-info {
+        margin-left: 20px;
+      }
+      
+      .license-url {
+        margin-left: 20px;
+      }
+      
+      .model {
+        margin: 0 0 0px 20px;
+      }
+      
+      .method {
+        margin-left: 20px;
+      }
+      
+      .method-notes	{
+      	margin: 10px 0 20px 0;
+      	font-size: 90%;
+      	color: #555;
+      }
+      
+      pre {
+        padding: 10px;
+        margin-bottom: 2px;
+      }
+      
+      .http-method {
+       text-transform: uppercase;
+      }
+      
+      pre.get {
+        background-color: #0f6ab4;
+      }
+      
+      pre.post {
+        background-color: #10a54a;
+      }
+      
+      pre.put {
+        background-color: #c5862b;
+      }
+      
+      pre.delete {
+        background-color: #a41e22;
+      }
+      
+      .huge	{
+      	color: #fff;
+      }
+      
+      pre.example {
+        background-color: #f3f3f3;
+        padding: 10px;
+        border: 1px solid #ddd;
+      }
+      
+      code {
+        white-space: pre;
+      }
+      
+      .nickname {
+        font-weight: bold;
+      }
+      
+      .method-path {
+        font-size: 1.5em;
+        background-color: #0f6ab4;
+      }
+      
+      .up {
+        float:right;
+      }
+      
+      .parameter {
+        width: 500px;
+      }
+      
+      .param {
+        width: 500px;
+        padding: 10px 0 0 20px;
+        font-weight: bold;
+      }
+      
+      .param-desc {
+        width: 700px;
+        padding: 0 0 0 20px;
+        color: #777;
+      }
+      
+      .param-type {
+        font-style: italic;
+      }
+      
+      .param-enum-header {
+      width: 700px;
+      padding: 0 0 0 60px;
+      color: #777;
+      font-weight: bold;
+      }
+      
+      .param-enum {
+      width: 700px;
+      padding: 0 0 0 80px;
+      color: #777;
+      font-style: italic;
+      }
+      
+      .field-label {
+        padding: 0;
+        margin: 0;
+        clear: both;
+      }
+      
+      .field-items	{
+      	padding: 0 0 15px 0;
+      	margin-bottom: 15px;
+      }
+      
+      .return-type {
+        clear: both;
+        padding-bottom: 10px;
+      }
+      
+      .param-header {
+        font-weight: bold;
+      }
+      
+      .method-tags {
+        text-align: right;
+      }
+      
+      .method-tag {
+        background: none repeat scroll 0% 0% #24A600;
+        border-radius: 3px;
+        padding: 2px 10px;
+        margin: 2px;
+        color: #FFF;
+        display: inline-block;
+        text-decoration: none;
+      }
+    </style>
+  </head>
+  <body>
+  <h1>Hotel Management System API Specification - Janindu Pathirana</h1>
+    <div class="app-desc">API for managing hotel contracts, searching hotels/contracts, and making reservations</div>
+    <div class="app-desc">More information: <a href="https://helloreverb.com">https://helloreverb.com</a></div>
+    <div class="app-desc">Contact Info: <a href="hello@helloreverb.com">hello@helloreverb.com</a></div>
+    <div class="app-desc">Version: 1.0.0</div>
+    <div class="app-desc">BasePath:/KeshanPathirana/HotelManagementSystem/1.0.0</div>
+    <div class="license-info">All rights reserved</div>
+    <div class="license-url">http://apache.org/licenses/LICENSE-2.0.html</div>
+  <h2>Access</h2>
+
+  <h2><a name="__Methods">Methods</a></h2>
+  [ Jump to <a href="#__Models">Models</a> ]
+
+  <h3>Table of Contents </h3>
+  <div class="method-summary"></div>
+  <h4><a href="#Bookings">Bookings</a></h4>
+  <ul>
+  <li><a href="#bookingsCreatePost"><code><span class="http-method">post</span> /bookings/create</code></a></li>
+  <li><a href="#bookingsDeleteBookingByIdBookingIdDelete"><code><span class="http-method">delete</span> /bookings/deleteBookingById/{booking_id}</code></a></li>
+  <li><a href="#bookingsGetBookingByIdBookingIdGet"><code><span class="http-method">get</span> /bookings/getBookingById/{booking_id}</code></a></li>
+  <li><a href="#bookingsHotelHotelIdGet"><code><span class="http-method">get</span> /bookings/hotel/{hotel_id}</code></a></li>
+  <li><a href="#bookingsUpdateBookingByIdBookingIdPut"><code><span class="http-method">put</span> /bookings/updateBookingById/{booking_id}</code></a></li>
+  <li><a href="#bookingsUserCustomerIdGet"><code><span class="http-method">get</span> /bookings/user/{customer_id}</code></a></li>
+  </ul>
+  <h4><a href="#Contracts">Contracts</a></h4>
+  <ul>
+  <li><a href="#contractsAllContractsGet"><code><span class="http-method">get</span> /contracts/allContracts</code></a></li>
+  <li><a href="#contractsDeleteContractByIdContractIdDelete"><code><span class="http-method">delete</span> /contracts/deleteContractById/{contract_id}</code></a></li>
+  <li><a href="#contractsFindContractByIDcontractIdGet"><code><span class="http-method">get</span> /contracts/findContractByID{contract_id}</code></a></li>
+  <li><a href="#contractsHotelHotelIdGet"><code><span class="http-method">get</span> /contracts/hotel/{hotel_id}</code></a></li>
+  <li><a href="#contractsPost"><code><span class="http-method">post</span> /contracts</code></a></li>
+  <li><a href="#contractsUpdateContractByIdContractIdPut"><code><span class="http-method">put</span> /contracts/updateContractById/{contract_id}</code></a></li>
+  </ul>
+  <h4><a href="#Hotels">Hotels</a></h4>
+  <ul>
+  <li><a href="#hotelsCreatePost"><code><span class="http-method">post</span> /hotels/create</code></a></li>
+  <li><a href="#hotelsDeleteHotelByIdHotelIdDelete"><code><span class="http-method">delete</span> /hotels/deleteHotelById/{hotel_id}</code></a></li>
+  <li><a href="#hotelsDiscountsDeleteDiscountByIdDiscountIdDelete"><code><span class="http-method">delete</span> /hotels/discounts/deleteDiscountById/{discount_id}</code></a></li>
+  <li><a href="#hotelsDiscountsGetDiscountByIdDiscountIdGet"><code><span class="http-method">get</span> /hotels/discounts/getDiscountById/{discount_id}</code></a></li>
+  <li><a href="#hotelsDiscountsHotelIdGet"><code><span class="http-method">get</span> /hotels/discounts/{hotel_id}</code></a></li>
+  <li><a href="#hotelsDiscountsUpdateDiscountByIdDiscountIdPut"><code><span class="http-method">put</span> /hotels/discounts/updateDiscountById/{discount_id}</code></a></li>
+  <li><a href="#hotelsRoomsDeleteRoomTypeByIdRoomTypeIdDelete"><code><span class="http-method">delete</span> /hotels/rooms/deleteRoomTypeById/{roomType_id}</code></a></li>
+  <li><a href="#hotelsRoomsGetRoomTypeByIdRoomTypeIdGet"><code><span class="http-method">get</span> /hotels/rooms/getRoomTypeById/{roomType_id}</code></a></li>
+  <li><a href="#hotelsRoomsHotelIdGet"><code><span class="http-method">get</span> /hotels/rooms/{hotel_id}</code></a></li>
+  <li><a href="#hotelsRoomsUpdateRoomByIdRoomTypeIdPut"><code><span class="http-method">put</span> /hotels/rooms/updateRoomById/{roomType_id}</code></a></li>
+  <li><a href="#hotelsSearchGet"><code><span class="http-method">get</span> /hotels/search</code></a></li>
+  <li><a href="#hotelsSupplementsDeleteSupplementByIdSupplementIdDelete"><code><span class="http-method">delete</span> /hotels/supplements/deleteSupplementById/{supplement_id}</code></a></li>
+  <li><a href="#hotelsSupplementsGetSupplementByIdSupplementIdGet"><code><span class="http-method">get</span> /hotels/supplements/getSupplementById/{supplement_id}</code></a></li>
+  <li><a href="#hotelsSupplementsHotelIdGet"><code><span class="http-method">get</span> /hotels/supplements/{hotel_id}</code></a></li>
+  <li><a href="#hotelsSupplementsUpdateSupplementByIdSupplementIdPut"><code><span class="http-method">put</span> /hotels/supplements/updateSupplementById/{supplement_id}</code></a></li>
+  <li><a href="#hotelsUpdateHotelByIdHotelIdPut"><code><span class="http-method">put</span> /hotels/updateHotelById/{hotel_id}</code></a></li>
+  </ul>
+
+  <h1><a name="Bookings">Bookings</a></h1>
+  <div class="method"><a name="bookingsCreatePost"></a>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="post"><code class="huge"><span class="http-method">post</span> /bookings/create</code></pre></div>
+    <div class="method-summary">Create a new booking (<span class="nickname">bookingsCreatePost</span>)</div>
+    <div class="method-notes"></div>
+
+
+    <h3 class="field-label">Consumes</h3>
+    This API call consumes the following media types via the <span class="header">Content-Type</span> request header:
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Request body</h3>
+    <div class="field-items">
+      <div class="param">body <a href="#Booking">Booking</a> (required)</div>
+      
+            <div class="param-desc"><span class="param-type">Body Parameter</span> &mdash;  </div>
+                </div>  <!-- field-items -->
+
+
+
+
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">201</h4>
+    Booking created successfully
+        <a href="#"></a>
+    <h4 class="field-label">400</h4>
+    Bad request, invalid data provided
+        <a href="#"></a>
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="bookingsDeleteBookingByIdBookingIdDelete"></a>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="delete"><code class="huge"><span class="http-method">delete</span> /bookings/deleteBookingById/{booking_id}</code></pre></div>
+    <div class="method-summary">Delete a booking using the booking ID (<span class="nickname">bookingsDeleteBookingByIdBookingIdDelete</span>)</div>
+    <div class="method-notes"></div>
+
+    <h3 class="field-label">Path parameters</h3>
+    <div class="field-items">
+      <div class="param">booking_id (required)</div>
+      
+            <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; ID of the booking to be deleted </div>    </div>  <!-- field-items -->
+
+
+
+
+
+
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">204</h4>
+    Booking deleted successfully
+        <a href="#"></a>
+    <h4 class="field-label">400</h4>
+    Bad request
+        <a href="#"></a>
+    <h4 class="field-label">404</h4>
+    Cannot find Resourse
+        <a href="#"></a>
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="bookingsGetBookingByIdBookingIdGet"></a>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /bookings/getBookingById/{booking_id}</code></pre></div>
+    <div class="method-summary">Get all details of a particular booking (<span class="nickname">bookingsGetBookingByIdBookingIdGet</span>)</div>
+    <div class="method-notes"></div>
+
+    <h3 class="field-label">Path parameters</h3>
+    <div class="field-items">
+      <div class="param">booking_id (required)</div>
+      
+            <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; ID of the booking that has to be retrieved </div>    </div>  <!-- field-items -->
+
+
+
+
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      <a href="#Booking">Booking</a>
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>{
+  "booking_id" : 0,
+  "no_of_adults" : 6,
+  "check_out_date" : "2000-01-23",
+  "room_types" : [ "room_types", "room_types" ],
+  "hotel_id" : 5,
+  "supplement_id" : 2,
+  "booking_status" : "booking_status",
+  "customer_id" : 7,
+  "no_of_children" : 1,
+  "check_in_date" : "2000-01-23",
+  "discount_id" : 5
+}</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    Successful response
+        <a href="#Booking">Booking</a>
+    <h4 class="field-label">400</h4>
+    Bad request
+        <a href="#"></a>
+    <h4 class="field-label">404</h4>
+    Cannot find Resourse
+        <a href="#"></a>
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="bookingsHotelHotelIdGet"></a>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /bookings/hotel/{hotel_id}</code></pre></div>
+    <div class="method-summary">Get all bookings for a particular hotel (<span class="nickname">bookingsHotelHotelIdGet</span>)</div>
+    <div class="method-notes"></div>
+
+    <h3 class="field-label">Path parameters</h3>
+    <div class="field-items">
+      <div class="param">hotel_id (required)</div>
+      
+            <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; ID of the hotel for which bookings are to be retrieved </div>    </div>  <!-- field-items -->
+
+
+
+
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      <a href="#BookingList">BookingList</a>
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>[ {
+  "booking_id" : 0,
+  "no_of_adults" : 6,
+  "check_out_date" : "2000-01-23",
+  "room_types" : [ "room_types", "room_types" ],
+  "hotel_id" : 5,
+  "supplement_id" : 2,
+  "booking_status" : "booking_status",
+  "customer_id" : 7,
+  "no_of_children" : 1,
+  "check_in_date" : "2000-01-23",
+  "discount_id" : 5
+}, {
+  "booking_id" : 0,
+  "no_of_adults" : 6,
+  "check_out_date" : "2000-01-23",
+  "room_types" : [ "room_types", "room_types" ],
+  "hotel_id" : 5,
+  "supplement_id" : 2,
+  "booking_status" : "booking_status",
+  "customer_id" : 7,
+  "no_of_children" : 1,
+  "check_in_date" : "2000-01-23",
+  "discount_id" : 5
+} ]</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    Successful response
+        <a href="#BookingList">BookingList</a>
+    <h4 class="field-label">400</h4>
+    Bad request
+        <a href="#"></a>
+    <h4 class="field-label">404</h4>
+    Cannot find Resourse
+        <a href="#"></a>
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="bookingsUpdateBookingByIdBookingIdPut"></a>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="put"><code class="huge"><span class="http-method">put</span> /bookings/updateBookingById/{booking_id}</code></pre></div>
+    <div class="method-summary">Update a booking using the booking ID (<span class="nickname">bookingsUpdateBookingByIdBookingIdPut</span>)</div>
+    <div class="method-notes"></div>
+
+    <h3 class="field-label">Path parameters</h3>
+    <div class="field-items">
+      <div class="param">booking_id (required)</div>
+      
+            <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; ID of the booking to be updated </div>    </div>  <!-- field-items -->
+
+    <h3 class="field-label">Consumes</h3>
+    This API call consumes the following media types via the <span class="header">Content-Type</span> request header:
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Request body</h3>
+    <div class="field-items">
+      <div class="param">body <a href="#Booking">Booking</a> (required)</div>
+      
+            <div class="param-desc"><span class="param-type">Body Parameter</span> &mdash;  </div>
+                </div>  <!-- field-items -->
+
+
+
+
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    Booking updated successfully
+        <a href="#"></a>
+    <h4 class="field-label">400</h4>
+    Bad request
+        <a href="#"></a>
+    <h4 class="field-label">404</h4>
+    Cannot find Resourse
+        <a href="#"></a>
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="bookingsUserCustomerIdGet"></a>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /bookings/user/{customer_id}</code></pre></div>
+    <div class="method-summary">Get bookings for a particular user (<span class="nickname">bookingsUserCustomerIdGet</span>)</div>
+    <div class="method-notes"></div>
+
+    <h3 class="field-label">Path parameters</h3>
+    <div class="field-items">
+      <div class="param">customer_id (required)</div>
+      
+            <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; ID of the customer whose bookings are to be retrieved </div>    </div>  <!-- field-items -->
+
+
+
+
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      <a href="#BookingList">BookingList</a>
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>[ {
+  "booking_id" : 0,
+  "no_of_adults" : 6,
+  "check_out_date" : "2000-01-23",
+  "room_types" : [ "room_types", "room_types" ],
+  "hotel_id" : 5,
+  "supplement_id" : 2,
+  "booking_status" : "booking_status",
+  "customer_id" : 7,
+  "no_of_children" : 1,
+  "check_in_date" : "2000-01-23",
+  "discount_id" : 5
+}, {
+  "booking_id" : 0,
+  "no_of_adults" : 6,
+  "check_out_date" : "2000-01-23",
+  "room_types" : [ "room_types", "room_types" ],
+  "hotel_id" : 5,
+  "supplement_id" : 2,
+  "booking_status" : "booking_status",
+  "customer_id" : 7,
+  "no_of_children" : 1,
+  "check_in_date" : "2000-01-23",
+  "discount_id" : 5
+} ]</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    Successful response
+        <a href="#BookingList">BookingList</a>
+    <h4 class="field-label">400</h4>
+    Bad request
+        <a href="#"></a>
+    <h4 class="field-label">404</h4>
+    Cannot find Resourse
+        <a href="#"></a>
+  </div> <!-- method -->
+  <hr/>
+  <h1><a name="Contracts">Contracts</a></h1>
+  <div class="method"><a name="contractsAllContractsGet"></a>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /contracts/allContracts</code></pre></div>
+    <div class="method-summary">Get all hotel contracts in the system (<span class="nickname">contractsAllContractsGet</span>)</div>
+    <div class="method-notes"></div>
+
+
+
+
+
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      <a href="#ContractList">ContractList</a>
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>[ {
+  "end_date" : "2000-01-23",
+  "seasons" : [ {
+    "end_date" : "2000-01-23",
+    "season_name" : "season_name",
+    "season_id" : 9,
+    "start_date" : "2000-01-23"
+  }, {
+    "end_date" : "2000-01-23",
+    "season_name" : "season_name",
+    "season_id" : 9,
+    "start_date" : "2000-01-23"
+  } ],
+  "contract_id" : 0,
+  "contract_status" : "contract_status",
+  "cancellation_deadline" : "2000-01-23T04:56:07.000+00:00",
+  "markups" : [ {
+    "markup_id" : 5,
+    "percentage" : 7.061401241503109,
+    "season_id" : 2
+  }, {
+    "markup_id" : 5,
+    "percentage" : 7.061401241503109,
+    "season_id" : 2
+  } ],
+  "prepayment" : 1.4658129805029452,
+  "cancellation_fee" : 6.027456183070403,
+  "supplements" : [ {
+    "supplement_id" : 1,
+    "supplement_type" : "supplement_type",
+    "supplement_details" : "supplement_details",
+    "supplement_price" : 6.84685269835264,
+    "season_id" : 1
+  }, {
+    "supplement_id" : 1,
+    "supplement_type" : "supplement_type",
+    "supplement_details" : "supplement_details",
+    "supplement_price" : 6.84685269835264,
+    "season_id" : 1
+  } ],
+  "room_types" : [ {
+    "room_name" : "room_name",
+    "price" : 2.027123023002322,
+    "no_of_rooms" : 4,
+    "room_type_id" : 3,
+    "max_adults" : 7,
+    "season_id" : 1
+  }, {
+    "room_name" : "room_name",
+    "price" : 2.027123023002322,
+    "no_of_rooms" : 4,
+    "room_type_id" : 3,
+    "max_adults" : 7,
+    "season_id" : 1
+  } ],
+  "discounts" : [ {
+    "end_date" : "2000-01-23",
+    "discount_name" : "discount_name",
+    "discount_description" : "discount_description",
+    "discount_percentage" : 1.1730742509559433,
+    "discount_id" : 7,
+    "start_date" : "2000-01-23"
+  }, {
+    "end_date" : "2000-01-23",
+    "discount_name" : "discount_name",
+    "discount_description" : "discount_description",
+    "discount_percentage" : 1.1730742509559433,
+    "discount_id" : 7,
+    "start_date" : "2000-01-23"
+  } ],
+  "balance_payment" : 5.962133916683182,
+  "start_date" : "2000-01-23"
+}, {
+  "end_date" : "2000-01-23",
+  "seasons" : [ {
+    "end_date" : "2000-01-23",
+    "season_name" : "season_name",
+    "season_id" : 9,
+    "start_date" : "2000-01-23"
+  }, {
+    "end_date" : "2000-01-23",
+    "season_name" : "season_name",
+    "season_id" : 9,
+    "start_date" : "2000-01-23"
+  } ],
+  "contract_id" : 0,
+  "contract_status" : "contract_status",
+  "cancellation_deadline" : "2000-01-23T04:56:07.000+00:00",
+  "markups" : [ {
+    "markup_id" : 5,
+    "percentage" : 7.061401241503109,
+    "season_id" : 2
+  }, {
+    "markup_id" : 5,
+    "percentage" : 7.061401241503109,
+    "season_id" : 2
+  } ],
+  "prepayment" : 1.4658129805029452,
+  "cancellation_fee" : 6.027456183070403,
+  "supplements" : [ {
+    "supplement_id" : 1,
+    "supplement_type" : "supplement_type",
+    "supplement_details" : "supplement_details",
+    "supplement_price" : 6.84685269835264,
+    "season_id" : 1
+  }, {
+    "supplement_id" : 1,
+    "supplement_type" : "supplement_type",
+    "supplement_details" : "supplement_details",
+    "supplement_price" : 6.84685269835264,
+    "season_id" : 1
+  } ],
+  "room_types" : [ {
+    "room_name" : "room_name",
+    "price" : 2.027123023002322,
+    "no_of_rooms" : 4,
+    "room_type_id" : 3,
+    "max_adults" : 7,
+    "season_id" : 1
+  }, {
+    "room_name" : "room_name",
+    "price" : 2.027123023002322,
+    "no_of_rooms" : 4,
+    "room_type_id" : 3,
+    "max_adults" : 7,
+    "season_id" : 1
+  } ],
+  "discounts" : [ {
+    "end_date" : "2000-01-23",
+    "discount_name" : "discount_name",
+    "discount_description" : "discount_description",
+    "discount_percentage" : 1.1730742509559433,
+    "discount_id" : 7,
+    "start_date" : "2000-01-23"
+  }, {
+    "end_date" : "2000-01-23",
+    "discount_name" : "discount_name",
+    "discount_description" : "discount_description",
+    "discount_percentage" : 1.1730742509559433,
+    "discount_id" : 7,
+    "start_date" : "2000-01-23"
+  } ],
+  "balance_payment" : 5.962133916683182,
+  "start_date" : "2000-01-23"
+} ]</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    Successful response
+        <a href="#ContractList">ContractList</a>
+    <h4 class="field-label">400</h4>
+    Bad request
+        <a href="#"></a>
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="contractsDeleteContractByIdContractIdDelete"></a>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="delete"><code class="huge"><span class="http-method">delete</span> /contracts/deleteContractById/{contract_id}</code></pre></div>
+    <div class="method-summary">Delete a Contract using the Contract ID (<span class="nickname">contractsDeleteContractByIdContractIdDelete</span>)</div>
+    <div class="method-notes"></div>
+
+    <h3 class="field-label">Path parameters</h3>
+    <div class="field-items">
+      <div class="param">contract_id (required)</div>
+      
+            <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; ID of the Contract to be deleted </div>    </div>  <!-- field-items -->
+
+
+
+
+
+
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">204</h4>
+    Contract deleted successfully
+        <a href="#"></a>
+    <h4 class="field-label">400</h4>
+    Bad request
+        <a href="#"></a>
+    <h4 class="field-label">404</h4>
+    Cannot find Resourse
+        <a href="#"></a>
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="contractsFindContractByIDcontractIdGet"></a>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /contracts/findContractByID{contract_id}</code></pre></div>
+    <div class="method-summary">Get details of a particular Contract (<span class="nickname">contractsFindContractByIDcontractIdGet</span>)</div>
+    <div class="method-notes"></div>
+
+    <h3 class="field-label">Path parameters</h3>
+    <div class="field-items">
+      <div class="param">contract_id (required)</div>
+      
+            <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; ID of the Contract for which details are to be retrieved </div>    </div>  <!-- field-items -->
+
+
+
+
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      <a href="#Contract">Contract</a>
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>{
+  "end_date" : "2000-01-23",
+  "seasons" : [ {
+    "end_date" : "2000-01-23",
+    "season_name" : "season_name",
+    "season_id" : 9,
+    "start_date" : "2000-01-23"
+  }, {
+    "end_date" : "2000-01-23",
+    "season_name" : "season_name",
+    "season_id" : 9,
+    "start_date" : "2000-01-23"
+  } ],
+  "contract_id" : 0,
+  "contract_status" : "contract_status",
+  "cancellation_deadline" : "2000-01-23T04:56:07.000+00:00",
+  "markups" : [ {
+    "markup_id" : 5,
+    "percentage" : 7.061401241503109,
+    "season_id" : 2
+  }, {
+    "markup_id" : 5,
+    "percentage" : 7.061401241503109,
+    "season_id" : 2
+  } ],
+  "prepayment" : 1.4658129805029452,
+  "cancellation_fee" : 6.027456183070403,
+  "supplements" : [ {
+    "supplement_id" : 1,
+    "supplement_type" : "supplement_type",
+    "supplement_details" : "supplement_details",
+    "supplement_price" : 6.84685269835264,
+    "season_id" : 1
+  }, {
+    "supplement_id" : 1,
+    "supplement_type" : "supplement_type",
+    "supplement_details" : "supplement_details",
+    "supplement_price" : 6.84685269835264,
+    "season_id" : 1
+  } ],
+  "room_types" : [ {
+    "room_name" : "room_name",
+    "price" : 2.027123023002322,
+    "no_of_rooms" : 4,
+    "room_type_id" : 3,
+    "max_adults" : 7,
+    "season_id" : 1
+  }, {
+    "room_name" : "room_name",
+    "price" : 2.027123023002322,
+    "no_of_rooms" : 4,
+    "room_type_id" : 3,
+    "max_adults" : 7,
+    "season_id" : 1
+  } ],
+  "discounts" : [ {
+    "end_date" : "2000-01-23",
+    "discount_name" : "discount_name",
+    "discount_description" : "discount_description",
+    "discount_percentage" : 1.1730742509559433,
+    "discount_id" : 7,
+    "start_date" : "2000-01-23"
+  }, {
+    "end_date" : "2000-01-23",
+    "discount_name" : "discount_name",
+    "discount_description" : "discount_description",
+    "discount_percentage" : 1.1730742509559433,
+    "discount_id" : 7,
+    "start_date" : "2000-01-23"
+  } ],
+  "balance_payment" : 5.962133916683182,
+  "start_date" : "2000-01-23"
+}</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    Successful response
+        <a href="#Contract">Contract</a>
+    <h4 class="field-label">400</h4>
+    Bad request
+        <a href="#"></a>
+    <h4 class="field-label">404</h4>
+    Cannot find Resourse
+        <a href="#"></a>
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="contractsHotelHotelIdGet"></a>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /contracts/hotel/{hotel_id}</code></pre></div>
+    <div class="method-summary">Get details of a particular Contract (<span class="nickname">contractsHotelHotelIdGet</span>)</div>
+    <div class="method-notes"></div>
+
+    <h3 class="field-label">Path parameters</h3>
+    <div class="field-items">
+      <div class="param">hotel_id (required)</div>
+      
+            <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; ID of the Contract for which details are to be retrieved </div>    </div>  <!-- field-items -->
+
+
+
+
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      <a href="#Contract">Contract</a>
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>{
+  "end_date" : "2000-01-23",
+  "seasons" : [ {
+    "end_date" : "2000-01-23",
+    "season_name" : "season_name",
+    "season_id" : 9,
+    "start_date" : "2000-01-23"
+  }, {
+    "end_date" : "2000-01-23",
+    "season_name" : "season_name",
+    "season_id" : 9,
+    "start_date" : "2000-01-23"
+  } ],
+  "contract_id" : 0,
+  "contract_status" : "contract_status",
+  "cancellation_deadline" : "2000-01-23T04:56:07.000+00:00",
+  "markups" : [ {
+    "markup_id" : 5,
+    "percentage" : 7.061401241503109,
+    "season_id" : 2
+  }, {
+    "markup_id" : 5,
+    "percentage" : 7.061401241503109,
+    "season_id" : 2
+  } ],
+  "prepayment" : 1.4658129805029452,
+  "cancellation_fee" : 6.027456183070403,
+  "supplements" : [ {
+    "supplement_id" : 1,
+    "supplement_type" : "supplement_type",
+    "supplement_details" : "supplement_details",
+    "supplement_price" : 6.84685269835264,
+    "season_id" : 1
+  }, {
+    "supplement_id" : 1,
+    "supplement_type" : "supplement_type",
+    "supplement_details" : "supplement_details",
+    "supplement_price" : 6.84685269835264,
+    "season_id" : 1
+  } ],
+  "room_types" : [ {
+    "room_name" : "room_name",
+    "price" : 2.027123023002322,
+    "no_of_rooms" : 4,
+    "room_type_id" : 3,
+    "max_adults" : 7,
+    "season_id" : 1
+  }, {
+    "room_name" : "room_name",
+    "price" : 2.027123023002322,
+    "no_of_rooms" : 4,
+    "room_type_id" : 3,
+    "max_adults" : 7,
+    "season_id" : 1
+  } ],
+  "discounts" : [ {
+    "end_date" : "2000-01-23",
+    "discount_name" : "discount_name",
+    "discount_description" : "discount_description",
+    "discount_percentage" : 1.1730742509559433,
+    "discount_id" : 7,
+    "start_date" : "2000-01-23"
+  }, {
+    "end_date" : "2000-01-23",
+    "discount_name" : "discount_name",
+    "discount_description" : "discount_description",
+    "discount_percentage" : 1.1730742509559433,
+    "discount_id" : 7,
+    "start_date" : "2000-01-23"
+  } ],
+  "balance_payment" : 5.962133916683182,
+  "start_date" : "2000-01-23"
+}</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    Successful response
+        <a href="#Contract">Contract</a>
+    <h4 class="field-label">400</h4>
+    Bad request
+        <a href="#"></a>
+    <h4 class="field-label">404</h4>
+    Cannot find Resourse
+        <a href="#"></a>
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="contractsPost"></a>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="post"><code class="huge"><span class="http-method">post</span> /contracts</code></pre></div>
+    <div class="method-summary">Setup a new contract (<span class="nickname">contractsPost</span>)</div>
+    <div class="method-notes"></div>
+
+
+    <h3 class="field-label">Consumes</h3>
+    This API call consumes the following media types via the <span class="header">Content-Type</span> request header:
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Request body</h3>
+    <div class="field-items">
+      <div class="param">body <a href="#Contract">Contract</a> (required)</div>
+      
+            <div class="param-desc"><span class="param-type">Body Parameter</span> &mdash;  </div>
+                </div>  <!-- field-items -->
+
+
+
+
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">201</h4>
+    Contract setup successful
+        <a href="#"></a>
+    <h4 class="field-label">400</h4>
+    Bad request, invalid data provided
+        <a href="#"></a>
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="contractsUpdateContractByIdContractIdPut"></a>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="put"><code class="huge"><span class="http-method">put</span> /contracts/updateContractById/{contract_id}</code></pre></div>
+    <div class="method-summary">Update a contract using the contract ID (<span class="nickname">contractsUpdateContractByIdContractIdPut</span>)</div>
+    <div class="method-notes"></div>
+
+    <h3 class="field-label">Path parameters</h3>
+    <div class="field-items">
+      <div class="param">contract_id (required)</div>
+      
+            <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; ID of the contract to be updated </div>    </div>  <!-- field-items -->
+
+    <h3 class="field-label">Consumes</h3>
+    This API call consumes the following media types via the <span class="header">Content-Type</span> request header:
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Request body</h3>
+    <div class="field-items">
+      <div class="param">body <a href="#Contract">Contract</a> (required)</div>
+      
+            <div class="param-desc"><span class="param-type">Body Parameter</span> &mdash;  </div>
+                </div>  <!-- field-items -->
+
+
+
+
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    Contract updated successfully
+        <a href="#"></a>
+    <h4 class="field-label">400</h4>
+    Bad request
+        <a href="#"></a>
+  </div> <!-- method -->
+  <hr/>
+  <h1><a name="Hotels">Hotels</a></h1>
+  <div class="method"><a name="hotelsCreatePost"></a>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="post"><code class="huge"><span class="http-method">post</span> /hotels/create</code></pre></div>
+    <div class="method-summary">Create a new hotel entry (<span class="nickname">hotelsCreatePost</span>)</div>
+    <div class="method-notes"></div>
+
+
+    <h3 class="field-label">Consumes</h3>
+    This API call consumes the following media types via the <span class="header">Content-Type</span> request header:
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Request body</h3>
+    <div class="field-items">
+      <div class="param">body <a href="#Hotel">Hotel</a> (required)</div>
+      
+            <div class="param-desc"><span class="param-type">Body Parameter</span> &mdash;  </div>
+                </div>  <!-- field-items -->
+
+
+
+
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">201</h4>
+    Hotel entry created successfully
+        <a href="#"></a>
+    <h4 class="field-label">400</h4>
+    Bad request, invalid data provided
+        <a href="#"></a>
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="hotelsDeleteHotelByIdHotelIdDelete"></a>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="delete"><code class="huge"><span class="http-method">delete</span> /hotels/deleteHotelById/{hotel_id}</code></pre></div>
+    <div class="method-summary">Delete a Hotel using the hotel ID (<span class="nickname">hotelsDeleteHotelByIdHotelIdDelete</span>)</div>
+    <div class="method-notes"></div>
+
+    <h3 class="field-label">Path parameters</h3>
+    <div class="field-items">
+      <div class="param">hotel_id (required)</div>
+      
+            <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; ID of the hotel to be deleted </div>    </div>  <!-- field-items -->
+
+
+
+
+
+
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">204</h4>
+    Hotel deleted successfully
+        <a href="#"></a>
+    <h4 class="field-label">400</h4>
+    Bad request
+        <a href="#"></a>
+    <h4 class="field-label">404</h4>
+    Cannot find Resourse
+        <a href="#"></a>
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="hotelsDiscountsDeleteDiscountByIdDiscountIdDelete"></a>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="delete"><code class="huge"><span class="http-method">delete</span> /hotels/discounts/deleteDiscountById/{discount_id}</code></pre></div>
+    <div class="method-summary">Delete a discount using the Discount ID (<span class="nickname">hotelsDiscountsDeleteDiscountByIdDiscountIdDelete</span>)</div>
+    <div class="method-notes"></div>
+
+    <h3 class="field-label">Path parameters</h3>
+    <div class="field-items">
+      <div class="param">discount_id (required)</div>
+      
+            <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; ID of the Discount to be deleted </div>    </div>  <!-- field-items -->
+
+
+
+
+
+
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">204</h4>
+    Discount deleted successfully
+        <a href="#"></a>
+    <h4 class="field-label">400</h4>
+    Bad request
+        <a href="#"></a>
+    <h4 class="field-label">404</h4>
+    Cannot find Resourse
+        <a href="#"></a>
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="hotelsDiscountsGetDiscountByIdDiscountIdGet"></a>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /hotels/discounts/getDiscountById/{discount_id}</code></pre></div>
+    <div class="method-summary">Get details of a particular Discount (<span class="nickname">hotelsDiscountsGetDiscountByIdDiscountIdGet</span>)</div>
+    <div class="method-notes"></div>
+
+    <h3 class="field-label">Path parameters</h3>
+    <div class="field-items">
+      <div class="param">discount_id (required)</div>
+      
+            <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; ID of the Discount for which details are to be retrieved </div>    </div>  <!-- field-items -->
+
+
+
+
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      <a href="#Discount">Discount</a>
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>{
+  "end_date" : "2000-01-23",
+  "discount_name" : "discount_name",
+  "discount_description" : "discount_description",
+  "discount_percentage" : 1.1730742509559433,
+  "discount_id" : 7,
+  "start_date" : "2000-01-23"
+}</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    Successful response
+        <a href="#Discount">Discount</a>
+    <h4 class="field-label">400</h4>
+    Bad request
+        <a href="#"></a>
+    <h4 class="field-label">404</h4>
+    Cannot find Resourse
+        <a href="#"></a>
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="hotelsDiscountsHotelIdGet"></a>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /hotels/discounts/{hotel_id}</code></pre></div>
+    <div class="method-summary">Get all Discounts of a particular hotel (<span class="nickname">hotelsDiscountsHotelIdGet</span>)</div>
+    <div class="method-notes"></div>
+
+    <h3 class="field-label">Path parameters</h3>
+    <div class="field-items">
+      <div class="param">hotel_id (required)</div>
+      
+            <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; ID of the hotel for which discounts are to be retrieved </div>    </div>  <!-- field-items -->
+
+
+
+
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      <a href="#DiscountList">DiscountList</a>
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>[ {
+  "end_date" : "2000-01-23",
+  "discount_name" : "discount_name",
+  "discount_description" : "discount_description",
+  "discount_percentage" : 1.1730742509559433,
+  "discount_id" : 7,
+  "start_date" : "2000-01-23"
+}, {
+  "end_date" : "2000-01-23",
+  "discount_name" : "discount_name",
+  "discount_description" : "discount_description",
+  "discount_percentage" : 1.1730742509559433,
+  "discount_id" : 7,
+  "start_date" : "2000-01-23"
+} ]</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    Successful response
+        <a href="#DiscountList">DiscountList</a>
+    <h4 class="field-label">400</h4>
+    Bad request
+        <a href="#"></a>
+    <h4 class="field-label">404</h4>
+    Cannot find Resourse
+        <a href="#"></a>
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="hotelsDiscountsUpdateDiscountByIdDiscountIdPut"></a>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="put"><code class="huge"><span class="http-method">put</span> /hotels/discounts/updateDiscountById/{discount_id}</code></pre></div>
+    <div class="method-summary">Update a Discount using the Discount ID (<span class="nickname">hotelsDiscountsUpdateDiscountByIdDiscountIdPut</span>)</div>
+    <div class="method-notes"></div>
+
+    <h3 class="field-label">Path parameters</h3>
+    <div class="field-items">
+      <div class="param">discount_id (required)</div>
+      
+            <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; ID of the Discount to be updated </div>    </div>  <!-- field-items -->
+
+    <h3 class="field-label">Consumes</h3>
+    This API call consumes the following media types via the <span class="header">Content-Type</span> request header:
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Request body</h3>
+    <div class="field-items">
+      <div class="param">body <a href="#Discount">Discount</a> (required)</div>
+      
+            <div class="param-desc"><span class="param-type">Body Parameter</span> &mdash;  </div>
+                </div>  <!-- field-items -->
+
+
+
+
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    Discount updated successfully
+        <a href="#"></a>
+    <h4 class="field-label">400</h4>
+    Bad request
+        <a href="#"></a>
+    <h4 class="field-label">404</h4>
+    Cannot find Resourse
+        <a href="#"></a>
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="hotelsRoomsDeleteRoomTypeByIdRoomTypeIdDelete"></a>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="delete"><code class="huge"><span class="http-method">delete</span> /hotels/rooms/deleteRoomTypeById/{roomType_id}</code></pre></div>
+    <div class="method-summary">Delete a RoomType using the RoomType ID (<span class="nickname">hotelsRoomsDeleteRoomTypeByIdRoomTypeIdDelete</span>)</div>
+    <div class="method-notes"></div>
+
+    <h3 class="field-label">Path parameters</h3>
+    <div class="field-items">
+      <div class="param">roomType_id (required)</div>
+      
+            <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; ID of the RoomType to be deleted </div>    </div>  <!-- field-items -->
+
+
+
+
+
+
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">204</h4>
+    RoomType deleted successfully
+        <a href="#"></a>
+    <h4 class="field-label">400</h4>
+    Bad request
+        <a href="#"></a>
+    <h4 class="field-label">404</h4>
+    Cannot find Resourse
+        <a href="#"></a>
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="hotelsRoomsGetRoomTypeByIdRoomTypeIdGet"></a>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /hotels/rooms/getRoomTypeById/{roomType_id}</code></pre></div>
+    <div class="method-summary">Get details of a particular RoomType (<span class="nickname">hotelsRoomsGetRoomTypeByIdRoomTypeIdGet</span>)</div>
+    <div class="method-notes"></div>
+
+    <h3 class="field-label">Path parameters</h3>
+    <div class="field-items">
+      <div class="param">roomType_id (required)</div>
+      
+            <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; ID of the RoomType for which details are to be retrieved </div>    </div>  <!-- field-items -->
+
+
+
+
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      <a href="#RoomType">RoomType</a>
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>{
+  "room_name" : "room_name",
+  "price" : 2.027123023002322,
+  "no_of_rooms" : 4,
+  "room_type_id" : 3,
+  "max_adults" : 7,
+  "season_id" : 1
+}</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    Successful response
+        <a href="#RoomType">RoomType</a>
+    <h4 class="field-label">400</h4>
+    Bad request
+        <a href="#"></a>
+    <h4 class="field-label">404</h4>
+    Cannot find Resourse
+        <a href="#"></a>
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="hotelsRoomsHotelIdGet"></a>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /hotels/rooms/{hotel_id}</code></pre></div>
+    <div class="method-summary">Get all Rooms of a particular hotel (<span class="nickname">hotelsRoomsHotelIdGet</span>)</div>
+    <div class="method-notes"></div>
+
+    <h3 class="field-label">Path parameters</h3>
+    <div class="field-items">
+      <div class="param">hotel_id (required)</div>
+      
+            <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; ID of the hotel for which Rooms are to be retrieved </div>    </div>  <!-- field-items -->
+
+
+
+
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      <a href="#RoomTypeList">RoomTypeList</a>
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>[ {
+  "room_name" : "room_name",
+  "price" : 2.027123023002322,
+  "no_of_rooms" : 4,
+  "room_type_id" : 3,
+  "max_adults" : 7,
+  "season_id" : 1
+}, {
+  "room_name" : "room_name",
+  "price" : 2.027123023002322,
+  "no_of_rooms" : 4,
+  "room_type_id" : 3,
+  "max_adults" : 7,
+  "season_id" : 1
+} ]</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    Successful response
+        <a href="#RoomTypeList">RoomTypeList</a>
+    <h4 class="field-label">400</h4>
+    Bad request
+        <a href="#"></a>
+    <h4 class="field-label">404</h4>
+    Cannot find Resourse
+        <a href="#"></a>
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="hotelsRoomsUpdateRoomByIdRoomTypeIdPut"></a>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="put"><code class="huge"><span class="http-method">put</span> /hotels/rooms/updateRoomById/{roomType_id}</code></pre></div>
+    <div class="method-summary">Update a RoomType using the RoomType ID (<span class="nickname">hotelsRoomsUpdateRoomByIdRoomTypeIdPut</span>)</div>
+    <div class="method-notes"></div>
+
+    <h3 class="field-label">Path parameters</h3>
+    <div class="field-items">
+      <div class="param">roomType_id (required)</div>
+      
+            <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; ID of the Room type to be updated </div>    </div>  <!-- field-items -->
+
+    <h3 class="field-label">Consumes</h3>
+    This API call consumes the following media types via the <span class="header">Content-Type</span> request header:
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Request body</h3>
+    <div class="field-items">
+      <div class="param">body <a href="#RoomType">RoomType</a> (required)</div>
+      
+            <div class="param-desc"><span class="param-type">Body Parameter</span> &mdash;  </div>
+                </div>  <!-- field-items -->
+
+
+
+
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    RoomType updated successfully
+        <a href="#"></a>
+    <h4 class="field-label">400</h4>
+    Bad request
+        <a href="#"></a>
+    <h4 class="field-label">404</h4>
+    Cannot find Resourse
+        <a href="#"></a>
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="hotelsSearchGet"></a>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /hotels/search</code></pre></div>
+    <div class="method-summary">Search hotels by location or name (<span class="nickname">hotelsSearchGet</span>)</div>
+    <div class="method-notes"></div>
+
+
+
+
+
+    <h3 class="field-label">Query parameters</h3>
+    <div class="field-items">
+      <div class="param">query (required)</div>
+      
+            <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash; Location or name to search for hotels </div>    </div>  <!-- field-items -->
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      <a href="#HotelList">HotelList</a>
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>[ {
+  "hotel_phone" : [ "hotel_phone", "hotel_phone" ],
+  "hotel_city" : "hotel_city",
+  "contract_id" : 0,
+  "hotel_images" : [ "hotel_images", "hotel_images" ],
+  "hotel_id" : 6,
+  "hotel_state" : "hotel_state",
+  "hotel_description" : "hotel_description",
+  "hotel_postal_code" : "hotel_postal_code",
+  "hotel_email" : "hotel_email",
+  "hotel_country" : "hotel_country",
+  "hotel_street_address" : "hotel_street_address",
+  "hotel_name" : "hotel_name"
+}, {
+  "hotel_phone" : [ "hotel_phone", "hotel_phone" ],
+  "hotel_city" : "hotel_city",
+  "contract_id" : 0,
+  "hotel_images" : [ "hotel_images", "hotel_images" ],
+  "hotel_id" : 6,
+  "hotel_state" : "hotel_state",
+  "hotel_description" : "hotel_description",
+  "hotel_postal_code" : "hotel_postal_code",
+  "hotel_email" : "hotel_email",
+  "hotel_country" : "hotel_country",
+  "hotel_street_address" : "hotel_street_address",
+  "hotel_name" : "hotel_name"
+} ]</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    Successful response
+        <a href="#HotelList">HotelList</a>
+    <h4 class="field-label">400</h4>
+    Bad request
+        <a href="#"></a>
+    <h4 class="field-label">404</h4>
+    Cannot find Resourse
+        <a href="#"></a>
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="hotelsSupplementsDeleteSupplementByIdSupplementIdDelete"></a>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="delete"><code class="huge"><span class="http-method">delete</span> /hotels/supplements/deleteSupplementById/{supplement_id}</code></pre></div>
+    <div class="method-summary">Delete a Supplement using the supplement ID (<span class="nickname">hotelsSupplementsDeleteSupplementByIdSupplementIdDelete</span>)</div>
+    <div class="method-notes"></div>
+
+    <h3 class="field-label">Path parameters</h3>
+    <div class="field-items">
+      <div class="param">supplement_id (required)</div>
+      
+            <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; ID of the Supplement to be deleted </div>    </div>  <!-- field-items -->
+
+
+
+
+
+
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">204</h4>
+    Supplement deleted successfully
+        <a href="#"></a>
+    <h4 class="field-label">400</h4>
+    Bad request
+        <a href="#"></a>
+    <h4 class="field-label">404</h4>
+    Cannot find Resourse
+        <a href="#"></a>
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="hotelsSupplementsGetSupplementByIdSupplementIdGet"></a>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /hotels/supplements/getSupplementById/{supplement_id}</code></pre></div>
+    <div class="method-summary">Get details of a particular Supplement (<span class="nickname">hotelsSupplementsGetSupplementByIdSupplementIdGet</span>)</div>
+    <div class="method-notes"></div>
+
+    <h3 class="field-label">Path parameters</h3>
+    <div class="field-items">
+      <div class="param">supplement_id (required)</div>
+      
+            <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; ID of the Supplement for which details are to be retrieved </div>    </div>  <!-- field-items -->
+
+
+
+
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      <a href="#Supplement">Supplement</a>
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>{
+  "supplement_id" : 1,
+  "supplement_type" : "supplement_type",
+  "supplement_details" : "supplement_details",
+  "supplement_price" : 6.84685269835264,
+  "season_id" : 1
+}</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    Successful response
+        <a href="#Supplement">Supplement</a>
+    <h4 class="field-label">400</h4>
+    Bad request
+        <a href="#"></a>
+    <h4 class="field-label">404</h4>
+    Cannot find Resourse
+        <a href="#"></a>
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="hotelsSupplementsHotelIdGet"></a>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /hotels/supplements/{hotel_id}</code></pre></div>
+    <div class="method-summary">Get all Supplements of a particular hotel (<span class="nickname">hotelsSupplementsHotelIdGet</span>)</div>
+    <div class="method-notes"></div>
+
+    <h3 class="field-label">Path parameters</h3>
+    <div class="field-items">
+      <div class="param">hotel_id (required)</div>
+      
+            <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; ID of the hotel for which supplements are to be retrieved </div>    </div>  <!-- field-items -->
+
+
+
+
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      <a href="#SupplementList">SupplementList</a>
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>[ {
+  "supplement_id" : 1,
+  "supplement_type" : "supplement_type",
+  "supplement_details" : "supplement_details",
+  "supplement_price" : 6.84685269835264,
+  "season_id" : 1
+}, {
+  "supplement_id" : 1,
+  "supplement_type" : "supplement_type",
+  "supplement_details" : "supplement_details",
+  "supplement_price" : 6.84685269835264,
+  "season_id" : 1
+} ]</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    Successful response
+        <a href="#SupplementList">SupplementList</a>
+    <h4 class="field-label">400</h4>
+    Bad request
+        <a href="#"></a>
+    <h4 class="field-label">404</h4>
+    Cannot find Resourse
+        <a href="#"></a>
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="hotelsSupplementsUpdateSupplementByIdSupplementIdPut"></a>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="put"><code class="huge"><span class="http-method">put</span> /hotels/supplements/updateSupplementById/{supplement_id}</code></pre></div>
+    <div class="method-summary">Update a Supplement using the supplemets ID (<span class="nickname">hotelsSupplementsUpdateSupplementByIdSupplementIdPut</span>)</div>
+    <div class="method-notes"></div>
+
+    <h3 class="field-label">Path parameters</h3>
+    <div class="field-items">
+      <div class="param">supplement_id (required)</div>
+      
+            <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; ID of the Supplement to be updated </div>    </div>  <!-- field-items -->
+
+    <h3 class="field-label">Consumes</h3>
+    This API call consumes the following media types via the <span class="header">Content-Type</span> request header:
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Request body</h3>
+    <div class="field-items">
+      <div class="param">body <a href="#Supplement">Supplement</a> (required)</div>
+      
+            <div class="param-desc"><span class="param-type">Body Parameter</span> &mdash;  </div>
+                </div>  <!-- field-items -->
+
+
+
+
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    Supplement updated successfully
+        <a href="#"></a>
+    <h4 class="field-label">400</h4>
+    Bad request
+        <a href="#"></a>
+    <h4 class="field-label">404</h4>
+    Cannot find Resourse
+        <a href="#"></a>
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="hotelsUpdateHotelByIdHotelIdPut"></a>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="put"><code class="huge"><span class="http-method">put</span> /hotels/updateHotelById/{hotel_id}</code></pre></div>
+    <div class="method-summary">Update a Hotel using the hotel ID (<span class="nickname">hotelsUpdateHotelByIdHotelIdPut</span>)</div>
+    <div class="method-notes"></div>
+
+    <h3 class="field-label">Path parameters</h3>
+    <div class="field-items">
+      <div class="param">hotel_id (required)</div>
+      
+            <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; ID of the hotel to be updated </div>    </div>  <!-- field-items -->
+
+    <h3 class="field-label">Consumes</h3>
+    This API call consumes the following media types via the <span class="header">Content-Type</span> request header:
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Request body</h3>
+    <div class="field-items">
+      <div class="param">body <a href="#Hotel">Hotel</a> (required)</div>
+      
+            <div class="param-desc"><span class="param-type">Body Parameter</span> &mdash;  </div>
+                </div>  <!-- field-items -->
+
+
+
+
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    Booking updated successfully
+        <a href="#"></a>
+    <h4 class="field-label">400</h4>
+    Bad request
+        <a href="#"></a>
+  </div> <!-- method -->
+  <hr/>
+
+  <h2><a name="__Models">Models</a></h2>
+  [ Jump to <a href="#__Methods">Methods</a> ]
+
+  <h3>Table of Contents</h3>
+  <ol>
+    <li><a href="#Booking"><code>Booking</code></a></li>
+    <li><a href="#BookingList"><code>BookingList</code></a></li>
+    <li><a href="#Contract"><code>Contract</code></a></li>
+    <li><a href="#ContractList"><code>ContractList</code></a></li>
+    <li><a href="#Discount"><code>Discount</code></a></li>
+    <li><a href="#DiscountList"><code>DiscountList</code></a></li>
+    <li><a href="#Hotel"><code>Hotel</code></a></li>
+    <li><a href="#HotelList"><code>HotelList</code></a></li>
+    <li><a href="#Markup"><code>Markup</code></a></li>
+    <li><a href="#RoomType"><code>RoomType</code></a></li>
+    <li><a href="#RoomTypeList"><code>RoomTypeList</code></a></li>
+    <li><a href="#Season"><code>Season</code></a></li>
+    <li><a href="#Supplement"><code>Supplement</code></a></li>
+    <li><a href="#SupplementList"><code>SupplementList</code></a></li>
+  </ol>
+
+  <div class="model">
+    <h3><a name="Booking"><code>Booking</code></a> <a class="up" href="#__Models">Up</a></h3>
+    
+    <div class="field-items">
+      <div class="param">booking_id (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span>  </div>
+<div class="param">booking_status </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+<div class="param">no_of_adults </div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span>  </div>
+<div class="param">no_of_children </div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span>  </div>
+<div class="param">check_in_date </div><div class="param-desc"><span class="param-type"><a href="#date">date</a></span>  format: date</div>
+<div class="param">check_out_date </div><div class="param-desc"><span class="param-type"><a href="#date">date</a></span>  format: date</div>
+<div class="param">hotel_id </div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span>  </div>
+<div class="param">room_types (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">array[String]</a></span>  </div>
+<div class="param">discount_id (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span>  </div>
+<div class="param">supplement_id (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span>  </div>
+<div class="param">customer_id </div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span>  </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="BookingList"><code>BookingList</code></a> <a class="up" href="#__Models">Up</a></h3>
+    
+    <div class="field-items">
+          </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="Contract"><code>Contract</code></a> <a class="up" href="#__Models">Up</a></h3>
+    
+    <div class="field-items">
+      <div class="param">contract_id (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span>  </div>
+<div class="param">start_date </div><div class="param-desc"><span class="param-type"><a href="#date">date</a></span>  format: date</div>
+<div class="param">end_date </div><div class="param-desc"><span class="param-type"><a href="#date">date</a></span>  format: date</div>
+<div class="param">cancellation_deadline (optional)</div><div class="param-desc"><span class="param-type"><a href="#DateTime">Date</a></span>  format: date-time</div>
+<div class="param">cancellation_fee (optional)</div><div class="param-desc"><span class="param-type"><a href="#BigDecimal">BigDecimal</a></span>  </div>
+<div class="param">prepayment (optional)</div><div class="param-desc"><span class="param-type"><a href="#BigDecimal">BigDecimal</a></span>  </div>
+<div class="param">balance_payment (optional)</div><div class="param-desc"><span class="param-type"><a href="#BigDecimal">BigDecimal</a></span>  </div>
+<div class="param">contract_status </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+<div class="param">markups (optional)</div><div class="param-desc"><span class="param-type"><a href="#Markup">array[Markup]</a></span>  </div>
+<div class="param">seasons (optional)</div><div class="param-desc"><span class="param-type"><a href="#Season">array[Season]</a></span>  </div>
+<div class="param">room_types (optional)</div><div class="param-desc"><span class="param-type"><a href="#RoomType">array[RoomType]</a></span>  </div>
+<div class="param">supplements (optional)</div><div class="param-desc"><span class="param-type"><a href="#Supplement">array[Supplement]</a></span>  </div>
+<div class="param">discounts (optional)</div><div class="param-desc"><span class="param-type"><a href="#Discount">array[Discount]</a></span>  </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="ContractList"><code>ContractList</code></a> <a class="up" href="#__Models">Up</a></h3>
+    
+    <div class="field-items">
+          </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="Discount"><code>Discount</code></a> <a class="up" href="#__Models">Up</a></h3>
+    
+    <div class="field-items">
+      <div class="param">discount_id (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span>  </div>
+<div class="param">discount_name (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+<div class="param">discount_description (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+<div class="param">discount_percentage (optional)</div><div class="param-desc"><span class="param-type"><a href="#BigDecimal">BigDecimal</a></span>  </div>
+<div class="param">start_date (optional)</div><div class="param-desc"><span class="param-type"><a href="#date">date</a></span>  format: date</div>
+<div class="param">end_date (optional)</div><div class="param-desc"><span class="param-type"><a href="#date">date</a></span>  format: date</div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="DiscountList"><code>DiscountList</code></a> <a class="up" href="#__Models">Up</a></h3>
+    
+    <div class="field-items">
+          </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="Hotel"><code>Hotel</code></a> <a class="up" href="#__Models">Up</a></h3>
+    
+    <div class="field-items">
+      <div class="param">contract_id </div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span>  </div>
+<div class="param">hotel_id (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span>  </div>
+<div class="param">hotel_name </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+<div class="param">hotel_street_address </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+<div class="param">hotel_city </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+<div class="param">hotel_state (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+<div class="param">hotel_postal_code (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+<div class="param">hotel_country </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+<div class="param">hotel_description (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+<div class="param">hotel_email </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+<div class="param">hotel_phone (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">array[String]</a></span>  </div>
+<div class="param">hotel_images (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">array[String]</a></span>  </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="HotelList"><code>HotelList</code></a> <a class="up" href="#__Models">Up</a></h3>
+    
+    <div class="field-items">
+          </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="Markup"><code>Markup</code></a> <a class="up" href="#__Models">Up</a></h3>
+    
+    <div class="field-items">
+      <div class="param">markup_id (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span>  </div>
+<div class="param">season_id (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span>  </div>
+<div class="param">percentage (optional)</div><div class="param-desc"><span class="param-type"><a href="#BigDecimal">BigDecimal</a></span>  </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="RoomType"><code>RoomType</code></a> <a class="up" href="#__Models">Up</a></h3>
+    
+    <div class="field-items">
+      <div class="param">room_type_id (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span>  </div>
+<div class="param">room_name (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+<div class="param">price (optional)</div><div class="param-desc"><span class="param-type"><a href="#BigDecimal">BigDecimal</a></span>  </div>
+<div class="param">no_of_rooms (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span>  </div>
+<div class="param">max_adults (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span>  </div>
+<div class="param">season_id (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span>  </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="RoomTypeList"><code>RoomTypeList</code></a> <a class="up" href="#__Models">Up</a></h3>
+    
+    <div class="field-items">
+          </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="Season"><code>Season</code></a> <a class="up" href="#__Models">Up</a></h3>
+    
+    <div class="field-items">
+      <div class="param">season_id (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span>  </div>
+<div class="param">start_date (optional)</div><div class="param-desc"><span class="param-type"><a href="#date">date</a></span>  format: date</div>
+<div class="param">end_date (optional)</div><div class="param-desc"><span class="param-type"><a href="#date">date</a></span>  format: date</div>
+<div class="param">season_name (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="Supplement"><code>Supplement</code></a> <a class="up" href="#__Models">Up</a></h3>
+    
+    <div class="field-items">
+      <div class="param">supplement_id (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span>  </div>
+<div class="param">supplement_type (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+<div class="param">season_id (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span>  </div>
+<div class="param">supplement_details (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+<div class="param">supplement_price (optional)</div><div class="param-desc"><span class="param-type"><a href="#BigDecimal">BigDecimal</a></span>  </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="SupplementList"><code>SupplementList</code></a> <a class="up" href="#__Models">Up</a></h3>
+    
+    <div class="field-items">
+          </div>  <!-- field-items -->
+  </div>
+  </body>
+</html>
