@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.util.List;
+import java.util.Set;
 
 @Data
 @Entity
@@ -12,10 +13,13 @@ public class Markup {
 
     @Id
     @Column(name = "markup_id")
+    @GeneratedValue(strategy=GenerationType.AUTO)
     private Integer markup_id;
 
-    private Double markup_percentage;
+    @OneToMany(mappedBy = "markup")
+    Set<SeasonMarkup> season_markups;
 
-    @ManyToMany(mappedBy = "markups")
-    private List<Season> seasons;
+    @ManyToOne
+    @JoinColumn(name="contract_id", nullable=false)
+    private Contract contract;
 }

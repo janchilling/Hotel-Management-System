@@ -5,6 +5,7 @@ import lombok.Data;
 
 import java.sql.Date;
 import java.util.List;
+import java.util.Set;
 
 @Data
 @Entity
@@ -13,19 +14,18 @@ public class Discount {
 
     @Id
     @Column(name = "discount_id")
+    @GeneratedValue(strategy=GenerationType.AUTO)
     private Integer discount_id;
 
     private String discount_name;
 
     private String discount_description;
 
-    private Date start_date;
+    @OneToMany(mappedBy = "discount")
+    Set<SeasonDiscount> season_discounts;
 
-    private Date end_date;
-
-    private Double discount_percentage;
-
-    @ManyToMany(mappedBy = "discounts")
-    private List<Season> season;
+    @ManyToOne
+    @JoinColumn(name="contract_id", nullable=false)
+    private Contract contract;
 
 }

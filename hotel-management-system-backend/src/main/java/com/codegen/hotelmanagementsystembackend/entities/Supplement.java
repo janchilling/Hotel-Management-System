@@ -2,9 +2,7 @@ package com.codegen.hotelmanagementsystembackend.entities;
 
 import jakarta.persistence.*;
 import lombok.Data;
-
-import java.sql.Date;
-import java.util.List;
+import java.util.Set;
 
 @Data
 @Entity
@@ -13,6 +11,7 @@ public class Supplement {
 
     @Id
     @Column(name = "supplement_id")
+    @GeneratedValue(strategy=GenerationType.AUTO)
     private Integer supplement_id;
 
     private String supplement_name;
@@ -21,8 +20,10 @@ public class Supplement {
 
     private String supplement_type;
 
-    private Double supplement_percentage;
+    @OneToMany(mappedBy = "supplement")
+    Set<SeasonSupplement> supplements_seasons;
 
-    @ManyToMany(mappedBy = "supplements")
-    private List<Season> season;
+    @ManyToOne
+    @JoinColumn(name="contract_id", nullable=false)
+    private Contract contract;
 }

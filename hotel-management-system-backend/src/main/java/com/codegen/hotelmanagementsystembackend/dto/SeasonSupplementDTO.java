@@ -1,2 +1,12 @@
-package com.codegen.hotelmanagementsystembackend.dto;public class SeasonSupplementDTO {
+package com.codegen.hotelmanagementsystembackend.dto;
+
+import lombok.Data;
+
+@Data
+public class SeasonSupplementDTO {
+
+    private Double supplementPrice;
+    private SupplementDTO supplement;
+    private SeasonDTO season;
+
 }

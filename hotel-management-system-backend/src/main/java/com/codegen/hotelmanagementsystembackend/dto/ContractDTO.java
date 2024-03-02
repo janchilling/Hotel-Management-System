@@ -3,9 +3,10 @@ package com.codegen.hotelmanagementsystembackend.dto;
 import lombok.Data;
 
 import java.sql.Date;
+import java.util.List;
 
 @Data
-public class ContractRequest {
+public class ContractDTO {
 
     private Integer contractId;
     private Date startDate;
@@ -19,5 +20,6 @@ public class ContractRequest {
     private List<MarkupDTO> markups;
     private List<SeasonDTO> seasons;
     private List<SupplementDTO> supplements;
+    private List<RoomTypeDTO> roomTypes;
 
 }

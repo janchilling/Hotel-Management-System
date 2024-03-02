@@ -1,6 +1,7 @@
 package com.codegen.hotelmanagementsystembackend.controller;
 
-import com.codegen.hotelmanagementsystembackend.dto.ContractRequest;
+import com.codegen.hotelmanagementsystembackend.dto.ContractDTO;
+import com.codegen.hotelmanagementsystembackend.entities.Contract;
 import com.codegen.hotelmanagementsystembackend.services.ContractService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +18,7 @@ public class ContractController {
     private final ContractService contractService;
 
     @PostMapping
-    public ResponseEntity<Integer> createContract(@RequestBody ContractRequest contractRequest){
-        return ResponseEntity.ok(contractService.addBooking(contractRequest));
+    public ResponseEntity<Contract> createContract(@RequestBody ContractDTO contractDTO){
+        return ResponseEntity.ok(contractService.addBooking(contractDTO));
     }
 }

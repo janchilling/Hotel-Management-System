@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.sql.Date;
-import java.util.List;
+import java.util.Set;
 
 @Data
 @Entity
@@ -13,6 +13,7 @@ public class Season {
 
     @Id
     @Column(name = "season_id")
+    @GeneratedValue(strategy=GenerationType.AUTO)
     private Integer season_id;
 
     private String season_name;
@@ -21,31 +22,19 @@ public class Season {
 
     private Date end_date;
 
-    @ManyToMany
-    @JoinTable(
-            name = "season_discount",
-            joinColumns = @JoinColumn(name = "season_id"),
-            inverseJoinColumns = @JoinColumn(name = "discount_id"))
-    private List<Discount> discounts;
+    @OneToMany(mappedBy = "season")
+    Set<SeasonSupplement> supplements_seasons;
 
-    @ManyToMany
-    @JoinTable(
-            name = "season_supplement",
-            joinColumns = @JoinColumn(name = "season_id"),
-            inverseJoinColumns = @JoinColumn(name = "supplement_id"))
-    private List<Supplement> supplements;
+    @OneToMany(mappedBy = "season")
+    Set<SeasonRoomType> supplements_roomtypes;
 
-    @ManyToMany
-    @JoinTable(
-            name = "season_room_type",
-            joinColumns = @JoinColumn(name = "season_id"),
-            inverseJoinColumns = @JoinColumn(name = "room_type_id"))
-    private List<RoomType> roomTypes;
+    @OneToMany(mappedBy = "season")
+    Set<SeasonMarkup> season_markups;
 
-    @ManyToMany
-    @JoinTable(
-            name = "season_markup",
-            joinColumns = @JoinColumn(name = "season_id"),
-            inverseJoinColumns = @JoinColumn(name = "markup_id"))
-    private List<Markup> markups;
+    @OneToMany(mappedBy = "season")
+    Set<SeasonDiscount> season_discounts;
+
+    @ManyToOne
+    @JoinColumn(name="contract_id", nullable=false)
+    private Contract contract;
 }
