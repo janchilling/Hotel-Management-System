@@ -2,13 +2,15 @@ package com.codegen.hotelmanagementsystembackend.dto;
 
 import lombok.Data;
 
+import java.util.Set;
+
 @Data
-public class DiscountRequest {
+public class DiscountDTO {
 
     private Integer discountId;
     private String discountName;
     private String discountDescription;
     private Set<SeasonDiscountDTO> seasonDiscounts;
-    private ContractRequest contract;
+    private ContractDTO contract;
 
 }

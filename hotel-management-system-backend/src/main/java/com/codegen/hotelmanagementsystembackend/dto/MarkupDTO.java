@@ -2,11 +2,13 @@ package com.codegen.hotelmanagementsystembackend.dto;
 
 import lombok.Data;
 
+import java.util.Set;
+
 @Data
-public class MarkupRequest {
+public class MarkupDTO {
 
     private Integer markupId;
     private Set<SeasonMarkupDTO> seasonMarkups;
-    private ContractRequest contract;
+    private ContractDTO contract;
 
 }

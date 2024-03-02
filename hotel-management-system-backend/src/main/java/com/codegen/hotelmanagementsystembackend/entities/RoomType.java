@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.util.List;
+import java.util.Set;
 
 @Data
 @Entity
@@ -12,6 +13,7 @@ public class RoomType {
 
     @Id
     @Column(name = "room_type_id")
+    @GeneratedValue(strategy=GenerationType.AUTO)
     private Integer room_type_id;
 
     private String room_type_name;
@@ -24,6 +26,10 @@ public class RoomType {
 
     private Integer max_adults;
 
-    @ManyToMany(mappedBy = "roomTypes")
-    private List<Season> season;
+    @OneToMany(mappedBy = "roomType")
+    Set<SeasonRoomType> season_roomtype;
+
+    @ManyToOne
+    @JoinColumn(name="contract_id", nullable=false)
+    private Contract contract;
 }
