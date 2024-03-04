@@ -24,6 +24,6 @@ public class Supplement {
     Set<SeasonSupplement> supplements_seasons;
 
     @ManyToOne
-    @JoinColumn(name="contract_id", nullable=false)
+    @JoinColumn(name="contract_id")
     private Contract contract;
 }
