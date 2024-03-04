@@ -21,6 +21,7 @@ public class ContractServiceImpl implements ContractService {
     private final SeasonRepository seasonRepository;
     private final SupplementRepository supplementRepository;
     private final RoomTypeRepository roomTypeRepository;
+    private final SeasonSupplementRepository seasonSupplementRepository;
     @Override
     public Contract addBooking(ContractDTO contractDTO) {
 

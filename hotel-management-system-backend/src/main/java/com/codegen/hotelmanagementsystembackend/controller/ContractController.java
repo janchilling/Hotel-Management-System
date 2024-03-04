@@ -17,7 +17,7 @@ public class ContractController {
 
     private final ContractService contractService;
 
-    @PostMapping
+    @PostMapping("/addContract")
     public ResponseEntity<Contract> createContract(@RequestBody ContractDTO contractDTO){
         return ResponseEntity.ok(contractService.addBooking(contractDTO));
     }

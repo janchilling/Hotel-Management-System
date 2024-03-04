@@ -31,19 +31,19 @@ public class Contract {
 
     private String balance_payment;
 
-    @OneToMany(mappedBy="contract")
-    private List<Discount> discounts;
-
-    @OneToMany(mappedBy="contract")
-    private List<Markup> markups;
+//    @OneToMany(mappedBy="contract")
+//    private List<Discount> discounts;
+//
+//    @OneToMany(mappedBy="contract")
+//    private List<Markup> markups;
 
     @OneToMany(mappedBy="contract")
     private List<Season> seasons;
 
-    @OneToMany(mappedBy="contract")
-    private List<Supplement> supplements;
-
-    @OneToMany(mappedBy="contract")
-    private List<RoomType> roomTypes;
+//    @OneToMany(mappedBy="contract")
+//    private List<Supplement> supplements;
+//
+//    @OneToMany(mappedBy="contract")
+//    private List<RoomType> roomTypes;
 
 }
