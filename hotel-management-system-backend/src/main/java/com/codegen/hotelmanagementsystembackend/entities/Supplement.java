@@ -14,7 +14,7 @@ public class Supplement {
     @GeneratedValue(strategy=GenerationType.AUTO)
     private Integer supplement_id;
 
-    private String supplement_name;
+    private String supplementName;
 
     private String supplement_description;
 
