@@ -16,11 +16,8 @@ import java.util.Set;
 public class ContractServiceImpl implements ContractService {
 
     private final ContractRepository contractRepository;
-    private final DiscountRepository discountRepository;
-    private final MarkupRepository markupRepository;
     private final SeasonRepository seasonRepository;
     private final SupplementRepository supplementRepository;
-    private final RoomTypeRepository roomTypeRepository;
     private final SeasonSupplementRepository seasonSupplementRepository;
     @Override
     public Contract createContract(ContractDTO contractDTO) {
@@ -40,54 +37,6 @@ public class ContractServiceImpl implements ContractService {
                 seasonRepository.save(season);
             }
         }
-
-//        List<MarkupDTO> markups = contractDTO.getMarkups();
-//        if (markups != null) {
-//            for (MarkupDTO markupDTO  : markups) {
-//                Markup markup = new Markup();
-//                markup.setContract(savedContract);
-//                markupRepository.save(markup);
-//            }
-//        }
-//
-//        List<DiscountDTO> discounts = contractDTO.getDiscounts();
-//        if (discounts != null) {
-//            for (DiscountDTO discountDTO  : discounts) {
-//                Discount discount = new Discount();
-//                discount.setDiscount_name(discountDTO.getDiscountName());
-//                discount.setDiscount_description(discountDTO.getDiscountDescription());
-//                discount.setContract(savedContract);
-//                discountRepository.save(discount);
-//            }
-//        }
-//
-//        List<RoomTypeDTO> roomTypes = contractDTO.getRoomTypes();
-//        if (roomTypes != null) {
-//            for (RoomTypeDTO roomTypeDTO  : roomTypes) {
-//                RoomType roomType = new RoomType();
-//                roomType.setRoom_type_name(roomTypeDTO.getRoomTypeName());
-//                roomType.setRoom_dimensions(roomTypeDTO.getRoomDimensions());
-//                roomType.setRoom_type_price(roomTypeDTO.getRoomTypePrice());
-//                roomType.setNo_of_rooms(roomTypeDTO.getNumberOfRooms());
-//                roomType.setMax_adults(roomTypeDTO.getMaxAdults());
-//                roomType.setContract(savedContract);
-//                roomTypeRepository.save(roomType);
-//            }
-//        }
-//
-//        List<SupplementDTO> supplements = contractDTO.getSupplements();
-//        if (roomTypes != null) {
-//            for (SupplementDTO supplementDTO  : supplements) {
-//                Supplement supplement = new Supplement();
-//                supplement.setSupplement_name(supplementDTO.getSupplementName());
-//                supplement.setSupplement_description(supplementDTO.getSupplementDescription());
-//                supplement.setSupplement_type(supplementDTO.getSupplementType());
-//                supplement.setContract(savedContract);
-//                supplementRepository.save(supplement);
-//            }
-//        }
-
-
 
         return savedContract;
     }

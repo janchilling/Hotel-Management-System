@@ -3,7 +3,6 @@ package com.codegen.hotelmanagementsystembackend.entities;
 import jakarta.persistence.*;
 import lombok.Data;
 
-import java.util.List;
 import java.util.Set;
 
 @Data
@@ -14,20 +13,20 @@ public class RoomType {
     @Id
     @Column(name = "room_type_id")
     @GeneratedValue(strategy=GenerationType.AUTO)
-    private Integer room_type_id;
+    private Integer roomTypeId;
 
-    private String room_type_name;
+    private String roomTypeName;
 
     private String room_dimensions;
 
-    private Double room_type_price;
+    private Double roomTypePrice;
 
-    private Integer no_of_rooms;
+    private Integer noOfRooms;
 
-    private Integer max_adults;
+    private Integer maxAdults;
 
     @OneToMany(mappedBy = "roomType")
-    Set<SeasonRoomType> season_roomtype;
+    Set<SeasonRoomType> seasonRoomtype;
 
     @ManyToOne
     @JoinColumn(name="contract_id", nullable=false)
