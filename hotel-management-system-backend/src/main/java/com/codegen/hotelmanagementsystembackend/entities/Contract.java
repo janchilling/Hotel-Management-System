@@ -31,8 +31,8 @@ public class Contract {
 
     private String balance_payment;
 
-//    @OneToMany(mappedBy="contract")
-//    private List<Discount> discounts;
+    @OneToMany(mappedBy="contract")
+    private List<Discount> discounts;
 //
 //    @OneToMany(mappedBy="contract")
 //    private List<Markup> markups;
@@ -45,5 +45,15 @@ public class Contract {
 //
 //    @OneToMany(mappedBy="contract")
 //    private List<RoomType> roomTypes;
+
+    @Override
+    public String toString() {
+        return "Contract{" +
+                "contractId=" + contract_id +
+                ", startDate=" + start_date +
+                ", endDate=" + end_date +
+                ", contractStatus='" + contract_status + '\'' +
+                '}';
+    }
 
 }

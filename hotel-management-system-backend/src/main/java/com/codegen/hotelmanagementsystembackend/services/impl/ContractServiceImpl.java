@@ -33,9 +33,9 @@ public class ContractServiceImpl implements ContractService {
         if (seasons != null) {
             for (SeasonDTO seasonDTO  : seasons) {
                 Season season = new Season();
-                season.setSeason_name(seasonDTO.getSeasonName());
-                season.setStart_date(seasonDTO.getStartDate());
-                season.setEnd_date(seasonDTO.getEndDate());
+                season.setSeasonName(seasonDTO.getSeasonName());
+                season.setStartDate(seasonDTO.getStartDate());
+                season.setEndDate(seasonDTO.getEndDate());
                 season.setContract(savedContract);
                 seasonRepository.save(season);
             }

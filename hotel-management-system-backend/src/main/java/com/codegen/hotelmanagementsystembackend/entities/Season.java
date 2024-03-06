@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.sql.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 @Data
@@ -14,13 +15,13 @@ public class Season {
     @Id
     @Column(name = "season_id")
     @GeneratedValue(strategy=GenerationType.AUTO)
-    private Integer season_id;
+    private Integer seasonId;
 
-    private String season_name;
+    private String seasonName;
 
-    private Date start_date;
+    private Date startDate;
 
-    private Date end_date;
+    private Date endDate;
 
     @OneToMany(mappedBy = "season")
     Set<SeasonSupplement> supplements_seasons;
@@ -29,12 +30,22 @@ public class Season {
     Set<SeasonRoomType> supplements_roomtypes;
 
     @OneToMany(mappedBy = "season")
-    Set<SeasonMarkup> season_markups;
+    Set<SeasonMarkup> season_markups = new HashSet<>();
 
     @OneToMany(mappedBy = "season")
-    Set<SeasonDiscount> season_discounts;
+    Set<SeasonDiscount> season_discounts = new HashSet<>();
 
     @ManyToOne
     @JoinColumn(name="contract_id", nullable=false)
     private Contract contract;
+
+    @Override
+    public String toString() {
+        return "Season{" +
+                "seasonId=" + seasonId +
+                ", seasonName='" + seasonName + '\'' +
+                ", startDate=" + startDate +
+                ", endDate=" + endDate +
+                '}';
+    }
 }
