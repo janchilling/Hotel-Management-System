@@ -3,7 +3,7 @@ package com.codegen.hotelmanagementsystembackend.entities;
 import jakarta.persistence.*;
 import lombok.Data;
 
-import java.util.List;
+import java.util.HashSet;
 import java.util.Set;
 
 @Data
@@ -14,12 +14,17 @@ public class Markup {
     @Id
     @Column(name = "markup_id")
     @GeneratedValue(strategy=GenerationType.AUTO)
-    private Integer markup_id;
+    private Integer markupId;
 
-    @OneToMany(mappedBy = "markup")
-    Set<SeasonMarkup> season_markups;
+    @OneToMany(mappedBy = "markup", cascade = CascadeType.ALL)
+    Set<SeasonMarkup> seasonMarkups = new HashSet<>();
 
     @ManyToOne
     @JoinColumn(name="contract_id", nullable=false)
     private Contract contract;
+
+    @Override
+    public int hashCode() {
+        return markupId != null ? markupId.hashCode() : 0;
+    }
 }

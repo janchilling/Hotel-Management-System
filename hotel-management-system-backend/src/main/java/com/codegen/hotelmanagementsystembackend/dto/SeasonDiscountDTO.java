@@ -7,9 +7,9 @@ import java.sql.Date;
 @Data
 public class SeasonDiscountDTO {
 
+    private Integer seasonId;
     private Date startDate;
     private Date endDate;
     private Double discountPercentage;
-    private DiscountDTO discount;
-    private SeasonDTO season;
+
 }

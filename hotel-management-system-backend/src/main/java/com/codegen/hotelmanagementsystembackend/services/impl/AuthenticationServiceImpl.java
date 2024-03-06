@@ -48,7 +48,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         customer.setUser(user);
         customer.setCustomer_fname(signUpRequest.getFirstName());
         customer.setCustomer_lname(signUpRequest.getLastName());
-        customer.setCustomer_street_address(signUpRequest.getStreet_address());
+        customer.setCustomer_street_address(signUpRequest.getStreetAddress());
         customer.setCustomer_city(signUpRequest.getCity());
         customer.setCustomer_state(signUpRequest.getState());
         customer.setCustomer_postal_code(signUpRequest.getPostal_code());
