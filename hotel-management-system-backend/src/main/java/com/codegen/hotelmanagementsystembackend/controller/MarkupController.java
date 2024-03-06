@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/v1/markups")
 @RequiredArgsConstructor
@@ -20,7 +22,7 @@ public class MarkupController {
     private final MarkupService markupService;
 
     @PostMapping("/addMarkup")
-    public ResponseEntity<String> createMarkup(@RequestBody MarkupDTO markupDTO){
-        return ResponseEntity.ok(markupService.createMarkup(markupDTO));
+    public ResponseEntity<String> createMarkup(@RequestBody List<MarkupDTO> markupDTOs){
+        return ResponseEntity.ok(markupService.createMarkup(markupDTOs));
     }
 }

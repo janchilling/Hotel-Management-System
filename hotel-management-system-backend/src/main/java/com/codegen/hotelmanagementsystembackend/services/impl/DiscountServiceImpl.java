@@ -5,7 +5,6 @@ import com.codegen.hotelmanagementsystembackend.dto.SeasonDiscountDTO;
 import com.codegen.hotelmanagementsystembackend.entities.Discount;
 import com.codegen.hotelmanagementsystembackend.entities.SeasonDiscount;
 import com.codegen.hotelmanagementsystembackend.entities.SeasonDiscountKey;
-import com.codegen.hotelmanagementsystembackend.entities.SeasonMarkupKey;
 import com.codegen.hotelmanagementsystembackend.repository.ContractRepository;
 import com.codegen.hotelmanagementsystembackend.repository.DiscountRepository;
 import com.codegen.hotelmanagementsystembackend.repository.SeasonRepository;
@@ -31,8 +30,7 @@ public class DiscountServiceImpl implements DiscountService {
             return "No discounts provided.";
         }
 
-        Set<Discount> discounts = new HashSet<>();
-        Set<SeasonDiscount> seasonDiscounts = new HashSet<>();
+        // Try with O(n)
 
         for (DiscountDTO discountDTO : discountDTOs) {
             Discount newDiscount = new Discount();
@@ -41,36 +39,28 @@ public class DiscountServiceImpl implements DiscountService {
             newDiscount.setDiscountDescription(discountDTO.getDiscountDescription());
             newDiscount.setContract(contractRepository.findById(discountDTO.getContractId()).orElse(null));
 
-
             for (SeasonDiscountDTO seasonDiscountDTO : discountDTO.getSeasonDiscounts()) {
+                SeasonDiscount seasonDiscount = new SeasonDiscount();
+                seasonDiscount.setDiscount(newDiscount);
+                SeasonDiscountKey seasonDiscountKey = new SeasonDiscountKey();
+                if (seasonDiscountDTO.getSeasonId() != null) {
+                    seasonDiscountKey.setSeasonId(seasonDiscountDTO.getSeasonId());
+                }
+                if (newDiscount.getDiscountId() != null) {
+                    seasonDiscountKey.setDiscountId(newDiscount.getDiscountId());
+                }
+                seasonDiscount.setSeasonDiscountKey(seasonDiscountKey);
+                seasonDiscount.setStartDate(seasonDiscountDTO.getStartDate());
+                seasonDiscount.setEndDate(seasonDiscountDTO.getEndDate());
+                seasonDiscount.setDiscountPercentage(seasonDiscountDTO.getDiscountPercentage());
+                seasonDiscount.setSeason(seasonRepository.findById(seasonDiscountDTO.getSeasonId()).orElse(null));
 
-                SeasonDiscount seasonDiscount = getSeasonDiscount(seasonDiscountDTO, newDiscount);
-                System.out.println(seasonDiscount);
-//                seasonDiscounts.add(seasonDiscount);
-                newDiscount.setSeasonDiscounts(seasonDiscounts);
+                newDiscount.getSeasonDiscounts().add(seasonDiscount);
             }
-
-            System.out.println(newDiscount);
-            discounts.add(newDiscount);
+            discountRepository.save(newDiscount);
         }
-        discountRepository.saveAll(discounts);
 
         return "Discounts Added";
     }
-
-    private SeasonDiscount getSeasonDiscount(SeasonDiscountDTO seasonDiscountDTO, Discount newDiscount) {
-        SeasonDiscount seasonDiscount = new SeasonDiscount();
-        seasonDiscount.setDiscount(newDiscount); // Set the discount property
-        SeasonDiscountKey seasonDiscountKey = new SeasonDiscountKey();
-        seasonDiscountKey.setSeasonId(seasonDiscountDTO.getSeasonId());
-        seasonDiscountKey.setDiscountId(newDiscount.getDiscountId());
-        // Set other properties of SeasonDiscount
-        // For example:
-        seasonDiscount.setStartDate(seasonDiscountDTO.getStartDate());
-        seasonDiscount.setEndDate(seasonDiscountDTO.getEndDate());
-        seasonDiscount.setDiscountPercentage(seasonDiscountDTO.getDiscountPercentage());
-        seasonDiscount.setSeason(seasonRepository.findById(seasonDiscountDTO.getSeasonId()).orElse(null));
-        return seasonDiscount;
-    }
-
 }
+
