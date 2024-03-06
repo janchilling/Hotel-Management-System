@@ -21,7 +21,7 @@ public class Discount {
     private String discountDescription;
 
     @OneToMany(mappedBy = "discount", cascade = CascadeType.ALL)
-    Set<SeasonDiscount> seasonDiscounts = new HashSet<>();;
+    Set<SeasonDiscount> seasonDiscounts = new HashSet<>();
 
     @ManyToOne
     @JoinColumn(name="contract_id", nullable=false)

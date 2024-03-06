@@ -1,24 +1,32 @@
 package com.codegen.hotelmanagementsystembackend.entities;
 
 import jakarta.persistence.*;
+import lombok.Data;
 
 @Entity
+@Data
 public class SeasonRoomType {
 
     @EmbeddedId
-    SeasonRoomTypeKey id;
+    SeasonRoomTypeKey seasonRoomTypeKey;
+
     @ManyToOne
-    @MapsId("room_type_id")
+    @MapsId("roomTypeId")
     @JoinColumn(name = "room_type_id")
     RoomType roomType;
 
     @ManyToOne
-    @MapsId("season_id")
+    @MapsId("seasonId")
     @JoinColumn(name = "season_id")
     Season season;
 
 
-    private Double room_price;
+    private Double roomPrice;
 
-    private Integer no_of_rooms;
+    private Integer noOfRooms;
+
+    @Override
+    public int hashCode() {
+        return seasonRoomTypeKey != null ? seasonRoomTypeKey.hashCode() : 0;
+    }
 }

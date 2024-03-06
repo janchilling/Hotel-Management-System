@@ -38,6 +38,7 @@ public class SecurityConfiguration {
                         .requestMatchers("/api/v1/contracts/**").permitAll()
                         .requestMatchers("/api/v1/markups/**").permitAll()
                         .requestMatchers("/api/v1/discounts/**").permitAll()
+                        .requestMatchers("/api/v1/roomTypes/**").permitAll()
                         .anyRequest().authenticated())
 
                 .sessionManagement(manager -> manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

@@ -3,6 +3,7 @@ package com.codegen.hotelmanagementsystembackend.entities;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Data
@@ -17,18 +18,22 @@ public class RoomType {
 
     private String roomTypeName;
 
-    private String room_dimensions;
-
-    private Double roomTypePrice;
-
-    private Integer noOfRooms;
+    private String roomDimensions;
 
     private Integer maxAdults;
 
-    @OneToMany(mappedBy = "roomType")
-    Set<SeasonRoomType> seasonRoomtype;
+    @OneToMany(mappedBy = "roomType", cascade = CascadeType.ALL)
+    private Set<RoomTypeImages> roomTypeImages = new HashSet<>();
+
+    @OneToMany(mappedBy = "roomType", cascade = CascadeType.ALL)
+    private Set<SeasonRoomType> seasonRoomtype = new HashSet<>();
 
     @ManyToOne
     @JoinColumn(name="contract_id", nullable=false)
     private Contract contract;
+
+    @Override
+    public int hashCode() {
+        return roomTypeId != null ? roomTypeId.hashCode() : 0;
+    }
 }
