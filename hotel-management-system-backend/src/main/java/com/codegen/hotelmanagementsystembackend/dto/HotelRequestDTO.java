@@ -27,6 +27,4 @@ public class HotelRequestDTO {
     private List<HotelImageDTO> hotelImages = new ArrayList<>();
 
     private List<HotelPhoneDTO> hotelPhones = new ArrayList<>();
-
-    private Integer contractId;
 }

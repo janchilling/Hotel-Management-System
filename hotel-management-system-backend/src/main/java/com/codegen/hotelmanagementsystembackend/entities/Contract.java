@@ -34,13 +34,23 @@ public class Contract {
     private String balance_payment;
 
     @OneToMany(mappedBy="contract")
+    @JsonManagedReference
     private List<Discount> discounts;
 
     @OneToMany(mappedBy="contract")
+    @JsonManagedReference
     private List<Season> seasons;
 
-    @OneToOne(mappedBy = "contract")
+    @OneToMany(mappedBy="contract")
     @JsonManagedReference
+    private List<RoomType> roomTypes;
+
+    @OneToMany(mappedBy="contract")
+    @JsonManagedReference
+    private List<Markup> markups;
+
+    @ManyToOne
+    @JsonBackReference
     private Hotel hotel;
 
     @Override

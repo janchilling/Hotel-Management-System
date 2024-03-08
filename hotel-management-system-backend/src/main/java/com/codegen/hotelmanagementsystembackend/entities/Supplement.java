@@ -1,7 +1,11 @@
 package com.codegen.hotelmanagementsystembackend.entities;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 @Data
@@ -26,4 +30,9 @@ public class Supplement {
     @ManyToOne
     @JoinColumn(name="contract_id")
     private Contract contract;
+
+    @OneToMany(mappedBy="supplement")
+    @JsonManagedReference
+    private List<BookingSupplements> supplements = new ArrayList<>();
+
 }

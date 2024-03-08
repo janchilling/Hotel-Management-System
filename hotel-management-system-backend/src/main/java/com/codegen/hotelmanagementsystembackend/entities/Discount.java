@@ -5,7 +5,9 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Data
@@ -30,6 +32,10 @@ public class Discount {
     @JoinColumn(name="contract_id", nullable=false)
     @JsonBackReference
     private Contract contract;
+
+    @OneToMany(mappedBy="discount")
+    @JsonManagedReference
+    private List<BookingDiscount> discounts = new ArrayList<>();
 
     @Override
     public int hashCode() {

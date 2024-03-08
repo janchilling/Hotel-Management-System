@@ -35,8 +35,6 @@ public class HotelServiceImpl implements HotelService {
             newHotel.setHotelState(hotelRequestDTO.getHotelState());
             newHotel.setHotelCountry(hotelRequestDTO.getHotelCountry());
             newHotel.setHotelPostalCode(hotelRequestDTO.getHotelPostalCode());
-            newHotel.setContract(contractRepository.findById(hotelRequestDTO.getContractId())
-                    .orElseThrow(() -> new ResourceNotFoundException("Contract not found with ID: " + hotelRequestDTO.getContractId())));
 
             for(HotelImageDTO hotelImageDTO : hotelRequestDTO.getHotelImages()){
                 HotelImage hotelImage = new HotelImage();
