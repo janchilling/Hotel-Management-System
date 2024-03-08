@@ -16,6 +16,7 @@ public class ContractRequestDTO {
     private Double cancellationAmount;
     private String prepayment;
     private String balancePayment;
+    private Integer hotelId;
     private List<DiscountRequestDTO> discounts;
     private List<MarkupRequestDTO> markups;
     private List<SeasonRequestDTO> seasons;

@@ -1,7 +1,10 @@
 package com.codegen.hotelmanagementsystembackend.entities;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
+
+import java.util.List;
 
 @Data
 @Entity
@@ -10,7 +13,7 @@ public class Customer {
 
     @Id
     @Column(name = "user_id")
-    private Integer user_id;
+    private Long user_id;
 
     @OneToOne
     @MapsId
@@ -30,4 +33,12 @@ public class Customer {
     private String customer_postal_code;
 
     private String customer_country;
+
+    @OneToMany(mappedBy="customer")
+    @JsonManagedReference
+    private List<Payment> payments;
+
+    @OneToMany(mappedBy="customer")
+    @JsonManagedReference
+    private List<Booking> bookings;
 }

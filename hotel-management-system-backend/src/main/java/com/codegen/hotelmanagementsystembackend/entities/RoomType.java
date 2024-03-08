@@ -5,7 +5,9 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Data
@@ -38,6 +40,10 @@ public class RoomType {
     @JoinColumn(name="contract_id", nullable=false)
     @JsonBackReference
     private Contract contract;
+
+    @OneToMany(mappedBy="roomType")
+    @JsonManagedReference
+    private List<BookingRoom> rooms = new ArrayList<>();
 
     @Override
     public int hashCode() {

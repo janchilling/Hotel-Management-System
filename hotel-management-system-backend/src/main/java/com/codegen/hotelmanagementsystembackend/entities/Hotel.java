@@ -42,9 +42,8 @@ public class Hotel {
     @JsonManagedReference
     private List<HotelPhone> hotelPhones = new ArrayList<>();
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "contract_id")
-    @JsonBackReference
-    Contract contract;
+    @OneToMany(mappedBy = "hotel", cascade = CascadeType.ALL)
+    @JsonManagedReference
+    private List<Contract> contracts = new ArrayList<>();
 
 }

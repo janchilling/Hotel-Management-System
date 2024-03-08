@@ -2,6 +2,7 @@ package com.codegen.hotelmanagementsystembackend.services.impl;
 
 import com.codegen.hotelmanagementsystembackend.dto.*;
 import com.codegen.hotelmanagementsystembackend.entities.*;
+import com.codegen.hotelmanagementsystembackend.exception.ResourceNotFoundException;
 import com.codegen.hotelmanagementsystembackend.repository.*;
 import com.codegen.hotelmanagementsystembackend.services.ContractService;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +20,7 @@ public class ContractServiceImpl implements ContractService {
     private final SeasonRepository seasonRepository;
     private final SupplementRepository supplementRepository;
     private final SeasonSupplementRepository seasonSupplementRepository;
+    private final HotelRepository hotelRepository;
     @Override
     public Contract createContract(ContractRequestDTO contractRequestDTO) {
 
@@ -78,7 +80,7 @@ public class ContractServiceImpl implements ContractService {
         return "Contract Details Added!";
     }
 
-    private static Contract getContract(ContractRequestDTO contractRequestDTO) {
+    private Contract getContract(ContractRequestDTO contractRequestDTO) {
         Contract contract = new Contract();
 
         contract.setStart_date(contractRequestDTO.getStartDate());
@@ -88,6 +90,8 @@ public class ContractServiceImpl implements ContractService {
         contract.setCancellation_amount(contractRequestDTO.getCancellationAmount());
         contract.setPrepayment(contractRequestDTO.getPrepayment());
         contract.setBalance_payment(contractRequestDTO.getBalancePayment());
+        contract.setHotel(hotelRepository.findById(contractRequestDTO.getHotelId())
+                .orElseThrow(() -> new ResourceNotFoundException("Hotel not found with ID: " + contractRequestDTO.getHotelId())));
         return contract;
     }
 }
