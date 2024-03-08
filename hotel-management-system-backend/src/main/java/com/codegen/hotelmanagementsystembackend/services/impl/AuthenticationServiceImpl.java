@@ -1,9 +1,9 @@
 package com.codegen.hotelmanagementsystembackend.services.impl;
 
 import com.codegen.hotelmanagementsystembackend.dto.JwtAuthenticationResponse;
-import com.codegen.hotelmanagementsystembackend.dto.LoginRequest;
+import com.codegen.hotelmanagementsystembackend.dto.LoginRequestDTO;
 import com.codegen.hotelmanagementsystembackend.dto.RefreshTokenRequest;
-import com.codegen.hotelmanagementsystembackend.dto.SignUpRequest;
+import com.codegen.hotelmanagementsystembackend.dto.SignUpRequestDTO;
 import com.codegen.hotelmanagementsystembackend.entities.Customer;
 import com.codegen.hotelmanagementsystembackend.entities.Role;
 import com.codegen.hotelmanagementsystembackend.entities.User;
@@ -34,36 +34,36 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     private final JWTService jwtService;
 
-    public User signup(SignUpRequest signUpRequest){
+    public User signup(SignUpRequestDTO signUpRequestDTO){
         User user = new User();
 
-        user.setEmail(signUpRequest.getEmail());
+        user.setEmail(signUpRequestDTO.getEmail());
         user.setRole(Role.CUSTOMER);
-        user.setPassword(passwordEncoder.encode(signUpRequest.getPassword()));
+        user.setPassword(passwordEncoder.encode(signUpRequestDTO.getPassword()));
 
         user = userRepository.save(user);
 
         Customer customer = new Customer();
 
         customer.setUser(user);
-        customer.setCustomer_fname(signUpRequest.getFirstName());
-        customer.setCustomer_lname(signUpRequest.getLastName());
-        customer.setCustomer_street_address(signUpRequest.getStreetAddress());
-        customer.setCustomer_city(signUpRequest.getCity());
-        customer.setCustomer_state(signUpRequest.getState());
-        customer.setCustomer_postal_code(signUpRequest.getPostal_code());
-        customer.setCustomer_country(signUpRequest.getCountry());
+        customer.setCustomer_fname(signUpRequestDTO.getFirstName());
+        customer.setCustomer_lname(signUpRequestDTO.getLastName());
+        customer.setCustomer_street_address(signUpRequestDTO.getStreetAddress());
+        customer.setCustomer_city(signUpRequestDTO.getCity());
+        customer.setCustomer_state(signUpRequestDTO.getState());
+        customer.setCustomer_postal_code(signUpRequestDTO.getPostal_code());
+        customer.setCustomer_country(signUpRequestDTO.getCountry());
 
         customerRepository.save(customer);
 
         return user;
     }
 
-    public JwtAuthenticationResponse login(LoginRequest loginRequest){
+    public JwtAuthenticationResponse login(LoginRequestDTO loginRequestDTO){
         try {
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequestDTO.getEmail(), loginRequestDTO.getPassword()));
 
-            var user = userRepository.findByEmail(loginRequest.getEmail()).orElseThrow(() -> new IllegalArgumentException("Email or Password is invalid."));
+            var user = userRepository.findByEmail(loginRequestDTO.getEmail()).orElseThrow(() -> new IllegalArgumentException("Email or Password is invalid."));
             var jwt = jwtService.generateToken(user);
             var refreshToken = jwtService.generateRefreshToken(new HashMap<>(), user);
 

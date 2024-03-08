@@ -1,6 +1,6 @@
 package com.codegen.hotelmanagementsystembackend.services.impl;
 
-import com.codegen.hotelmanagementsystembackend.dto.DiscountDTO;
+import com.codegen.hotelmanagementsystembackend.dto.DiscountRequestDTO;
 import com.codegen.hotelmanagementsystembackend.dto.SeasonDiscountDTO;
 import com.codegen.hotelmanagementsystembackend.entities.Discount;
 import com.codegen.hotelmanagementsystembackend.entities.SeasonDiscount;
@@ -12,9 +12,7 @@ import com.codegen.hotelmanagementsystembackend.services.DiscountService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -25,21 +23,21 @@ public class DiscountServiceImpl implements DiscountService {
     private final ContractRepository contractRepository;
 
     @Override
-    public String createDiscount(List<DiscountDTO> discountDTOs) {
-        if (discountDTOs == null || discountDTOs.isEmpty()) {
+    public String createDiscount(List<DiscountRequestDTO> discountRequestDTOS) {
+        if (discountRequestDTOS == null || discountRequestDTOS.isEmpty()) {
             return "No discounts provided.";
         }
 
         // Try with O(n)
 
-        for (DiscountDTO discountDTO : discountDTOs) {
+        for (DiscountRequestDTO discountRequestDTO : discountRequestDTOS) {
             Discount newDiscount = new Discount();
-            newDiscount.setDiscountId(discountDTO.getDiscountId());
-            newDiscount.setDiscountName(discountDTO.getDiscountName());
-            newDiscount.setDiscountDescription(discountDTO.getDiscountDescription());
-            newDiscount.setContract(contractRepository.findById(discountDTO.getContractId()).orElse(null));
+            newDiscount.setDiscountId(discountRequestDTO.getDiscountId());
+            newDiscount.setDiscountName(discountRequestDTO.getDiscountName());
+            newDiscount.setDiscountDescription(discountRequestDTO.getDiscountDescription());
+            newDiscount.setContract(contractRepository.findById(discountRequestDTO.getContractId()).orElse(null));
 
-            for (SeasonDiscountDTO seasonDiscountDTO : discountDTO.getSeasonDiscounts()) {
+            for (SeasonDiscountDTO seasonDiscountDTO : discountRequestDTO.getSeasonDiscounts()) {
                 SeasonDiscount seasonDiscount = new SeasonDiscount();
                 seasonDiscount.setDiscount(newDiscount);
                 SeasonDiscountKey seasonDiscountKey = new SeasonDiscountKey();

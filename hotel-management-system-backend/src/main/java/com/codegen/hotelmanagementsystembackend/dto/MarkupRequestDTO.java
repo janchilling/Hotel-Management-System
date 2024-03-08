@@ -6,7 +6,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Data
-public class MarkupDTO {
+public class MarkupRequestDTO {
 
     private Integer markupId;
     private Set<SeasonMarkupDTO> seasonMarkups = new HashSet<>();

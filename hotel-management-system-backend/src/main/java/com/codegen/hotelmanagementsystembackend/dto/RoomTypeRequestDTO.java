@@ -1,13 +1,12 @@
 package com.codegen.hotelmanagementsystembackend.dto;
 
-import com.codegen.hotelmanagementsystembackend.entities.RoomTypeImages;
 import lombok.Data;
 
 import java.util.HashSet;
 import java.util.Set;
 
 @Data
-public class RoomTypeDTO {
+public class RoomTypeRequestDTO {
 
     private Integer roomTypeId;
     private String roomTypeName;

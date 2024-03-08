@@ -6,7 +6,7 @@ import java.sql.Date;
 import java.util.Set;
 
 @Data
-public class SeasonDTO {
+public class SeasonRequestDTO {
 
     private Integer seasonId;
     private String seasonName;
@@ -16,5 +16,5 @@ public class SeasonDTO {
     private Set<SeasonRoomTypeDTO> supplementsRoomtypes;
     private Set<SeasonMarkupDTO> seasonMarkups;
     private Set<SeasonDiscountDTO> seasonDiscounts;
-    private ContractDTO contract;
+    private ContractRequestDTO contract;
 }

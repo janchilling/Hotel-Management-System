@@ -6,7 +6,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Data
-public class DiscountDTO {
+public class DiscountRequestDTO {
 
     private Integer discountId;
     private String discountName;

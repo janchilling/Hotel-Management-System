@@ -7,6 +7,6 @@ public class SeasonSupplementDTO {
 
     private Double supplementPrice;
     private SupplementDTO supplement;
-    private SeasonDTO season;
+    private SeasonRequestDTO season;
 
 }

@@ -1,11 +1,9 @@
 package com.codegen.hotelmanagementsystembackend.services.impl;
 
-import com.codegen.hotelmanagementsystembackend.dto.MarkupDTO;
+import com.codegen.hotelmanagementsystembackend.dto.MarkupRequestDTO;
 import com.codegen.hotelmanagementsystembackend.dto.SeasonMarkupDTO;
 import com.codegen.hotelmanagementsystembackend.entities.Contract;
 import com.codegen.hotelmanagementsystembackend.entities.Markup;
-import com.codegen.hotelmanagementsystembackend.entities.Season;
-import com.codegen.hotelmanagementsystembackend.entities.SeasonMarkup;
 import com.codegen.hotelmanagementsystembackend.exception.ResourceNotFoundException;
 import com.codegen.hotelmanagementsystembackend.repository.ContractRepository;
 import com.codegen.hotelmanagementsystembackend.repository.MarkupRepository;
@@ -45,12 +43,12 @@ public class MarkupServiceImplTest {
 
     @Test
     void testCreateMarkup_Success() {
-        MarkupDTO markupDTO = new MarkupDTO();
-        markupDTO.setMarkupId(1);
-        markupDTO.setContractId(1);
+        MarkupRequestDTO markupRequestDTO = new MarkupRequestDTO();
+        markupRequestDTO.setMarkupId(1);
+        markupRequestDTO.setContractId(1);
 
-        List<MarkupDTO> markupDTOs = new ArrayList<>();
-        markupDTOs.add(markupDTO);
+        List<MarkupRequestDTO> markupRequestDTOS = new ArrayList<>();
+        markupRequestDTOS.add(markupRequestDTO);
 
         Contract contract = new Contract();
         contract.setContract_id(1);
@@ -58,7 +56,7 @@ public class MarkupServiceImplTest {
         when(contractRepository.findById(1)).thenReturn(Optional.of(contract));
         when(markupRepository.save(any())).thenReturn(new Markup());
 
-        String result = markupService.createMarkup(markupDTOs);
+        String result = markupService.createMarkup(markupRequestDTOS);
 
         assertEquals("Markups Added", result);
         verify(markupRepository, times(1)).save(any());
@@ -66,9 +64,9 @@ public class MarkupServiceImplTest {
 
     @Test
     void testCreateMarkup_NoMarkupsProvided() {
-        List<MarkupDTO> markupDTOs = new ArrayList<>();
+        List<MarkupRequestDTO> markupRequestDTOS = new ArrayList<>();
 
-        String result = markupService.createMarkup(markupDTOs);
+        String result = markupService.createMarkup(markupRequestDTOS);
 
         assertEquals("No markups provided.", result);
         verify(markupRepository, never()).save(any());
@@ -76,33 +74,33 @@ public class MarkupServiceImplTest {
 
     @Test
     void testCreateMarkup_ContractNotFound() {
-        MarkupDTO markupDTO = new MarkupDTO();
-        markupDTO.setMarkupId(1);
-        markupDTO.setContractId(1);
+        MarkupRequestDTO markupRequestDTO = new MarkupRequestDTO();
+        markupRequestDTO.setMarkupId(1);
+        markupRequestDTO.setContractId(1);
 
-        List<MarkupDTO> markupDTOs = new ArrayList<>();
-        markupDTOs.add(markupDTO);
+        List<MarkupRequestDTO> markupRequestDTOS = new ArrayList<>();
+        markupRequestDTOS.add(markupRequestDTO);
 
         when(contractRepository.findById(3)).thenReturn(Optional.empty());
 
-        assertThrows(ResourceNotFoundException.class, () -> markupService.createMarkup(markupDTOs));
+        assertThrows(ResourceNotFoundException.class, () -> markupService.createMarkup(markupRequestDTOS));
         verify(markupRepository, never()).save(any());
     }
 
     @Test
     void testCreateMarkup_SeasonNotFound() {
-        MarkupDTO markupDTO = new MarkupDTO();
-        markupDTO.setMarkupId(1);
-        markupDTO.setContractId(1);
+        MarkupRequestDTO markupRequestDTO = new MarkupRequestDTO();
+        markupRequestDTO.setMarkupId(1);
+        markupRequestDTO.setContractId(1);
 
         SeasonMarkupDTO seasonMarkupDTO = new SeasonMarkupDTO();
         seasonMarkupDTO.setSeasonId(1);
         seasonMarkupDTO.setMarkupPercentage(0.05);
 
-        markupDTO.setSeasonMarkups(Set.of(seasonMarkupDTO));
+        markupRequestDTO.setSeasonMarkups(Set.of(seasonMarkupDTO));
 
-        List<MarkupDTO> markupDTOs = new ArrayList<>();
-        markupDTOs.add(markupDTO);
+        List<MarkupRequestDTO> markupRequestDTOS = new ArrayList<>();
+        markupRequestDTOS.add(markupRequestDTO);
 
         Contract contract = new Contract();
         contract.setContract_id(1);
@@ -110,7 +108,7 @@ public class MarkupServiceImplTest {
         when(contractRepository.findById(1)).thenReturn(Optional.of(contract));
         when(seasonRepository.findById(1)).thenReturn(Optional.empty());
 
-        assertThrows(ResourceNotFoundException.class, () -> markupService.createMarkup(markupDTOs));
+        assertThrows(ResourceNotFoundException.class, () -> markupService.createMarkup(markupRequestDTOS));
         verify(markupRepository, never()).save(any());
     }
 }

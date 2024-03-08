@@ -1,9 +1,6 @@
 package com.codegen.hotelmanagementsystembackend.controller;
 
-import com.codegen.hotelmanagementsystembackend.dto.ContractDTO;
-import com.codegen.hotelmanagementsystembackend.dto.MarkupDTO;
-import com.codegen.hotelmanagementsystembackend.entities.Contract;
-import com.codegen.hotelmanagementsystembackend.entities.Markup;
+import com.codegen.hotelmanagementsystembackend.dto.MarkupRequestDTO;
 import com.codegen.hotelmanagementsystembackend.services.MarkupService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +19,7 @@ public class MarkupController {
     private final MarkupService markupService;
 
     @PostMapping("/addMarkup")
-    public ResponseEntity<String> createMarkup(@RequestBody List<MarkupDTO> markupDTOs){
-        return ResponseEntity.ok(markupService.createMarkup(markupDTOs));
+    public ResponseEntity<String> createMarkup(@RequestBody List<MarkupRequestDTO> markupRequestDTOS){
+        return ResponseEntity.ok(markupService.createMarkup(markupRequestDTOS));
     }
 }

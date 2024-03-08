@@ -1,5 +1,7 @@
 package com.codegen.hotelmanagementsystembackend.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -33,18 +35,13 @@ public class Contract {
 
     @OneToMany(mappedBy="contract")
     private List<Discount> discounts;
-//
-//    @OneToMany(mappedBy="contract")
-//    private List<Markup> markups;
 
     @OneToMany(mappedBy="contract")
     private List<Season> seasons;
 
-//    @OneToMany(mappedBy="contract")
-//    private List<Supplement> supplements;
-//
-//    @OneToMany(mappedBy="contract")
-//    private List<RoomType> roomTypes;
+    @OneToOne(mappedBy = "contract")
+    @JsonManagedReference
+    private Hotel hotel;
 
     @Override
     public String toString() {
