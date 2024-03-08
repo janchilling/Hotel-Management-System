@@ -3,6 +3,7 @@ package com.codegen.hotelmanagementsystembackend.services.impl;
 import com.codegen.hotelmanagementsystembackend.dto.DiscountRequestDTO;
 import com.codegen.hotelmanagementsystembackend.dto.SeasonDiscountDTO;
 import com.codegen.hotelmanagementsystembackend.entities.Discount;
+import com.codegen.hotelmanagementsystembackend.entities.Hotel;
 import com.codegen.hotelmanagementsystembackend.entities.SeasonDiscount;
 import com.codegen.hotelmanagementsystembackend.entities.SeasonDiscountKey;
 import com.codegen.hotelmanagementsystembackend.repository.ContractRepository;
@@ -12,6 +13,7 @@ import com.codegen.hotelmanagementsystembackend.services.DiscountService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -23,12 +25,14 @@ public class DiscountServiceImpl implements DiscountService {
     private final ContractRepository contractRepository;
 
     @Override
-    public String createDiscount(List<DiscountRequestDTO> discountRequestDTOS) {
+    public List<Discount> createDiscount(List<DiscountRequestDTO> discountRequestDTOS) {
         if (discountRequestDTOS == null || discountRequestDTOS.isEmpty()) {
-            return "No discounts provided.";
+            return null;
         }
 
-        // Try with O(n)
+        List<Discount> discountsList = new ArrayList<>();
+
+        // Try with O(n) and test cases
 
         for (DiscountRequestDTO discountRequestDTO : discountRequestDTOS) {
             Discount newDiscount = new Discount();
@@ -55,10 +59,11 @@ public class DiscountServiceImpl implements DiscountService {
 
                 newDiscount.getSeasonDiscounts().add(seasonDiscount);
             }
-            discountRepository.save(newDiscount);
+            discountsList.add(newDiscount);
+//            discountRepository.save(newDiscount);
         }
-
-        return "Discounts Added";
+        return discountRepository.saveAll(discountsList);
+//        return "Discounts Added";
     }
 }
 

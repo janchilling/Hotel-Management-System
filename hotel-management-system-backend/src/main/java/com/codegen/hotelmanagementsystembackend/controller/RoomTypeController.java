@@ -1,6 +1,7 @@
 package com.codegen.hotelmanagementsystembackend.controller;
 
 import com.codegen.hotelmanagementsystembackend.dto.RoomTypeRequestDTO;
+import com.codegen.hotelmanagementsystembackend.entities.RoomType;
 import com.codegen.hotelmanagementsystembackend.services.RoomTypeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +20,7 @@ public class RoomTypeController {
     private final RoomTypeService roomTypeService;
 
     @PostMapping("/addRoomType")
-    public ResponseEntity<String> createRoomType(@RequestBody List<RoomTypeRequestDTO> roomTypeRequestDTOS){
+    public ResponseEntity<List<RoomType>> createRoomType(@RequestBody List<RoomTypeRequestDTO> roomTypeRequestDTOS){
         return ResponseEntity.ok(roomTypeService.createRoomType(roomTypeRequestDTOS));
     }
 }

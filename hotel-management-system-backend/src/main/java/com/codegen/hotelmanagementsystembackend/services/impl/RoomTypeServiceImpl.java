@@ -8,8 +8,10 @@ import com.codegen.hotelmanagementsystembackend.repository.RoomTypeRepository;
 import com.codegen.hotelmanagementsystembackend.repository.SeasonRepository;
 import com.codegen.hotelmanagementsystembackend.services.RoomTypeService;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.service.spi.ServiceException;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -21,10 +23,12 @@ public class RoomTypeServiceImpl implements RoomTypeService {
     private final RoomTypeRepository roomTypeRepository;
 
     @Override
-    public String createRoomType(List<RoomTypeRequestDTO> roomTypeRequestDTOS) {
+    public List<RoomType> createRoomType(List<RoomTypeRequestDTO> roomTypeRequestDTOS) {
         if (roomTypeRequestDTOS == null || roomTypeRequestDTOS.isEmpty()) {
-            return "No RoomTypes provided.";
+            return null;
         }
+
+        List<RoomType> roomTypesList = new ArrayList<>();
 
         try {
             for (RoomTypeRequestDTO roomTypeRequestDTO : roomTypeRequestDTOS) {
@@ -63,13 +67,13 @@ public class RoomTypeServiceImpl implements RoomTypeService {
                     newRoomType.getRoomTypeImages().add(newRoomTypeImage);
                 }
 
-                roomTypeRepository.save(newRoomType);
+                roomTypesList.add(newRoomType);
+//                roomTypeRepository.save(newRoomType);
             }
 
-            return "RoomTypes Added";
+            return roomTypeRepository.saveAll(roomTypesList);
         } catch (Exception e) {
-            // Handle any unexpected exceptions
-            return "An error occurred while adding RoomTypes: " + e.getMessage();
+            throw new ServiceException("Failed to create Room Types", e);
         }
     }
 

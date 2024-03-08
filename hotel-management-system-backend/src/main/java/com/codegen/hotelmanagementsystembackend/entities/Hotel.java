@@ -35,11 +35,11 @@ public class Hotel {
     private Integer hotelPostalCode;
 
     @OneToMany(mappedBy = "hotel", cascade = CascadeType.ALL)
-    @JsonBackReference
+    @JsonManagedReference
     private List<HotelImage> hotelImages = new ArrayList<>();
 
     @OneToMany(mappedBy = "hotel", cascade = CascadeType.ALL)
-    @JsonBackReference
+    @JsonManagedReference
     private List<HotelPhone> hotelPhones = new ArrayList<>();
 
     @OneToOne(cascade = CascadeType.ALL)

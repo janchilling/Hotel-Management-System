@@ -1,5 +1,7 @@
 package com.codegen.hotelmanagementsystembackend.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -24,19 +26,24 @@ public class Season {
     private Date endDate;
 
     @OneToMany(mappedBy = "season")
+    @JsonManagedReference
     Set<SeasonSupplement> supplements_seasons;
 
     @OneToMany(mappedBy = "season")
+    @JsonManagedReference
     Set<SeasonRoomType> supplements_roomtypes;
 
     @OneToMany(mappedBy = "season")
+    @JsonManagedReference
     Set<SeasonMarkup> season_markups = new HashSet<>();
 
     @OneToMany(mappedBy = "season")
+    @JsonManagedReference
     Set<SeasonDiscount> season_discounts = new HashSet<>();
 
     @ManyToOne
     @JoinColumn(name="contract_id", nullable=false)
+    @JsonBackReference
     private Contract contract;
 
     @Override

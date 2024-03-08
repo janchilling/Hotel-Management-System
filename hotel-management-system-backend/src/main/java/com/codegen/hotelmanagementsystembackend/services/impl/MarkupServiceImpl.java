@@ -2,6 +2,7 @@ package com.codegen.hotelmanagementsystembackend.services.impl;
 
 import com.codegen.hotelmanagementsystembackend.dto.MarkupRequestDTO;
 import com.codegen.hotelmanagementsystembackend.dto.SeasonMarkupDTO;
+import com.codegen.hotelmanagementsystembackend.entities.Discount;
 import com.codegen.hotelmanagementsystembackend.entities.Markup;
 import com.codegen.hotelmanagementsystembackend.entities.SeasonMarkup;
 import com.codegen.hotelmanagementsystembackend.entities.SeasonMarkupKey;
@@ -15,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import org.hibernate.service.spi.ServiceException;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -27,10 +29,12 @@ public class MarkupServiceImpl implements MarkupService {
 
     @Override
     @Transactional
-    public String createMarkup(List<MarkupRequestDTO> markupRequestDTOS) {
+    public List<Markup> createMarkup(List<MarkupRequestDTO> markupRequestDTOS) {
         if (markupRequestDTOS == null || markupRequestDTOS.isEmpty()) {
-            return "No markups provided.";
+            return null;
         }
+
+        List<Markup> markupsList = new ArrayList<>();
 
         try {
             for (MarkupRequestDTO markupRequestDTO : markupRequestDTOS) {
@@ -56,10 +60,11 @@ public class MarkupServiceImpl implements MarkupService {
 
                     newMarkup.getSeasonMarkups().add(seasonMarkup);
                 }
-                markupRepository.save(newMarkup);
+                markupsList.add(newMarkup);
+//                markupRepository.save(newMarkup);
             }
 
-            return "Markups Added";
+            return markupRepository.saveAll(markupsList);
         } catch (Exception e) {
             throw new ServiceException("Failed to create markups", e);
         }

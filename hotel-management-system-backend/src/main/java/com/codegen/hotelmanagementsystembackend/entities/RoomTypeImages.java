@@ -1,5 +1,6 @@
 package com.codegen.hotelmanagementsystembackend.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -15,6 +16,7 @@ public class RoomTypeImages {
     @ManyToOne
 //    @MapsId("roomTypeId")
 //    @JoinColumn(name = "room_type_id")
+    @JsonBackReference
     private RoomType roomType;
 
     private String ImageURL;
