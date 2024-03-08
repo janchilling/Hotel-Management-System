@@ -1,0 +1,90 @@
+{
+	"info": {
+		"_postman_id": "ac61c7e4-d63d-4b36-bf2b-f2f726ae9056",
+		"name": "Contract-Controller",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "25455967"
+	},
+	"item": [
+		{
+			"name": "Add Contract",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"\r",
+							"pm.test(\"Response status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"Contract ID is a non-negative integer\", function () {\r",
+							"  const responseData = pm.response.json();\r",
+							"  \r",
+							"  pm.expect(responseData.contract_id).to.be.a('number');\r",
+							"  pm.expect(responseData.contract_id).to.be.at.least(0, \"Contract ID should be a non-negative integer\");\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"Start date is in a valid date format\", function () {\r",
+							"  const responseData = pm.response.json();\r",
+							"  \r",
+							"  pm.expect(responseData).to.be.an('object');\r",
+							"  pm.expect(responseData.start_date).to.match(/^\\d{4}-\\d{2}-\\d{2}$/);\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"End date is in a valid date format\", function () {\r",
+							"    const responseData = pm.response.json();\r",
+							"    \r",
+							"    pm.expect(responseData).to.be.an('object');\r",
+							"    pm.expect(responseData.end_date).to.match(/^\\d{4}-\\d{2}-\\d{2}$/);\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"Discounts and seasons should be either null or arrays\", function () {\r",
+							"    const responseData = pm.response.json();\r",
+							"\r",
+							"    pm.expect(responseData).to.be.an('object');\r",
+							"    pm.expect(responseData.discounts).to.satisfy((value) => value === null || Array.isArray(value), \"Discounts should be null or an array\");\r",
+							"    pm.expect(responseData.seasons).to.satisfy((value) => value === null || Array.isArray(value), \"Seasons should be null or an array\");\r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"startDate\": \"2024-03-01\",\r\n  \"endDate\": \"2024-03-31\",\r\n  \"contractStatus\": \"Active\",\r\n  \"cancellationDeadline\": \"2024-02-28\",\r\n  \"cancellationAmount\": 50.0,\r\n  \"prepayment\": \"50%\",\r\n  \"balancePayment\": \"50%\",\r\n  \"seasons\": [\r\n    {\r\n    //   \"seasonId\": 1,\r\n      \"seasonName\": \"Spring Season\",\r\n      \"startDate\": \"2024-03-01\",\r\n      \"endDate\": \"2024-05-31\"\r\n    },\r\n    {\r\n    //   \"seasonId\": 2,\r\n      \"seasonName\": \"Summer Season\",\r\n      \"startDate\": \"2024-06-01\",\r\n      \"endDate\": \"2024-08-31\"\r\n    }\r\n  ]\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/contracts/addContract",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"contracts",
+						"addContract"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

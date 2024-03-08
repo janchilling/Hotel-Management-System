@@ -7,7 +7,6 @@ import com.codegen.hotelmanagementsystembackend.repository.ContractRepository;
 import com.codegen.hotelmanagementsystembackend.repository.RoomTypeRepository;
 import com.codegen.hotelmanagementsystembackend.repository.SeasonRepository;
 import com.codegen.hotelmanagementsystembackend.services.RoomTypeService;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -22,22 +21,22 @@ public class RoomTypeServiceImpl implements RoomTypeService {
     private final RoomTypeRepository roomTypeRepository;
 
     @Override
-    public String createRoomType(List<RoomTypeDTO> roomTypeDTOS) {
-        if (roomTypeDTOS == null || roomTypeDTOS.isEmpty()) {
+    public String createRoomType(List<RoomTypeRequestDTO> roomTypeRequestDTOS) {
+        if (roomTypeRequestDTOS == null || roomTypeRequestDTOS.isEmpty()) {
             return "No RoomTypes provided.";
         }
 
         try {
-            for (RoomTypeDTO roomTypeDTO : roomTypeDTOS) {
+            for (RoomTypeRequestDTO roomTypeRequestDTO : roomTypeRequestDTOS) {
                 RoomType newRoomType = new RoomType();
-                newRoomType.setRoomTypeId(roomTypeDTO.getRoomTypeId());
-                newRoomType.setRoomTypeName(roomTypeDTO.getRoomTypeName());
-                newRoomType.setRoomDimensions(roomTypeDTO.getRoomDimensions());
-                newRoomType.setMaxAdults(roomTypeDTO.getMaxAdults());
-                newRoomType.setContract(contractRepository.findById(roomTypeDTO.getContractId())
-                        .orElseThrow(() -> new ResourceNotFoundException("Contract not found with ID: " + roomTypeDTO.getContractId())));
+                newRoomType.setRoomTypeId(roomTypeRequestDTO.getRoomTypeId());
+                newRoomType.setRoomTypeName(roomTypeRequestDTO.getRoomTypeName());
+                newRoomType.setRoomDimensions(roomTypeRequestDTO.getRoomDimensions());
+                newRoomType.setMaxAdults(roomTypeRequestDTO.getMaxAdults());
+                newRoomType.setContract(contractRepository.findById(roomTypeRequestDTO.getContractId())
+                        .orElseThrow(() -> new ResourceNotFoundException("Contract not found with ID: " + roomTypeRequestDTO.getContractId())));
 
-                for (SeasonRoomTypeDTO seasonRoomTypeDTO : roomTypeDTO.getSeasonRoomTypes()) {
+                for (SeasonRoomTypeDTO seasonRoomTypeDTO : roomTypeRequestDTO.getSeasonRoomTypes()) {
                     SeasonRoomType seasonRoomType = new SeasonRoomType();
                     seasonRoomType.setRoomType(newRoomType);
                     SeasonRoomTypeKey seasonRoomTypeKey = new SeasonRoomTypeKey();
@@ -56,7 +55,7 @@ public class RoomTypeServiceImpl implements RoomTypeService {
                     newRoomType.getSeasonRoomtype().add(seasonRoomType);
                 }
 
-                for(RoomTypeImagesDTO roomTypeImagesDTO : roomTypeDTO.getRoomTypeImages()){
+                for(RoomTypeImagesDTO roomTypeImagesDTO : roomTypeRequestDTO.getRoomTypeImages()){
                     RoomTypeImages newRoomTypeImage = new RoomTypeImages();
                     newRoomTypeImage.setRoomType(newRoomType);
                     newRoomTypeImage.setImageURL(roomTypeImagesDTO.getImageURL());

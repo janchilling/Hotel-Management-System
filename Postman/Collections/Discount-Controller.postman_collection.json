@@ -1,0 +1,41 @@
+{
+	"info": {
+		"_postman_id": "ad22fca7-4e23-4d50-9504-0546d3dd7ef8",
+		"name": "Discount-Controller",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "25455967"
+	},
+	"item": [
+		{
+			"name": "Add Discount",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "[\r\n    {\r\n        \"discountName\": \"Early Bird Discount\",\r\n        \"discountDescription\": \"Special discount for early bookings\",\r\n        \"contractId\": 1,\r\n        \"seasonDiscounts\": [\r\n            {\r\n                \"seasonId\": 1,\r\n                \"startDate\": \"2024-05-01\",\r\n                \"endDate\": \"2024-06-30\",\r\n                \"discountPercentage\": 10.0\r\n            },\r\n            {\r\n                \"seasonId\": 2,\r\n                \"startDate\": \"2024-07-01\",\r\n                \"endDate\": \"2024-08-31\",\r\n                \"discountPercentage\": 15.0\r\n            }\r\n        ]\r\n    },\r\n    {\r\n        \"discountName\": \"Last Minute Discount\",\r\n        \"discountDescription\": \"Special discount for last minute bookings\",\r\n        \"contractId\": 1,\r\n        \"seasonDiscounts\": [\r\n            {\r\n                \"seasonId\": 1,\r\n                \"startDate\": \"2024-09-01\",\r\n                \"endDate\": \"2024-09-30\",\r\n                \"discountPercentage\": 20.0\r\n            },\r\n            {\r\n                \"seasonId\": 2,\r\n                \"startDate\": \"2024-07-01\",\r\n                \"endDate\": \"2024-08-31\",\r\n                \"discountPercentage\": 15.0\r\n            }\r\n        ]\r\n    }\r\n]",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/discounts/addDiscount",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"discounts",
+						"addDiscount"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

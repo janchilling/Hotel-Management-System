@@ -12,5 +12,5 @@ public class SupplementDTO {
     private String supplementDescription;
     private String supplementType;
     private Set<SeasonSupplementDTO> supplementsSeasons;
-    private ContractDTO contract;
+    private ContractRequestDTO contract;
 }

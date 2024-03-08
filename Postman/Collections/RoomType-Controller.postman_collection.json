@@ -1,0 +1,41 @@
+{
+	"info": {
+		"_postman_id": "f01aad64-5632-46c4-97d2-a6b45e9a1323",
+		"name": "RoomType-Controller",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "25455967"
+	},
+	"item": [
+		{
+			"name": "Add RoomType",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "[\r\n    {\r\n        \"roomTypeName\": \"Deluxe Room\",\r\n        \"roomDimensions\": \"400 sq ft\",\r\n        \"maxAdults\": 2,\r\n        \"contractId\": 1,\r\n        \"roomTypeImages\": [\r\n            {\r\n                \"imageURL\": \"https://example.com/image4.jpg\"\r\n            },\r\n            {\r\n                \"imageURL\": \"https://example.com/image3.jpg\"\r\n            }\r\n        ],\r\n        \"seasonRoomTypes\": [\r\n            {\r\n                \"seasonId\": 1,\r\n                \"roomPrice\": 200.0,\r\n                \"noOfRooms\": 20\r\n            },\r\n            {\r\n                \"seasonId\": 2,\r\n                \"roomPrice\": 500.0,\r\n                \"noOfRooms\": 10\r\n            }\r\n        ]\r\n    },\r\n    {\r\n        \"roomTypeName\": \"Sea View Room\",\r\n        \"roomDimensions\": \"500 sq ft\",\r\n        \"maxAdults\": 2,\r\n        \"contractId\": 1,\r\n        \"roomTypeImages\": [\r\n            {\r\n                \"imageURL\": \"https://example.com/image1.jpg\"\r\n            },\r\n            {\r\n                \"imageURL\": \"https://example.com/image2.jpg\"\r\n            }\r\n        ],\r\n        \"seasonRoomTypes\": [\r\n            {\r\n                \"seasonId\": 1,\r\n                \"roomPrice\": 300.0,\r\n                \"noOfRooms\": 18\r\n            },\r\n            {\r\n                \"seasonId\": 2,\r\n                \"roomPrice\": 700.0,\r\n                \"noOfRooms\": 25\r\n            }\r\n        ]\r\n    }\r\n]",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/roomTypes/addRoomType",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"roomTypes",
+						"addRoomType"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

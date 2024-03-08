@@ -1,11 +1,10 @@
 package com.codegen.hotelmanagementsystembackend.services;
 
-import com.codegen.hotelmanagementsystembackend.dto.MarkupDTO;
-import com.codegen.hotelmanagementsystembackend.entities.Markup;
+import com.codegen.hotelmanagementsystembackend.dto.MarkupRequestDTO;
 
 import java.util.List;
 
 public interface MarkupService {
 
-    String createMarkup(List<MarkupDTO> markupDTOs);
+    String createMarkup(List<MarkupRequestDTO> markupRequestDTOS);
 }

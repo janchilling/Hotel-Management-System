@@ -6,7 +6,7 @@ import java.sql.Date;
 import java.util.List;
 
 @Data
-public class ContractDTO {
+public class ContractRequestDTO {
 
     private Integer contractId;
     private Date startDate;
@@ -16,10 +16,10 @@ public class ContractDTO {
     private Double cancellationAmount;
     private String prepayment;
     private String balancePayment;
-    private List<DiscountDTO> discounts;
-    private List<MarkupDTO> markups;
-    private List<SeasonDTO> seasons;
+    private List<DiscountRequestDTO> discounts;
+    private List<MarkupRequestDTO> markups;
+    private List<SeasonRequestDTO> seasons;
     private List<SupplementDTO> supplements;
-    private List<RoomTypeDTO> roomTypes;
+    private List<RoomTypeRequestDTO> roomTypes;
 
 }

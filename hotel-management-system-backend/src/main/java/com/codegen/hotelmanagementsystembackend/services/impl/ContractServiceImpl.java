@@ -20,19 +20,19 @@ public class ContractServiceImpl implements ContractService {
     private final SupplementRepository supplementRepository;
     private final SeasonSupplementRepository seasonSupplementRepository;
     @Override
-    public Contract createContract(ContractDTO contractDTO) {
+    public Contract createContract(ContractRequestDTO contractRequestDTO) {
 
-        Contract contract = getContract(contractDTO);
+        Contract contract = getContract(contractRequestDTO);
 
         Contract savedContract = contractRepository.save(contract);
 
-        List<SeasonDTO> seasons = contractDTO.getSeasons();
+        List<SeasonRequestDTO> seasons = contractRequestDTO.getSeasons();
         if (seasons != null) {
-            for (SeasonDTO seasonDTO  : seasons) {
+            for (SeasonRequestDTO seasonRequestDTO : seasons) {
                 Season season = new Season();
-                season.setSeasonName(seasonDTO.getSeasonName());
-                season.setStartDate(seasonDTO.getStartDate());
-                season.setEndDate(seasonDTO.getEndDate());
+                season.setSeasonName(seasonRequestDTO.getSeasonName());
+                season.setStartDate(seasonRequestDTO.getStartDate());
+                season.setEndDate(seasonRequestDTO.getEndDate());
                 season.setContract(savedContract);
                 seasonRepository.save(season);
             }
@@ -78,16 +78,16 @@ public class ContractServiceImpl implements ContractService {
         return "Contract Details Added!";
     }
 
-    private static Contract getContract(ContractDTO contractDTO) {
+    private static Contract getContract(ContractRequestDTO contractRequestDTO) {
         Contract contract = new Contract();
 
-        contract.setStart_date(contractDTO.getStartDate());
-        contract.setEnd_date(contractDTO.getEndDate());
-        contract.setContract_status(contractDTO.getContractStatus());
-        contract.setCancellation_deadline(contractDTO.getCancellationDeadline());
-        contract.setCancellation_amount(contractDTO.getCancellationAmount());
-        contract.setPrepayment(contractDTO.getPrepayment());
-        contract.setBalance_payment(contractDTO.getBalancePayment());
+        contract.setStart_date(contractRequestDTO.getStartDate());
+        contract.setEnd_date(contractRequestDTO.getEndDate());
+        contract.setContract_status(contractRequestDTO.getContractStatus());
+        contract.setCancellation_deadline(contractRequestDTO.getCancellationDeadline());
+        contract.setCancellation_amount(contractRequestDTO.getCancellationAmount());
+        contract.setPrepayment(contractRequestDTO.getPrepayment());
+        contract.setBalance_payment(contractRequestDTO.getBalancePayment());
         return contract;
     }
 }

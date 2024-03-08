@@ -1,6 +1,6 @@
 package com.codegen.hotelmanagementsystembackend.services.impl;
 
-import com.codegen.hotelmanagementsystembackend.dto.MarkupDTO;
+import com.codegen.hotelmanagementsystembackend.dto.MarkupRequestDTO;
 import com.codegen.hotelmanagementsystembackend.dto.SeasonMarkupDTO;
 import com.codegen.hotelmanagementsystembackend.entities.Markup;
 import com.codegen.hotelmanagementsystembackend.entities.SeasonMarkup;
@@ -27,19 +27,19 @@ public class MarkupServiceImpl implements MarkupService {
 
     @Override
     @Transactional
-    public String createMarkup(List<MarkupDTO> markupDTOs) {
-        if (markupDTOs == null || markupDTOs.isEmpty()) {
+    public String createMarkup(List<MarkupRequestDTO> markupRequestDTOS) {
+        if (markupRequestDTOS == null || markupRequestDTOS.isEmpty()) {
             return "No markups provided.";
         }
 
         try {
-            for (MarkupDTO markupDTO : markupDTOs) {
+            for (MarkupRequestDTO markupRequestDTO : markupRequestDTOS) {
                 Markup newMarkup = new Markup();
-                newMarkup.setMarkupId(markupDTO.getMarkupId());
-                newMarkup.setContract(contractRepository.findById(markupDTO.getContractId())
-                        .orElseThrow(() -> new ResourceNotFoundException("Contract not found with ID: " + markupDTO.getContractId())));
+                newMarkup.setMarkupId(markupRequestDTO.getMarkupId());
+                newMarkup.setContract(contractRepository.findById(markupRequestDTO.getContractId())
+                        .orElseThrow(() -> new ResourceNotFoundException("Contract not found with ID: " + markupRequestDTO.getContractId())));
 
-                for (SeasonMarkupDTO seasonMarkupDto : markupDTO.getSeasonMarkups()) {
+                for (SeasonMarkupDTO seasonMarkupDto : markupRequestDTO.getSeasonMarkups()) {
                     SeasonMarkup seasonMarkup = new SeasonMarkup();
                     seasonMarkup.setMarkup(newMarkup);
                     SeasonMarkupKey seasonMarkupKey = new SeasonMarkupKey();

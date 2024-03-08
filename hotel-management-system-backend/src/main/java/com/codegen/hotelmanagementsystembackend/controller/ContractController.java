@@ -1,7 +1,7 @@
 package com.codegen.hotelmanagementsystembackend.controller;
 
 import com.codegen.hotelmanagementsystembackend.dto.AddContractDetailsRequestDTO;
-import com.codegen.hotelmanagementsystembackend.dto.ContractDTO;
+import com.codegen.hotelmanagementsystembackend.dto.ContractRequestDTO;
 import com.codegen.hotelmanagementsystembackend.entities.Contract;
 import com.codegen.hotelmanagementsystembackend.services.ContractService;
 import lombok.RequiredArgsConstructor;
@@ -19,8 +19,8 @@ public class ContractController {
     private final ContractService contractService;
 
     @PostMapping("/addContract")
-    public ResponseEntity<Contract> createContract(@RequestBody ContractDTO contractDTO){
-        return ResponseEntity.ok(contractService.createContract(contractDTO));
+    public ResponseEntity<Contract> createContract(@RequestBody ContractRequestDTO contractRequestDTO){
+        return ResponseEntity.ok(contractService.createContract(contractRequestDTO));
     }
 
     @PostMapping("/addContractDetails")
