@@ -1,5 +1,6 @@
 package com.codegen.hotelmanagementsystembackend.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -13,11 +14,13 @@ public class SeasonRoomType {
     @ManyToOne
     @MapsId("roomTypeId")
     @JoinColumn(name = "room_type_id")
+    @JsonBackReference
     RoomType roomType;
 
     @ManyToOne
     @MapsId("seasonId")
     @JoinColumn(name = "season_id")
+    @JsonBackReference
     Season season;
 
 

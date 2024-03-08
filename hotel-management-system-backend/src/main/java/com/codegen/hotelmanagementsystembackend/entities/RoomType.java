@@ -1,5 +1,7 @@
 package com.codegen.hotelmanagementsystembackend.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -22,14 +24,19 @@ public class RoomType {
 
     private Integer maxAdults;
 
+    // Add services beds
+
     @OneToMany(mappedBy = "roomType", cascade = CascadeType.ALL)
+    @JsonManagedReference
     private Set<RoomTypeImages> roomTypeImages = new HashSet<>();
 
     @OneToMany(mappedBy = "roomType", cascade = CascadeType.ALL)
+    @JsonManagedReference
     private Set<SeasonRoomType> seasonRoomtype = new HashSet<>();
 
     @ManyToOne
     @JoinColumn(name="contract_id", nullable=false)
+    @JsonBackReference
     private Contract contract;
 
     @Override

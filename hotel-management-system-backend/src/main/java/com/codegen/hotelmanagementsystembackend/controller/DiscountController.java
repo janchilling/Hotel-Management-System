@@ -1,6 +1,7 @@
 package com.codegen.hotelmanagementsystembackend.controller;
 
 import com.codegen.hotelmanagementsystembackend.dto.DiscountRequestDTO;
+import com.codegen.hotelmanagementsystembackend.entities.Discount;
 import com.codegen.hotelmanagementsystembackend.services.DiscountService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +20,7 @@ public class DiscountController {
     private final DiscountService discountService;
 
     @PostMapping("/addDiscount")
-    public ResponseEntity<String> createDiscount(@RequestBody List<DiscountRequestDTO> discountRequestDTOS){
+    public ResponseEntity<List<Discount>> createDiscount(@RequestBody List<DiscountRequestDTO> discountRequestDTOS){
         return ResponseEntity.ok(discountService.createDiscount(discountRequestDTOS));
     }
 }

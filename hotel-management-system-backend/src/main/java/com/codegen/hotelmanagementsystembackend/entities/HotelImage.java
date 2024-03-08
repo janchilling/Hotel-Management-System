@@ -19,6 +19,6 @@ public class HotelImage {
     private String hotelImageURL;
 
     @ManyToOne
-    @JsonManagedReference
+    @JsonBackReference
     private Hotel hotel;
 }

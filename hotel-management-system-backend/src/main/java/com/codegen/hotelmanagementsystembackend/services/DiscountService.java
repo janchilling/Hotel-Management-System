@@ -1,10 +1,11 @@
 package com.codegen.hotelmanagementsystembackend.services;
 
 import com.codegen.hotelmanagementsystembackend.dto.DiscountRequestDTO;
+import com.codegen.hotelmanagementsystembackend.entities.Discount;
 
 import java.util.List;
 
 public interface DiscountService {
 
-    String createDiscount(List<DiscountRequestDTO> discountRequestDTOS);
+    List<Discount> createDiscount(List<DiscountRequestDTO> discountRequestDTOS);
 }

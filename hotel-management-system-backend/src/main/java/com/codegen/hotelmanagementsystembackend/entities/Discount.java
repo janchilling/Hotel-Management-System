@@ -1,5 +1,7 @@
 package com.codegen.hotelmanagementsystembackend.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -21,10 +23,12 @@ public class Discount {
     private String discountDescription;
 
     @OneToMany(mappedBy = "discount", cascade = CascadeType.ALL)
+    @JsonManagedReference
     Set<SeasonDiscount> seasonDiscounts = new HashSet<>();
 
     @ManyToOne
     @JoinColumn(name="contract_id", nullable=false)
+    @JsonBackReference
     private Contract contract;
 
     @Override
