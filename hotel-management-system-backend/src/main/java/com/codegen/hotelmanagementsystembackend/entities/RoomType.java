@@ -17,7 +17,7 @@ public class RoomType {
 
     @Id
     @Column(name = "room_type_id")
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Integer roomTypeId;
 
     private String roomTypeName;

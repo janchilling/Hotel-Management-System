@@ -5,5 +5,7 @@ import lombok.Data;
 @Data
 public class HotelImageDTO {
 
+    private Long hotelImageId;
     private String imageURL;
+
 }

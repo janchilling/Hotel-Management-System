@@ -54,8 +54,8 @@ public class ContractServiceImpl implements ContractService {
         if (supplements != null) {
             for (AddSupplementRequestDTO supplementsDTO  : supplements) {
                 Supplement supplement = new Supplement();
-                supplement.setSupplement_type(supplementsDTO.getSupplementType());
-                supplement.setSupplement_description(supplementsDTO.getSupplementDescription());
+                supplement.setSupplementType(supplementsDTO.getSupplementType());
+                supplement.setSupplementDescription(supplementsDTO.getSupplementDescription());
                 supplement.setSupplementName(supplementsDTO.getSupplementName());
                 supplement.setContract(contract);
                 supplementsSet.add(supplement);

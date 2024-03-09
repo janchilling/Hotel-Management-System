@@ -12,7 +12,7 @@ public class HotelPhone {
 
     @Id
     @Column(name = "hotel_phone_id")
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Integer hotelPhoneId;
 
     private Long hotelPhone;

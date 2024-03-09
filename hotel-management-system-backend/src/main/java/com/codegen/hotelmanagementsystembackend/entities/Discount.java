@@ -17,7 +17,7 @@ public class Discount {
 
     @Id
     @Column(name = "discount_id")
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Integer discountId;
 
     private String discountName;

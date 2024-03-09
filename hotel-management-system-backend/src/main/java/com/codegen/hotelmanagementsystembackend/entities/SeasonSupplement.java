@@ -8,8 +8,8 @@ import lombok.Data;
 public class SeasonSupplement {
 
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
-    Integer id;
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    Integer seasonSupplementId;
 
     @ManyToOne
 //    @MapsId("supplement_id")

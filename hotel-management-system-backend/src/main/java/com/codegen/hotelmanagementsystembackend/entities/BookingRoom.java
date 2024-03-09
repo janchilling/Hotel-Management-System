@@ -10,7 +10,7 @@ public class BookingRoom {
 
     @Id
     @Column(name = "booking_room_id")
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Integer bookingRoomId;
 
     private Integer noOfRooms;

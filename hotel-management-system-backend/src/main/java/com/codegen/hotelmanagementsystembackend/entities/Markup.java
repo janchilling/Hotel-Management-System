@@ -15,7 +15,7 @@ public class Markup {
 
     @Id
     @Column(name = "markup_id")
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Integer markupId;
 
     @OneToMany(mappedBy = "markup", cascade = CascadeType.ALL)

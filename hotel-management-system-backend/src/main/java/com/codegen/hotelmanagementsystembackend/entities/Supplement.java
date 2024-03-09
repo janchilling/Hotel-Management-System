@@ -15,17 +15,17 @@ public class Supplement {
 
     @Id
     @Column(name = "supplement_id")
-    @GeneratedValue(strategy=GenerationType.AUTO)
-    private Integer supplement_id;
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    private Integer supplementId;
 
     private String supplementName;
 
-    private String supplement_description;
+    private String supplementDescription;
 
-    private String supplement_type;
+    private String supplementType;
 
     @OneToMany(mappedBy = "supplement")
-    Set<SeasonSupplement> supplements_seasons;
+    Set<SeasonSupplement> supplementsSeasons;
 
     @ManyToOne
     @JoinColumn(name="contract_id")
