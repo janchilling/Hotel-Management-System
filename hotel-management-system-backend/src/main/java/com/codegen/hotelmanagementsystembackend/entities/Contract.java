@@ -16,7 +16,7 @@ public class Contract {
 
     @Id
     @Column(name = "contract_id")
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Integer contract_id;
 
     private Date start_date;

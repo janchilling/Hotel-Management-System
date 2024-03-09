@@ -12,43 +12,50 @@ import com.codegen.hotelmanagementsystembackend.repository.HotelRepository;
 import com.codegen.hotelmanagementsystembackend.services.HotelService;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.service.spi.ServiceException;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class HotelServiceImpl implements HotelService {
 
-    private final ContractRepository contractRepository;
+    private final ModelMapper modelMapper;
     private final HotelRepository hotelRepository;
+
+    /**
+     * Creates a new Hotel using the provided HotelRequestDTO.
+     *
+     * @param  hotelRequestDTO   the DTO containing the details of the new hotel
+     * @return                   the newly created Hotel
+     */
     @Override
     public Hotel createHotel(HotelRequestDTO hotelRequestDTO) {
 
         try {
-            Hotel newHotel = new Hotel();
+            Hotel newHotel = modelMapper.map(hotelRequestDTO, Hotel.class);
 
-            newHotel.setHotelName(hotelRequestDTO.getHotelName());
-            newHotel.setHotelDescription(hotelRequestDTO.getHotelDescription());
-            newHotel.setHotelEmail(hotelRequestDTO.getHotelEmail());
-            newHotel.setHotelStreetAddress(hotelRequestDTO.getHotelStreetAddress());
-            newHotel.setHotelCity(hotelRequestDTO.getHotelCity());
-            newHotel.setHotelState(hotelRequestDTO.getHotelState());
-            newHotel.setHotelState(hotelRequestDTO.getHotelState());
-            newHotel.setHotelCountry(hotelRequestDTO.getHotelCountry());
-            newHotel.setHotelPostalCode(hotelRequestDTO.getHotelPostalCode());
+            List<HotelImage> hotelImages = hotelRequestDTO.getHotelImages().stream()
+                    .map(imageDTO -> {
+                        HotelImage hotelImage = modelMapper.map(imageDTO, HotelImage.class);
+                        hotelImage.setHotel(newHotel);
+                        return hotelImage;
+                    })
+                    .collect(Collectors.toList());
 
-            for(HotelImageDTO hotelImageDTO : hotelRequestDTO.getHotelImages()){
-                HotelImage hotelImage = new HotelImage();
-                hotelImage.setHotelImageURL(hotelImageDTO.getImageURL());
-                hotelImage.setHotel(newHotel);
-                newHotel.getHotelImages().add(hotelImage);
-            }
+            newHotel.setHotelImages(hotelImages);
 
-            for(HotelPhoneDTO hotelPhoneDTO : hotelRequestDTO.getHotelPhones()){
-                HotelPhone hotelPhone = new HotelPhone();
-                hotelPhone.setHotelPhone(hotelPhoneDTO.getHotelPhone());
-                hotelPhone.setHotel(newHotel);
-                newHotel.getHotelPhones().add(hotelPhone);
-            }
+            List<HotelPhone> hotelPhones = hotelRequestDTO.getHotelPhones().stream()
+                    .map(phoneDTO -> {
+                        HotelPhone hotelPhone = modelMapper.map(phoneDTO, HotelPhone.class);
+                        hotelPhone.setHotel(newHotel);
+                        return hotelPhone;
+                    })
+                    .collect(Collectors.toList());
+
+            newHotel.setHotelPhones(hotelPhones);
 
             return hotelRepository.save(newHotel);
 

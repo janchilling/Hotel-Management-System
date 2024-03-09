@@ -10,7 +10,7 @@ public class BookingDiscount {
 
     @Id
     @Column(name = "booking_discount_id")
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Integer bookingDiscountId;
 
     private String discountName;

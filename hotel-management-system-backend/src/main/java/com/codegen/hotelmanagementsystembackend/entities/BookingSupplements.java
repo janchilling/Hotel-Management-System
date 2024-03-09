@@ -10,7 +10,7 @@ public class BookingSupplements {
 
     @Id
     @Column(name = "booking_supplement_id")
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Integer bookingSupplementId;
 
     private Long supplementPrice;

@@ -16,7 +16,7 @@ public class Season {
 
     @Id
     @Column(name = "season_id")
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Integer seasonId;
 
     private String seasonName;

@@ -14,7 +14,7 @@ public class Booking {
 
     @Id
     @Column(name = "booking_id")
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Integer bookingId;
 
     private String bookingDate;

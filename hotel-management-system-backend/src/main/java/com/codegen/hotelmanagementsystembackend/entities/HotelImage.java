@@ -13,7 +13,7 @@ public class HotelImage {
 
     @Id
     @Column(name = "hotel_image_id")
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Integer hotelImageId;
 
     private String hotelImageURL;
