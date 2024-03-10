@@ -1,11 +1,14 @@
 package com.codegen.hotelmanagementsystembackend.services.impl;
 
 import com.codegen.hotelmanagementsystembackend.dto.HotelRequestDTO;
+import com.codegen.hotelmanagementsystembackend.dto.HotelResponseDTO;
 import com.codegen.hotelmanagementsystembackend.entities.Hotel;
 import com.codegen.hotelmanagementsystembackend.entities.HotelImage;
 import com.codegen.hotelmanagementsystembackend.entities.HotelPhone;
 import com.codegen.hotelmanagementsystembackend.repository.HotelRepository;
 import com.codegen.hotelmanagementsystembackend.services.HotelService;
+import com.codegen.hotelmanagementsystembackend.entities.Contract;
+
 import lombok.RequiredArgsConstructor;
 import org.hibernate.service.spi.ServiceException;
 import org.modelmapper.ModelMapper;
@@ -63,5 +66,35 @@ public class HotelServiceImpl implements HotelService {
             throw new ServiceException("Failed to create Hotel", e);
         }
     }
+
+    /**
+     * Retrieves a hotel by its ID.
+     *
+     * @param  hotelId   the ID of the hotel to retrieve
+     * @return          the hotel response DTO
+     */
+    @Override
+    public HotelResponseDTO getHotelById(Integer hotelId) {
+        try {
+            Hotel hotel = hotelRepository.findById(hotelId)
+                    .orElseThrow(() -> new ServiceException("Hotel not found"));
+
+            HotelResponseDTO hotelResponseDTO = modelMapper.map(hotel, HotelResponseDTO.class);
+
+            // Set contract ids and statuses
+            hotelResponseDTO.setContractIds(hotel.getContracts().stream()
+                    .map(Contract::getContractId)
+                    .collect(Collectors.toList()));
+            hotelResponseDTO.setContractStatuses(hotel.getContracts().stream()
+                    .map(Contract::getContractStatus)
+                    .collect(Collectors.toList()));
+
+            return hotelResponseDTO;
+        } catch (Exception e) {
+            // Handle other exceptions!!!!!
+            throw new ServiceException("An error occurred while retrieving the hotel", e);
+        }
+    }
+
 
 }
