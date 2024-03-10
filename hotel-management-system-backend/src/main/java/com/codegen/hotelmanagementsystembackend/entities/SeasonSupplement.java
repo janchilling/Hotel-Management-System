@@ -1,5 +1,6 @@
 package com.codegen.hotelmanagementsystembackend.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -7,21 +8,22 @@ import lombok.Data;
 @Data
 public class SeasonSupplement {
 
-    @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
-    Integer seasonSupplementId;
+    @EmbeddedId
+    SeasonSupplementKey seasonSupplementKey;
 
     @ManyToOne
-//    @MapsId("supplement_id")
+    @MapsId("supplementId")
     @JoinColumn(name = "supplement_id")
+    @JsonBackReference("seasonSupplementsSupplementReference")
     Supplement supplement;
 
     @ManyToOne
-//    @MapsId("season_id")
+    @MapsId("seasonId")
     @JoinColumn(name = "season_id")
+    @JsonBackReference("seasonSupplementsSeasonReference")
     Season season;
 
-    private Double supplement_price;
+    private Double supplementPrice;
 
 
 }

@@ -18,10 +18,10 @@ public class BookingDiscount {
     private Double discountedAmount;
 
     @ManyToOne
-    @JsonBackReference
+    @JsonBackReference("bookingBookingDiscountReference")
     private Booking booking;
 
     @ManyToOne
-    @JsonBackReference
+    @JsonBackReference("seasonDiscountDicountReference")
     private Discount discount;
 }

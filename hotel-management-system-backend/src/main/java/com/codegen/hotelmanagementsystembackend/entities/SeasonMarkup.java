@@ -14,13 +14,13 @@ public class SeasonMarkup {
     @ManyToOne
     @MapsId("markupId")
     @JoinColumn(name = "markup_id")
-    @JsonBackReference
+    @JsonBackReference("markupSeasonMarkupsReference")
     Markup markup;
 
     @ManyToOne
     @MapsId("seasonId")
     @JoinColumn(name = "season_id")
-    @JsonBackReference
+    @JsonBackReference("seasonSeasonMarkupReference")
     Season season;
 
     private Double markupPercentage;

@@ -16,13 +16,13 @@ public class SeasonDiscount {
     @ManyToOne
     @MapsId("discountId")
     @JoinColumn(name = "discount_id")
-    @JsonBackReference
+    @JsonBackReference("seasonDiscountSeasonReference")
     Discount discount;
 
     @ManyToOne
     @MapsId("seasonId")
     @JoinColumn(name = "season_id")
-    @JsonBackReference
+    @JsonBackReference("seasonSeasonDiscountReference")
     Season season;
 
     private Date startDate;

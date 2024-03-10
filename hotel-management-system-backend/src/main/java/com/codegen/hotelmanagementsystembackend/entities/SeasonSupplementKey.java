@@ -11,8 +11,8 @@ import java.io.Serializable;
 public class SeasonSupplementKey implements Serializable {
 
     @Column(name = "season_id")
-    Integer season_id;
+    Integer seasonId;
 
     @Column(name = "supplement_id")
-    Integer supplement_id;
+    Integer supplementId;
 }

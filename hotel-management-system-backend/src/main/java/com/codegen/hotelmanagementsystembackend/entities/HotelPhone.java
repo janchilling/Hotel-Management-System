@@ -18,7 +18,7 @@ public class HotelPhone {
     private Long hotelPhone;
 
     @ManyToOne
-    @JsonBackReference
+    @JsonBackReference("hotelPhoneHoteltReference")
     private Hotel hotel;
 
 }

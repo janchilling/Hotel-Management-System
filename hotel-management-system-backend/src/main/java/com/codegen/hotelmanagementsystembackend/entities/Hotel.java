@@ -35,15 +35,19 @@ public class Hotel {
     private Integer hotelPostalCode;
 
     @OneToMany(mappedBy = "hotel", cascade = CascadeType.ALL)
-    @JsonManagedReference
+    @JsonManagedReference("hotelImageHoteltReference")
     private List<HotelImage> hotelImages = new ArrayList<>();
 
     @OneToMany(mappedBy = "hotel", cascade = CascadeType.ALL)
-    @JsonManagedReference
+    @JsonManagedReference("hotelPhoneHoteltReference")
     private List<HotelPhone> hotelPhones = new ArrayList<>();
 
     @OneToMany(mappedBy = "hotel", cascade = CascadeType.ALL)
-    @JsonManagedReference
+    @JsonManagedReference("contractHoteltReference")
     private List<Contract> contracts = new ArrayList<>();
+
+    @OneToMany(mappedBy = "hotel", cascade = CascadeType.ALL)
+    @JsonManagedReference("bookingHotelReference")
+    private List<Booking> bookings = new ArrayList<>();
 
 }

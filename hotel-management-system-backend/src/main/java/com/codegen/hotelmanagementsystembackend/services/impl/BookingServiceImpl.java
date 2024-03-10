@@ -24,12 +24,20 @@ public class BookingServiceImpl implements BookingService {
     private final SupplementRepository supplementRepository;
     private final BookingRepository bookingRepository;
 
+    /**
+     * Create a booking based on the provided booking request data, including customer, hotel, payments, rooms, discounts, and supplements.
+     *
+     * @param  bookingRequestDTO   the booking request data transfer object
+     * @return                     the created booking
+     */
     @Override
     public Booking createBooking(BookingRequestDTO bookingRequestDTO) {
         try{
-            Booking booking = new Booking();
             Customer customer = customerRepository.findById(bookingRequestDTO.getCustomerId())
                     .orElseThrow(() -> new ResourceNotFoundException("Customer not found with ID: " + bookingRequestDTO.getCustomerId()));
+
+            Booking booking = new Booking();
+
 
             booking.setBookingId(bookingRequestDTO.getBookingId());
             booking.setBookingDate(bookingRequestDTO.getBookingDate());

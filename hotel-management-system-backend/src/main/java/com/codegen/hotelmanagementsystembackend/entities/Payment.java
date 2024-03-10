@@ -20,10 +20,10 @@ public class Payment {
     private String paymentType;
 
     @ManyToOne
-    @JsonBackReference
+    @JsonBackReference("bookingPaymentReference")
     private Booking booking;
 
     @ManyToOne
-    @JsonBackReference
+    @JsonBackReference("customerPaymentReference")
     private Customer customer;
 }

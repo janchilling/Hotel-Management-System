@@ -35,10 +35,10 @@ public class Customer {
     private String customer_country;
 
     @OneToMany(mappedBy="customer")
-    @JsonManagedReference
+    @JsonManagedReference("customerPaymentReference")
     private List<Payment> payments;
 
     @OneToMany(mappedBy="customer")
-    @JsonManagedReference
+    @JsonManagedReference("bookingCustomerReference")
     private List<Booking> bookings;
 }
