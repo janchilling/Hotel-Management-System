@@ -6,6 +6,7 @@ import lombok.Data;
 
 @Data
 @Entity
+@Table(name = "BookingRoom")
 public class BookingRoom {
 
     @Id

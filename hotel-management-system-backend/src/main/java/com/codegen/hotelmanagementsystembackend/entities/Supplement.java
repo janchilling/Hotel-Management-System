@@ -27,7 +27,7 @@ public class Supplement {
 
     @OneToMany(mappedBy = "supplement", cascade = CascadeType.ALL)
     @JsonManagedReference("seasonSupplementsSupplementReference")
-    private List<SeasonSupplement> supplementsSeasons;
+    private List<SeasonSupplement> supplementsSeasons = new ArrayList<>();
 
     @ManyToOne
     @JoinColumn(name="contract_id")
