@@ -6,6 +6,7 @@ import lombok.Data;
 
 @Data
 @Entity
+@Table(name = "BookingSupplements")
 public class BookingSupplements {
 
     @Id
@@ -18,10 +19,10 @@ public class BookingSupplements {
     private String supplementName;
 
     @ManyToOne
-    @JsonBackReference
+    @JsonBackReference("bookingBookingSupplementReference")
     private Booking booking;
 
     @ManyToOne
-    @JsonBackReference
+    @JsonBackReference("supplementBookingSupplementReference")
     private Supplement supplement;
 }

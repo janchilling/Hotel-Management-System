@@ -41,6 +41,7 @@ public class SecurityConfiguration {
                         .requestMatchers("/api/v1/roomTypes/**").permitAll()
                         .requestMatchers("/api/v1/hotels/**").permitAll()
                         .requestMatchers("/api/v1/bookings/**").permitAll()
+                        .requestMatchers("/api/v1/supplements/**").permitAll()
                         .anyRequest().authenticated())
 
                 .sessionManagement(manager -> manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

@@ -6,8 +6,8 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 @Data
 @Entity
@@ -17,50 +17,44 @@ public class Contract {
     @Id
     @Column(name = "contract_id")
     @GeneratedValue(strategy=GenerationType.IDENTITY)
-    private Integer contract_id;
+    private Integer contractId;
 
-    private Date start_date;
+    private Date startDate;
 
-    private Date end_date;
+    private Date endDate;
 
-    private String contract_status;
+    private String contractStatus;
 
-    private String cancellation_deadline;
+    private String cancellationDeadline;
 
-    private Double cancellation_amount;
+    private Double cancellationAmount;
 
     private String prepayment;
 
-    private String balance_payment;
+    private String balancePayment;
 
     @OneToMany(mappedBy="contract")
-    @JsonManagedReference
-    private List<Discount> discounts;
+    @JsonManagedReference("discountContractReference")
+    private List<Discount> discounts = new ArrayList<>();
 
     @OneToMany(mappedBy="contract")
-    @JsonManagedReference
+    @JsonManagedReference("seasonContractReference")
     private List<Season> seasons;
 
     @OneToMany(mappedBy="contract")
-    @JsonManagedReference
+    @JsonManagedReference("roomTypeContractReference")
     private List<RoomType> roomTypes;
 
     @OneToMany(mappedBy="contract")
-    @JsonManagedReference
+    @JsonManagedReference("markupContractReference")
     private List<Markup> markups;
 
-    @ManyToOne
-    @JsonBackReference
-    private Hotel hotel;
+    @OneToMany(mappedBy="contract")
+    @JsonManagedReference("supplementContractReference")
+    private List<Supplement> supplements;
 
-    @Override
-    public String toString() {
-        return "Contract{" +
-                "contractId=" + contract_id +
-                ", startDate=" + start_date +
-                ", endDate=" + end_date +
-                ", contractStatus='" + contract_status + '\'' +
-                '}';
-    }
+    @ManyToOne
+    @JsonBackReference("contractHoteltReference")
+    private Hotel hotel;
 
 }

@@ -6,7 +6,9 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Data
@@ -25,34 +27,25 @@ public class Season {
 
     private Date endDate;
 
-    @OneToMany(mappedBy = "season")
-    @JsonManagedReference
-    Set<SeasonSupplement> supplements_seasons;
+    @OneToMany(mappedBy = "season", cascade = CascadeType.ALL)
+    @JsonManagedReference("seasonSupplementsSeasonReference")
+    private List<SeasonSupplement> seasonSupplements = new ArrayList<>();
 
-    @OneToMany(mappedBy = "season")
-    @JsonManagedReference
-    Set<SeasonRoomType> supplements_roomtypes;
+    @OneToMany(mappedBy = "season", cascade = CascadeType.ALL)
+    @JsonManagedReference("seasonSeasonRoomtypeReference")
+    private List<SeasonRoomType> seasonRoomtypes = new ArrayList<>();
 
-    @OneToMany(mappedBy = "season")
-    @JsonManagedReference
-    Set<SeasonMarkup> season_markups = new HashSet<>();
+    @OneToMany(mappedBy = "season", cascade = CascadeType.ALL)
+    @JsonManagedReference("seasonSeasonMarkupReference")
+    private List<SeasonMarkup> seasonMarkups = new ArrayList<>();
 
-    @OneToMany(mappedBy = "season")
-    @JsonManagedReference
-    Set<SeasonDiscount> season_discounts = new HashSet<>();
+    @OneToMany(mappedBy = "season", cascade = CascadeType.ALL)
+    @JsonManagedReference("seasonSeasonDiscountReference")
+    private List<SeasonDiscount> seasonDiscounts = new ArrayList<>();
 
     @ManyToOne
     @JoinColumn(name="contract_id", nullable=false)
-    @JsonBackReference
+    @JsonBackReference("seasonContractReference")
     private Contract contract;
 
-    @Override
-    public String toString() {
-        return "Season{" +
-                "seasonId=" + seasonId +
-                ", seasonName='" + seasonName + '\'' +
-                ", startDate=" + startDate +
-                ", endDate=" + endDate +
-                '}';
-    }
 }

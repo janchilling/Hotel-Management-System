@@ -14,13 +14,13 @@ public class SeasonRoomType {
     @ManyToOne
     @MapsId("roomTypeId")
     @JoinColumn(name = "room_type_id")
-    @JsonBackReference
+    @JsonBackReference("roomTypeSeasonRoomtypeReference")
     RoomType roomType;
 
     @ManyToOne
     @MapsId("seasonId")
     @JoinColumn(name = "season_id")
-    @JsonBackReference
+    @JsonBackReference("seasonSeasonRoomtypeReference")
     Season season;
 
 

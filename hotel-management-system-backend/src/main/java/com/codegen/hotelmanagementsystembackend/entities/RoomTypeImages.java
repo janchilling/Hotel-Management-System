@@ -16,7 +16,7 @@ public class RoomTypeImages {
     @ManyToOne
 //    @MapsId("roomTypeId")
 //    @JoinColumn(name = "room_type_id")
-    @JsonBackReference
+    @JsonBackReference("roomTypeImagesRoomTypeReference")
     private RoomType roomType;
 
     private String ImageURL;

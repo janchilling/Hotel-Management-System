@@ -1,8 +1,11 @@
 package com.codegen.hotelmanagementsystembackend.dto;
 
+import com.codegen.hotelmanagementsystembackend.entities.BookingDiscount;
 import lombok.Data;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Data
@@ -11,7 +14,8 @@ public class DiscountRequestDTO {
     private Integer discountId;
     private String discountName;
     private String discountDescription;
-    private Set<SeasonDiscountDTO> seasonDiscounts = new HashSet<>();
+    private List<SeasonDiscountDTO> seasonDiscounts = new ArrayList<>();
     private Integer contractId;
+//    private List<BookingDiscount> discounts = new ArrayList<>();
 
 }

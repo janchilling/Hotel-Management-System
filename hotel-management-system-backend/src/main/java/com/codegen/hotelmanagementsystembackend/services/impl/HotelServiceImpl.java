@@ -1,13 +1,9 @@
 package com.codegen.hotelmanagementsystembackend.services.impl;
 
-import com.codegen.hotelmanagementsystembackend.dto.HotelImageDTO;
-import com.codegen.hotelmanagementsystembackend.dto.HotelPhoneDTO;
 import com.codegen.hotelmanagementsystembackend.dto.HotelRequestDTO;
 import com.codegen.hotelmanagementsystembackend.entities.Hotel;
 import com.codegen.hotelmanagementsystembackend.entities.HotelImage;
 import com.codegen.hotelmanagementsystembackend.entities.HotelPhone;
-import com.codegen.hotelmanagementsystembackend.exception.ResourceNotFoundException;
-import com.codegen.hotelmanagementsystembackend.repository.ContractRepository;
 import com.codegen.hotelmanagementsystembackend.repository.HotelRepository;
 import com.codegen.hotelmanagementsystembackend.services.HotelService;
 import lombok.RequiredArgsConstructor;
@@ -33,8 +29,12 @@ public class HotelServiceImpl implements HotelService {
      */
     @Override
     public Hotel createHotel(HotelRequestDTO hotelRequestDTO) {
-
         try {
+            if (hotelRepository.existsByHotelNameAndHotelStreetAddress(
+                    hotelRequestDTO.getHotelName(), hotelRequestDTO.getHotelStreetAddress())) {
+                throw new ServiceException("Hotel with the same name and address already exists");
+            }
+
             Hotel newHotel = modelMapper.map(hotelRequestDTO, Hotel.class);
 
             List<HotelImage> hotelImages = hotelRequestDTO.getHotelImages().stream()
@@ -59,8 +59,9 @@ public class HotelServiceImpl implements HotelService {
 
             return hotelRepository.save(newHotel);
 
-        }catch (Exception e){
-            throw new ServiceException("Failed to create Hotel");
+        } catch (Exception e) {
+            throw new ServiceException("Failed to create Hotel", e);
         }
     }
+
 }

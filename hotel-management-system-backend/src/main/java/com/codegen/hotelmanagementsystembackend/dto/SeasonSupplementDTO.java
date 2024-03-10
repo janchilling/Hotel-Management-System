@@ -6,7 +6,6 @@ import lombok.Data;
 public class SeasonSupplementDTO {
 
     private Double supplementPrice;
-    private SupplementDTO supplement;
-    private SeasonRequestDTO season;
+    private Integer seasonId;
 
 }

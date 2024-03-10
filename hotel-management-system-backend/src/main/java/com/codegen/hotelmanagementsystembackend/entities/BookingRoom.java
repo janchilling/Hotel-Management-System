@@ -6,6 +6,7 @@ import lombok.Data;
 
 @Data
 @Entity
+@Table(name = "BookingRoom")
 public class BookingRoom {
 
     @Id
@@ -20,11 +21,11 @@ public class BookingRoom {
     private Double bookedPrice;
 
     @ManyToOne
-    @JsonBackReference
+    @JsonBackReference("bookingBookingRoomReference")
     private Booking booking;
 
     @ManyToOne
-    @JsonBackReference
+    @JsonBackReference("roomtypeBookingRoomReference")
     private RoomType roomType;
 
 

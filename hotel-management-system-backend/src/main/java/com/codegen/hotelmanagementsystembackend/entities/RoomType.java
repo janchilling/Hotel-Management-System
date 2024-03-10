@@ -29,20 +29,20 @@ public class RoomType {
     // Add services beds
 
     @OneToMany(mappedBy = "roomType", cascade = CascadeType.ALL)
-    @JsonManagedReference
+    @JsonManagedReference("roomTypeImagesRoomTypeReference")
     private Set<RoomTypeImages> roomTypeImages = new HashSet<>();
 
     @OneToMany(mappedBy = "roomType", cascade = CascadeType.ALL)
-    @JsonManagedReference
+    @JsonManagedReference("roomTypeSeasonRoomtypeReference")
     private Set<SeasonRoomType> seasonRoomtype = new HashSet<>();
 
     @ManyToOne
     @JoinColumn(name="contract_id", nullable=false)
-    @JsonBackReference
+    @JsonBackReference("roomTypeContractReference")
     private Contract contract;
 
     @OneToMany(mappedBy="roomType")
-    @JsonManagedReference
+    @JsonManagedReference("roomtypeBookingRoomReference")
     private List<BookingRoom> rooms = new ArrayList<>();
 
     @Override

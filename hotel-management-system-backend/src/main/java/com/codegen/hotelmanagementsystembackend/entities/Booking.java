@@ -10,6 +10,7 @@ import java.util.List;
 
 @Entity
 @Data
+@Table(name = "Booking")
 public class Booking {
 
     @Id
@@ -34,27 +35,27 @@ public class Booking {
     private String paymentStatus;
 
     @ManyToOne
-    @JsonBackReference
+    @JsonBackReference("bookingHotelReference")
     private Hotel hotel;
 
     @OneToMany(mappedBy="booking", cascade = CascadeType.ALL)
-    @JsonManagedReference
+    @JsonManagedReference("bookingPaymentReference")
     private List<Payment> payments = new ArrayList<>();
 
     @ManyToOne
-    @JsonBackReference
+    @JsonBackReference("bookingCustomerReference")
     private Customer customer;
 
-    @OneToMany(mappedBy="booking", cascade = CascadeType.ALL)
-    @JsonManagedReference
+    @OneToMany(mappedBy="booking")
+    @JsonManagedReference("bookingBookingRoomReference")
     private List<BookingRoom> rooms = new ArrayList<>();
 
-    @OneToMany(mappedBy="booking", cascade = CascadeType.ALL)
-    @JsonManagedReference
+    @OneToMany(mappedBy="booking")
+    @JsonManagedReference("bookingBookingDiscountReference")
     private List<BookingDiscount> discounts = new ArrayList<>();
 
-    @OneToMany(mappedBy="booking", cascade = CascadeType.ALL)
-    @JsonManagedReference
+    @OneToMany(mappedBy="booking")
+    @JsonManagedReference("bookingBookingSupplementReference")
     private List<BookingSupplements> supplements = new ArrayList<>();
 
 

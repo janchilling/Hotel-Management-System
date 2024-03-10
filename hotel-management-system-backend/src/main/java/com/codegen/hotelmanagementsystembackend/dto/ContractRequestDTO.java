@@ -17,10 +17,10 @@ public class ContractRequestDTO {
     private String prepayment;
     private String balancePayment;
     private Integer hotelId;
-    private List<DiscountRequestDTO> discounts;
-    private List<MarkupRequestDTO> markups;
+//    private List<DiscountRequestDTO> discounts;
+//    private List<MarkupRequestDTO> markups;
     private List<SeasonRequestDTO> seasons;
-    private List<SupplementDTO> supplements;
-    private List<RoomTypeRequestDTO> roomTypes;
+//    private List<SupplementRequestDTO> supplements;
+//    private List<RoomTypeRequestDTO> roomTypes;
 
 }

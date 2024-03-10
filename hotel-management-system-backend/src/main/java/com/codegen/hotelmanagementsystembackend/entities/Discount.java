@@ -25,16 +25,16 @@ public class Discount {
     private String discountDescription;
 
     @OneToMany(mappedBy = "discount", cascade = CascadeType.ALL)
-    @JsonManagedReference
-    Set<SeasonDiscount> seasonDiscounts = new HashSet<>();
+    @JsonManagedReference("seasonDiscountSeasonReference")
+    private List<SeasonDiscount> seasonDiscounts = new ArrayList<>();
 
     @ManyToOne
     @JoinColumn(name="contract_id", nullable=false)
-    @JsonBackReference
+    @JsonBackReference("discountContractReference")
     private Contract contract;
 
     @OneToMany(mappedBy="discount")
-    @JsonManagedReference
+    @JsonManagedReference("seasonDiscountDicountReference")
     private List<BookingDiscount> discounts = new ArrayList<>();
 
     @Override
