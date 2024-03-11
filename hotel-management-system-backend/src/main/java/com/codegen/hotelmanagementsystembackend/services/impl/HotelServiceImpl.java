@@ -81,7 +81,6 @@ public class HotelServiceImpl implements HotelService {
 
             HotelResponseDTO hotelResponseDTO = modelMapper.map(hotel, HotelResponseDTO.class);
 
-            // Set contract ids and statuses
             hotelResponseDTO.setContractIds(hotel.getContracts().stream()
                     .map(Contract::getContractId)
                     .collect(Collectors.toList()));

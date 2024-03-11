@@ -23,7 +23,6 @@ public class SeasonRoomType {
     @JsonBackReference("seasonSeasonRoomtypeReference")
     Season season;
 
-
     private Double roomPrice;
 
     private Integer noOfRooms;
