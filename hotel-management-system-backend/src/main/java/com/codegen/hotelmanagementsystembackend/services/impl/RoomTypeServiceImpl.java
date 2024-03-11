@@ -154,6 +154,12 @@ public class RoomTypeServiceImpl implements RoomTypeService {
         }
     }
 
+    /**
+     * Retrieves the room types for a given hotel.
+     *
+     * @param  hotelId   the ID of the hotel
+     * @return          a list of lists of RoomTypeResponseDTO objects
+     */
     @Override
     public List<List<RoomTypeResponseDTO>> getRoomTypeByHotel(Integer hotelId) {
 

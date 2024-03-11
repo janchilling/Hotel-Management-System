@@ -15,6 +15,7 @@ public class UtilityMethods {
     private final HotelRepository hotelRepository;
     private final DiscountRepository discountRepository;
     private final RoomTypeRepository roomTypeRepository;
+    private final SupplementRepository supplementRepository;
 
     public Season getSeason(Integer seasonId) {
         return seasonRepository.findById(seasonId)
@@ -39,5 +40,10 @@ public class UtilityMethods {
     public RoomType getRoomType(Integer roomTypeId) {
         return roomTypeRepository.findById(roomTypeId)
                 .orElseThrow(() -> new ResourceNotFoundException("Room Type not found" + roomTypeId));
+    }
+
+    public Supplement getSupplement(Integer supplementId) {
+        return supplementRepository.findById(supplementId)
+                .orElseThrow(() -> new ResourceNotFoundException("Supplement not found" + supplementId));
     }
 }
