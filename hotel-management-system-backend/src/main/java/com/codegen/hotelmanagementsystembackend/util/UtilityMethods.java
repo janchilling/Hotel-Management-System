@@ -16,6 +16,9 @@ public class UtilityMethods {
     private final DiscountRepository discountRepository;
     private final RoomTypeRepository roomTypeRepository;
     private final SupplementRepository supplementRepository;
+    private final PaymentRepository paymentRepository;
+    private final CustomerRepository customerRepository;
+    private final BookingRepository bookingRepository;
 
     public Season getSeason(Integer seasonId) {
         return seasonRepository.findById(seasonId)
@@ -45,5 +48,20 @@ public class UtilityMethods {
     public Supplement getSupplement(Integer supplementId) {
         return supplementRepository.findById(supplementId)
                 .orElseThrow(() -> new ResourceNotFoundException("Supplement not found" + supplementId));
+    }
+
+    public Payment getPayment(Integer paymentId) {
+        return paymentRepository.findById(paymentId)
+                .orElseThrow(() -> new ResourceNotFoundException("Payment not found" + paymentId));
+    }
+
+    public Customer getCustomer(Long customerId){
+        return customerRepository.findById(customerId)
+                .orElseThrow(() -> new ResourceNotFoundException("Customer not found" + customerId));
+    }
+
+    public Booking getBooking(Integer bookingId) {
+        return bookingRepository.findById(bookingId)
+                .orElseThrow(() -> new ResourceNotFoundException("Booking not found" + bookingId));
     }
 }
