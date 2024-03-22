@@ -1,0 +1,96 @@
+{
+	"info": {
+		"_postman_id": "736dbfa7-6576-4021-9208-9bf2fcf8351d",
+		"name": "Booking Controller",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "25455967"
+	},
+	"item": [
+		{
+			"name": "Add Booking",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"bookingDate\": \"2024-03-07\",\r\n    \"checkInDate\": \"2024-03-10\",\r\n    \"checkOutDate\": \"2024-03-15\",\r\n    \"finalBookingPrice\": 1500.0,\r\n    \"noOfAdults\": 2,\r\n    \"noOfChildren\": 1,\r\n    \"bookingStatus\": \"Confirmed\",\r\n    \"paymentStatus\": \"Paid\",\r\n    \"hotelId\": 1,\r\n    \"customerId\": 1,\r\n    \"payment\": {\r\n        \"paymentDate\": \"2024-03-07\",\r\n        \"paymentAmount\": 100.50,\r\n        \"paymentType\": \"Credit Card\"\r\n    },\r\n    \"bookingRooms\": [\r\n        {\r\n            \"noOfRooms\": 2,\r\n            \"roomTypeName\": \"Double Room\",\r\n            \"bookedPrice\": 200.0,\r\n            \"roomTypeId\": 1\r\n        },\r\n        {\r\n            \"noOfRooms\": 1,\r\n            \"roomTypeName\": \"Single Room\",\r\n            \"bookedPrice\": 100.0,\r\n            \"roomTypeId\": 2\r\n        }\r\n    ],\r\n    \"bookingDiscounts\": [\r\n        {\r\n            \"discountName\": \"Early Booking Discount\",\r\n            \"discountedAmount\": 50.0,\r\n            \"discountId\": 1\r\n        },\r\n        {\r\n            \"discountName\": \"Member Discount\",\r\n            \"discountedAmount\": 30.0,\r\n            \"discountId\": 2\r\n        }\r\n    ],\r\n    \"bookingSupplements\": [\r\n        {\r\n            \"supplementPrice\": 20,\r\n            \"supplementName\": \"Breakfast\",\r\n            \"supplementId\": 1\r\n        },\r\n        {\r\n            \"supplementPrice\": 30,\r\n            \"supplementName\": \"Airport Transfer\",\r\n            \"supplementId\": 2\r\n        }\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/bookings/addBooking",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"bookings",
+						"addBooking"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Booking By Id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/bookings/getBookingById/8",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"bookings",
+						"getBookingById",
+						"8"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Booking By Id",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"bookingDate\": \"2024-03-07\",\r\n    \"checkInDate\": \"2024-03-10\",\r\n    \"checkOutDate\": \"2024-03-15\",\r\n    \"finalBookingPrice\": 1500.0,\r\n    \"noOfAdults\": 2,\r\n    \"noOfChildren\": 1,\r\n    \"bookingStatus\": \"Cancelled\",\r\n    \"paymentStatus\": \"Paid\",\r\n    \"hotelId\": 1,\r\n    \"customerId\": 1,\r\n    \"payment\": {\r\n        \"paymentId\" : 1,\r\n        \"paymentDate\": \"2024-03-07\",\r\n        \"paymentAmount\": 100.50,\r\n        \"paymentType\": \"Credit Card\"\r\n    },\r\n    \"bookingRooms\": [\r\n        {\r\n            \"bookingRoomId\" : 1,\r\n            \"noOfRooms\": 2,\r\n            \"roomTypeName\": \"Double Room\",\r\n            \"bookedPrice\": 200.0,\r\n            \"roomTypeId\": 1\r\n        },\r\n        {\r\n            \"bookingRoomId\" : 2,\r\n            \"noOfRooms\": 1,\r\n            \"roomTypeName\": \"Single Room\",\r\n            \"bookedPrice\": 100.0,\r\n            \"roomTypeId\": 2\r\n        }\r\n    ],\r\n    \"bookingDiscounts\": [\r\n        {\r\n            \"bookingDiscountId\" : 2,\r\n            \"discountName\": \"Early Booking Discount\",\r\n            \"discountedAmount\": 50.0,\r\n            \"discountId\": 1\r\n        },\r\n        {\r\n            \"bookingDiscountId\" : 1,\r\n            \"discountName\": \"Member Discount\",\r\n            \"discountedAmount\": 30.0,\r\n            \"discountId\": 2\r\n        }\r\n    ],\r\n    \"bookingSupplements\": [\r\n        {\r\n            \"bookingSupplementId\" : 1,\r\n            \"supplementPrice\": 20,\r\n            \"supplementName\": \"Breakfast\",\r\n            \"supplementId\": 1\r\n        },\r\n        {\r\n            \"bookingSupplementId\" : 2,\r\n            \"supplementPrice\": 30,\r\n            \"supplementName\": \"Airport Transfer\",\r\n            \"supplementId\": 2\r\n        }\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/bookings/updateBookingById/8",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"bookings",
+						"updateBookingById",
+						"8"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

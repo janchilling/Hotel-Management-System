@@ -132,11 +132,8 @@ public class DiscountServiceImpl implements DiscountService {
                 throw new ResourceNotFoundException("No discounts found for the contract" + contractId);
             }
 
-            return discountList.stream()
-                    .map(
-                    discounts ->
-                        getDiscountById(discounts.getDiscountId())
-                    ).collect(Collectors.toList());
+            return discountList.stream().map(discounts -> getDiscountById(discounts.getDiscountId())).collect(Collectors.toList());
+
         }catch(Exception e){
             throw new ServiceException("Getting Discount failed");
         }

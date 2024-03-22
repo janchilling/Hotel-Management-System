@@ -15,6 +15,13 @@ public class UtilityMethods {
     private final HotelRepository hotelRepository;
     private final DiscountRepository discountRepository;
     private final RoomTypeRepository roomTypeRepository;
+    private final SupplementRepository supplementRepository;
+    private final PaymentRepository paymentRepository;
+    private final CustomerRepository customerRepository;
+    private final BookingRepository bookingRepository;
+    private final BookingRoomRepository bookingRoomRepository;
+    private final BookingDiscountRepository bookingDiscountRepository;
+    private final BookingSupplementsRepository bookingSupplementsRepository;
 
     public Season getSeason(Integer seasonId) {
         return seasonRepository.findById(seasonId)
@@ -40,4 +47,40 @@ public class UtilityMethods {
         return roomTypeRepository.findById(roomTypeId)
                 .orElseThrow(() -> new ResourceNotFoundException("Room Type not found" + roomTypeId));
     }
+
+    public Supplement getSupplement(Integer supplementId) {
+        return supplementRepository.findById(supplementId)
+                .orElseThrow(() -> new ResourceNotFoundException("Supplement not found" + supplementId));
+    }
+
+    public Payment getPayment(Integer paymentId) {
+        return paymentRepository.findById(paymentId)
+                .orElseThrow(() -> new ResourceNotFoundException("Payment not found" + paymentId));
+    }
+
+    public Customer getCustomer(Long customerId){
+        return customerRepository.findById(customerId)
+                .orElseThrow(() -> new ResourceNotFoundException("Customer not found" + customerId));
+    }
+
+    public Booking getBooking(Integer bookingId) {
+        return bookingRepository.findById(bookingId)
+                .orElseThrow(() -> new ResourceNotFoundException("Booking not found" + bookingId));
+    }
+
+    public BookingRoom getBookingRoom(Integer bookingRoomId) {
+        return bookingRoomRepository.findById(bookingRoomId)
+                .orElseThrow(() -> new ResourceNotFoundException("Room with Booking not found" + bookingRoomId));
+    }
+
+    public BookingDiscount getBookingDiscount(Integer bookingDiscountId) {
+        return bookingDiscountRepository.findById(bookingDiscountId)
+                .orElseThrow(() -> new ResourceNotFoundException("Discount with Booking not found" + bookingDiscountId));
+    }
+
+    public BookingSupplements getBookingSupplement(Integer bookingSupplementId) {
+        return bookingSupplementsRepository.findById(bookingSupplementId)
+                .orElseThrow(() -> new ResourceNotFoundException("Supplement with Booking not found" + bookingSupplementId));
+    }
+
 }

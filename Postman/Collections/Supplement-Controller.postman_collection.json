@@ -1,0 +1,110 @@
+{
+	"info": {
+		"_postman_id": "87c488de-e3c0-4a27-a758-9a86114dacc1",
+		"name": "Supplement-Controller",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "25455967"
+	},
+	"item": [
+		{
+			"name": "Add Supplement",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "[\r\n    {\r\n        \"supplementName\": \"Breakfast\",\r\n        \"supplementDescription\": \"Includes breakfast\",\r\n        \"supplementType\": \"Meal\",\r\n        \"contractId\": 1,\r\n        \"supplementsSeasons\": [\r\n            {\r\n                \"seasonId\": 1,\r\n                \"supplementPrice\": 100\r\n            },\r\n            {\r\n                \"seasonId\": 2,\r\n                \"supplementPrice\": 500\r\n            }\r\n        ]\r\n    },\r\n    {\r\n        \"supplementName\": \"Airport Transfer\",\r\n        \"supplementDescription\": \"Includes airport transfer\",\r\n        \"supplementType\": \"Service\",\r\n        \"contractId\": 1,\r\n        \"supplementsSeasons\": [\r\n            {\r\n                \"seasonId\": 1,\r\n                \"supplementPrice\": 600\r\n            },\r\n            {\r\n                \"seasonId\": 2,\r\n                \"supplementPrice\": 1000\r\n            }\r\n        ]\r\n    }\r\n]",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/supplements/addSupplements",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"supplements",
+						"addSupplements"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Supplement By Id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/supplements/getSupplementById/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"supplements",
+						"getSupplementById",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Supplement By Contract",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/supplements/getSupplementByContract/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"supplements",
+						"getSupplementByContract",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Supplement By Hotel",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/supplements/getSupplementByHotel/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"supplements",
+						"getSupplementByHotel",
+						"1"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

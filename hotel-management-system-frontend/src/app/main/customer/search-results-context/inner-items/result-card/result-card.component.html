@@ -1,0 +1,30 @@
+<div class="w-full shadow-lg max-w-2xl bg-white sm:flex">
+  <div class="w-full sm:w-1/4 hotel-cover bg-center bg-cover border relative h-48 sm:h-auto shadow-inner">
+    <!-- You can put the image of the hotel here if available -->
+  </div>
+  <div class="w-full sm:w-3/4 p-3">
+    <div class="flex justify-between items-center border-b pb-3">
+      <div>
+        <div class="sm:flex items-center mb-1">
+          <h2 class="text-lg font-semibold text-gray-600">{{ hotel.hotelName }}</h2>
+          <!-- You can add other information like hotel ratings, etc. here -->
+        </div>
+        <div class="flex items-center">
+          <!-- Hotel address and other details -->
+        </div>
+      </div>
+    </div>
+    <div class="flex mt-3">
+      {{ hotel.hotelDescription }}
+    </div>
+    <div class="sm:flex mt-3 items-center justify-between">
+      <div>
+        <!-- Hotel ratings and reviews -->
+      </div>
+      <div class="mt-3 sm:mt-3 sm:-mr-8">
+        <!-- View Hotel button -->
+        <a href="#" class="bg-button-gold shadow text-white-100 py-3 px-6 font-bold inline-block">View Hotel</a>
+      </div>
+    </div>
+  </div>
+</div>
