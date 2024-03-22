@@ -19,6 +19,9 @@ import java.util.stream.Collectors;
 public class BookingServiceImpl implements BookingService {
 
     private final BookingRepository bookingRepository;
+    private final BookingDiscountRepository bookingDiscountRepository;
+    private final BookingSupplementsRepository bookingSupplementsRepository;
+    private final BookingRoomRepository bookingRoomRepository;
     private final ModelMapper modelMapper;
     private final UtilityMethods utilityMethods;
 
@@ -29,7 +32,7 @@ public class BookingServiceImpl implements BookingService {
      * @return                     the created booking
      */
     @Override
-    public Booking createBooking(BookingRequestDTO bookingRequestDTO) {
+    public BookingResponseDTO createBooking(BookingRequestDTO bookingRequestDTO) {
         try {
             Customer customer = utilityMethods.getCustomer(bookingRequestDTO.getCustomerId());
             Integer hotelId = bookingRequestDTO.getHotelId();
@@ -44,34 +47,36 @@ public class BookingServiceImpl implements BookingService {
             newPayment.setCustomer(customer);
             booking.getPayments().add(newPayment);
 
+            Booking savedBooking = bookingRepository.save(booking);
+
             bookingRequestDTO.getBookingRooms().stream()
                     .map(bookingRoomDTO -> {
                         BookingRoom newBookingRoom = modelMapper.map(bookingRoomDTO, BookingRoom.class);
-                        newBookingRoom.setBooking(booking);
+                        newBookingRoom.setBooking(savedBooking);
                         newBookingRoom.setRoomType(utilityMethods.getRoomType(bookingRoomDTO.getRoomTypeId()));
                         return newBookingRoom;
                     })
-                    .forEach(bookingRoom -> booking.getRooms().add(bookingRoom));
+                    .forEach(bookingRoomRepository::save);
 
             bookingRequestDTO.getBookingDiscounts().stream()
                     .map(bookingDiscountDTO -> {
                         BookingDiscount newbookingDiscount = modelMapper.map(bookingDiscountDTO, BookingDiscount.class);
-                        newbookingDiscount.setBooking(booking);
+                        newbookingDiscount.setBooking(savedBooking);
                         newbookingDiscount.setDiscount(utilityMethods.getDiscount(bookingDiscountDTO.getDiscountId()));
                         return newbookingDiscount;
                     })
-                    .forEach(bookingDiscount -> booking.getDiscounts().add(bookingDiscount));
+                    .forEach(bookingDiscountRepository::save);
 
             bookingRequestDTO.getBookingSupplements().stream()
                     .map(bookingSupplementDTO -> {
                         BookingSupplements newBookingSupplement = modelMapper.map(bookingSupplementDTO, BookingSupplements.class);
-                        newBookingSupplement.setBooking(booking);
+                        newBookingSupplement.setBooking(savedBooking);
                         newBookingSupplement.setSupplement(utilityMethods.getSupplement(bookingSupplementDTO.getSupplementId()));
                         return newBookingSupplement;
                     })
-                    .forEach(bookingSupplement -> booking.getSupplements().add(bookingSupplement));
+                    .forEach(bookingSupplementsRepository::save);
 
-            return bookingRepository.save(booking);
+            return getBookingById(savedBooking.getBookingId());
         } catch (Exception e) {
             throw new ServiceException("Failed to create Bookings", e);
         }
@@ -105,4 +110,58 @@ public class BookingServiceImpl implements BookingService {
             throw new ServiceException("Booking search failed");
         }
     }
+
+
+    // Should I return as a BookingResponseDTO?????????
+    @Override
+    public Booking updateBookingById(Integer bookingId, BookingRequestDTO bookingRequestDTO) {
+        try{
+
+            Booking booking = utilityMethods.getBooking(bookingId);
+            if (booking == null) {
+                throw new ResourceNotFoundException("Booking not found with ID: " + bookingId);
+            }
+
+            modelMapper.map(bookingRequestDTO, Booking.class);
+
+            bookingRequestDTO.getBookingRooms().forEach(bookingSupplementDTO -> {
+                BookingRoom bookingRoom = utilityMethods.getBookingRoom(bookingSupplementDTO.getBookingRoomId());
+                if (bookingRoom == null) {
+                    throw new ResourceNotFoundException("Booking Room not found with ID: " + bookingSupplementDTO.getBookingRoomId());
+                }
+                bookingRoom = modelMapper.map(bookingSupplementDTO, BookingRoom.class);
+                bookingRoom.setBooking(booking);
+                bookingRoom.setRoomType(utilityMethods.getRoomType(bookingSupplementDTO.getRoomTypeId()));
+                booking.getRooms().add(bookingRoom);
+            });
+
+            bookingRequestDTO.getBookingDiscounts().forEach(bookingDiscountDTO -> {
+                BookingDiscount bookingDiscount = utilityMethods.getBookingDiscount(bookingDiscountDTO.getBookingDiscountId());
+                if (bookingDiscount == null) {
+                    throw new ResourceNotFoundException("Booking Room not found with ID: " + bookingDiscountDTO.getBookingDiscountId());
+                }
+                bookingDiscount = modelMapper.map(bookingDiscountDTO, BookingDiscount.class);
+                bookingDiscount.setBooking(booking);
+                bookingDiscount.setDiscount(utilityMethods.getDiscount(bookingDiscountDTO.getDiscountId()));
+                booking.getDiscounts().add(bookingDiscount);
+            });
+
+            bookingRequestDTO.getBookingSupplements().forEach(bookingSupplementDTO -> {
+                BookingSupplements bookingSupplements = utilityMethods.getBookingSupplement(bookingSupplementDTO.getBookingSupplementId());
+                if (bookingSupplements == null) {
+                    throw new ResourceNotFoundException("Booking Room not found with ID: " + bookingSupplementDTO.getBookingSupplementId());
+                }
+                bookingSupplements = modelMapper.map(bookingSupplementDTO, BookingSupplements.class);
+                bookingSupplements.setBooking(booking);
+                bookingSupplements.setSupplement(utilityMethods.getSupplement(bookingSupplementDTO.getSupplementId()));
+                booking.getSupplements().add(bookingSupplements);
+            });
+
+            return bookingRepository.save(booking);
+
+        }catch (Exception e){
+            throw new ServiceException("Booking update failed" + e.getMessage());
+        }
+    }
+
 }

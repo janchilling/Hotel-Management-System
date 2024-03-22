@@ -36,6 +36,75 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "Get RoomType By Id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/roomTypes/getRoomTypeById/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"roomTypes",
+						"getRoomTypeById",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Room Types By Contract",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/roomTypes/getRoomTypeByContract/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"roomTypes",
+						"getRoomTypeByContract",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Room Types By Hotel",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/roomTypes/getRoomTypeByHotel/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"roomTypes",
+						"getRoomTypeByHotel",
+						"1"
+					]
+				}
+			},
+			"response": []
 		}
 	]
 }

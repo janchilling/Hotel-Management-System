@@ -1,0 +1,17 @@
+<app-main-header-navbar></app-main-header-navbar>
+<div class="container m-20 mb-3 ml-20 mt-7 sm:mb-8 md:mb-12 lg:mb-16 xl:mb-20 flex item-center justify-center">
+  <app-main-searchbar></app-main-searchbar>
+</div>
+<div class="mb-2 m-20 mt-10 sm:mb-8 md:mb-12 lg:mb-16 xl:mb-20flex item-center justify-center">
+  <h1>Found 3 Hotel(s) matching {{searchParams.destination}} Update the value properly</h1>
+  <br><br><br>
+  <h1>Available Hotels</h1>
+  <hr>
+</div>
+<div class="m-20">
+<ng-container *ngFor="let hotel of searchData">
+  <app-result-card [hotel]="hotel"></app-result-card>
+</ng-container>
+</div>
+
+<app-main-footer></app-main-footer>

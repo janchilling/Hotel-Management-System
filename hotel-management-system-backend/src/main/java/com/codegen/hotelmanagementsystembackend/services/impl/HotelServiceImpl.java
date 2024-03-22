@@ -9,11 +9,13 @@ import com.codegen.hotelmanagementsystembackend.repository.HotelRepository;
 import com.codegen.hotelmanagementsystembackend.services.HotelService;
 import com.codegen.hotelmanagementsystembackend.entities.Contract;
 
+import com.codegen.hotelmanagementsystembackend.util.StandardResponse;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.service.spi.ServiceException;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.sql.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -73,6 +75,9 @@ public class HotelServiceImpl implements HotelService {
      * @param  hotelId   the ID of the hotel to retrieve
      * @return          the hotel response DTO
      */
+
+//    Log4j  use logs
+
     @Override
     public HotelResponseDTO getHotelById(Integer hotelId) {
         try {
@@ -94,6 +99,5 @@ public class HotelServiceImpl implements HotelService {
             throw new ServiceException("An error occurred while retrieving the hotel", e);
         }
     }
-
 
 }

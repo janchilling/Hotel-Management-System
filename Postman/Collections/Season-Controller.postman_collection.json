@@ -1,0 +1,79 @@
+{
+	"info": {
+		"_postman_id": "68949e71-4693-4da0-b2e9-1895a3a18a63",
+		"name": "Season-Controller",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "25455967"
+	},
+	"item": [
+		{
+			"name": "Get Season By ID",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/seasons/getSeasonById/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"seasons",
+						"getSeasonById",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Seasons by Contract ID",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/seasons/getSeasonByContract/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"seasons",
+						"getSeasonByContract",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Seasons by Hotel ID",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/seasons/getSeasonByHotel/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"seasons",
+						"getSeasonByHotel",
+						"1"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

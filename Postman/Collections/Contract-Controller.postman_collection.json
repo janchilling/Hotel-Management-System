@@ -62,7 +62,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n  \"startDate\": \"2024-03-01\",\r\n  \"endDate\": \"2024-03-31\",\r\n  \"contractStatus\": \"Active\",\r\n  \"cancellationDeadline\": \"2024-02-28\",\r\n  \"cancellationAmount\": 50.0,\r\n  \"prepayment\": \"50%\",\r\n  \"balancePayment\": \"50%\",\r\n  \"seasons\": [\r\n    {\r\n    //   \"seasonId\": 1,\r\n      \"seasonName\": \"Spring Season\",\r\n      \"startDate\": \"2024-03-01\",\r\n      \"endDate\": \"2024-05-31\"\r\n    },\r\n    {\r\n    //   \"seasonId\": 2,\r\n      \"seasonName\": \"Summer Season\",\r\n      \"startDate\": \"2024-06-01\",\r\n      \"endDate\": \"2024-08-31\"\r\n    }\r\n  ]\r\n}\r\n",
+					"raw": "{\r\n  \"startDate\": \"2024-03-01\",\r\n  \"endDate\": \"2024-03-31\",\r\n  \"contractStatus\": \"Active\",\r\n  \"cancellationDeadline\": \"2024-02-28\",\r\n  \"cancellationAmount\": 50.0,\r\n  \"prepayment\": \"50%\",\r\n  \"balancePayment\": \"50%\",\r\n  \"hotelId\" : 1,\r\n  \"seasons\": [\r\n    {\r\n      \"seasonName\": \"Spring Season\",\r\n      \"startDate\": \"2024-03-01\",\r\n      \"endDate\": \"2024-05-31\"\r\n    },\r\n    {\r\n      \"seasonName\": \"Summer Season\",\r\n      \"startDate\": \"2024-06-01\",\r\n      \"endDate\": \"2024-08-31\"\r\n    }\r\n  ]\r\n}\r\n",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -81,6 +81,51 @@
 						"v1",
 						"contracts",
 						"addContract"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Contracts",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/contracts/getAllContracts",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"contracts",
+						"getAllContracts"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Contract By Id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/contracts/getContractById/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"contracts",
+						"getContractById",
+						"1"
 					]
 				}
 			},

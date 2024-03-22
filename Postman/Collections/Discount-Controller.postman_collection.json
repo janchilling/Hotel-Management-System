@@ -36,6 +36,75 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "Get Discount By ID",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/discounts/getDiscountById/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"discounts",
+						"getDiscountById",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Discount by Contract",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/discounts/getDiscountByContract/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"discounts",
+						"getDiscountByContract",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Discount by Hotel",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/discounts/getDiscountByHotel/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"discounts",
+						"getDiscountByHotel",
+						"1"
+					]
+				}
+			},
+			"response": []
 		}
 	]
 }

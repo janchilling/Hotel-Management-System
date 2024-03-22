@@ -6,10 +6,7 @@ import lombok.Data;
 public class BookingDiscountDTO {
 
     private Integer bookingDiscountId;
-
     private String discountName;
-
     private Double discountedAmount;
-
     private Integer discountId;
 }

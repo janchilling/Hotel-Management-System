@@ -17,12 +17,17 @@ public class BookingController {
 
     private final BookingService bookingService;
     @PostMapping("/addBooking")
-    public ResponseEntity<Booking>createBooking(@RequestBody BookingRequestDTO bookingRequestDTO) {
+    public ResponseEntity<BookingResponseDTO>createBooking(@RequestBody BookingRequestDTO bookingRequestDTO) {
         return ResponseEntity.ok(bookingService.createBooking(bookingRequestDTO));
     }
 
     @GetMapping("/getBookingById/{bookingId}")
     public ResponseEntity<BookingResponseDTO>getBookingById(@PathVariable Integer bookingId) {
         return ResponseEntity.ok(bookingService.getBookingById(bookingId));
+    }
+
+    @PutMapping("/updateBookingById/{bookingId}")
+    public ResponseEntity<Booking>updateBookingById(@PathVariable Integer bookingId, @RequestBody BookingRequestDTO bookingRequestDTO) {
+        return ResponseEntity.ok(bookingService.updateBookingById(bookingId, bookingRequestDTO));
     }
 }

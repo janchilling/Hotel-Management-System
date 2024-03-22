@@ -1,0 +1,33 @@
+{
+	"info": {
+		"_postman_id": "86174aed-47b6-4af7-8dc4-8a035a4199f3",
+		"name": "Payment Controller",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "25455967"
+	},
+	"item": [
+		{
+			"name": "Get Payment By Id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/payments/getPaymentById/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"payments",
+						"getPaymentById",
+						"1"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
