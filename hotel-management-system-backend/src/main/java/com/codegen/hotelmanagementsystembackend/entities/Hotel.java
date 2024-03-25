@@ -22,6 +22,10 @@ public class Hotel {
 
     private String hotelDescription;
 
+    private Integer hotelRating;
+
+    private String hotelBriefDescription;
+
     private String hotelEmail;
 
     private String hotelStreetAddress;

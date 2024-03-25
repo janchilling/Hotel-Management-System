@@ -18,6 +18,8 @@ public class HotelImage {
 
     private String hotelImageURL;
 
+    private String hotelImageAlt;
+
     @ManyToOne
     @JsonBackReference("hotelImageHoteltReference")
     private Hotel hotel;

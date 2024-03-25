@@ -12,6 +12,10 @@ public class HotelRequestDTO {
 
     private String hotelDescription;
 
+    private String hotelBriefDescription;
+
+    private Integer hotelRating;
+
     private String hotelEmail;
 
     private String hotelStreetAddress;

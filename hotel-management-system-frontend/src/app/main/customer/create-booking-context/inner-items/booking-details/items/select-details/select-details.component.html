@@ -1,1 +1,8 @@
-<p>select-details works!</p>
+<div class="bg-blue-100">
+  <h3>Showing prices for dates between {{ checkInDate | date: 'shortDate' }} and {{ checkOutDate | date: 'shortDate' }}</h3>
+  <ng-container *ngFor="let roomType of roomTypesDetails">
+    <app-room-card [roomType]="roomType" [showSelectSupplements]="true" [supplements] = "supplementsDetails"></app-room-card>
+  </ng-container>
+  <p>Available Discounts</p>
+</div>
+

@@ -7,5 +7,6 @@ public class HotelImageDTO {
 
     private Long hotelImageId;
     private String imageURL;
+    private String hotelImageAlt;
 
 }
