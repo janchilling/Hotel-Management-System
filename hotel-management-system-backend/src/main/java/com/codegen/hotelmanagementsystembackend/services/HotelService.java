@@ -11,7 +11,7 @@ import java.util.List;
 
 public interface HotelService {
 
-    Hotel createHotel(HotelRequestDTO hotelRequestDTO);
+    StandardResponse<Hotel> createHotel(HotelRequestDTO hotelRequestDTO);
 
     HotelResponseDTO getHotelById(Integer hotelId);
 

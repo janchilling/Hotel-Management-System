@@ -38,7 +38,7 @@ import { BookingConfirmationComponent } from './customer/create-booking-context/
     SelectDetailsComponent,
     ContactDetailsComponent,
     BookingPaymentComponent,
-    BookingConfirmationComponent
+    BookingConfirmationComponent,
   ],
     imports: [
         CommonModule,

@@ -9,10 +9,13 @@ import { ActivatedRoute } from '@angular/router';
 export class RoomCardComponent implements OnInit {
   @Input() roomType: any;
   @Input() supplements: any;
-  @Input() showSelectSupplements: boolean = true;
+  @Input() showSelectSupplements: boolean = false;
+  @Input() showSelectDetails: boolean = false;
   roomTypePrice: number | undefined;
   checkInDate: Date | undefined;
   checkOutDate: Date | undefined;
+  numRooms: number = 0;
+  selectedSupplements: any[] = []; // Array to track selected supplements for each room type
 
   constructor(private route: ActivatedRoute) {}
 
@@ -63,5 +66,48 @@ export class RoomCardComponent implements OnInit {
         }
       });
     });
+  }
+
+  incrementRooms(): void {
+    this.numRooms++;
+  }
+
+  decrementRooms(): void {
+    if (this.numRooms > 0) {
+      this.numRooms--;
+    }
+  }
+
+  selectSupplement(supplement: any): void {
+    supplement.selected = !supplement.selected; // Toggle selected state
+
+    // Check if the supplement is already selected for this room type
+    const existingIndex = this.selectedSupplements.findIndex(item => item.roomType === this.roomType.roomTypeName);
+
+    if (supplement.selected) {
+      // If the supplement is selected, add it to the selected supplements for this room type
+      if (existingIndex === -1) {
+        this.selectedSupplements.push({ roomType: this.roomType.roomTypeName, supplements: [supplement] });
+      } else {
+        this.selectedSupplements[existingIndex].supplements.push(supplement);
+      }
+    } else {
+      // If the supplement is deselected, remove it from the selected supplements for this room type
+      if (existingIndex !== -1) {
+        const supplementIndex = this.selectedSupplements[existingIndex].supplements.findIndex((item: any) => item === supplement);
+        if (supplementIndex !== -1) {
+          this.selectedSupplements[existingIndex].supplements.splice(supplementIndex, 1);
+        }
+      }
+    }
+  }
+
+  isSupplementSelected(supplement: any): boolean {
+    // Check if the supplement is selected for this room type
+    const existingIndex = this.selectedSupplements.findIndex(item => item.roomType === this.roomType.roomTypeName);
+    if (existingIndex !== -1) {
+      return this.selectedSupplements[existingIndex].supplements.includes(supplement);
+    }
+    return false;
   }
 }

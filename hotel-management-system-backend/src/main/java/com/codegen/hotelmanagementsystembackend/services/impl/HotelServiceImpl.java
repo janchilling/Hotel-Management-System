@@ -2,10 +2,10 @@ package com.codegen.hotelmanagementsystembackend.services.impl;
 
 import com.codegen.hotelmanagementsystembackend.dto.HotelRequestDTO;
 import com.codegen.hotelmanagementsystembackend.dto.HotelResponseDTO;
-import com.codegen.hotelmanagementsystembackend.dto.SearchResponseDTO;
 import com.codegen.hotelmanagementsystembackend.entities.Hotel;
 import com.codegen.hotelmanagementsystembackend.entities.HotelImage;
 import com.codegen.hotelmanagementsystembackend.entities.HotelPhone;
+import com.codegen.hotelmanagementsystembackend.exception.ResourceAlreadyExistsException;
 import com.codegen.hotelmanagementsystembackend.repository.HotelRepository;
 import com.codegen.hotelmanagementsystembackend.services.HotelService;
 import com.codegen.hotelmanagementsystembackend.entities.Contract;
@@ -14,6 +14,7 @@ import com.codegen.hotelmanagementsystembackend.util.StandardResponse;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.service.spi.ServiceException;
 import org.modelmapper.ModelMapper;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.sql.Date;
@@ -34,11 +35,15 @@ public class HotelServiceImpl implements HotelService {
      * @return                   the newly created Hotel
      */
     @Override
-    public Hotel createHotel(HotelRequestDTO hotelRequestDTO) {
+    public StandardResponse<Hotel> createHotel(HotelRequestDTO hotelRequestDTO) {
         try {
             if (hotelRepository.existsByHotelNameAndHotelStreetAddress(
                     hotelRequestDTO.getHotelName(), hotelRequestDTO.getHotelStreetAddress())) {
-                throw new ServiceException("Hotel with the same name and address already exists");
+//                return new ResourceAlreadyExistsException("Hotel with the same name and address already exists" + " hotelName : "
+//                        + hotelRequestDTO.getHotelName() +  " hotelStreetAddress : " + hotelRequestDTO.getHotelStreetAddress());
+                String message = "Hotel with the same name and address already exists";
+//                logger.error(message);
+                return new StandardResponse<>(HttpStatus.CONFLICT.value(), message, null);
             }
 
             Hotel newHotel = modelMapper.map(hotelRequestDTO, Hotel.class);
@@ -63,12 +68,13 @@ public class HotelServiceImpl implements HotelService {
 
             newHotel.setHotelPhones(hotelPhones);
 
-            return hotelRepository.save(newHotel);
+            return new StandardResponse<>(HttpStatus.CREATED.value(), "Hotel created successfully", hotelRepository.save(newHotel));
 
         } catch (Exception e) {
-            throw new ServiceException("Failed to create Hotel", e);
+            return new StandardResponse<>(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Failed to create Hotel", null);
         }
     }
+
 
     /**
      * Retrieves a hotel by its ID.

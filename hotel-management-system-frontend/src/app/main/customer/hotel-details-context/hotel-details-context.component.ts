@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import { HotelDetailsByIdService } from '../../../shared/services/hotelDetailsById/hotel-details-by-id.service';
 
 @Component({
@@ -12,15 +12,22 @@ export class HotelDetailsContextComponent implements OnInit {
   hotelDetails: any;
   isOverviewVisible: boolean = true;
   isRoomsVisible: boolean = false;
+  checkInDate: any;
+  checkOutDate: any;
 
   constructor(
     private hotelDetailsByIdService: HotelDetailsByIdService,
     private route: ActivatedRoute,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
     // Get the hotel ID from the URL path
     this.hotelId = +this.route.snapshot.params['hotelId'];
+    this.route.queryParams.subscribe(params => {
+      this.checkInDate = params['checkIn'];
+      this.checkOutDate = params['checkOut'];
+    });
 
     this.fetchHotelDetails();
   }
@@ -47,5 +54,10 @@ export class HotelDetailsContextComponent implements OnInit {
   showRooms() {
     this.isOverviewVisible = false;
     this.isRoomsVisible = true;
+  }
+
+  viewbookingContext() {
+    this.router.navigate(['/main/booking'], { queryParams: { hotelId: this.hotelId, checkIn: this.checkInDate, checkOut: this.checkOutDate } });
+
   }
 }

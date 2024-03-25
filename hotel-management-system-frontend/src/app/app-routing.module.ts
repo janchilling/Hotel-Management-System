@@ -12,6 +12,7 @@ const routes: Routes = [
   {
     path: 'share', loadChildren: () => import('./shared/shared.module').then(m => m.SharedModule)
   },
+  { path: 'administration', loadChildren: () => import('./administration/administration.module').then(m => m.AdministrationModule) },
 ];
 
 @NgModule({
