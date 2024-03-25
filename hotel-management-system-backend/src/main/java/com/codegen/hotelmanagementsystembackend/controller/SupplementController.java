@@ -4,8 +4,11 @@ import com.codegen.hotelmanagementsystembackend.dto.DiscountResponseDTO;
 import com.codegen.hotelmanagementsystembackend.dto.SupplementRequestDTO;
 import com.codegen.hotelmanagementsystembackend.dto.SupplementResponseDTO;
 import com.codegen.hotelmanagementsystembackend.entities.Supplement;
+import com.codegen.hotelmanagementsystembackend.exception.ResourceNotFoundException;
 import com.codegen.hotelmanagementsystembackend.services.SupplementService;
+import com.codegen.hotelmanagementsystembackend.util.StandardResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,8 +32,17 @@ public class SupplementController {
     }
 
     @GetMapping("/getSupplementByContract/{contractId}")
-    public ResponseEntity<List<SupplementResponseDTO>> getSupplementByContract(@PathVariable Integer contractId){
-        return ResponseEntity.ok(supplementService.getSupplementByContract(contractId));
+    public ResponseEntity<StandardResponse<List<SupplementResponseDTO>>> getSupplementByContract(@PathVariable Integer contractId) {
+        try {
+            List<SupplementResponseDTO> supplementResponseDTOList = supplementService.getSupplementByContract(contractId);
+            return ResponseEntity.ok(new StandardResponse<>(200, "Success", supplementResponseDTOList));
+        } catch (ResourceNotFoundException ex) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(new StandardResponse<>(404, ex.getMessage(), null));
+        } catch (Exception ex) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new StandardResponse<>(500, "Internal Server Error", null));
+        }
     }
 
     @GetMapping("/getSupplementByHotel/{hotelId}")

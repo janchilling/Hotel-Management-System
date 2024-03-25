@@ -2,6 +2,7 @@ package com.codegen.hotelmanagementsystembackend.services.impl;
 
 import com.codegen.hotelmanagementsystembackend.dto.HotelRequestDTO;
 import com.codegen.hotelmanagementsystembackend.dto.HotelResponseDTO;
+import com.codegen.hotelmanagementsystembackend.dto.SearchResponseDTO;
 import com.codegen.hotelmanagementsystembackend.entities.Hotel;
 import com.codegen.hotelmanagementsystembackend.entities.HotelImage;
 import com.codegen.hotelmanagementsystembackend.entities.HotelPhone;

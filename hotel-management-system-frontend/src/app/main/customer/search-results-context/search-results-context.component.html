@@ -1,4 +1,4 @@
-<app-main-header-navbar></app-main-header-navbar>
+
 <div class="container m-20 mb-3 ml-20 mt-7 sm:mb-8 md:mb-12 lg:mb-16 xl:mb-20 flex item-center justify-center">
   <app-main-searchbar></app-main-searchbar>
 </div>
@@ -10,8 +10,7 @@
 </div>
 <div class="m-20">
 <ng-container *ngFor="let hotel of searchData">
-  <app-result-card [hotel]="hotel"></app-result-card>
+  <app-result-card [hotel]="hotel" [checkIn]="searchParams.checkIn" [checkOut]="searchParams.checkOut"></app-result-card>
 </ng-container>
 </div>
 
-<app-main-footer></app-main-footer>

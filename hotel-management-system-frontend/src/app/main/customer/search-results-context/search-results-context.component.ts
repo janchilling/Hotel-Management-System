@@ -11,12 +11,10 @@ import { SearchParamsService } from "../../../shared/services/searchParams/searc
   styleUrls: ['./search-results-context.component.scss']
 })
 export class SearchResultsContextComponent implements OnInit, OnDestroy {
+
   private unsubscribe$: Subject<void> = new Subject<void>();
   searchParams: any;
   searchData: any = [];
-
-
-  // Corrected type
 
   constructor(
     private searchService: SearchService,

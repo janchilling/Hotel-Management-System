@@ -22,7 +22,7 @@ public class HotelController {
         return ResponseEntity.ok(hotelService.createHotel(hotelRequestDTO));
     }
 
-    @GetMapping("/getHotelById/{hotelId}")
+    @GetMapping("/{hotelId}")
     public ResponseEntity<HotelResponseDTO> getHotelById(@PathVariable Integer hotelId){
         return ResponseEntity.ok(hotelService.getHotelById(hotelId));
     }
