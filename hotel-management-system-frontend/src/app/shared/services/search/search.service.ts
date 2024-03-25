@@ -13,6 +13,6 @@ export class SearchService {
   backendHostName: String = this.apiPathService.baseURL;
 
   getSearchData(destination: String, noOfRooms: String, checkIn: String, checkOut: String) {
-    return this.httpClient.get(this.backendHostName + "/api/v1/products?destination=" + destination + "&noOfRooms=" + noOfRooms + "&checkIn=" + checkIn + "&checkOut=" + checkOut);
+    return this.httpClient.get(this.backendHostName + "/v1/products?destination=" + destination + "&noOfRooms=" + noOfRooms + "&checkIn=" + checkIn + "&checkOut=" + checkOut);
   }
 }

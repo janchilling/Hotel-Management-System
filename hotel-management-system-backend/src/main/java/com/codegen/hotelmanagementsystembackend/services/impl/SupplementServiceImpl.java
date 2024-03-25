@@ -96,8 +96,11 @@ public class SupplementServiceImpl implements SupplementService {
             SupplementResponseDTO supplementResponseDTO = modelMapper.map(supplement, SupplementResponseDTO.class);
             supplementResponseDTO.setSupplementsSeasons(supplement.getSupplementsSeasons().stream().map(
                     seasonSupplement -> {
+                        Season season = utilityMethods.getSeason(seasonSupplement.getSeason().getSeasonId());
                         SeasonSupplementResponseDTO seasonSupplementResponseDTO = modelMapper.map(seasonSupplement, SeasonSupplementResponseDTO.class);
-                        seasonSupplementResponseDTO.setSeasonName(utilityMethods.getSeason(seasonSupplement.getSeason().getSeasonId()).getSeasonName());
+                        seasonSupplementResponseDTO.setSeasonName(season.getSeasonName());
+                        seasonSupplementResponseDTO.setStartDate(season.getStartDate());
+                        seasonSupplementResponseDTO.setEndDate(season.getEndDate());
                         return seasonSupplementResponseDTO;
                     }).toList());
 

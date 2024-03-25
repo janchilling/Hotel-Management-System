@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import {CommonModule, NgOptimizedImage} from '@angular/common';
 
 import { MainRoutingModule } from './main-routing.module';
 import { MainComponent } from './main.component';
@@ -10,7 +10,15 @@ import { HomeAdventureComponent } from './customer/home-context/inner-items/home
 import { SharedModule } from '../shared/shared.module';
 import { SearchResultsContextComponent } from './customer/search-results-context/search-results-context.component';
 import { ResultCardComponent } from './customer/search-results-context/inner-items/result-card/result-card.component';
-import { HotelDetailsContextComponent } from './customer/hotel-details-context/hotel-details-context/hotel-details-context.component';
+import {HotelDetailsContextComponent} from "./customer/hotel-details-context/hotel-details-context.component";
+import { HotelOverviewComponent } from './customer/hotel-details-context/inner-items/hotel-overview/hotel-overview.component';
+import { HotelRoomComponent } from './customer/hotel-details-context/inner-items/hotel-room/hotel-room.component';
+import { CreateBookingContextComponent } from './customer/create-booking-context/create-booking-context.component';
+import { BookingDetailsComponent } from './customer/create-booking-context/inner-items/booking-details/booking-details.component';
+import { SelectDetailsComponent } from './customer/create-booking-context/inner-items/booking-details/items/select-details/select-details.component';
+import { ContactDetailsComponent } from './customer/create-booking-context/inner-items/booking-details/items/contact-details/contact-details.component';
+import { BookingPaymentComponent } from './customer/create-booking-context/inner-items/booking-payment/booking-payment.component';
+import { BookingConfirmationComponent } from './customer/create-booking-context/inner-items/booking-confirmation/booking-confirmation.component';
 
 
 @NgModule({
@@ -22,12 +30,21 @@ import { HotelDetailsContextComponent } from './customer/hotel-details-context/h
     HomeAdventureComponent,
     SearchResultsContextComponent,
     ResultCardComponent,
-    HotelDetailsContextComponent
+    HotelDetailsContextComponent,
+    HotelOverviewComponent,
+    HotelRoomComponent,
+    CreateBookingContextComponent,
+    BookingDetailsComponent,
+    SelectDetailsComponent,
+    ContactDetailsComponent,
+    BookingPaymentComponent,
+    BookingConfirmationComponent
   ],
-  imports: [
-    CommonModule,
-    MainRoutingModule,
-    SharedModule
-  ]
+    imports: [
+        CommonModule,
+        MainRoutingModule,
+        SharedModule,
+        NgOptimizedImage
+    ]
 })
 export class MainModule { }

@@ -8,6 +8,6 @@ export class ApiPathService {
   constructor() {
   }
 
-  public baseURL = "http://localhost:8080";
+  public baseURL = "http://localhost:8080/api";
 
 }

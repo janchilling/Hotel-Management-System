@@ -91,14 +91,14 @@ public class RoomTypeServiceImpl implements RoomTypeService {
     /**
      * A description of the entire Java function.
      *
-     * @param  discountId    description of parameter
+     * @param  roomTypeId    description of parameter
      * @return              description of return value
      */
     @Override
-    public RoomTypeResponseDTO getRoomTypeById(Integer discountId) {
+    public RoomTypeResponseDTO getRoomTypeById(Integer roomTypeId) {
 
         try{
-            RoomType roomType = utilityMethods.getRoomType(discountId);
+            RoomType roomType = utilityMethods.getRoomType(roomTypeId);
             Contract contract = utilityMethods.getContract(roomType.getContract().getContractId());
             Hotel hotel = utilityMethods.getHotel(contract.getHotel().getHotelId());
 
@@ -117,6 +117,8 @@ public class RoomTypeServiceImpl implements RoomTypeService {
                         Season season = utilityMethods.getSeason(seasonRoomType.getSeason().getSeasonId());
                         SeasonRoomTypeResponseDTO seasonRoomTypeResponseDTO = modelMapper.map(seasonRoomType, SeasonRoomTypeResponseDTO.class);
                         seasonRoomTypeResponseDTO.setSeasonName(season.getSeasonName());
+                        seasonRoomTypeResponseDTO.setStartDate(season.getStartDate());
+                        seasonRoomTypeResponseDTO.setEndDate(season.getEndDate());
                         return seasonRoomTypeResponseDTO;
                     }
             ).collect(Collectors.toList()));

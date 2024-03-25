@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-result-card',
@@ -7,4 +8,11 @@ import { Component, Input } from '@angular/core';
 })
 export class ResultCardComponent {
   @Input() hotel: any;
+  @Input() checkIn: any;
+  @Input() checkOut: any;
+
+  constructor(private router: Router) {}
+  viewHotelDetails(hotelId: number) {
+    this.router.navigate(['/main/hotel', hotelId], { queryParams: { checkIn: this.checkIn, checkOut: this.checkOut } });
+  }
 }
