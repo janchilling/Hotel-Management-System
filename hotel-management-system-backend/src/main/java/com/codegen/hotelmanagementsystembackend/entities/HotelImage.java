@@ -16,9 +16,8 @@ public class HotelImage {
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Integer hotelImageId;
 
+    @Column(length = 1000)
     private String hotelImageURL;
-
-    private String hotelImageAlt;
 
     @ManyToOne
     @JsonBackReference("hotelImageHoteltReference")

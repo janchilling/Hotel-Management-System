@@ -20,10 +20,12 @@ public class Hotel {
 
     private String hotelName;
 
+    @Column(length = 1000)
     private String hotelDescription;
 
     private Integer hotelRating;
 
+    @Column(length = 1000)
     private String hotelBriefDescription;
 
     private String hotelEmail;

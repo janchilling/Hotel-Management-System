@@ -7,6 +7,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {CustomDateAdapter} from "./shared/services/dateAdapter/custom-date-adapter.service";
 import {DateAdapter} from "@angular/material/core";
 import {HttpClientModule} from "@angular/common/http";
+import {AngularFireStorageModule} from "@angular/fire/compat/storage";
+import {environment} from "../environments/environment";
+import {AngularFireModule} from "@angular/fire/compat";
 
 @NgModule({
   declarations: [
@@ -16,7 +19,9 @@ import {HttpClientModule} from "@angular/common/http";
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-    HttpClientModule
+    HttpClientModule,
+    AngularFireModule.initializeApp(environment.firebaseConfig),
+    AngularFireStorageModule
   ],
     providers: [
       { provide: DateAdapter, useClass: CustomDateAdapter }
