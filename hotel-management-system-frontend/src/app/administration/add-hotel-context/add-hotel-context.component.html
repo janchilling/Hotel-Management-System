@@ -1,4 +1,4 @@
-<div class="container mb-3 -mt-7 sm:mb-8 md:mb-12 lg:mb-16 xl:mb-20 flex item-center justify-center">
+<div class="container mb-3 -mt-7 sm:mb-8 md:mb-12 lg:mb-16 xl:mb-20 ">
   <section class=" py-1 bg-blueGray-50">
     <div class="w-full lg:w-8/12 px-4 mx-auto mt-6">
       <div class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-lg bg-blueGray-100 border-0">
@@ -9,124 +9,160 @@
           </div>
         </div>
         <div class="flex-auto px-4 lg:px-10 py-10 pt-0">
-          <form #hotelForm="ngForm" (ngSubmit)="submitForm()">
+          <form [formGroup]="hotelForm" (ngSubmit)="submitForm()">
             <h6 class="text-blueGray-400 text-sm mt-3 mb-6 font-bold uppercase">
               General Information
             </h6>
             <div class="flex flex-wrap">
               <div class="w-full lg:w-6/12 px-4">
                 <div class="relative w-full mb-3">
-                  <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2" htmlfor="grid-password">
+                  <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2" for="hotelName">
                     Hotel Name
                   </label>
-                  <input type="text" id="hotelName" name="hotelName" [(ngModel)]="hotelName" #hotelNameField="ngModel" class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" placeholder="Hotel Name" required>
-                  <span class="text-red-600" *ngIf="hotelNameField.invalid && hotelNameField.touched && hotelNameField.errors?.['required']">Hotel Name is required</span>
+                  <input formControlName="hotelName" id="hotelName" type="text" class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" placeholder="Hotel Name" required>
+                  <span class="text-red-600" *ngIf="hotelForm.get('hotelName')?.invalid && hotelForm.get('hotelName')?.touched">Hotel Name is required</span>
                 </div>
+              </div>
               <div class="w-full lg:w-6/12 px-4">
                 <div class="relative w-full mb-3">
-                  <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2" htmlfor="grid-password">
+                  <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2" for="email">
                     Email address
                   </label>
-                  <input type="email" class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" value="jesse@example.com">
+                  <input formControlName="hotelEmail" id="email" type="email" class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" placeholder="Email address" required>
+                  <span class="text-red-600" *ngIf="hotelForm.get('hotelEmail')?.invalid && hotelForm.get('hotelEmail')?.touched">Email address is required</span>
                 </div>
               </div>
+
               <div class="w-full lg:w-6/12 px-4">
                 <div class="relative w-full mb-3">
-                  <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2" htmlfor="grid-password">
+                  <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2" for="hotelStarRating">
                     Hotel Star Rating
                   </label>
-                  <input type="text" class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" value="Lucky">
+                  <div class="flex items-center">
+                    <input formControlName="hotelStarRating" id="hotelStarRating" type="number" class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" placeholder="Hotel Star Rating" required min="1" max="5" step="1">
+                    <button type="button" class="ml-2 bg-gray-200 text-gray-700 rounded-full p-2 hover:bg-gray-300" (click)="hotelStarRating = Math.max(1, hotelStarRating - 1)">-</button>
+                    <button type="button" class="ml-2 bg-gray-200 text-gray-700 rounded-full p-2 hover:bg-gray-300" (click)="hotelStarRating = Math.min(5, hotelStarRating + 1)">+</button>
+                  </div>
+                  <span class="text-red-600" *ngIf="hotelForm.get('hotelStarRating')?.invalid && hotelForm.get('hotelStarRating')?.touched">Hotel Star Rating must be between 1 and 5</span>
                 </div>
               </div>
-            </div>
-
-            <hr class="mt-6 border-b-1 border-blueGray-300">
-
-            <h6 class="text-blueGray-400 text-sm mt-3 mb-6 font-bold uppercase">
-              Contact Information
-            </h6>
-            <div class="flex flex-wrap">
               <div class="w-full lg:w-12/12 px-4">
                 <div class="relative w-full mb-3">
-                  <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2" htmlfor="grid-password">
+                  <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2" htmlfor="hotelPhones">
                     Hotel Phone
                   </label>
-                  <input type="text" class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" value="Bld Mihail Kogalniceanu, nr. 8 Bl 1, Sc 1, Ap 09">
+                  <!-- Iterate over hotelPhones FormArray to create phone input fields -->
+                  <div formArrayName="hotelPhones">
+                    <div *ngFor="let phone of phoneControls.controls; let i = index">
+                      <div [formGroupName]="i">
+                        <input type="number" formControlName="phoneNumber" class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" placeholder="Hotel Phone {{ i + 1 }}" required>
+                        <button type="button" (click)="removePhone(i)" class="ml-2 bg-gray-200 text-gray-700 rounded-full p-2 hover:bg-gray-300">Remove</button>
+                      </div>
+                      <!-- Display validation error message -->
+                      <span class="text-red-600" *ngIf="phoneControls.controls[i].get('phoneNumber')?.invalid && phoneControls.controls[i].get('phoneNumber')?.touched">Hotel Phone is required</span>
+                    </div>
+                  </div>
+
+
+                  <!-- Button to add a new phone input field -->
+                  <button type="button" (click)="addPhone()" class="mt-2 bg-gray-200 text-gray-700 rounded-full p-2 hover:bg-gray-300">Add Phone</button>
                 </div>
               </div>
+
               <div class="w-full lg:w-12/12 px-4">
                 <div class="relative w-full mb-3">
-                  <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2" htmlfor="grid-password">
+                  <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2" for="address">
                     Address
                   </label>
-                  <input type="text" class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" value="Bld Mihail Kogalniceanu, nr. 8 Bl 1, Sc 1, Ap 09">
+                  <input formControlName="hotelStreetAddress" id="address" type="text" class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" placeholder="Address" required>
+                  <span class="text-red-600" *ngIf="hotelForm.get('hotelStreetAddress')?.invalid && hotelForm.get('hotelStreetAddress')?.touched">Address is required</span>
                 </div>
               </div>
+
               <div class="w-full lg:w-4/12 px-4">
                 <div class="relative w-full mb-3">
-                  <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2" htmlfor="grid-password">
+                  <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2" for="city">
                     City
                   </label>
-                  <input type="email" class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" value="New York">
+                  <input formControlName="hotelCity" id="city" type="text" class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" placeholder="City" required>
+                  <span class="text-red-600" *ngIf="hotelForm.get('hotelCity')?.invalid && hotelForm.get('hotelCity')?.touched">City is required</span>
                 </div>
               </div>
+
               <div class="w-full lg:w-4/12 px-4">
                 <div class="relative w-full mb-3">
-                  <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2" htmlfor="grid-password">
+                  <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2" for="state">
+                    State
+                  </label>
+                  <input formControlName="hotelState" id="state" type="text" class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" placeholder="State" required>
+                  <span class="text-red-600" *ngIf="hotelForm.get('hotelState')?.invalid && hotelForm.get('hotelState')?.touched">State is required</span>
+                </div>
+              </div>
+
+              <div class="w-full lg:w-4/12 px-4">
+                <div class="relative w-full mb-3">
+                  <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2" for="country">
                     Country
                   </label>
-                  <input type="text" class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" value="United States">
+                  <input formControlName="hotelCountry" id="country" type="text" class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" placeholder="Country" required>
+                  <span class="text-red-600" *ngIf="hotelForm.get('hotelCountry')?.invalid && hotelForm.get('hotelCountry')?.touched">Country is required</span>
                 </div>
               </div>
+
               <div class="w-full lg:w-4/12 px-4">
                 <div class="relative w-full mb-3">
-                  <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2" htmlfor="grid-password">
+                  <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2" for="postalCode">
                     Postal Code
                   </label>
-                  <input type="text" class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" value="Postal Code">
+                  <input formControlName="hotelPostalCode" id="postalCode" type="text" class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" placeholder="Postal Code" required>
+                  <span class="text-red-600" *ngIf="hotelForm.get('hotelPostalCode')?.invalid && hotelForm.get('hotelPostalCode')?.touched">Postal Code is required</span>
                 </div>
               </div>
-            </div>
 
-            <hr class="mt-6 border-b-1 border-blueGray-300">
-            <div class="flex flex-wrap">
-              <div class="w-full lg:w-12/12 px-4">
-                <div class="relative w-full mb-3">
-                  <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2" htmlfor="grid-password">
-                    Description(min 1000 characters)
-                  </label>
-                  <textarea type="text" class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" rows="4"> A beautiful UI Kit and Admin for JavaScript &amp; Tailwind CSS. It is Freeand Open Source.</textarea>
-                </div>
-              </div>
+
+                <hr class="mt-6 border-b-1 border-blueGray-300">
+                <div class="flex flex-wrap">
+                  <div class="w-full lg:w-12/12 px-4">
+                    <div class="relative w-full mb-3">
+                      <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2" for="description">
+                        Description (min 750 characters, max 1000 characters)
+                      </label>
+                      <textarea formControlName="hotelDescription" id="description" class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" rows="4" required minlength="750" maxlength="1000" placeholder="Description"></textarea>
+                      <span class="text-red-600" *ngIf="hotelForm.get('hotelDescription')?.invalid && hotelForm.get('hotelDescription')?.touched">Description must be between 750 and 1000 characters</span>
+                    </div>
+                  </div>
+
+                  <div class="w-full lg:w-12/12 px-4">
+                    <div class="relative w-full mb-3">
+                      <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2" for="briefDescription">
+                        Brief Description (min 50 characters, max 250 characters)
+                      </label>
+                      <textarea formControlName="hotelBriefDescription" id="briefDescription" class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" rows="4" required minlength="50" maxlength="250" placeholder="Brief Description"></textarea>
+                      <span class="text-red-600" *ngIf="hotelForm.get('hotelBriefDescription')?.invalid && hotelForm.get('hotelBriefDescription')?.touched">Brief Description must be between 50 and 250 characters</span>
+                    </div>
+                  </div>
+
+                  <div class="w-full lg:w-12/12 px-4">
+                    <div class="relative w-full mb-3">
+                      <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2" htmlfor="image">
+                        Upload Images
+                      </label>
+                      <input type="file" (change)="handleImageUpload($event)" multiple accept="image/*">
+                      <!-- You can display uploaded images here if needed -->
+                    </div>
+                  </div>
+                  <div class="w-full lg:w-12/12 px-4">
+                    <button type="submit" [disabled]="hotelForm?.invalid" class="bg-pink-500 text-white active:bg-pink-600 font-bold uppercase text-sm px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 mt-4 ease-linear transition-all duration-150">
+                      Create Hotel
+                    </button>
+                  </div>
             </div>
-            <div class="flex flex-wrap">
-              <div class="w-full lg:w-12/12 px-4">
-                <div class="relative w-full mb-3">
-                  <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2" htmlfor="grid-password">
-                    Brief Description(min 50 characters, max 250 characters)
-                  </label>
-                  <textarea type="text" class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" rows="4"> A beautiful UI Kit and Admin for JavaScript &amp; Tailwind CSS. It is Freeand Open Source.</textarea>
-                </div>
-              </div>
-            </div>
-              <button type="submit" [disabled]="hotelForm.invalid" class="bg-pink-500 text-white active:bg-pink-600 font-bold uppercase text-sm px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 mt-4 ease-linear transition-all duration-150">
-                Create Hotel
-              </button>
             </div>
           </form>
         </div>
       </div>
-      <footer class="relative  pt-8 pb-6 mt-2">
-        <div class="container mx-auto px-4">
-          <div class="flex flex-wrap items-center md:justify-between justify-center">
-            <div class="w-full md:w-6/12 px-4 mx-auto text-center">
-              <div class="text-sm text-blueGray-500 font-semibold py-1">
-                Made with <a href="https://www.creative-tim.com/product/notus-js" class="text-blueGray-500 hover:text-gray-800" target="_blank">Notus JS</a> by <a href="https://www.creative-tim.com" class="text-blueGray-500 hover:text-blueGray-800" target="_blank"> Creative Tim</a>.
-              </div>
-            </div>
-          </div>
-        </div>
-      </footer>
     </div>
   </section>
 </div>
+
+
