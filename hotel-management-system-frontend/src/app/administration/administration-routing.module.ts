@@ -13,6 +13,7 @@ const routes: Routes = [{
     { path: 'dashboard', component: DashboardContextComponent },
     { path: 'addHotel', component: AddHotelContextComponent },
     { path: 'addContract', component: AddContractContextComponent },
+    { path: 'addMarkup', component: AddContractContextComponent },
   ],
 },
 ];

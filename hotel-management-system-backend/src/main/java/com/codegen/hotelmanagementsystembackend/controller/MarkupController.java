@@ -19,7 +19,7 @@ public class MarkupController {
 
     private final MarkupService markupService;
 
-    @PostMapping("/addMarkup")
+    @PostMapping("/")
     public ResponseEntity<List<Markup>> createMarkup(@RequestBody List<MarkupRequestDTO> markupRequestDTOS){
         return ResponseEntity.ok(markupService.createMarkup(markupRequestDTOS));
     }
