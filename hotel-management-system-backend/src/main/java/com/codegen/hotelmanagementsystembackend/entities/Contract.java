@@ -25,13 +25,13 @@ public class Contract {
 
     private String contractStatus;
 
-    private String cancellationDeadline;
+    private Integer cancellationDeadline;
 
-    private Double cancellationAmount;
+    private Integer cancellationAmount;
 
-    private String prepayment;
+    private Integer prepayment;
 
-    private String balancePayment;
+    private Integer balancePayment;
 
     @OneToMany(mappedBy="contract")
     @JsonManagedReference("discountContractReference")

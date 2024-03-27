@@ -12,10 +12,10 @@ public class ContractRequestDTO {
     private Date startDate;
     private Date endDate;
     private String contractStatus;
-    private String cancellationDeadline;
-    private Double cancellationAmount;
-    private String prepayment;
-    private String balancePayment;
+    private Integer cancellationDeadline;
+    private Integer cancellationAmount;
+    private Integer prepayment;
+    private Integer balancePayment;
     private Integer hotelId;
 //    private List<DiscountRequestDTO> discounts;
 //    private List<MarkupRequestDTO> markups;

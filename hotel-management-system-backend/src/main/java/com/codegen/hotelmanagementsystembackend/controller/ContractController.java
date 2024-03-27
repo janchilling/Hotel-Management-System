@@ -4,6 +4,7 @@ import com.codegen.hotelmanagementsystembackend.dto.ContractRequestDTO;
 import com.codegen.hotelmanagementsystembackend.dto.ContractResponseDTO;
 import com.codegen.hotelmanagementsystembackend.entities.Contract;
 import com.codegen.hotelmanagementsystembackend.services.ContractService;
+import com.codegen.hotelmanagementsystembackend.util.StandardResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,9 +16,9 @@ public class ContractController {
 
     private final ContractService contractService;
 
-    @PostMapping("/addContract")
-    public ResponseEntity<Contract> createContract(@RequestBody ContractRequestDTO contractRequestDTO){
-        return ResponseEntity.ok(contractService.createContract(contractRequestDTO));
+    @PostMapping("/")
+    public StandardResponse<Contract> createContract(@RequestBody ContractRequestDTO contractRequestDTO){
+        return contractService.createContract(contractRequestDTO);
     }
 
     @GetMapping("/getContractById/{contractId}")

@@ -13,9 +13,5 @@ public class SeasonRequestDTO {
     private String seasonName;
     private Date startDate;
     private Date endDate;
-//    private List<SeasonSupplementDTO> supplementsSeasonsLists;
-//    private List<SeasonRoomTypeDTO> supplementsRoomtypesLists;
-//    private List<SeasonMarkupDTO> seasonMarkupsLists;
-//    private List<SeasonDiscountDTO> seasonDiscountsLists;
     private Integer contractId;
 }
