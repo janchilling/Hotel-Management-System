@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { AdministrationComponent } from './administration.component';
 import {DashboardContextComponent} from "./dashboard-context/dashboard-context.component";
 import {AddHotelContextComponent} from "./add-hotel-context/add-hotel-context.component";
+import {AddContractContextComponent} from "./add-contract-context/add-contract-context.component";
 
 const routes: Routes = [{
   path: '',
@@ -11,6 +12,7 @@ const routes: Routes = [{
     { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
     { path: 'dashboard', component: DashboardContextComponent },
     { path: 'addHotel', component: AddHotelContextComponent },
+    { path: 'addContract', component: AddContractContextComponent },
   ],
 },
 ];

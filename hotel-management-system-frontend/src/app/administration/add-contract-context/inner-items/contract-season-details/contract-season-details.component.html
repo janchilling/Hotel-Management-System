@@ -1,0 +1,159 @@
+<div class="container mb-3 -mt-7 sm:mb-8 md:mb-12 lg:mb-16 xl:mb-20 ">
+  <section class=" py-1 bg-blueGray-50">
+    <div class="w-full lg:w-8/12 px-4 mx-auto mt-6">
+      <div class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-lg bg-blueGray-100 border-0">
+        <div class="rounded-t bg-white mb-0 px-6 py-6">
+          <div class="text-center flex justify-between">
+            <h6 class="text-blueGray-700 text-xl font-bold">
+              Add Contract and Seasons</h6>
+          </div>
+        </div>
+        <div class="flex-auto px-4 lg:px-10 py-10 pt-0">
+          <form (ngSubmit)="submitForm()" [formGroup]="contractSeasonForm">
+            <h6 class="text-blueGray-400 text-sm mt-3 mb-6 font-bold uppercase">
+              Contract Details
+            </h6>
+            <div class="flex flex-wrap">
+              <div class="w-full lg:w-6/12 px-4">
+                <div class="relative w-full mb-3">
+                  <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2" for="startDate">
+                    Start Date
+                  </label>
+                  <input class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" formControlName="startDate" id="startDate"
+                         placeholder="Start Date"
+                         required type="date">
+                  <span class="text-red-600" *ngIf="contractSeasonForm.get('startDate')?.invalid && contractSeasonForm.get('startDate')?.touched">Start Date is required</span>
+                </div>
+              </div>
+              <div class="w-full lg:w-6/12 px-4">
+                <div class="relative w-full mb-3">
+                  <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2" for="endDate">
+                    End Date
+                  </label>
+                  <input class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" formControlName="endDate" id="endDate"
+                         placeholder="End Date"
+                         required type="date">
+                  <span class="text-red-600" *ngIf="contractSeasonForm.get('endDate')?.invalid && contractSeasonForm.get('endDate')?.touched">End Date is required</span>
+                </div>
+              </div>
+              <div class="w-full lg:w-6/12 px-4">
+                <div class="relative w-full mb-3">
+                  <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2" for="contractStatus">
+                    Contract Status
+                  </label>
+                  <input class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" formControlName="contractStatus" id="contractStatus"
+                         placeholder="Contract Status"
+                         required type="text">
+                  <span class="text-red-600" *ngIf="contractSeasonForm.get('contractStatus')?.invalid && contractSeasonForm.get('contractStatus')?.touched">Contract Status is required</span>
+                </div>
+              </div>
+              <div class="w-full lg:w-6/12 px-4">
+                <div class="relative w-full mb-3">
+                  <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2" for="cancellationDeadline">
+                    Cancellation Deadline
+                  </label>
+                  <input class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" formControlName="cancellationDeadline" id="cancellationDeadline"
+                         placeholder="Cancellation Deadline"
+                         required type="number">
+                  <span class="text-red-600" *ngIf="contractSeasonForm.get('cancellationDeadline')?.invalid && contractSeasonForm.get('cancellationDeadline')?.touched">Cancellation Deadline is required</span>
+                </div>
+              </div>
+              <div class="w-full lg:w-6/12 px-4">
+                <div class="relative w-full mb-3">
+                  <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2" for="cancellationAmount">
+                    Cancellation Amount
+                  </label>
+                  <input class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" formControlName="cancellationAmount" id="cancellationAmount"
+                         placeholder="Cancellation Amount"
+                         required type="number">
+                  <span class="text-red-600" *ngIf="contractSeasonForm.get('cancellationAmount')?.invalid && contractSeasonForm.get('cancellationAmount')?.touched">Cancellation Amount is required</span>
+                </div>
+              </div>
+              <div class="w-full lg:w-6/12 px-4">
+                <div class="relative w-full mb-3">
+                  <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2" for="prepayment">
+                    Prepayment
+                  </label>
+                  <input class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" formControlName="prepayment" id="prepayment"
+                         placeholder="Prepayment"
+                         required type="number">
+                  <span class="text-red-600" *ngIf="contractSeasonForm.get('prepayment')?.invalid && contractSeasonForm.get('prepayment')?.touched">Prepayment is required</span>
+                </div>
+              </div>
+              <div class="w-full lg:w-6/12 px-4">
+                <div class="relative w-full mb-3">
+                  <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2" for="balancePayment">
+                    Balance Payment
+                  </label>
+                  <input class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" formControlName="balancePayment" id="balancePayment"
+                         placeholder="Balance Payment"
+                         required type="number">
+                  <span class="text-red-600" *ngIf="contractSeasonForm.get('balancePayment')?.invalid && contractSeasonForm.get('balancePayment')?.touched">Balance payment is required</span>
+                </div>
+              </div>
+            </div>
+
+            <h6 class="text-blueGray-400 text-sm mt-3 mb-6 font-bold uppercase">
+              Seasons
+            </h6>
+            <div formArrayName="seasons">
+              <div *ngFor="let season of seasonsArray.controls; let i = index" class="flex flex-wrap">
+                <div [formGroupName]="i">
+                <div class="w-full lg:w-6/12 px-4">
+                  <div class="relative w-full mb-3">
+                    <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2" for="seasonName{{i}}">
+                      Season Name
+                    </label>
+                    <input class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" formControlName="seasonName" id="seasonName{{i}}"
+                           placeholder="Season Name"
+                           required type="text">
+                    <span class="text-red-600" *ngIf="seasonsArray.controls[i].get('seasonName')?.invalid && seasonsArray.controls[i].get('seasonName')?.touched">Season Name is required</span>
+                  </div>
+                </div>
+                <div class="w-full lg:w-6/12 px-4">
+                  <div class="relative w-full mb-3">
+                    <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2" for="startDate{{i}}">
+                      Start Date
+                    </label>
+                    <input class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" formControlName="startDate" id="startDate{{i}}"
+                           placeholder="Start Date"
+                           required type="date">
+                    <span class="text-red-600" *ngIf="seasonsArray.controls[i].get('startDate')?.invalid && seasonsArray.controls[i].get('startDate')?.touched">Start Date is required</span>
+                  </div>
+                </div>
+                <div class="w-full lg:w-6/12 px-4">
+                  <div class="relative w-full mb-3">
+                    <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2" for="endDate{{i}}">
+                      End Date
+                    </label>
+                    <input class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" formControlName="endDate" id="endDate{{i}}"
+                           placeholder="End Date"
+                           required type="date">
+                    <span class="text-red-600" *ngIf="seasonsArray.controls[i].get('endDate')?.invalid && seasonsArray.controls[i].get('endDate')?.touched">End Date is required</span>
+                  </div>
+                </div>
+                <div class="w-full lg:w-12/12 px-4">
+                  <button (click)="removeSeason(i)" class="mt-2 bg-gray-200 text-gray-700 rounded-full p-2 hover:bg-gray-300"
+                          type="button">Remove
+                  </button>
+                </div>
+              </div>
+              </div>
+            </div>
+            <button (click)="addSeason()" class="mt-2 bg-gray-200 text-gray-700 rounded-full p-2 hover:bg-gray-300"
+                    type="button">Add Season
+            </button>
+            <div class="w-full lg:w-12/12 px-4">
+              <button [disabled]="contractSeasonForm?.invalid" class="bg-pink-500 text-white active:bg-pink-600 font-bold uppercase text-sm px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 mt-4 ease-linear transition-all duration-150"
+                      type="submit">
+                Submit Details
+              </button>
+            </div>
+        </form>
+      </div>
+    </div>
+    </div>
+</section>
+</div>
+
+

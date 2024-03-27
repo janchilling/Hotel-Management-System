@@ -9,10 +9,12 @@ import com.codegen.hotelmanagementsystembackend.repository.ContractRepository;
 import com.codegen.hotelmanagementsystembackend.repository.HotelRepository;
 import com.codegen.hotelmanagementsystembackend.repository.SeasonRepository;
 import com.codegen.hotelmanagementsystembackend.services.ContractService;
+import com.codegen.hotelmanagementsystembackend.util.StandardResponse;
 import com.codegen.hotelmanagementsystembackend.util.UtilityMethods;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.service.spi.ServiceException;
 import org.modelmapper.ModelMapper;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -35,12 +37,14 @@ public class ContractServiceImpl implements ContractService {
      * @return                     the created contract
      */
     @Override
-    public Contract createContract(ContractRequestDTO contractRequestDTO) {
+    public StandardResponse<Contract> createContract(ContractRequestDTO contractRequestDTO) {
         try {
 
-            boolean hasActiveContract = contractRepository.existsByHotelHotelIdAndContractStatus(contractRequestDTO.getHotelId(), "Active");
-            if (hasActiveContract) {
-                throw new ServiceException("Cannot create contract for a hotel with active contract status");
+            boolean hasOverlappingDates = contractRepository.existsByHotelHotelIdAndStartDateBeforeAndEndDateAfter(
+                    contractRequestDTO.getHotelId(), contractRequestDTO.getEndDate(), contractRequestDTO.getStartDate());
+            if (hasOverlappingDates) {
+                return new StandardResponse<>(HttpStatus.CONFLICT.value(), "Contract dates overlap with existing contracts", null);
+
             }
 
             Contract newContract = modelMapper.map(contractRequestDTO, Contract.class);
@@ -59,10 +63,10 @@ public class ContractServiceImpl implements ContractService {
 
             seasonRepository.saveAll(seasons);
 
-            return savedContract;
+            return new StandardResponse<>(HttpStatus.OK.value(), "Contract created successfully", savedContract);
 
         } catch (Exception e) {
-            throw new ServiceException("Failed to create Contract", e);
+            return new StandardResponse<>(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Failed to create Contract", null);
         }
     }
 
