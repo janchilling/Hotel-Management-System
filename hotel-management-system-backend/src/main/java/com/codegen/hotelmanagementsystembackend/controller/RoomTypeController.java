@@ -20,7 +20,7 @@ public class RoomTypeController {
 
     private final RoomTypeService roomTypeService;
 
-    @PostMapping("/addRoomType")
+    @PostMapping("/")
     public ResponseEntity<List<RoomType>> createRoomType(@RequestBody List<RoomTypeRequestDTO> roomTypeRequestDTOS){
         return ResponseEntity.ok(roomTypeService.createRoomType(roomTypeRequestDTOS));
     }

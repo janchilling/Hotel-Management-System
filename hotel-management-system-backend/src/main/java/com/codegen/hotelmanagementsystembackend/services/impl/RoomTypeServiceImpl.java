@@ -14,7 +14,9 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -51,6 +53,16 @@ public class RoomTypeServiceImpl implements RoomTypeService {
                 newRoomType.setContract(contractRepository.findById(roomTypeRequestDTO.getContractId())
                         .orElseThrow(() -> new ResourceNotFoundException("Contract not found with ID: " + roomTypeRequestDTO.getContractId())));
 
+                Set<RoomTypeImages> roomTypeImagesList = new HashSet<>();
+                for(RoomTypeImagesDTO roomTypeImagesDTO : roomTypeRequestDTO.getRoomTypeImages()){
+                    RoomTypeImages newRoomTypeImage = new RoomTypeImages();
+                    newRoomTypeImage.setRoomType(newRoomType);
+                    newRoomTypeImage.setImageURL(roomTypeImagesDTO.getImageURL());
+                    roomTypeImagesList.add(newRoomTypeImage);
+                }
+                newRoomType.setRoomTypeImages(roomTypeImagesList);
+
+
                 for (SeasonRoomTypeDTO seasonRoomTypeDTO : roomTypeRequestDTO.getSeasonRoomTypes()) {
                     SeasonRoomType seasonRoomType = new SeasonRoomType();
                     seasonRoomType.setRoomType(newRoomType);
@@ -63,21 +75,20 @@ public class RoomTypeServiceImpl implements RoomTypeService {
                     }
                     seasonRoomType.setSeasonRoomTypeKey(seasonRoomTypeKey);
                     seasonRoomType.setNoOfRooms(seasonRoomTypeDTO.getNoOfRooms());
-                    seasonRoomType.setRoomPrice(seasonRoomTypeDTO.getRoomPrice());
+                    seasonRoomType.setRoomTypePrice(seasonRoomTypeDTO.getRoomTypePrice());
                     seasonRoomType.setSeason(seasonRepository.findById(seasonRoomTypeDTO.getSeasonId())
                             .orElseThrow(() -> new ResourceNotFoundException("Season not found with ID: " + seasonRoomTypeDTO.getSeasonId())));
 
                     newRoomType.getSeasonRoomtype().add(seasonRoomType);
                 }
 
-                for(RoomTypeImagesDTO roomTypeImagesDTO : roomTypeRequestDTO.getRoomTypeImages()){
-                    RoomTypeImages newRoomTypeImage = new RoomTypeImages();
-                    newRoomTypeImage.setRoomType(newRoomType);
-                    newRoomTypeImage.setImageURL(roomTypeImagesDTO.getImageURL());
-
-                    newRoomType.getRoomTypeImages().add(newRoomTypeImage);
-                }
-
+//                for(RoomTypeImagesDTO roomTypeImagesDTO : roomTypeRequestDTO.getRoomTypeImages()){
+//                    RoomTypeImages newRoomTypeImage = new RoomTypeImages();
+//                    newRoomTypeImage.setRoomType(newRoomType);
+//                    newRoomTypeImage.setImageURL(roomTypeImagesDTO.getImageURL());
+//
+//                    newRoomType.getRoomTypeImages().add(newRoomTypeImage);
+//                }
                 roomTypesList.add(newRoomType);
 //                roomTypeRepository.save(newRoomType);
             }

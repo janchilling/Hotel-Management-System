@@ -14,6 +14,9 @@ const routes: Routes = [{
     { path: 'addHotel', component: AddHotelContextComponent },
     { path: 'addContract', component: AddContractContextComponent },
     { path: 'addMarkup', component: AddContractContextComponent },
+    { path: 'addDiscount', component: AddContractContextComponent },
+    { path: 'addSupplement', component: AddContractContextComponent },
+    { path: 'addRoomType', component: AddContractContextComponent },
   ],
 },
 ];

@@ -8,8 +8,6 @@ import java.sql.Date;
 public class SeasonDiscountDTO {
 
     private Integer seasonId;
-    private Date startDate;
-    private Date endDate;
     private Double discountPercentage;
 
 }

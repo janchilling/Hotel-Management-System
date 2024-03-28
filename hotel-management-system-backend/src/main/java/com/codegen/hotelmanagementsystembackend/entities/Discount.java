@@ -22,6 +22,8 @@ public class Discount {
 
     private String discountName;
 
+    private String discountCode;
+
     private String discountDescription;
 
     @OneToMany(mappedBy = "discount", cascade = CascadeType.ALL)

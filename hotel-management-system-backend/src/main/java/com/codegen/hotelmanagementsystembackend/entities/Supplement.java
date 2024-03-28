@@ -23,7 +23,7 @@ public class Supplement {
 
     private String supplementDescription;
 
-    private String supplementType;
+    private String imageIconURL;
 
     @OneToMany(mappedBy = "supplement", cascade = CascadeType.ALL)
     @JsonManagedReference("seasonSupplementsSupplementReference")

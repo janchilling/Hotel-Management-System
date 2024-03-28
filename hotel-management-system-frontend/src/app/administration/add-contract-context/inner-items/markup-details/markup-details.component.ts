@@ -19,7 +19,6 @@ export class MarkupDetailsComponent implements OnInit {
     private fb: FormBuilder,
     private route: ActivatedRoute,
     private seasonServicesService: SeasonServicesService,
-    private contractServicesService: ContractServicesService,
     private markupServicesService: MarkupServicesService
   ) {
     this.markupForm = this.fb.group({

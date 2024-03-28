@@ -19,7 +19,7 @@ public class RoomTypeImages {
     @JsonBackReference("roomTypeImagesRoomTypeReference")
     private RoomType roomType;
 
-    private String ImageURL;
+    private String imageURL;
 
     @Override
     public int hashCode() {

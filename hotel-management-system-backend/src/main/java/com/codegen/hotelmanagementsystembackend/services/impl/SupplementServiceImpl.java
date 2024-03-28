@@ -45,14 +45,13 @@ public class SupplementServiceImpl implements SupplementService {
         try {
             for (SupplementRequestDTO supplementRequestDTO : supplementRequestDTOs) {
                 Supplement newSupplement = new Supplement();
-//                newSupplement.setMarkupId(markupRequestDTO.getMarkupId());
                 newSupplement.setSupplementDescription(supplementRequestDTO.getSupplementDescription());
                 newSupplement.setSupplementName(supplementRequestDTO.getSupplementName());
-                newSupplement.setSupplementType(supplementRequestDTO.getSupplementType());
+                newSupplement.setImageIconURL(supplementRequestDTO.getImageIconURL());
                 newSupplement.setContract(contractRepository.findById(supplementRequestDTO.getContractId())
                         .orElseThrow(() -> new ResourceNotFoundException("Contract not found with ID: " + supplementRequestDTO.getContractId())));
 
-                for (SeasonSupplementDTO seasonSupplementDTO : supplementRequestDTO.getSupplementsSeasons()) {
+                for (SeasonSupplementDTO seasonSupplementDTO : supplementRequestDTO.getSeasonSupplements()) {
                     SeasonSupplement seasonSupplement = new SeasonSupplement();
                     seasonSupplement.setSupplement(newSupplement);
                     SeasonSupplementKey seasonSupplementKey = new SeasonSupplementKey();
@@ -94,7 +93,7 @@ public class SupplementServiceImpl implements SupplementService {
             Hotel hotel = utilityMethods.getHotel(contract.getHotel().getHotelId());
 
             SupplementResponseDTO supplementResponseDTO = modelMapper.map(supplement, SupplementResponseDTO.class);
-            supplementResponseDTO.setSupplementsSeasons(supplement.getSupplementsSeasons().stream().map(
+            supplementResponseDTO.setSeasonSupplements(supplement.getSupplementsSeasons().stream().map(
                     seasonSupplement -> {
                         Season season = utilityMethods.getSeason(seasonSupplement.getSeason().getSeasonId());
                         SeasonSupplementResponseDTO seasonSupplementResponseDTO = modelMapper.map(seasonSupplement, SeasonSupplementResponseDTO.class);

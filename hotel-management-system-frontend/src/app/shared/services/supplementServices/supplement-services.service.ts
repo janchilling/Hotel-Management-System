@@ -19,4 +19,14 @@ export class SupplementServicesService {
         })
       );
   }
+
+  addSupplement(supplement: any): Observable<any> {
+    return this.httpClient.post<any>(`${this.backendHostName}/v1/supplements/`, supplement)
+      .pipe(
+        catchError((error: any) => {
+          console.error('Error adding Supplement:', error);
+          return of(null);
+        })
+      );
+  }
 }

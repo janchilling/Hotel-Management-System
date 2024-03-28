@@ -8,10 +8,13 @@ import com.codegen.hotelmanagementsystembackend.repository.ContractRepository;
 import com.codegen.hotelmanagementsystembackend.repository.MarkupRepository;
 import com.codegen.hotelmanagementsystembackend.repository.SeasonRepository;
 import com.codegen.hotelmanagementsystembackend.services.MarkupService;
+import com.codegen.hotelmanagementsystembackend.util.StandardResponse;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.service.spi.ServiceException;
 import org.modelmapper.ModelMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -25,54 +28,55 @@ public class MarkupServiceImpl implements MarkupService {
     private final MarkupRepository markupRepository;
     private final SeasonRepository seasonRepository;
     private final ContractRepository contractRepository;
-    private final ModelMapper modelMapper;
 
+    private static final Logger logger = LoggerFactory.getLogger(MarkupServiceImpl.class);
 
-    /**
-     * Create markup based on the provided MarkupRequestDTO list.
-     *
-     * @param  markupRequestDTOS    the list of MarkupRequestDTO objects
-     * @return                      the list of created Markup objects
-     */
     @Override
     @Transactional
-    public List<Markup> createMarkup(List<MarkupRequestDTO> markupRequestDTOS) {
-        if (markupRequestDTOS == null || markupRequestDTOS.isEmpty()) {
-            return null;
+    public StandardResponse<Markup> createMarkup(MarkupRequestDTO markupRequestDTO) {
+        if (markupRequestDTO == null) {
+            return new StandardResponse<>(400, "Invalid request: Markup request DTO is null", null);
         }
 
-        List<Markup> markupsList = new ArrayList<>();
-
         try {
-            for (MarkupRequestDTO markupRequestDTO : markupRequestDTOS) {
-                Markup newMarkup = new Markup();
-                newMarkup.setMarkupId(markupRequestDTO.getMarkupId());
-                newMarkup.setContract(contractRepository.findById(markupRequestDTO.getContractId())
-                        .orElseThrow(() -> new ResourceNotFoundException("Contract not found with ID: " + markupRequestDTO.getContractId())));
+            Markup newMarkup = new Markup();
+            newMarkup.setMarkupId(markupRequestDTO.getMarkupId());
+            newMarkup.setContract(contractRepository.findById(markupRequestDTO.getContractId())
+                    .orElseThrow(() -> new ResourceNotFoundException("Contract not found with ID: " + markupRequestDTO.getContractId())));
 
-                for (SeasonMarkupDTO seasonMarkupDto : markupRequestDTO.getSeasonMarkups()) {
-                    SeasonMarkup seasonMarkup = new SeasonMarkup();
-                    seasonMarkup.setMarkup(newMarkup);
-                    SeasonMarkupKey seasonMarkupKey = new SeasonMarkupKey();
-                    if (seasonMarkupDto.getSeasonId() != null) {
-                        seasonMarkupKey.setSeasonId(seasonMarkupDto.getSeasonId());
-                    }
-                    if (newMarkup.getMarkupId() != null) {
-                        seasonMarkupKey.setMarkupId(newMarkup.getMarkupId());
-                    }
-                    seasonMarkup.setSeasonMarkupKey(seasonMarkupKey);
-                    seasonMarkup.setMarkupPercentage(seasonMarkupDto.getMarkupPercentage());
-                    seasonMarkup.setSeason(seasonRepository.findById(seasonMarkupDto.getSeasonId())
-                            .orElseThrow(() -> new ResourceNotFoundException("Season not found with ID: " + seasonMarkupDto.getSeasonId())));
+            List<SeasonMarkup> seasonMarkups = new ArrayList<>();
 
-                    newMarkup.getSeasonMarkups().add(seasonMarkup);
+            for (SeasonMarkupDTO seasonMarkupDto : markupRequestDTO.getSeasonMarkups()) {
+                SeasonMarkup seasonMarkup = new SeasonMarkup();
+                SeasonMarkupKey seasonMarkupKey = new SeasonMarkupKey();
+
+                if (seasonMarkupDto.getSeasonId() != null) {
+                    Season season = seasonRepository.findById(seasonMarkupDto.getSeasonId())
+                            .orElseThrow(() -> new ResourceNotFoundException("Season not found with ID: " + seasonMarkupDto.getSeasonId()));
+                    seasonMarkup.setSeason(season);
+                    seasonMarkupKey.setSeasonId(seasonMarkupDto.getSeasonId());
+                } else {
+                    logger.warn("Season ID is null for a markup. Skipping this markup entry.");
+                    continue; // Skip this markup entry as it's invalid
                 }
-                markupsList.add(newMarkup);
+
+                seasonMarkup.setMarkupPercentage(seasonMarkupDto.getMarkupPercentage());
+                seasonMarkup.setSeasonMarkupKey(seasonMarkupKey);
+                seasonMarkup.setMarkup(newMarkup);
+
+                seasonMarkups.add(seasonMarkup);
             }
 
-            return markupRepository.saveAll(markupsList);
+            newMarkup.setSeasonMarkups(seasonMarkups);
+            markupRepository.save(newMarkup);
+
+            return new StandardResponse<>(200, "Markup created successfully", newMarkup);
+        } catch (ResourceNotFoundException e) {
+            logger.error("Resource not found: {}", e.getMessage());
+            return new StandardResponse<>(404, "Resource not found: " + e.getMessage(), null);
         } catch (Exception e) {
-            throw new ServiceException("Failed to create markups", e);
+            logger.error("Failed to create markups: {}", e.getMessage());
+            return new StandardResponse<>(500, "Failed to create markups: " + e.getMessage(), null);
         }
     }
 

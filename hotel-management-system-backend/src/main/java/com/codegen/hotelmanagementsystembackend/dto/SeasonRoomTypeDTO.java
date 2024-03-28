@@ -6,7 +6,7 @@ import lombok.Data;
 public class SeasonRoomTypeDTO {
 
     private Integer seasonId;
-    private Double roomPrice;
+    private Double roomTypePrice;
     private Integer noOfRooms;
 
 }

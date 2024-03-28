@@ -20,4 +20,14 @@ export class RoomTypeServicesService {
         })
       );
   }
+
+  addRoomType(roomType: any): Observable<any> {
+    return this.httpClient.post<any>(`${this.backendHostName}/v1/roomTypes/`, roomType)
+      .pipe(
+        catchError((error: any) => {
+          console.error('Error adding room type:', error);
+          return of(null);
+        })
+      );
+  }
 }

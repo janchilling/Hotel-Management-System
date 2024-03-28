@@ -13,7 +13,7 @@
             <input type="number" formControlName="markupPercentage" placeholder="Enter markup percentage"
                    class="w-full border-gray-300 rounded-md mt-1 focus:ring-blue-500 focus:border-blue-500 block"
                    required>
-            <div *ngIf="markupForm.get('season_' + season.seasonId)?.get('markupPercentage')?.invalid && markupForm.get('season_' + season.seasonId)?.get('markupPercentage')?.touched"
+            <div *ngIf="'season_' + season.seasonId?.get('markupPercentage')?.invalid && 'season_' + season.seasonId?.get('markupPercentage')?.touched"
                  class="text-red-600 text-sm mt-1">Markup Percentage is required</div>
           </div>
         </div>
