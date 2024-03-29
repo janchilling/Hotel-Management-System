@@ -5,12 +5,15 @@ import com.codegen.hotelmanagementsystembackend.entities.*;
 import com.codegen.hotelmanagementsystembackend.exception.ResourceNotFoundException;
 import com.codegen.hotelmanagementsystembackend.repository.*;
 import com.codegen.hotelmanagementsystembackend.services.RoomTypeService;
+import com.codegen.hotelmanagementsystembackend.util.StandardResponse;
 import com.codegen.hotelmanagementsystembackend.util.UtilityMethods;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.service.spi.ServiceException;
 import org.modelmapper.ModelMapper;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -26,6 +29,7 @@ public class RoomTypeServiceImpl implements RoomTypeService {
     private final RoomTypeRepository roomTypeRepository;
     private final RoomTypeImagesRepository roomTypeImagesRepository;
     private final SeasonRoomTypeRepository seasonRoomTypeRepository;
+    private final BookingRoomRepository bookingRoomRepository;
     private final UtilityMethods utilityMethods;
     private final ModelMapper modelMapper;
 
@@ -187,6 +191,33 @@ public class RoomTypeServiceImpl implements RoomTypeService {
 
         }catch (Exception e){
             throw new ServiceException("Failed to get Room Type", e);
+        }
+    }
+
+    public StandardResponse<Integer> getAvailableRoomTypeCount(Integer roomTypeId, Date checkInDate, Date checkOutDate, Integer seasonId) {
+        try {
+            // Find the room type by ID
+            RoomType roomType = utilityMethods.getRoomType(roomTypeId);
+            Season season = utilityMethods.getSeason(seasonId);
+            SeasonRoomType seasonRoomType = utilityMethods.getSeasonRoomType(season, roomType);
+
+            if (roomType == null) {
+                return new StandardResponse<>(HttpStatus.NOT_FOUND.value(), "Room type not found", null);
+            }
+
+            // Get the total number of rooms for the room type
+            int totalRooms = seasonRoomType.getNoOfRooms();
+
+            // Get the number of booked rooms for the given period
+            Integer bookedRooms = bookingRoomRepository.countBookedRooms(roomTypeId, checkInDate, checkOutDate);
+            bookedRooms = bookedRooms != null ? bookedRooms : 0; // Handle null case
+
+            // Calculate available rooms
+            int availableRooms = totalRooms - bookedRooms;
+
+            return new StandardResponse<>(HttpStatus.OK.value(), "Available room count: " + availableRooms, availableRooms);
+        } catch (Exception e) {
+            return new StandardResponse<>(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Failed to get room type count", null);
         }
     }
 

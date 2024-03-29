@@ -31,4 +31,26 @@ export class RoomTypeServicesService {
         })
       );
   }
+
+  availableNoOfRooms(roomTypeId: number, checkInDate: Date, checkOutDate: Date, seasonId: number): Observable<any> {
+    // Format dates in SQL format (YYYY-MM-DD)
+    const formattedCheckInDate = this.formatDateForSQL(checkInDate);
+    const formattedCheckOutDate = this.formatDateForSQL(checkOutDate);
+
+    // Construct the URL with roomTypeId and formatted dates as path variables
+    const url = `${this.backendHostName}/v1/roomTypes/${roomTypeId}/availableNoOfRooms/${formattedCheckInDate}/${formattedCheckOutDate}/${seasonId}`;
+
+    return this.httpClient.get<any>(url)
+      .pipe(
+        catchError((error: any) => {
+          console.error('Error fetching rooms:', error);
+          return of(null);
+        })
+      );
+  }
+
+  private formatDateForSQL(date: Date): string {
+    // Format date as YYYY-MM-DD
+    return date.toISOString().split('T')[0];
+  }
 }

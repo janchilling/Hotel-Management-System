@@ -1,4 +1,7 @@
 import {Component, Input} from '@angular/core';
+import {
+  BookingDataServiceService
+} from "../../../../../shared/services/bookingDataService/booking-data-service.service";
 
 @Component({
   selector: 'app-booking-details',
@@ -8,5 +11,19 @@ import {Component, Input} from '@angular/core';
 export class BookingDetailsComponent {
 
   @Input () contractId : any;
+  contactDetails: any;
+
+  constructor(
+    private bookingDataService: BookingDataServiceService
+  ) {
+  }
+
+  purchase() {
+    console.log(this.contactDetails);
+  }
+
+  handleContactDetailsChanged(contactDetails: any) {
+    this.contactDetails = contactDetails;
+  }
 
 }

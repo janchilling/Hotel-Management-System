@@ -1,5 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import {RoomTypeServicesService} from "../../services/roomTypesServices/room-type-services.service";
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-room-card',
@@ -14,29 +16,44 @@ export class RoomCardComponent implements OnInit {
   roomTypePrice: any;
   checkInDate: any;
   checkOutDate: any;
-  numRooms: number = 0;
+  numRooms: any = 0;
+  availableRooms: any;
+  seasonId:  any;
   selectedSupplements: any[] = [];
+  totalPrice: number = 0;
 
-  constructor(private route: ActivatedRoute) {}
+  constructor(
+    private route: ActivatedRoute,
+    private roomTypeServicesService :RoomTypeServicesService,
+    private snackBar: MatSnackBar
+  ) {}
 
   ngOnInit(): void {
-    // Extract check-in and check-out dates from URL parameters
     this.route.queryParams.subscribe(params => {
+
+      // First getting the check-in and check-out dates from the URL
       this.checkInDate = params['checkIn'] ? new Date(params['checkIn']) : undefined;
       this.checkOutDate = params['checkOut'] ? new Date(params['checkOut']) : undefined;
 
-      // Calculate the room type price based on the season
+      // Getting the season id and the room type price according to the season
       if (this.checkInDate && this.checkOutDate) {
-        this.calculateRoomTypePrice();
+        this.getRoomTypePriceAndSetSeasonId();
       }
 
+      // Getting the supplement prices according to the season
       if (this.supplements && this.checkInDate && this.checkOutDate) {
-        this.calculateSupplementPrices();
+        this.getSupplementPrices();
       }
+
+      // Setting the number of rooms available in the room type of the particular Hotel
+      this.roomTypeServicesService.availableNoOfRooms(this.roomType.roomTypeId, this.checkInDate, this.checkOutDate, this.seasonId).subscribe((data: any) => {
+        this.availableRooms = data.data;
+        console.log(this.availableRooms)
+      })
     });
   }
 
-  calculateRoomTypePrice(): void {
+  getRoomTypePriceAndSetSeasonId(): void {
     const checkInDate = this.checkInDate as Date;
     const checkOutDate = this.checkOutDate as Date;
     const seasonRoomtypes = this.roomType?.seasonRoomtype;
@@ -54,13 +71,14 @@ export class RoomCardComponent implements OnInit {
 
     if (matchingSeason) {
       this.roomTypePrice = matchingSeason.roomTypePrice;
+      this.seasonId = matchingSeason.seasonId;
     } else {
       console.log("No matching season found or room price is undefined.");
     }
   }
 
 
-  calculateSupplementPrices(): void {
+  getSupplementPrices(): void {
     const checkInDate = this.checkInDate as Date;
     const checkOutDate = this.checkOutDate as Date;
 
@@ -77,36 +95,51 @@ export class RoomCardComponent implements OnInit {
   }
 
   incrementRooms(): void {
-    this.numRooms++;
+    if (this.numRooms < this.availableRooms) {
+      this.numRooms++;
+    }
+    this.calculateTotalPrice()
   }
 
   decrementRooms(): void {
     if (this.numRooms > 0) {
       this.numRooms--;
     }
+    this.calculateTotalPrice();
   }
 
   selectSupplement(supplement: any): void {
-    supplement.selected = !supplement.selected; // Toggle selected state
+    // Check if the number of rooms is greater than 0
+    if (this.numRooms > 0) {
+      supplement.selected = !supplement.selected; // Toggle selected state
 
-    // Check if the supplement is already selected for this room type
-    const existingIndex = this.selectedSupplements.findIndex(item => item.roomType === this.roomType.roomTypeName);
+      // Check if the supplement is already selected for this room type
+      const existingIndex = this.selectedSupplements.findIndex(item => item.roomType === this.roomType.roomTypeName);
 
-    if (supplement.selected) {
-      // If the supplement is selected, add it to the selected supplements for this room type
-      if (existingIndex === -1) {
-        this.selectedSupplements.push({ roomType: this.roomType.roomTypeName, supplements: [supplement] });
+      if (supplement.selected) {
+        // If the supplement is selected, add it to the selected supplements for this room type
+        if (existingIndex === -1) {
+          this.selectedSupplements.push({ roomType: this.roomType.roomTypeName, supplements: [supplement] });
+        } else {
+          this.selectedSupplements[existingIndex].supplements.push(supplement);
+        }
+        this.calculateTotalPrice()
       } else {
-        this.selectedSupplements[existingIndex].supplements.push(supplement);
+        // If the supplement is deselected, remove it from the selected supplements for this room type
+        if (existingIndex !== -1) {
+          const supplementIndex = this.selectedSupplements[existingIndex].supplements.findIndex((item: any) => item === supplement);
+          if (supplementIndex !== -1) {
+            this.selectedSupplements[existingIndex].supplements.splice(supplementIndex, 1);
+          }
+        }
+        this.calculateTotalPrice()
       }
     } else {
-      // If the supplement is deselected, remove it from the selected supplements for this room type
-      if (existingIndex !== -1) {
-        const supplementIndex = this.selectedSupplements[existingIndex].supplements.findIndex((item: any) => item === supplement);
-        if (supplementIndex !== -1) {
-          this.selectedSupplements[existingIndex].supplements.splice(supplementIndex, 1);
-        }
-      }
+      // Show snackbar notification to add rooms
+      this.snackBar.open('Please add rooms before selecting supplements.', 'Close', {
+        duration: 3000, // Duration in milliseconds
+        verticalPosition: 'top' // Position of the snackbar
+      });
     }
   }
 
@@ -118,4 +151,16 @@ export class RoomCardComponent implements OnInit {
     }
     return false;
   }
+
+  calculateTotalPrice(): void {
+    let totalSupplementPrice = 0;
+    this.selectedSupplements.forEach((selectedSupplement) => {
+      selectedSupplement.supplements.forEach((supplement: any) => {
+        totalSupplementPrice += supplement.price;
+      });
+    });
+    const roomPrice = this.roomTypePrice * this.numRooms; // Calculate total room price
+    this.totalPrice = roomPrice + totalSupplementPrice; // Add room price and supplement price
+  }
+
 }
