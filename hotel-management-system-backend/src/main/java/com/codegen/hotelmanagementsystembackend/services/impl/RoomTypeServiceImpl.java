@@ -3,18 +3,21 @@ package com.codegen.hotelmanagementsystembackend.services.impl;
 import com.codegen.hotelmanagementsystembackend.dto.*;
 import com.codegen.hotelmanagementsystembackend.entities.*;
 import com.codegen.hotelmanagementsystembackend.exception.ResourceNotFoundException;
-import com.codegen.hotelmanagementsystembackend.repository.ContractRepository;
-import com.codegen.hotelmanagementsystembackend.repository.RoomTypeRepository;
-import com.codegen.hotelmanagementsystembackend.repository.SeasonRepository;
+import com.codegen.hotelmanagementsystembackend.repository.*;
 import com.codegen.hotelmanagementsystembackend.services.RoomTypeService;
+import com.codegen.hotelmanagementsystembackend.util.StandardResponse;
 import com.codegen.hotelmanagementsystembackend.util.UtilityMethods;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.service.spi.ServiceException;
 import org.modelmapper.ModelMapper;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.sql.Date;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -24,6 +27,9 @@ public class RoomTypeServiceImpl implements RoomTypeService {
     private final SeasonRepository seasonRepository;
     private final ContractRepository contractRepository;
     private final RoomTypeRepository roomTypeRepository;
+    private final RoomTypeImagesRepository roomTypeImagesRepository;
+    private final SeasonRoomTypeRepository seasonRoomTypeRepository;
+    private final BookingRoomRepository bookingRoomRepository;
     private final UtilityMethods utilityMethods;
     private final ModelMapper modelMapper;
 
@@ -51,9 +57,24 @@ public class RoomTypeServiceImpl implements RoomTypeService {
                 newRoomType.setContract(contractRepository.findById(roomTypeRequestDTO.getContractId())
                         .orElseThrow(() -> new ResourceNotFoundException("Contract not found with ID: " + roomTypeRequestDTO.getContractId())));
 
+                RoomType savedRoomType = roomTypeRepository.save(newRoomType);
+
+                for (RoomTypeImagesDTO roomTypeImagesDTO : roomTypeRequestDTO.getRoomTypeImages()) {
+                    System.out.println("Hello");
+                    System.out.println(roomTypeImagesDTO.getImageURL());
+                    System.out.println("Hello");
+                    RoomTypeImages roomTypeImages = new RoomTypeImages();
+                    System.out.println("Hello");
+                    roomTypeImages.setRoomType(savedRoomType);
+                    System.out.println("Hello");
+                    roomTypeImages.setImageURL(roomTypeImagesDTO.getImageURL());
+                    System.out.println("Hello");
+                    roomTypeImagesRepository.save(roomTypeImages);
+                }
+
                 for (SeasonRoomTypeDTO seasonRoomTypeDTO : roomTypeRequestDTO.getSeasonRoomTypes()) {
                     SeasonRoomType seasonRoomType = new SeasonRoomType();
-                    seasonRoomType.setRoomType(newRoomType);
+                    seasonRoomType.setRoomType(savedRoomType);
                     SeasonRoomTypeKey seasonRoomTypeKey = new SeasonRoomTypeKey();
                     if (seasonRoomTypeDTO.getSeasonId() != null) {
                         seasonRoomTypeKey.setSeasonId(seasonRoomTypeDTO.getSeasonId());
@@ -63,28 +84,19 @@ public class RoomTypeServiceImpl implements RoomTypeService {
                     }
                     seasonRoomType.setSeasonRoomTypeKey(seasonRoomTypeKey);
                     seasonRoomType.setNoOfRooms(seasonRoomTypeDTO.getNoOfRooms());
-                    seasonRoomType.setRoomPrice(seasonRoomTypeDTO.getRoomPrice());
+                    seasonRoomType.setRoomTypePrice(seasonRoomTypeDTO.getRoomTypePrice());
                     seasonRoomType.setSeason(seasonRepository.findById(seasonRoomTypeDTO.getSeasonId())
                             .orElseThrow(() -> new ResourceNotFoundException("Season not found with ID: " + seasonRoomTypeDTO.getSeasonId())));
 
-                    newRoomType.getSeasonRoomtype().add(seasonRoomType);
+                    seasonRoomTypeRepository.save(seasonRoomType);
                 }
 
-                for(RoomTypeImagesDTO roomTypeImagesDTO : roomTypeRequestDTO.getRoomTypeImages()){
-                    RoomTypeImages newRoomTypeImage = new RoomTypeImages();
-                    newRoomTypeImage.setRoomType(newRoomType);
-                    newRoomTypeImage.setImageURL(roomTypeImagesDTO.getImageURL());
-
-                    newRoomType.getRoomTypeImages().add(newRoomTypeImage);
-                }
-
-                roomTypesList.add(newRoomType);
-//                roomTypeRepository.save(newRoomType);
+                roomTypesList.add(savedRoomType);
             }
 
-            return roomTypeRepository.saveAll(roomTypesList);
+            return roomTypesList;
         } catch (Exception e) {
-            throw new ServiceException("Failed to create Room Types", e);
+            throw new ServiceException("Failed to create Room Types"+ e.getMessage());
         }
     }
 
@@ -179,6 +191,33 @@ public class RoomTypeServiceImpl implements RoomTypeService {
 
         }catch (Exception e){
             throw new ServiceException("Failed to get Room Type", e);
+        }
+    }
+
+    public StandardResponse<Integer> getAvailableRoomTypeCount(Integer roomTypeId, Date checkInDate, Date checkOutDate, Integer seasonId) {
+        try {
+            // Find the room type by ID
+            RoomType roomType = utilityMethods.getRoomType(roomTypeId);
+            Season season = utilityMethods.getSeason(seasonId);
+            SeasonRoomType seasonRoomType = utilityMethods.getSeasonRoomType(season, roomType);
+
+            if (roomType == null) {
+                return new StandardResponse<>(HttpStatus.NOT_FOUND.value(), "Room type not found", null);
+            }
+
+            // Get the total number of rooms for the room type
+            int totalRooms = seasonRoomType.getNoOfRooms();
+
+            // Get the number of booked rooms for the given period
+            Integer bookedRooms = bookingRoomRepository.countBookedRooms(roomTypeId, checkInDate, checkOutDate);
+            bookedRooms = bookedRooms != null ? bookedRooms : 0; // Handle null case
+
+            // Calculate available rooms
+            int availableRooms = totalRooms - bookedRooms;
+
+            return new StandardResponse<>(HttpStatus.OK.value(), "Available room count: " + availableRooms, availableRooms);
+        } catch (Exception e) {
+            return new StandardResponse<>(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Failed to get room type count", null);
         }
     }
 

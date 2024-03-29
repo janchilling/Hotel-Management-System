@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.sql.Date;
+
 @Data
 @Entity
 @Table(name = "BookingRoom")
@@ -19,6 +21,10 @@ public class BookingRoom {
     private String roomTypeName;
 
     private Double bookedPrice;
+
+    private Date checkInDate;
+
+    private Date checkOutDate;
 
     @ManyToOne
     @JsonBackReference("bookingBookingRoomReference")

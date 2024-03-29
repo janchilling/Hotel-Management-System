@@ -9,6 +9,7 @@ public class DiscountResponseDTO {
 
     private Integer discountId;
     private String discountName;
+    private String discountCode;
     private String discountDescription;
     private Integer contractId;
     private String contractStatus;

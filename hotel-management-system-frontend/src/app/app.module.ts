@@ -10,6 +10,7 @@ import {HttpClientModule} from "@angular/common/http";
 import {AngularFireStorageModule} from "@angular/fire/compat/storage";
 import {environment} from "../environments/environment";
 import {AngularFireModule} from "@angular/fire/compat";
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import {AngularFireModule} from "@angular/fire/compat";
     BrowserAnimationsModule,
     HttpClientModule,
     AngularFireModule.initializeApp(environment.firebaseConfig),
-    AngularFireStorageModule
+    AngularFireStorageModule,
+    MatSnackBarModule
   ],
     providers: [
       { provide: DateAdapter, useClass: CustomDateAdapter }

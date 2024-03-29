@@ -27,10 +27,12 @@
           <li class="icon1"><i class="fas fa-wifi"></i> Free Wi-Fi</li>
           <li class="icon1"><i class="fas fa-swimming-pool"></i> Swimming Pool</li>
         </ul>
-        <p class="text-red-700">Only 2 available</p>
+        <p class="text-red-700" *ngIf="numRooms >= availableRooms">Maximum rooms reached</p>
+        <p class="text-red-700" *ngIf="availableRooms < 5">Only 2 available</p>
       </div>
       <div class="subheading flex-1">
-        <h2 class="mb-2 font-bold text-xl md:text-2xl text-black-700">LKR {{roomTypePrice}}</h2>
+        <h2 class="mb-2 font-bold text-xl md:text-2xl text-black-700">USD {{roomTypePrice}}</h2>
+        <h2 class="mb-2 font-bold text-xl md:text-2xl text-black-700">USD {{ totalPrice }}</h2>
         <h3 class="mb-2 text-sm text-gray-500">{{ showSelectSupplements ? 'Select Supplements' : 'Supplements' }}</h3>
         <hr class="mb-2">
         <ul class="facility-list">
@@ -38,7 +40,7 @@
             <i class="fas fa-plus"></i>
             <div class="right-content">
               <span>{{ supplement.supplementName }}</span>
-              <span class="price">+LKR {{ supplement.price }}</span>
+              <span class="price"><b>+USD {{ supplement.price }}</b></span>
             </div>
           </li>
         </ul>

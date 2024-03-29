@@ -19,6 +19,7 @@ import { SelectDetailsComponent } from './customer/create-booking-context/inner-
 import { ContactDetailsComponent } from './customer/create-booking-context/inner-items/booking-details/items/contact-details/contact-details.component';
 import { BookingPaymentComponent } from './customer/create-booking-context/inner-items/booking-payment/booking-payment.component';
 import { BookingConfirmationComponent } from './customer/create-booking-context/inner-items/booking-confirmation/booking-confirmation.component';
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 
 
 @NgModule({
@@ -40,11 +41,13 @@ import { BookingConfirmationComponent } from './customer/create-booking-context/
     BookingPaymentComponent,
     BookingConfirmationComponent,
   ],
-    imports: [
-        CommonModule,
-        MainRoutingModule,
-        SharedModule,
-        NgOptimizedImage
-    ]
+  imports: [
+    CommonModule,
+    MainRoutingModule,
+    SharedModule,
+    NgOptimizedImage,
+    FormsModule,
+    ReactiveFormsModule
+  ]
 })
 export class MainModule { }

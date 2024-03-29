@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {
   RoomTypeServicesService
 } from "../../../../../../../shared/services/roomTypesServices/room-type-services.service";
@@ -6,6 +6,7 @@ import {
   SupplementServicesService
 } from "../../../../../../../shared/services/supplementServices/supplement-services.service";
 import {ActivatedRoute} from "@angular/router";
+import { BookingDataServiceService } from 'src/app/shared/services/bookingDataService/booking-data-service.service';
 
 @Component({
   selector: 'app-select-details',
@@ -14,11 +15,13 @@ import {ActivatedRoute} from "@angular/router";
 })
 export class SelectDetailsComponent implements OnInit {
 
+  @Output() contactDetailsChanged = new EventEmitter<any>();
   @Input() contractId : any;
   constructor(
     private roomTypeServicesService: RoomTypeServicesService,
     private supplementServicesService: SupplementServicesService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private bookingDataService: BookingDataServiceService
   ) {}
 
   protected roomTypesDetails: any;
@@ -65,5 +68,7 @@ export class SelectDetailsComponent implements OnInit {
       }
     );
   }
+
+
 
 }

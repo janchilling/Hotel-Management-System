@@ -21,7 +21,7 @@ public class SupplementController {
 
     private final SupplementService supplementService;
 
-    @PostMapping("/addSupplements")
+    @PostMapping("/")
     public ResponseEntity<List<Supplement>> createSupplement(@RequestBody List<SupplementRequestDTO> supplementRequestDTO){
         return ResponseEntity.ok(supplementService.createSupplement(supplementRequestDTO));
     }

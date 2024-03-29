@@ -22,6 +22,7 @@ public class UtilityMethods {
     private final BookingRoomRepository bookingRoomRepository;
     private final BookingDiscountRepository bookingDiscountRepository;
     private final BookingSupplementsRepository bookingSupplementsRepository;
+    private final SeasonRoomTypeRepository seasonRoomTypeRepository;
 
     public Season getSeason(Integer seasonId) {
         return seasonRepository.findById(seasonId)
@@ -81,6 +82,15 @@ public class UtilityMethods {
     public BookingSupplements getBookingSupplement(Integer bookingSupplementId) {
         return bookingSupplementsRepository.findById(bookingSupplementId)
                 .orElseThrow(() -> new ResourceNotFoundException("Supplement with Booking not found" + bookingSupplementId));
+    }
+
+
+    public SeasonRoomType getSeasonRoomType(Season season, RoomType roomType) {
+        try {
+            return seasonRoomTypeRepository.findSeasonRoomTypeBySeasonAndRoomType(season, roomType);
+        } catch (Exception ex) {
+            throw new ResourceNotFoundException("Error occurred while fetching Season Room Type: " + ex.getMessage());
+        }
     }
 
 }

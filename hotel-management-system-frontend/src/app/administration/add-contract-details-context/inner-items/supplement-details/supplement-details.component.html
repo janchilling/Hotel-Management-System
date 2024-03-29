@@ -1,0 +1,80 @@
+<div class="container mb-3 -mt-7 sm:mb-8 md:mb-12 lg:mb-16 xl:mb-20">
+  <section class="py-1 bg-blueGray-50">
+    <div class="w-full lg:w-8/12 px-4 mx-auto mt-6">
+      <div class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-lg bg-blueGray-100 border-0">
+        <div class="rounded-t bg-white mb-0 px-6 py-6">
+          <div class="text-center flex justify-between">
+            <h6 class="text-blueGray-700 text-xl font-bold">
+              Add Supplement
+            </h6>
+          </div>
+        </div>
+        <div class="flex-auto px-4 lg:px-10 py-10 pt-0">
+          <form [formGroup]="supplementForm" (ngSubmit)="onSubmit()">
+            <div formArrayName="supplements">
+              <ng-container *ngFor="let supplement of supplementsArray.controls; let i = index">
+                <div [formGroupName]="i">
+                  <div class="w-full lg:w-6/12 px-4">
+                    <div class="relative w-full mb-3">
+                      <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2" for="supplementName">
+                        Supplement Name
+                      </label>
+                      <input formControlName="supplementName" id="supplementName" type="text" class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" placeholder="Supplement Name" required>
+                      <span class="text-red-600" *ngIf="supplement.get('supplementName')?.invalid && supplement.get('supplementName')?.touched">Supplement Name is required</span>
+                    </div>
+                  </div>
+                  <div class="w-full lg:w-6/12 px-4">
+                    <div class="relative w-full mb-3">
+                      <input type="file" (change)="onFileSelected($event, i)" class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" required>
+                      <span class="text-red-600" *ngIf="supplement.get('iconImage')?.errors?.['required']">Please select an image</span>
+                      <span class="text-red-600" *ngIf="supplement.get('iconImage')?.errors?.['invalidFileType']">Please select a valid image file</span>
+                      <span class="text-red-600" *ngIf="supplement.get('iconImage')?.errors?.['invalidDimensions']">Please select a 32x32 icon image</span>
+                    </div>
+                  </div>
+                    <div class="w-full lg:w-6/12 px-4">
+                      <div class="relative w-full mb-3">
+                        <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2" for="supplementDescription">
+                          Supplement Description
+                        </label>
+                        <input formControlName="supplementDescription" id="supplementDescription" type="text" class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" placeholder="Supplement Description" required>
+                        <span class="text-red-600" *ngIf="supplement.get('supplementDescription')?.invalid && supplement.get('supplementDescription')?.touched">Supplement Description is required</span>
+                      </div>
+                    </div>
+                    <hr>
+                    <div class="w-full lg:full px-4">
+                      <div formArrayName="seasonSupplements">
+                        <ng-container *ngFor="let seasonSupplement of getSeasonSupplements(i).controls; let j = index">
+                          <div [formGroupName]="j" class="flex flex-wrap">
+                            <label class="block text-blueGray-700 font-semibold">{{ seasons[j].seasonName }}</label>
+                            <div class="w-full lg:w-6/12 px-4">
+                              <div class="relative w-full mb-3">
+                                <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2" for="supplementPrice">
+                                  Supplement Price
+                                </label>
+                                <input formControlName="supplementPrice" id="supplementPrice" type="number" class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" placeholder="Supplement Price" required>
+                                <span class="text-red-600" *ngIf="getSeasonSupplementFormGroup(i, j).get('supplementPrice')?.invalid && getSeasonSupplementFormGroup(i, j).get('supplementPrice')?.touched">Supplement Price is required</span>
+                              </div>
+                            </div>
+                            <hr>
+                          </div>
+                        </ng-container>
+                      </div>
+                    </div>
+                  </div>
+              </ng-container>
+            </div>
+            <div class="w-full lg:w-12/12 px-4">
+              <button type="button" class="bg-gray-200 text-gray-700 active:bg-gray-300 font-bold uppercase text-sm px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 mt-4 ease-linear transition-all duration-150" (click)="addSupplement()">
+                Add Supplement
+              </button>
+            </div>
+            <button type="submit" [disabled]="supplementForm.invalid" class="bg-blue-500 text-white font-semibold px-4 py-2 rounded hover:bg-blue-600 focus:outline-none focus:bg-blue-600 mt-4">
+              Submit
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+

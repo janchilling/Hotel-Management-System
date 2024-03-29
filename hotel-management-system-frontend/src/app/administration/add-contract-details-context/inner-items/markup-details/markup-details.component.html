@@ -1,0 +1,27 @@
+<div class="container mx-auto mt-6">
+  <div class="bg-blueGray-100 rounded-lg shadow-lg">
+    <div class="bg-white px-6 py-6 rounded-t">
+      <h2 class="text-blueGray-700 text-xl font-bold text-center">
+        Add Markup Percentages
+      </h2>
+    </div>
+    <div class="p-6">
+      <form [formGroup]="markupForm" (ngSubmit)="onSubmit()">
+        <div *ngFor="let season of seasons" class="mb-4">
+          <div [formGroupName]="'season_' + season.seasonId">
+            <label class="block text-blueGray-700 font-semibold">{{ season.seasonName }}</label>
+            <input type="number" formControlName="markupPercentage" placeholder="Enter markup percentage"
+                   class="w-full border-gray-300 rounded-md mt-1 focus:ring-blue-500 focus:border-blue-500 block"
+                   required>
+            <div *ngIf="'season_' + season.seasonId?.get('markupPercentage')?.invalid && 'season_' + season.seasonId?.get('markupPercentage')?.touched"
+                 class="text-red-600 text-sm mt-1">Markup Percentage is required</div>
+          </div>
+        </div>
+        <button type="submit" [disabled]="markupForm.invalid"
+                class="bg-blue-500 text-white font-semibold px-4 py-2 rounded hover:bg-blue-600 focus:outline-none focus:bg-blue-600">
+          Submit
+        </button>
+      </form>
+    </div>
+  </div>
+</div>

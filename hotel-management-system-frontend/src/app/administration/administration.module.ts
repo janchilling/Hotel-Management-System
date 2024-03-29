@@ -9,10 +9,11 @@ import { AddHotelContextComponent } from './add-hotel-context/add-hotel-context.
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import { AddContractContextComponent } from './add-contract-context/add-contract-context.component';
 import { ContractSeasonDetailsComponent } from './add-contract-context/inner-items/contract-season-details/contract-season-details.component';
-import { SupplementDetailsComponent } from './add-contract-context/inner-items/supplement-details/supplement-details.component';
-import { RoomtypesDetailsComponent } from './add-contract-context/inner-items/roomtypes-details/roomtypes-details.component';
-import { MarkupDetailsComponent } from './add-contract-context/inner-items/markup-details/markup-details.component';
-import { DiscountsDetailsComponent } from './add-contract-context/inner-items/discounts-details/discounts-details.component';
+import { SupplementDetailsComponent } from './add-contract-details-context/inner-items/supplement-details/supplement-details.component';;
+import { MarkupDetailsComponent } from './add-contract-details-context/inner-items/markup-details/markup-details.component';
+import { DiscountDetailsComponent } from './add-contract-details-context/inner-items/discount-details/discount-details.component';
+import { RoomtypesDetailsComponent } from './add-contract-details-context/inner-items/roomtypes-details/roomtypes-details.component';
+import { AddContractDetailsContextComponent } from './add-contract-details-context/add-contract-details-context.component';
 
 
 @NgModule({
@@ -23,9 +24,10 @@ import { DiscountsDetailsComponent } from './add-contract-context/inner-items/di
     AddContractContextComponent,
     ContractSeasonDetailsComponent,
     SupplementDetailsComponent,
-    RoomtypesDetailsComponent,
     MarkupDetailsComponent,
-    DiscountsDetailsComponent
+    DiscountDetailsComponent,
+    RoomtypesDetailsComponent,
+    AddContractDetailsContextComponent
   ],
     imports: [
         CommonModule,

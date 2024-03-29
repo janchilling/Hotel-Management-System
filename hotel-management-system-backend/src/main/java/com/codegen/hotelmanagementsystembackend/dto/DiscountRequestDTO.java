@@ -13,6 +13,7 @@ public class DiscountRequestDTO {
 
     private Integer discountId;
     private String discountName;
+    private String discountCode;
     private String discountDescription;
     private List<SeasonDiscountDTO> seasonDiscounts = new ArrayList<>();
     private Integer contractId;

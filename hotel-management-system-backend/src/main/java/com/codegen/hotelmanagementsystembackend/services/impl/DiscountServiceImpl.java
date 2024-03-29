@@ -43,14 +43,13 @@ public class DiscountServiceImpl implements DiscountService {
 
         List<Discount> discountsList = new ArrayList<>();
 
-        // Try with O(n) and test cases and best way of identifying data duplication
-
         try {
             for (DiscountRequestDTO discountRequestDTO : discountRequestDTOS) {
                 Discount newDiscount = new Discount();
                 newDiscount.setDiscountId(discountRequestDTO.getDiscountId());
                 newDiscount.setDiscountName(discountRequestDTO.getDiscountName());
                 newDiscount.setDiscountDescription(discountRequestDTO.getDiscountDescription());
+                newDiscount.setDiscountCode(discountRequestDTO.getDiscountCode());
 //                newDiscount.setContract(contractRepository.findById(discountRequestDTO.getContractId())
 //                        .orElseThrow(() -> new ResourceNotFoundException("Contract not found with ID: " + discountRequestDTO.getContractId())));
                 newDiscount.setContract(utilityMethods.getContract(discountRequestDTO.getContractId()));
@@ -66,8 +65,6 @@ public class DiscountServiceImpl implements DiscountService {
                         seasonDiscountKey.setDiscountId(newDiscount.getDiscountId());
                     }
                     seasonDiscount.setSeasonDiscountKey(seasonDiscountKey);
-                    seasonDiscount.setStartDate(seasonDiscountDTO.getStartDate());
-                    seasonDiscount.setEndDate(seasonDiscountDTO.getEndDate());
                     seasonDiscount.setDiscountPercentage(seasonDiscountDTO.getDiscountPercentage());
 //                    seasonDiscount.setSeason(seasonRepository.findById(seasonDiscountDTO.getSeasonId())
 //                            .orElseThrow(() -> new ResourceNotFoundException("Season not found with ID: " + seasonDiscountDTO.getSeasonId())));
@@ -79,7 +76,7 @@ public class DiscountServiceImpl implements DiscountService {
             }
             return discountRepository.saveAll(discountsList);
         }catch (Exception e){
-            throw new ServiceException("Discount creation failed");
+            throw new ServiceException("Discount creation failed" + e.getMessage());
         }
     }
 

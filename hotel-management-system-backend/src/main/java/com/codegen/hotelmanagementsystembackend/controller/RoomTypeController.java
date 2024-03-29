@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.Date;
 import java.util.List;
 
 @RestController
@@ -20,9 +21,17 @@ public class RoomTypeController {
 
     private final RoomTypeService roomTypeService;
 
-    @PostMapping("/addRoomType")
+    @PostMapping("/")
     public ResponseEntity<List<RoomType>> createRoomType(@RequestBody List<RoomTypeRequestDTO> roomTypeRequestDTOS){
         return ResponseEntity.ok(roomTypeService.createRoomType(roomTypeRequestDTOS));
+    }
+
+    @GetMapping("/{roomTypeId}/availableNoOfRooms/{checkInDate}/{checkOutDate}/{seasonId}")
+    public StandardResponse<Integer> availableNoOfRooms(@PathVariable Integer roomTypeId,
+                                                        @PathVariable Date checkInDate,
+                                                        @PathVariable Date checkOutDate,
+                                                        @PathVariable Integer seasonId) {
+        return roomTypeService.getAvailableRoomTypeCount(roomTypeId, checkInDate, checkOutDate, seasonId);
     }
 
     @GetMapping("/getRoomTypeById/{roomTypeId}")

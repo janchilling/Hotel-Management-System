@@ -25,10 +25,6 @@ public class SeasonDiscount {
     @JsonBackReference("seasonSeasonDiscountReference")
     Season season;
 
-    private Date startDate;
-
-    private Date endDate;
-
     private Double discountPercentage;
 
     @Override

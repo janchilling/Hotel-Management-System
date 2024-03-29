@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {ContractServicesService} from "../../../../shared/services/contractServices/contract-services.service";
 
 @Component({
@@ -15,7 +15,8 @@ export class ContractSeasonDetailsComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private route: ActivatedRoute,
-    private contractServicesService: ContractServicesService
+    private contractServicesService: ContractServicesService,
+    private router: Router
   ) {
     this.contractSeasonForm = this.fb.group({
       startDate: ['', Validators.required],
@@ -47,7 +48,7 @@ export class ContractSeasonDetailsComponent implements OnInit {
     this.contractServicesService.addContract(contractData).subscribe(
       (response) => {
         console.log('Contract added successfully:', response);
-        // Optionally, you can navigate to another page or show a success message.
+        this.router.navigate(['/administration/addMarkup'], { queryParams: { contractId: response.data.contractId } });
       },
       (error) => {
         console.error('Failed to add contract:', error);

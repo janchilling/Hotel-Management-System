@@ -42,15 +42,4 @@ public class SeasonController {
         return ResponseEntity.ok(seasonService.getSeasonByHotel(hotelId));
     }
 
-    /**
-     * Get the seasons by contract ID.
-     *
-     * @param  contractId   the ID of the contract
-     * @return              a list of SeasonResponseDTO objects
-     */
-    @GetMapping("/getSeasonByContract/{contractId}")
-    public ResponseEntity<List<SeasonResponseDTO>> getSeasonByContract(@PathVariable Integer contractId){
-        return ResponseEntity.ok(seasonService.getSeasonByContract(contractId));
-    }
-
 }

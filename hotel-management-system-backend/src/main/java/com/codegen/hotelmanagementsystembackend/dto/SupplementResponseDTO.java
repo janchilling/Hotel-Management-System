@@ -10,10 +10,10 @@ public class SupplementResponseDTO {
     private Integer supplementId;
     private String supplementName;
     private String supplementDescription;
-    private String supplementType;
+    private String imageIconURL;
     private Integer contractId;
     private String contractStatus;
     private Integer hotelId;
     private String hotelName;
-    List<SeasonSupplementResponseDTO> supplementsSeasons;
+    List<SeasonSupplementResponseDTO> seasonSupplements;
 }
