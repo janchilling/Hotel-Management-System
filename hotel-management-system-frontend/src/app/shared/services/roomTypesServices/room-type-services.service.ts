@@ -22,6 +22,7 @@ export class RoomTypeServicesService {
   }
 
   addRoomType(roomType: any): Observable<any> {
+    console.log(roomType);
     return this.httpClient.post<any>(`${this.backendHostName}/v1/roomTypes/`, roomType)
       .pipe(
         catchError((error: any) => {

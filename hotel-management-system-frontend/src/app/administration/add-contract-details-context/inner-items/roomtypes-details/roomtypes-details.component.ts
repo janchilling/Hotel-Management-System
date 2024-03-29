@@ -150,11 +150,10 @@ export class RoomtypesDetailsComponent {
       const roomTypes = this.roomTypeForm.value.roomTypes;
 
       roomTypes.forEach((roomType: any, roomTypeIndex: number) => {
-        console.log("Clicked")
-        const roomTypeImages: any[] = [];
+
+        let images: any[] = [];
 
         if (this.images[roomTypeIndex]) {
-          console.log("Clicked")
           this.images[roomTypeIndex].forEach((file: any) => {
             const filePath = `room-type-images/${new Date().getTime()}`;
             const fileRef = this.storage.ref(filePath);
@@ -163,13 +162,13 @@ export class RoomtypesDetailsComponent {
             uploadTask.snapshotChanges().pipe(
               finalize(() => {
                 fileRef.getDownloadURL().subscribe((url) => {
-                  roomTypeImages.push({ imageURL: url });
+                  images.push({ imageURL: url });
                 });
               })
             ).subscribe();
           });
         }
-        roomType.roomTypeImages = roomTypeImages;
+        roomType.roomTypeImages = images;
       });
       this.sendRoomTypeData(roomTypes);
     }

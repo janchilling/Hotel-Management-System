@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import { SeasonServicesService } from '../../../../shared/services/seasonServices/season-services.service';
 import {DiscountServicesService} from "../../../../shared/services/discountServices/discount-services.service";
 
@@ -20,6 +20,7 @@ export class DiscountDetailsComponent implements OnInit {
     private route: ActivatedRoute,
     private discountService: DiscountServicesService,
     private seasonServicesService: SeasonServicesService,
+    private router: Router
   ) {
     this.discountForm = this.fb.group({
       discounts: this.fb.array([])
@@ -113,7 +114,7 @@ export class DiscountDetailsComponent implements OnInit {
       this.discountService.addDiscount(dataToSend).subscribe(
         (response) => {
           console.log('Season details sent successfully:', response);
-          // Handle success response
+          this.router.navigate(['/administration/addSupplement'], { queryParams: { contractId: this.contractId } });
         },
         (error) => {
           console.error('Failed to send season details:', error);

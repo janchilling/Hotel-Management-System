@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import { SeasonServicesService } from '../../../../shared/services/seasonServices/season-services.service';
 import { SupplementServicesService } from "../../../../shared/services/supplementServices/supplement-services.service";
 import { AngularFireStorage, AngularFireStorageReference } from "@angular/fire/compat/storage";
@@ -23,7 +23,8 @@ export class SupplementDetailsComponent implements OnInit {
     private route: ActivatedRoute,
     private supplementService: SupplementServicesService,
     private seasonServicesService: SeasonServicesService,
-    private storage: AngularFireStorage
+    private storage: AngularFireStorage,
+    private router: Router
   ) {
     this.supplementForm = this.fb.group({
       supplements: this.fb.array([])
@@ -168,6 +169,7 @@ export class SupplementDetailsComponent implements OnInit {
     this.supplementService.addSupplement(supplements).subscribe(
       (response) => {
         console.log('Supplement details sent successfully:', response);
+        this.router.navigate(['/administration/addRoomType'], { queryParams: { contractId: this.contractId } });
       },
       (error) => {
         console.error('Failed to send supplement details:', error);

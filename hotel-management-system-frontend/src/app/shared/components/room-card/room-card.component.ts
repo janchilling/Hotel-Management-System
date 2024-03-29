@@ -11,11 +11,11 @@ export class RoomCardComponent implements OnInit {
   @Input() supplements: any;
   @Input() showSelectSupplements: boolean = false;
   @Input() showSelectDetails: boolean = false;
-  roomTypePrice: number | undefined;
-  checkInDate: Date | undefined;
-  checkOutDate: Date | undefined;
+  roomTypePrice: any;
+  checkInDate: any;
+  checkOutDate: any;
   numRooms: number = 0;
-  selectedSupplements: any[] = []; // Array to track selected supplements for each room type
+  selectedSupplements: any[] = [];
 
   constructor(private route: ActivatedRoute) {}
 
@@ -39,25 +39,33 @@ export class RoomCardComponent implements OnInit {
   calculateRoomTypePrice(): void {
     const checkInDate = this.checkInDate as Date;
     const checkOutDate = this.checkOutDate as Date;
-    const seasonRoomtypes = this.roomType.seasonRoomtype;
+    const seasonRoomtypes = this.roomType?.seasonRoomtype;
+
+    if (!seasonRoomtypes) {
+      return;
+    }
 
     const matchingSeason = seasonRoomtypes.find((season: { startDate: string | number | Date; endDate: string | number | Date; }) => {
+
       const startDate = new Date(season.startDate);
       const endDate = new Date(season.endDate);
       return checkInDate >= startDate && checkOutDate <= endDate;
     });
 
     if (matchingSeason) {
-      this.roomTypePrice = matchingSeason.roomPrice;
+      this.roomTypePrice = matchingSeason.roomTypePrice;
+    } else {
+      console.log("No matching season found or room price is undefined.");
     }
   }
+
 
   calculateSupplementPrices(): void {
     const checkInDate = this.checkInDate as Date;
     const checkOutDate = this.checkOutDate as Date;
 
     this.supplements.forEach((supplement: any) => {
-      supplement.supplementsSeasons.forEach((season: { startDate: string | number | Date; endDate: string | number | Date; supplementPrice: number; }) => {
+      supplement.seasonSupplements.forEach((season: { startDate: string | number | Date; endDate: string | number | Date; supplementPrice: number; }) => {
         const startDate = new Date(season.startDate);
         const endDate = new Date(season.endDate);
 

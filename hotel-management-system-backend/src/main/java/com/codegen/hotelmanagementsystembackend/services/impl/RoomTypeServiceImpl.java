@@ -3,9 +3,7 @@ package com.codegen.hotelmanagementsystembackend.services.impl;
 import com.codegen.hotelmanagementsystembackend.dto.*;
 import com.codegen.hotelmanagementsystembackend.entities.*;
 import com.codegen.hotelmanagementsystembackend.exception.ResourceNotFoundException;
-import com.codegen.hotelmanagementsystembackend.repository.ContractRepository;
-import com.codegen.hotelmanagementsystembackend.repository.RoomTypeRepository;
-import com.codegen.hotelmanagementsystembackend.repository.SeasonRepository;
+import com.codegen.hotelmanagementsystembackend.repository.*;
 import com.codegen.hotelmanagementsystembackend.services.RoomTypeService;
 import com.codegen.hotelmanagementsystembackend.util.UtilityMethods;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +24,8 @@ public class RoomTypeServiceImpl implements RoomTypeService {
     private final SeasonRepository seasonRepository;
     private final ContractRepository contractRepository;
     private final RoomTypeRepository roomTypeRepository;
+    private final RoomTypeImagesRepository roomTypeImagesRepository;
+    private final SeasonRoomTypeRepository seasonRoomTypeRepository;
     private final UtilityMethods utilityMethods;
     private final ModelMapper modelMapper;
 
@@ -53,19 +53,24 @@ public class RoomTypeServiceImpl implements RoomTypeService {
                 newRoomType.setContract(contractRepository.findById(roomTypeRequestDTO.getContractId())
                         .orElseThrow(() -> new ResourceNotFoundException("Contract not found with ID: " + roomTypeRequestDTO.getContractId())));
 
-                Set<RoomTypeImages> roomTypeImagesList = new HashSet<>();
-                for(RoomTypeImagesDTO roomTypeImagesDTO : roomTypeRequestDTO.getRoomTypeImages()){
-                    RoomTypeImages newRoomTypeImage = new RoomTypeImages();
-                    newRoomTypeImage.setRoomType(newRoomType);
-                    newRoomTypeImage.setImageURL(roomTypeImagesDTO.getImageURL());
-                    roomTypeImagesList.add(newRoomTypeImage);
-                }
-                newRoomType.setRoomTypeImages(roomTypeImagesList);
+                RoomType savedRoomType = roomTypeRepository.save(newRoomType);
 
+                for (RoomTypeImagesDTO roomTypeImagesDTO : roomTypeRequestDTO.getRoomTypeImages()) {
+                    System.out.println("Hello");
+                    System.out.println(roomTypeImagesDTO.getImageURL());
+                    System.out.println("Hello");
+                    RoomTypeImages roomTypeImages = new RoomTypeImages();
+                    System.out.println("Hello");
+                    roomTypeImages.setRoomType(savedRoomType);
+                    System.out.println("Hello");
+                    roomTypeImages.setImageURL(roomTypeImagesDTO.getImageURL());
+                    System.out.println("Hello");
+                    roomTypeImagesRepository.save(roomTypeImages);
+                }
 
                 for (SeasonRoomTypeDTO seasonRoomTypeDTO : roomTypeRequestDTO.getSeasonRoomTypes()) {
                     SeasonRoomType seasonRoomType = new SeasonRoomType();
-                    seasonRoomType.setRoomType(newRoomType);
+                    seasonRoomType.setRoomType(savedRoomType);
                     SeasonRoomTypeKey seasonRoomTypeKey = new SeasonRoomTypeKey();
                     if (seasonRoomTypeDTO.getSeasonId() != null) {
                         seasonRoomTypeKey.setSeasonId(seasonRoomTypeDTO.getSeasonId());
@@ -79,23 +84,15 @@ public class RoomTypeServiceImpl implements RoomTypeService {
                     seasonRoomType.setSeason(seasonRepository.findById(seasonRoomTypeDTO.getSeasonId())
                             .orElseThrow(() -> new ResourceNotFoundException("Season not found with ID: " + seasonRoomTypeDTO.getSeasonId())));
 
-                    newRoomType.getSeasonRoomtype().add(seasonRoomType);
+                    seasonRoomTypeRepository.save(seasonRoomType);
                 }
 
-//                for(RoomTypeImagesDTO roomTypeImagesDTO : roomTypeRequestDTO.getRoomTypeImages()){
-//                    RoomTypeImages newRoomTypeImage = new RoomTypeImages();
-//                    newRoomTypeImage.setRoomType(newRoomType);
-//                    newRoomTypeImage.setImageURL(roomTypeImagesDTO.getImageURL());
-//
-//                    newRoomType.getRoomTypeImages().add(newRoomTypeImage);
-//                }
-                roomTypesList.add(newRoomType);
-//                roomTypeRepository.save(newRoomType);
+                roomTypesList.add(savedRoomType);
             }
 
-            return roomTypeRepository.saveAll(roomTypesList);
+            return roomTypesList;
         } catch (Exception e) {
-            throw new ServiceException("Failed to create Room Types", e);
+            throw new ServiceException("Failed to create Room Types"+ e.getMessage());
         }
     }
 
