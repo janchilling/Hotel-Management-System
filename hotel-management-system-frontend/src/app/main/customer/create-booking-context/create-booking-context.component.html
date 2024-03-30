@@ -1,4 +1,4 @@
-<div class="container-padding">
+<div class="container-padding" *ngIf="hotelDetails">
   <div class="mb-4 border-gray-200 dark:border-gray-700">
     <ul class="flex flex-wrap -mb-px text-sm font-medium text-center" id="default-styled-tab"
         data-tabs-toggle="#default-styled-tab-content"
@@ -36,11 +36,15 @@
      </div>
 
   <ng-container *ngIf="isBookingDetailsVisible">
-    <app-booking-details [contractId]="hotelDetails.contractId"></app-booking-details>
+    <app-booking-details [contractId]="hotelDetails?.contractId" (purchaseClicked)="handlePurchaseClicked($event)"></app-booking-details>
   </ng-container>
 
   <ng-container *ngIf="isPaymentVisible">
-    <app-booking-payment></app-booking-payment>
+    <app-booking-payment [contactDetails]="contactDetails"
+                         [bookingRooms]="bookingRooms"
+                         [bookingSupplements]="bookingSupplements"
+                         [discount]="discount"
+                         [contractId]="hotelDetails?.contractId"></app-booking-payment>
   </ng-container>
 
 </div>

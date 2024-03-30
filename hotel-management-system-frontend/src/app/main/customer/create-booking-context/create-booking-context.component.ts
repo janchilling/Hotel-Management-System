@@ -13,6 +13,11 @@ export class CreateBookingContextComponent implements OnInit {
   hotelDetails: any;
   isBookingDetailsVisible: boolean = true;
   isPaymentVisible: boolean = false;
+  contractId: any;
+  contactDetails: any;
+  bookingRooms: any;
+  bookingSupplements: any;
+  discount: any;
 
   constructor(
     private hotelDetailsByIdService: HotelDetailsByIdService,
@@ -21,8 +26,6 @@ export class CreateBookingContextComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    // Get the hotel ID from the URL path
-    // this.hotelId = +this.route.snapshot.params['hotelId'];
     this.route.queryParams.subscribe(params => {
       // this.checkInDate = params['checkIn'];
       // this.checkOutDate = params['checkOut'];
@@ -36,8 +39,8 @@ export class CreateBookingContextComponent implements OnInit {
     this.hotelDetailsByIdService.getHotelDetailsById(this.hotelId).subscribe(
       (response) => {
         this.hotelDetails = response;
-        this.hotelDetails = this.hotelDetails.data
-        console.log(this.hotelDetails)
+        this.hotelDetails = this.hotelDetails.data;
+        this.contractId = this.hotelDetails.contractId;
       },
       (error) => {
         // Handle error
@@ -48,6 +51,16 @@ export class CreateBookingContextComponent implements OnInit {
   showBookingDetails() {
     this.isBookingDetailsVisible = true;
     this.isPaymentVisible = false;
+  }
+
+  handlePurchaseClicked(data: any) {
+
+    this.contactDetails = data.contactDetails;
+    this.bookingRooms = data.bookingRooms;
+    this.bookingSupplements = data.bookingSupplements;
+    this.discount = data.discount;
+    this.isBookingDetailsVisible = false;
+    this.isPaymentVisible = true;
   }
 
   showPayment() {

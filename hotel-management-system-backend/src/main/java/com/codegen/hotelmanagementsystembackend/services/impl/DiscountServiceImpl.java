@@ -97,8 +97,11 @@ public class DiscountServiceImpl implements DiscountService {
             DiscountResponseDTO discountResponseDTO = modelMapper.map(discount, DiscountResponseDTO.class);
             discountResponseDTO.setSeasonDiscounts(discount.getSeasonDiscounts().stream().map(
                     seasonDiscount -> {
+                        Season season = utilityMethods.getSeason(seasonDiscount.getSeason().getSeasonId());
                         SeasonDiscountResponseDTO seasonDiscountResponseDTO = modelMapper.map(seasonDiscount, SeasonDiscountResponseDTO.class);
-                        seasonDiscountResponseDTO.setSeasonName(utilityMethods.getSeason(seasonDiscount.getSeason().getSeasonId()).getSeasonName());
+                        seasonDiscountResponseDTO.setSeasonName(season.getSeasonName());
+                        seasonDiscountResponseDTO.setEndDate(season.getEndDate());
+                        seasonDiscountResponseDTO.setStartDate(season.getStartDate());
                         return seasonDiscountResponseDTO;
                     }).toList());
 

@@ -1,7 +1,7 @@
 package com.codegen.hotelmanagementsystembackend.services.impl;
 
-import com.codegen.hotelmanagementsystembackend.dto.MarkupRequestDTO;
-import com.codegen.hotelmanagementsystembackend.dto.SeasonMarkupDTO;
+import ch.qos.logback.core.model.Model;
+import com.codegen.hotelmanagementsystembackend.dto.*;
 import com.codegen.hotelmanagementsystembackend.entities.*;
 import com.codegen.hotelmanagementsystembackend.exception.ResourceNotFoundException;
 import com.codegen.hotelmanagementsystembackend.repository.ContractRepository;
@@ -9,6 +9,7 @@ import com.codegen.hotelmanagementsystembackend.repository.MarkupRepository;
 import com.codegen.hotelmanagementsystembackend.repository.SeasonRepository;
 import com.codegen.hotelmanagementsystembackend.services.MarkupService;
 import com.codegen.hotelmanagementsystembackend.util.StandardResponse;
+import com.codegen.hotelmanagementsystembackend.util.UtilityMethods;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.service.spi.ServiceException;
@@ -28,6 +29,8 @@ public class MarkupServiceImpl implements MarkupService {
     private final MarkupRepository markupRepository;
     private final SeasonRepository seasonRepository;
     private final ContractRepository contractRepository;
+    private final UtilityMethods utilityMethods;
+    private final ModelMapper modelMapper;
 
     private static final Logger logger = LoggerFactory.getLogger(MarkupServiceImpl.class);
 
@@ -77,6 +80,52 @@ public class MarkupServiceImpl implements MarkupService {
         } catch (Exception e) {
             logger.error("Failed to create markups: {}", e.getMessage());
             return new StandardResponse<>(500, "Failed to create markups: " + e.getMessage(), null);
+        }
+    }
+
+    @Override
+    public MarkupResponseDTO getMarkupById(Integer markupId) {
+
+        try{
+            Markup markup = utilityMethods.getMarkup(markupId);
+            Contract contract = utilityMethods.getContract(markup.getContract().getContractId());
+            Hotel hotel = utilityMethods.getHotel(contract.getHotel().getHotelId());
+
+            MarkupResponseDTO markupResponseDTO = modelMapper.map(markup, MarkupResponseDTO.class);
+            markupResponseDTO.setSeasonMarkups(markup.getSeasonMarkups().stream().map(
+                    seasonMarkup -> {
+                        Season season = utilityMethods.getSeason(seasonMarkup.getSeason().getSeasonId());
+                        SeasonMarkupResponseDTO seasonMarkupResponseDTO = modelMapper.map(seasonMarkup, SeasonMarkupResponseDTO.class);
+                        seasonMarkupResponseDTO.setSeasonName(season.getSeasonName());
+                        seasonMarkupResponseDTO.setEndDate(season.getEndDate());
+                        seasonMarkupResponseDTO.setStartDate(season.getStartDate());
+                        return seasonMarkupResponseDTO;
+                    }).toList());
+
+            markupResponseDTO.setContractId(contract.getContractId());
+            markupResponseDTO.setContractStatus(contract.getContractStatus());
+            markupResponseDTO.setHotelId(hotel.getHotelId());
+            markupResponseDTO.setHotelName(hotel.getHotelName());
+
+            return markupResponseDTO;
+
+        }catch (Exception e){
+            throw new ServiceException("Discount search failed");
+        }
+    }
+
+    @Override
+    public List<MarkupResponseDTO> getMarkupByContract(Integer contractId) {
+        try{
+            List<Markup> markupList =  markupRepository.findAllMarkupsByContractContractId(contractId);
+            if (markupList.isEmpty()) {
+                throw new ResourceNotFoundException("No markups found for the contract" + contractId);
+            }
+
+            return markupList.stream().map(markups -> getMarkupById(markups.getMarkupId())).collect(Collectors.toList());
+
+        }catch(Exception e){
+            throw new ServiceException("Getting markups failed");
         }
     }
 

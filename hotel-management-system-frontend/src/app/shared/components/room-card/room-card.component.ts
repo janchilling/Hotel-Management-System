@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import {RoomTypeServicesService} from "../../services/roomTypesServices/room-type-services.service";
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -13,6 +13,7 @@ export class RoomCardComponent implements OnInit {
   @Input() supplements: any;
   @Input() showSelectSupplements: boolean = false;
   @Input() showSelectDetails: boolean = false;
+  @Output() roomSelected = new EventEmitter<any>();
   roomTypePrice: any;
   checkInDate: any;
   checkOutDate: any;
@@ -77,7 +78,6 @@ export class RoomCardComponent implements OnInit {
     }
   }
 
-
   getSupplementPrices(): void {
     const checkInDate = this.checkInDate as Date;
     const checkOutDate = this.checkOutDate as Date;
@@ -97,6 +97,7 @@ export class RoomCardComponent implements OnInit {
   incrementRooms(): void {
     if (this.numRooms < this.availableRooms) {
       this.numRooms++;
+      this.updateRoomData();
     }
     this.calculateTotalPrice()
   }
@@ -104,6 +105,7 @@ export class RoomCardComponent implements OnInit {
   decrementRooms(): void {
     if (this.numRooms > 0) {
       this.numRooms--;
+      this.updateRoomData();
     }
     this.calculateTotalPrice();
   }
@@ -124,6 +126,7 @@ export class RoomCardComponent implements OnInit {
           this.selectedSupplements[existingIndex].supplements.push(supplement);
         }
         this.calculateTotalPrice()
+        this.updateRoomData();
       } else {
         // If the supplement is deselected, remove it from the selected supplements for this room type
         if (existingIndex !== -1) {
@@ -133,6 +136,7 @@ export class RoomCardComponent implements OnInit {
           }
         }
         this.calculateTotalPrice()
+        this.updateRoomData();
       }
     } else {
       // Show snackbar notification to add rooms
@@ -161,6 +165,38 @@ export class RoomCardComponent implements OnInit {
     });
     const roomPrice = this.roomTypePrice * this.numRooms; // Calculate total room price
     this.totalPrice = roomPrice + totalSupplementPrice; // Add room price and supplement price
+  }
+
+  updateRoomData() {
+
+    if (this.numRooms === 0) {
+      // If the number of rooms is 0, clear the selected supplements
+      this.selectedSupplements = [];
+    }
+    const bookingRooms = {
+      noOfRooms: this.numRooms,
+      roomTypeName: this.roomType.roomTypeName,
+      bookedPrice: this.roomTypePrice,
+      roomTypeId: this.roomType.roomTypeId
+    };
+
+    const bookingSupplements = this.selectedSupplements.flatMap((selectedSupplement) => {
+      return selectedSupplement.supplements.map((supplement: any) => {
+        return {
+          supplementPrice: supplement.price,
+          supplementName: supplement.supplementName,
+          supplementId: supplement.supplementId,
+          roomTypeId: this.roomType.roomTypeId,
+          noOfRooms: this.numRooms
+        };
+      });
+    });
+
+    const selectedRoomData = {
+      bookingRooms: [bookingRooms],
+      bookingSupplements: bookingSupplements
+    };
+    this.roomSelected.emit(selectedRoomData);
   }
 
 }

@@ -21,4 +21,14 @@ export class DiscountServicesService {
         })
       );
   }
+
+  getDiscounts(contractId: number): Observable<any> {
+    return this.httpClient.get<any>(`${this.backendHostName}/v1/discounts/getDiscountByContract/${contractId}`)
+      .pipe(
+        catchError((error: any) => {
+          console.error('Error fetching discounts:', error);
+          return of(null);
+        })
+      );
+  }
 }
