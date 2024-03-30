@@ -2,9 +2,11 @@ package com.codegen.hotelmanagementsystembackend.controller;
 
 import com.codegen.hotelmanagementsystembackend.dto.ContractRequestDTO;
 import com.codegen.hotelmanagementsystembackend.dto.ContractResponseDTO;
+import com.codegen.hotelmanagementsystembackend.dto.MarkupResponseDTO;
 import com.codegen.hotelmanagementsystembackend.dto.SeasonResponseDTO;
 import com.codegen.hotelmanagementsystembackend.entities.Contract;
 import com.codegen.hotelmanagementsystembackend.services.ContractService;
+import com.codegen.hotelmanagementsystembackend.services.MarkupService;
 import com.codegen.hotelmanagementsystembackend.services.SeasonService;
 import com.codegen.hotelmanagementsystembackend.util.StandardResponse;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +22,7 @@ public class ContractController {
 
     private final ContractService contractService;
     private final SeasonService seasonService;
+    private final MarkupService markupService;
 
     @PostMapping("/")
     public StandardResponse<Contract> createContract(@RequestBody ContractRequestDTO contractRequestDTO){
@@ -34,5 +37,10 @@ public class ContractController {
     @GetMapping("/{contractId}/seasons")
     public ResponseEntity<List<SeasonResponseDTO>> getSeasonByContract(@PathVariable Integer contractId){
         return ResponseEntity.ok(seasonService.getSeasonByContract(contractId));
+    }
+
+    @GetMapping("/{contractId}/markups")
+    public ResponseEntity<List<MarkupResponseDTO>> getMarkupByContract(@PathVariable Integer contractId){
+        return ResponseEntity.ok(markupService.getMarkupByContract(contractId));
     }
 }

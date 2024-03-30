@@ -5,11 +5,11 @@ import lombok.Data;
 import java.sql.Date;
 
 @Data
-public class SeasonDiscountResponseDTO {
+public class SeasonMarkupResponseDTO {
 
     private Integer seasonId;
     private String seasonName;
     private Date startDate;
     private Date endDate;
-    private Double discountPercentage;
+    private Double markupPercentage;
 }

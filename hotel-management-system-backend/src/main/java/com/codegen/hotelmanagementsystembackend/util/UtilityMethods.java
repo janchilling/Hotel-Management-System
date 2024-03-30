@@ -23,6 +23,7 @@ public class UtilityMethods {
     private final BookingDiscountRepository bookingDiscountRepository;
     private final BookingSupplementsRepository bookingSupplementsRepository;
     private final SeasonRoomTypeRepository seasonRoomTypeRepository;
+    private final MarkupRepository markupRepository;
 
     public Season getSeason(Integer seasonId) {
         return seasonRepository.findById(seasonId)
@@ -82,6 +83,11 @@ public class UtilityMethods {
     public BookingSupplements getBookingSupplement(Integer bookingSupplementId) {
         return bookingSupplementsRepository.findById(bookingSupplementId)
                 .orElseThrow(() -> new ResourceNotFoundException("Supplement with Booking not found" + bookingSupplementId));
+    }
+
+    public Markup getMarkup(Integer markupId) {
+        return markupRepository.findById(markupId)
+                .orElseThrow(() -> new ResourceNotFoundException("Markup not found" + markupId));
     }
 
 

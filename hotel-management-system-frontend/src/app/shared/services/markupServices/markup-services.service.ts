@@ -21,4 +21,14 @@ export class MarkupServicesService {
         })
       );
   }
+
+  getMarkupsByContractId(contractId: number): Observable<any> {
+    return this.httpClient.get<any>(`${this.backendHostName}/v1/contracts/${contractId}/markups`)
+      .pipe(
+        catchError((error: any) => {
+          console.error('Error fetching markups:', error);
+          return of(null);
+        })
+      );
+  }
 }

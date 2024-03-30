@@ -1,4 +1,4 @@
-<app-select-details [contractId]="contractId"></app-select-details>
+<app-select-details [contractId]="contractId" (selectDetailsChanged)="handleSelectDetailsChanged($event)"></app-select-details>
 <app-contact-details (contactDetailsChanged)="handleContactDetailsChanged($event)"></app-contact-details>
 <button (click)="purchase()" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Purchase</button>
 
