@@ -23,7 +23,7 @@ export class BookingDetailsComponent {
   }
 
   purchase() {
-    this.purchaseClicked.emit({ contactDetails: this.contactDetails, bookingRooms: this.selectedRoomData.bookingRooms, bookingSupplements: this.selectedRoomData.bookingSupplements });
+    this.purchaseClicked.emit({ contactDetails: this.contactDetails, bookingRooms: this.selectedRoomData.bookingRooms, bookingSupplements: this.selectedRoomData.bookingSupplements, discount: this.selectedRoomData.discount});
   }
 
   handleContactDetailsChanged(contactDetails: any) {

@@ -59,6 +59,7 @@ export class CreateBookingContextComponent implements OnInit {
     this.bookingRooms = data.bookingRooms;
     this.bookingSupplements = data.bookingSupplements;
     this.discount = data.discount;
+    console.log(this.discount)
     this.isBookingDetailsVisible = false;
     this.isPaymentVisible = true;
   }
