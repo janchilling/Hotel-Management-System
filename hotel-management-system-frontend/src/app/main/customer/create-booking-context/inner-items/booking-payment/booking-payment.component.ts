@@ -1,6 +1,7 @@
 import {Component, Input} from '@angular/core';
 import {MarkupServicesService} from "../../../../../shared/services/markupServices/markup-services.service";
 import {ActivatedRoute} from "@angular/router";
+import {DateServiceService} from "../../../../../shared/services/dateService/date-service.service";
 
 @Component({
   selector: 'app-booking-payment',
@@ -17,17 +18,22 @@ export class BookingPaymentComponent {
   markupDetails: any;
   checkInDate: any;
   checkOutDate: any;
-
+  bookingData: any;
+  today: any;
   subtotal: number = 0;
   supplementsTotal: number = 0;
-  discountedSupplementsTotal: number = 0;
+  selectedPaymentOption: string = 'full';
+  isPrepaymentEligible: boolean = false;
   totalAfterDiscounts: number = 0;
   markupPercentage: number = 0;
   finalPrice: number = 0;
+  discountedAmount: number = 0;
+  tax: number = 0;
 
   constructor(
     private markupServicesService: MarkupServicesService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private dateService: DateServiceService
   ) {}
 
   ngOnInit(): void {
@@ -36,34 +42,31 @@ export class BookingPaymentComponent {
       this.checkOutDate = params['checkOut'];
     });
 
+    this.today = new Date();
+
     this.markupServicesService.getMarkupsByContractId(this.contractId).subscribe(data => {
       this.markupDetails = data[0];
       this.calculateTotals();
       console.log(this.finalPrice)
     });
+
+    this.checkPrepaymentEligibility();
   }
 
   calculateTotals(): void {
-    // Calculate subtotal
     this.subtotal = this.bookingRooms.reduce((total: number, room: { bookedPrice: number; noOfRooms: number; }) => total + (room.bookedPrice * room.noOfRooms), 0);
 
-    // Calculate supplements total if supplements exist
     if (this.bookingSupplements && this.bookingSupplements.length > 0) {
       this.supplementsTotal = this.bookingSupplements.reduce((total: number, supplement: { supplementPrice: number; noOfRooms: number; }) => total + (supplement.supplementPrice * supplement.noOfRooms), 0);
     }
 
-    // Calculate total after discounts
-    this.totalAfterDiscounts = this.subtotal;
+    this.totalAfterDiscounts = this.subtotal + this.supplementsTotal;
 
-    // Apply discounts if available
     if (this.discount && this.discount.discountPercentage) {
       const discountPercentage = this.discount.discountPercentage;
-      const discountAmount = this.totalAfterDiscounts * (discountPercentage / 100);
-      this.totalAfterDiscounts -= discountAmount;
+      this.discountedAmount = this.totalAfterDiscounts * (discountPercentage / 100);
+      this.totalAfterDiscounts -= this.discountedAmount;
     }
-
-    // Calculate discounted supplements total if supplements exist and discounts are applied
-    this.discountedSupplementsTotal = this.totalAfterDiscounts + this.supplementsTotal;
 
     // Find applicable markup percentage based on season
     const currentDate = new Date();
@@ -73,12 +76,60 @@ export class BookingPaymentComponent {
       return currentDate >= startDate && currentDate <= endDate;
     });
 
-    if (seasonMarkup) {
-      this.markupPercentage = seasonMarkup.markupPercentage;
+    if (this.markupDetails && seasonMarkup.markupPercentage) {
+      const markupPercentage = seasonMarkup.markupPercentage;
+      console.log(markupPercentage)
+      this.tax = this.totalAfterDiscounts * (markupPercentage / 100);
+    } else {
+      this.tax = 0;
     }
 
     // Apply markup percentage to final price
-    this.finalPrice = this.discountedSupplementsTotal * (1 + (this.markupPercentage / 100));
+    this.finalPrice = this.totalAfterDiscounts + this.tax;
   }
+
+  checkPrepaymentEligibility(): void {
+    const checkInDate = new Date(this.checkInDate);
+    const today = new Date();
+    const differenceInDays = Math.ceil((checkInDate.getTime() - this.today.getTime()) / (1000 * 3600 * 24));
+    if(differenceInDays > 3) {
+      this.isPrepaymentEligible = true;
+    }
+  }
+
+  getTotal(): number {
+    if (this.selectedPaymentOption === 'prepayment') {
+      return this.finalPrice * 0.25; // 25% prepayment
+    } else {
+      return this.finalPrice; // Full payment
+    }
+  }
+
+  createBooking(): void {
+    const paymentStatus = this.selectedPaymentOption === 'prepayment' ? 'Pre' : 'Full';
+
+    const bookingData = {
+      bookingDate: this.dateService.formatDate(this.today),
+      checkInDate: this.checkInDate,
+      checkOutDate: this.checkOutDate,
+      finalBookingPrice: this.finalPrice,
+      noOfAdults: 5, // Get the number of adults
+      bookingStatus: 'Confirmed',
+      paymentStatus: paymentStatus, // Set paymentStatus based on payment option
+      hotelId: 1,
+      customerId: 1,
+      payment: {
+        paymentDate: this.dateService.formatDate(this.today),
+        paymentAmount: this.getTotal(),
+        paymentType: 'Credit Card'
+      },
+      bookingRooms: this.bookingRooms,
+      bookingDiscounts: [this.discount],
+      bookingSupplements: this.bookingSupplements
+    };
+
+    console.log(bookingData);
+  }
+
 
 }

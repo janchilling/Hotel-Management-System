@@ -28,8 +28,6 @@ public class Booking {
 
     private Integer noOfAdults;
 
-    private Integer noOfChildren;
-
     private String bookingStatus;
 
     private String paymentStatus;

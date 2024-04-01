@@ -14,7 +14,6 @@ public class BookingRequestDTO {
     private String checkOutDate;
     private Double finalBookingPrice;
     private Integer noOfAdults;
-    private Integer noOfChildren;
     private String bookingStatus;
     private String paymentStatus;
     private Integer hotelId;
