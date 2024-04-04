@@ -44,17 +44,17 @@ public class Booking {
     @JsonBackReference("bookingCustomerReference")
     private Customer customer;
 
-    @OneToMany(mappedBy="booking")
+    @OneToMany(mappedBy="booking", cascade = CascadeType.MERGE)
     @JsonManagedReference("bookingBookingRoomReference")
-    private List<BookingRoom> rooms = new ArrayList<>();
+    private List<BookingRoom> bookingRooms = new ArrayList<>();
 
-    @OneToMany(mappedBy="booking")
+    @OneToMany(mappedBy="booking", cascade = CascadeType.MERGE)
     @JsonManagedReference("bookingBookingDiscountReference")
-    private List<BookingDiscount> discounts = new ArrayList<>();
+    private List<BookingDiscount> bookingDiscounts = new ArrayList<>();
 
-    @OneToMany(mappedBy="booking")
+    @OneToMany(mappedBy="booking", cascade = CascadeType.MERGE)
     @JsonManagedReference("bookingBookingSupplementReference")
-    private List<BookingSupplements> supplements = new ArrayList<>();
+    private List<BookingSupplements> bookingSupplements = new ArrayList<>();
 
 
 }

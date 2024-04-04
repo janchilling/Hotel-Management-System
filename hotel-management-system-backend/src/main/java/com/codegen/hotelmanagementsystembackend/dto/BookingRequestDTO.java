@@ -2,13 +2,14 @@ package com.codegen.hotelmanagementsystembackend.dto;
 
 import lombok.Data;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Data
 public class BookingRequestDTO {
 
-    private Integer bookingId;
     private String bookingDate;
     private String checkInDate;
     private String checkOutDate;
@@ -16,12 +17,11 @@ public class BookingRequestDTO {
     private Integer noOfAdults;
     private String bookingStatus;
     private String paymentStatus;
-    private Integer hotelId;
-    private Long customerId;
-    private Integer paymentId;
+    private Integer hotelHotelId;
+    private Long customerCustomerId;
     private PaymentRequestDTO payment;
-    private Set<BookingRoomDTO> bookingRooms = new HashSet<>();
-    private Set<BookingDiscountDTO> bookingDiscounts = new HashSet<>();
-    private Set<BookingSupplementDTO> bookingSupplements = new HashSet<>();
+    private List<BookingRoomDTO> bookingRooms;
+    private List<BookingDiscountDTO> bookingDiscounts;
+    private List<BookingSupplementDTO> bookingSupplements;
 
 }

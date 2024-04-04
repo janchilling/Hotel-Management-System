@@ -111,15 +111,15 @@ export class SelectDetailsComponent implements OnInit {
         // Apply the discount percentage to the selected room data
         this.selectedRoomData.discount = {
           discountCode: discount.discountCode,
-          discountName: discount.discountName,
+          discountId: discount.discountId,
           discountPercentage: seasonDiscount.discountPercentage
         };
       } else {
         // If no applicable discount for the season, apply default discount
         this.selectedRoomData.discount = {
-          discountCode: discount.discountCode,
-          discountName: discount.discountName,
-          discountPercentage: discount.discountPercentage
+          discountCode: null,
+          discountName: null,
+          discountPercentage: null
         };
       }
     } else {

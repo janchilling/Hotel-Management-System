@@ -5,8 +5,7 @@ import lombok.Data;
 @Data
 public class BookingDiscountDTO {
 
-    private Integer bookingDiscountId;
-    private String discountName;
+    private String discountCode;
     private Double discountedAmount;
     private Integer discountId;
 }
