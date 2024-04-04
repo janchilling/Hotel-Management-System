@@ -14,6 +14,10 @@ export class HotelRoomComponent implements OnInit {
   protected supplementsDetails: any;
   checkInDate: Date | undefined;
   checkOutDate: Date | undefined;
+  checkInDateFormatted: any;
+  checkOutDateFormatted: any;
+  loading: boolean = true;
+  error: boolean = false;
 
   constructor(
     private roomTypeServicesService: RoomTypeServicesService,
@@ -22,10 +26,12 @@ export class HotelRoomComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-
     this.route.queryParams.subscribe(params => {
       this.checkInDate = params['checkIn'] ? new Date(params['checkIn']) : undefined;
       this.checkOutDate = params['checkOut'] ? new Date(params['checkOut']) : undefined;
+
+      this.checkInDateFormatted = this.checkInDate?.toDateString();
+      this.checkOutDateFormatted = this.checkOutDate?.toDateString();
     });
 
     if (this.contractId) {
@@ -41,9 +47,11 @@ export class HotelRoomComponent implements OnInit {
       (response) => {
         this.roomTypesDetails = response.data;
         console.log(this.roomTypesDetails);
+        this.loading = false; // Set loading to false when data is loaded
       },
       (error) => {
         console.error('Error fetching room types:', error);
+        this.loading = false; // Set loading to false in case of error
       }
     );
   }
@@ -53,11 +61,14 @@ export class HotelRoomComponent implements OnInit {
       (response) => {
         this.supplementsDetails = response.data;
         console.log(this.supplementsDetails)
+        this.loading = false; // Set loading to false when data is loaded
       },
       (error) => {
         // Handle error
         console.error('Error fetching supplements:', error);
+        this.loading = false; // Set loading to false in case of error
       }
     );
   }
+
 }

@@ -1,9 +1,9 @@
-<div class="p-20 flex justify-center items-center bg-white">
+<div class="p-10 flex justify-center items-center bg-background-gray">
   <div class="p-5 bg-white rounded-lg shadow-2xl md:flex md:w-80vw justify-center">
     <div class="flex flex-col w-full md:w-1/3">
-      <div class="room-name flex items-center justify-between mb-4">
+      <div class="mb-4">
         <div>
-          <h2 class="font-bold text-xl md:text-2xl text-black-700">{{ roomType.roomTypeName }}</h2>
+          <h2 class="font-bold text-xl md:text-2xl text-black-700">{{ roomType.roomTypeName }} Room</h2>
         </div>
         <div class="flex items-center">
           <span *ngIf="showSelectSupplements">No Of Rooms</span>
@@ -17,30 +17,29 @@
     <div class="p-4 flex flex-col justify-center w-full md:w-2/3 md:flex-row">
       <div class="subheading flex-1">
         <h2 class="mb-2 font-bold text-xl md:text-2xl text-black-700">For {{ roomType.maxAdults }} adults</h2>
-        <h3 class="mb-2 text-sm text-gray-500">Included Facilities</h3>
-        <hr class="mb-2">
-        <ul class="flex flex-wrap facility-list-1">
+        <h3 class="mb-2 font-bold text-sm text-black">Included Facilities</h3>
+        <hr class="mb-2 bg-black">
+        <ul class="flex flex-wrap facility-list-1 bg-background-gray">
           <li class="icon1"><i class="fas fa-wifi"></i> Free Wi-Fi</li>
           <li class="icon1"><i class="fas fa-swimming-pool"></i> Swimming Pool</li>
-          <li class="icon1"><i class="fas fa-wifi"></i> Free Wi-Fi</li>
-          <li class="icon1"><i class="fas fa-swimming-pool"></i> Swimming Pool</li>
-          <li class="icon1"><i class="fas fa-wifi"></i> Free Wi-Fi</li>
-          <li class="icon1"><i class="fas fa-swimming-pool"></i> Swimming Pool</li>
+          <li class="icon1"><i class="fa-solid fa-dog"></i> Pets </li>
+          <li class="icon1"><i class="fa-solid fa-tv"></i> Flat Screen TV</li>
+          <li class="icon1"><i class="fa-solid fa-hot-tub-person"></i> Jacuzzi</li>
         </ul>
         <p class="text-red-700" *ngIf="numRooms >= availableRooms">Maximum rooms reached</p>
         <p class="text-red-700" *ngIf="availableRooms < 5">Only 2 available</p>
       </div>
       <div class="subheading flex-1">
-        <h2 class="mb-2 font-bold text-xl md:text-2xl text-black-700">USD {{roomTypePrice}}</h2>
-        <h2 class="mb-2 font-bold text-xl md:text-2xl text-black-700">USD {{ totalPrice }}</h2>
-        <h3 class="mb-2 text-sm text-gray-500">{{ showSelectSupplements ? 'Select Supplements' : 'Supplements' }}</h3>
+        <h2 class="mb-2 font-bold text-xl md:text-2xl text-black-700 text-right">USD {{roomTypePrice}} Per Night</h2>
+        <h2 *ngIf="showSelectSupplements" class="mb-2 font-bold text-xl md:text-2xl text-black-700">USD {{ totalPrice }}</h2>
+        <h3 class="mb-2 font-bold text-sm text-black">{{ showSelectSupplements ? 'Select Supplements' : 'Supplements' }}</h3>
         <hr class="mb-2">
-        <ul class="facility-list">
+        <ul class="facility-list bg-background-gray">
           <li class="icon" *ngFor="let supplement of supplements" [ngClass]="{ 'selected': isSupplementSelected(supplement) }" (click)="selectSupplement(supplement)">
             <i class="fas fa-plus"></i>
             <div class="right-content">
-              <span>{{ supplement.supplementName }}</span>
-              <span class="price"><b>+USD {{ supplement.price }}</b></span>
+              <span class="mb-2 text-lg md:text-lg text-black-700 text-end">{{ supplement.supplementName }}</span>
+              <span class="price mb-2 text-lg md:text-lg text-black-700"><b>+ USD {{ supplement.price }} Per Room</b></span>
             </div>
           </li>
         </ul>

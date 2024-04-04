@@ -16,8 +16,7 @@
 }
 
 .room-name {
-  display: flex;
-  align-items: center;
+  align-items: flex-start;
 }
 
 .image {
@@ -51,7 +50,7 @@
 .icon1 {
   display: flex;
   flex-direction: column;
-  flex-basis: 25%; /* Set to 25% to show 4 items in a row */
+  flex-basis: 30%; /* Set to 25% to show 4 items in a row */
   margin-bottom: 10px;
   align-items: center;
   justify-content: center;

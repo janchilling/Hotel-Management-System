@@ -1,12 +1,10 @@
 package com.codegen.hotelmanagementsystembackend.controller;
 
-import com.codegen.hotelmanagementsystembackend.dto.ContractRequestDTO;
-import com.codegen.hotelmanagementsystembackend.dto.ContractResponseDTO;
-import com.codegen.hotelmanagementsystembackend.dto.MarkupResponseDTO;
-import com.codegen.hotelmanagementsystembackend.dto.SeasonResponseDTO;
+import com.codegen.hotelmanagementsystembackend.dto.*;
 import com.codegen.hotelmanagementsystembackend.entities.Contract;
 import com.codegen.hotelmanagementsystembackend.services.ContractService;
 import com.codegen.hotelmanagementsystembackend.services.MarkupService;
+import com.codegen.hotelmanagementsystembackend.services.RoomTypeService;
 import com.codegen.hotelmanagementsystembackend.services.SeasonService;
 import com.codegen.hotelmanagementsystembackend.util.StandardResponse;
 import lombok.RequiredArgsConstructor;
@@ -23,10 +21,16 @@ public class ContractController {
     private final ContractService contractService;
     private final SeasonService seasonService;
     private final MarkupService markupService;
+    private final RoomTypeService roomTypeService;
 
     @PostMapping("/")
     public StandardResponse<Contract> createContract(@RequestBody ContractRequestDTO contractRequestDTO){
         return contractService.createContract(contractRequestDTO);
+    }
+
+    @GetMapping("{contractId}/roomTypes/")
+    public StandardResponse<List<RoomTypeResponseDTO>> getRoomTypeByContract(@PathVariable Integer contractId) {
+        return roomTypeService.getRoomTypeByContract(contractId);
     }
 
     @GetMapping("/getContractById/{contractId}")
