@@ -27,27 +27,8 @@ public class SupplementController {
     }
 
     @GetMapping("/getSupplementById/{supplementId}")
-    public ResponseEntity<SupplementResponseDTO> getSupplementById(@PathVariable Integer supplementId){
-        return ResponseEntity.ok(supplementService.getSupplementById(supplementId));
-    }
-
-    @GetMapping("/getSupplementByContract/{contractId}")
-    public ResponseEntity<StandardResponse<List<SupplementResponseDTO>>> getSupplementByContract(@PathVariable Integer contractId) {
-        try {
-            List<SupplementResponseDTO> supplementResponseDTOList = supplementService.getSupplementByContract(contractId);
-            return ResponseEntity.ok(new StandardResponse<>(200, "Success", supplementResponseDTOList));
-        } catch (ResourceNotFoundException ex) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(new StandardResponse<>(404, ex.getMessage(), null));
-        } catch (Exception ex) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new StandardResponse<>(500, "Internal Server Error", null));
-        }
-    }
-
-    @GetMapping("/getSupplementByHotel/{hotelId}")
-    public ResponseEntity<List<List<SupplementResponseDTO>>> getSupplementByHotel(@PathVariable Integer hotelId) {
-        return ResponseEntity.ok(supplementService.getSupplementByHotel(hotelId));
+    public StandardResponse<SupplementResponseDTO> getSupplementById(@PathVariable Integer supplementId){
+        return supplementService.getSupplementById(supplementId);
     }
 
 }

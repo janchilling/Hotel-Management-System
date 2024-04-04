@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import {CommonModule, NgOptimizedImage} from '@angular/common';
 
 import { SharedRoutingModule } from './shared-routing.module';
 import { SharedComponent } from './shared.component';
@@ -41,10 +41,11 @@ import { InternalServerErrorComponent } from './components/internal-server-error
         MainButtonComponent,
         InternalServerErrorComponent
     ],
-  imports: [
-    CommonModule,
-    SharedRoutingModule,
-    ReactiveFormsModule
-  ]
+    imports: [
+        CommonModule,
+        SharedRoutingModule,
+        ReactiveFormsModule,
+        NgOptimizedImage
+    ]
 })
 export class SharedModule { }

@@ -11,7 +11,7 @@ export class SupplementServicesService {
 
   backendHostName: string = this.apiPathService.baseURL;
   getSupplementsByContractId(contractId: number): Observable<any> {
-    return this.httpClient.get<any>(`${this.backendHostName}/v1/supplements/getSupplementByContract/${contractId}`)
+    return this.httpClient.get<any>(`${this.backendHostName}/v1/contracts/${contractId}/supplements/`)
       .pipe(
         catchError((error: any) => {
           console.error('Error fetching supplements:', error);

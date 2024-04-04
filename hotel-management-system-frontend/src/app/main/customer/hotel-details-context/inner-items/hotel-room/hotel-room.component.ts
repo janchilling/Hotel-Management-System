@@ -43,32 +43,52 @@ export class HotelRoomComponent implements OnInit {
   }
 
   fetchRoomTypes(contractId: number) {
-    this.roomTypeServicesService.getRoomsByContractId(contractId).subscribe(
-      (response) => {
-        this.roomTypesDetails = response.data;
-        console.log(this.roomTypesDetails);
-        this.loading = false; // Set loading to false when data is loaded
-      },
-      (error) => {
-        console.error('Error fetching room types:', error);
-        this.loading = false; // Set loading to false in case of error
+    this.roomTypeServicesService.getRoomsByContractId(contractId).subscribe({
+        next: (response) => {
+          if (response.statusCode === 200) {
+            this.roomTypesDetails = response.data;
+            console.log(this.roomTypesDetails);
+            this.checkLoadingState();
+          } else {
+            console.error('Error fetching room types:', response.message);
+            this.loading = false;
+            this.error = true;
+          }
+        },
+        error: (error) => {
+          console.error('Error fetching room types:', error);
+          this.loading = false;
+          this.error = true;
+        }
       }
     );
   }
 
   fetchSupplements(contractId: number) {
-    this.supplementServicesService.getSupplementsByContractId(contractId).subscribe(
-      (response) => {
-        this.supplementsDetails = response.data;
-        console.log(this.supplementsDetails)
-        this.loading = false; // Set loading to false when data is loaded
-      },
-      (error) => {
-        // Handle error
-        console.error('Error fetching supplements:', error);
-        this.loading = false; // Set loading to false in case of error
+    this.supplementServicesService.getSupplementsByContractId(contractId).subscribe({
+        next: (response) => {
+          if (response.statusCode === 200) {
+            this.supplementsDetails = response.data;
+            console.log(this.supplementsDetails)
+            this.checkLoadingState();
+          } else {
+            console.error('Error fetching supplements:', response.message);
+            this.loading = false;
+            this.error = true;
+          }
+        },
+        error: (error) => {
+          console.error('Error fetching supplements:', error);
+          this.loading = false;
+          this.error = true;
+        }
       }
     );
   }
 
+  checkLoadingState() {
+    if (this.roomTypesDetails && this.supplementsDetails) {
+      this.loading = false;
+    }
+  }
 }

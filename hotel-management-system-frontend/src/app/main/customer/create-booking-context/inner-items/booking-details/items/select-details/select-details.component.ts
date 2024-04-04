@@ -23,7 +23,6 @@ export class SelectDetailsComponent implements OnInit {
     bookingSupplements: [],
     discount: null
   };
-
   protected roomTypesDetails: any;
   protected supplementsDetails: any;
   protected discountDetails: any;
@@ -37,8 +36,6 @@ export class SelectDetailsComponent implements OnInit {
     private discountServicesService :DiscountServicesService,
     private route: ActivatedRoute,
   ) {}
-
-
 
   ngOnInit(): void {
     this.route.queryParams.subscribe(params => {

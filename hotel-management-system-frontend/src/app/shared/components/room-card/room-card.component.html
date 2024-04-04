@@ -30,19 +30,19 @@
         <p class="text-red-700" *ngIf="availableRooms < 5">Only 2 available</p>
       </div>
       <div class="subheading flex-1">
-        <h2 class="mb-2 font-bold text-xl md:text-2xl text-black-700 text-right">USD {{roomTypePrice}} Per Night</h2>
-        <h2 *ngIf="showSelectSupplements" class="mb-2 font-bold text-xl md:text-2xl text-black-700">USD {{ totalPrice }}</h2>
+        <h2 class="mb-2 font-bold text-xl md:text-2xl text-black-700">USD {{roomTypePrice}} Per Night</h2>
         <h3 class="mb-2 font-bold text-sm text-black">{{ showSelectSupplements ? 'Select Supplements' : 'Supplements' }}</h3>
         <hr class="mb-2">
         <ul class="facility-list bg-background-gray">
           <li class="icon" *ngFor="let supplement of supplements" [ngClass]="{ 'selected': isSupplementSelected(supplement) }" (click)="selectSupplement(supplement)">
-            <i class="fas fa-plus"></i>
+            <img ngSrc="{{supplement.imageIconURL}}" class="icon-img" width="32" height="32" alt="Supplement icons">
             <div class="right-content">
               <span class="mb-2 text-lg md:text-lg text-black-700 text-end">{{ supplement.supplementName }}</span>
               <span class="price mb-2 text-lg md:text-lg text-black-700"><b>+ USD {{ supplement.price }} Per Room</b></span>
             </div>
           </li>
         </ul>
+        <h2 *ngIf="showSelectSupplements" class="mt-2 mb-2 font-bold text-xl md:text-2xl text-black-700">Per Room Total: USD {{ totalPrice }}</h2>
       </div>
     </div>
   </div>

@@ -170,7 +170,6 @@ export class RoomCardComponent implements OnInit {
   }
 
   updateRoomData() {
-
     if (this.numRooms === 0) {
       // If the number of rooms is 0, clear the selected supplements
       this.selectedSupplements = [];

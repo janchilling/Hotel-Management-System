@@ -37,15 +37,14 @@ export class HotelDetailsContextComponent implements OnInit {
 
   fetchHotelDetails() {
     this.hotelDetailsByIdService.getHotelDetailsById(this.hotelId).pipe(
-      timeout(30000), // Timeout after 30 seconds
+      timeout(30000),
       catchError(error => {
         this.error = true;
         this.loading = false;
-        return throwError(error);
+        return throwError(() => error);
       })
-    ).subscribe(
-      (response: any) => {
-        console.log(response)
+    ).subscribe({
+      next: (response: any) => {
         if (response.statusCode === 200) {
           this.hotelDetails = response.data as HotelDetails;
           console.log(this.hotelDetails);
@@ -56,11 +55,12 @@ export class HotelDetailsContextComponent implements OnInit {
           this.loading = false;
         }
       },
-      (error) => {
+      error: (error) => {
         console.error('Error fetching hotel details:', error);
         this.error = true;
         this.loading = false;
       }
+    }
     );
   }
 

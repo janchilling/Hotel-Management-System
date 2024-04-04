@@ -7,10 +7,12 @@ import com.codegen.hotelmanagementsystembackend.repository.ContractRepository;
 import com.codegen.hotelmanagementsystembackend.repository.SeasonRepository;
 import com.codegen.hotelmanagementsystembackend.repository.SupplementRepository;
 import com.codegen.hotelmanagementsystembackend.services.SupplementService;
+import com.codegen.hotelmanagementsystembackend.util.StandardResponse;
 import com.codegen.hotelmanagementsystembackend.util.UtilityMethods;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.service.spi.ServiceException;
 import org.modelmapper.ModelMapper;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -30,8 +32,8 @@ public class SupplementServiceImpl implements SupplementService {
     /**
      * Create supplements based on the provided SupplementRequestDTOs.
      *
-     * @param  supplementRequestDTOs  list of SupplementRequestDTOs
-     * @return                       list of created supplements
+     * @param supplementRequestDTOs list of SupplementRequestDTOs
+     * @return list of created supplements
      */
     @Override
     public List<Supplement> createSupplement(List<SupplementRequestDTO> supplementRequestDTOs) {
@@ -73,26 +75,28 @@ public class SupplementServiceImpl implements SupplementService {
 
             return supplementRepository.saveAll(supplementsList);
 
-        }
-
-        catch (Exception e) {
+        } catch (Exception e) {
             throw new ServiceException("Error while creating supplements: " + e.getMessage());
-        }}
+        }
+    }
 
     /**
      * Retrieves a supplement by its ID and constructs a response DTO containing detailed information about the supplement, its associated contract, and the corresponding hotel.
      *
-     * @param  supplementId   the ID of the supplement to retrieve
-     * @return                the response DTO containing the supplement details
+     * @param supplementId the ID of the supplement to retrieve
+     * @return the response DTO containing the supplement details
      */
     @Override
-    public SupplementResponseDTO getSupplementById(Integer supplementId) {
-        try{
+    public StandardResponse<SupplementResponseDTO> getSupplementById(Integer supplementId) {
+        try {
             Supplement supplement = utilityMethods.getSupplement(supplementId);
-            Contract contract = utilityMethods.getContract(supplement.getContract().getContractId());
-            Hotel hotel = utilityMethods.getHotel(contract.getHotel().getHotelId());
+            if (supplement == null) {
+                return new StandardResponse<>(HttpStatus.NOT_FOUND.value(), "Supplement not found", null);
+            }
 
             SupplementResponseDTO supplementResponseDTO = modelMapper.map(supplement, SupplementResponseDTO.class);
+            Contract contract = utilityMethods.getContract(supplement.getContract().getContractId());
+            Hotel hotel = utilityMethods.getHotel(contract.getHotel().getHotelId());
             supplementResponseDTO.setSeasonSupplements(supplement.getSupplementsSeasons().stream().map(
                     seasonSupplement -> {
                         Season season = utilityMethods.getSeason(seasonSupplement.getSeason().getSeasonId());
@@ -108,103 +112,35 @@ public class SupplementServiceImpl implements SupplementService {
             supplementResponseDTO.setHotelId(hotel.getHotelId());
             supplementResponseDTO.setHotelName(hotel.getHotelName());
 
-            return supplementResponseDTO;
+            return new StandardResponse<>(HttpStatus.OK.value(), "Supplement found", supplementResponseDTO);
 
-        }catch (Exception e){
-            throw new ServiceException("Supplement search failed");
+        } catch (Exception e) {
+            return new StandardResponse<>(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Failed to get Supplement", null);
         }
     }
 
     /**
      * Retrieves a list of supplements by contract ID.
+     *
      * @param contractId The ID of the contract
      * @return A list of SupplementResponseDTO objects
      * @throws ServiceException if the supplement search fails
      */
     @Override
-    public List<SupplementResponseDTO> getSupplementByContract(Integer contractId) {
-        try{
-            // Retrieve supplements from the repository based on the contract ID
-            List<Supplement> supplementList =  supplementRepository.findAllSupplementsByContractContractId(contractId);
-            // If the supplement list is empty, return null
-            if (supplementList.isEmpty()){
-                return null;
-            }
-            // Map each Supplement object to a SupplementResponseDTO object and collect them into a list
-            return supplementList.stream().map(supplement -> getSupplementById(supplement.getSupplementId())).toList();
-
-        }catch (Exception e){
-            // Throw a ServiceException with a message if the supplement search fails
-            throw new ServiceException("Supplement search failed");
-        }
-    }
-
-    /**
-     * Retrieve the list of supplements for a given hotel by hotelId.
-     *
-     * @param hotelId the ID of the hotel
-     * @return a list of supplement response DTOs
-     * @throws ResourceNotFoundException if no contracts are found for the hotel
-     * @throws ServiceException if the supplement search fails
-     */
-    @Override
-    public List<List<SupplementResponseDTO>> getSupplementByHotel(Integer hotelId) {
+    public StandardResponse<List<SupplementResponseDTO>> getSupplementByContract(Integer contractId) {
         try {
-            // Retrieve all contracts for the given hotelId
-            List<Contract> contractList = contractRepository.findAllContractsByHotelHotelId(hotelId);
-
-            // If no contracts are found, throw a ResourceNotFoundException
-            if (contractList.isEmpty()) {
-                throw new ResourceNotFoundException("No contracts found for the hotel" + hotelId);
+            List<Supplement> supplementList = supplementRepository.findAllSupplementsByContractContractId(contractId);
+            if (supplementList.isEmpty()) {
+                return new StandardResponse<>(HttpStatus.NOT_FOUND.value(), "No supplements found for the contract" + contractId, null);
             }
 
-            // Map each contract to a list of supplement response DTOs and collect them into a list
-            return contractList.stream()
-                    .map(contract ->
-                            getSupplementByContract(contract.getContractId())
-                    )
-                    .collect(Collectors.toList());
+            List<SupplementResponseDTO> supplementResponseDTOList = supplementList.stream()
+                    .map(supplement -> getSupplementById(supplement.getSupplementId()).getData()).toList();
+
+            return new StandardResponse<>(HttpStatus.OK.value(), "Supplements found for the contract" + contractId, supplementResponseDTOList);
 
         } catch (Exception e) {
-            // Throw a ServiceException if the supplement search fails
-            throw new ServiceException("Supplement search failed");
+            return new StandardResponse<>(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Failed to get Supplements", null);
         }
     }
 }
-
-
-//    @Override
-//    public String addContractDetails(AddContractDetailsRequestDTO addContractDetailsRequestDTO) {
-//
-//        Contract contract = contractRepository.getReferenceById(addContractDetailsRequestDTO.getContractId());
-//        Set<Supplement> supplementsSet = new HashSet<>();
-//
-//        Set<AddSupplementRequestDTO> supplements = addContractDetailsRequestDTO.getSupplements();
-//        System.out.println(supplements);
-//        if (supplements != null) {
-//            for (AddSupplementRequestDTO supplementsDTO  : supplements) {
-//                Supplement supplement = new Supplement();
-//                supplement.setSupplementType(supplementsDTO.getSupplementType());
-//                supplement.setSupplementDescription(supplementsDTO.getSupplementDescription());
-//                supplement.setSupplementName(supplementsDTO.getSupplementName());
-//                supplement.setContract(contract);
-//                supplementsSet.add(supplement);
-//            }
-//
-//            supplementRepository.saveAll(supplementsSet);
-//
-//            for (AddSupplementRequestDTO supplementsDTO  : supplements) {
-//
-//                SeasonSupplement seasonSupplement = new SeasonSupplement();
-//                Supplement supplement = supplementRepository.findBySupplementNameAndContract(
-//                        supplementsDTO.getSupplementName(), contract);
-//
-//                seasonSupplement.setSeason(seasonRepository.getReferenceById(supplementsDTO.getSeasonId()));
-//                seasonSupplement.setSupplement(supplement);
-//                seasonSupplement.setSupplement_price(supplementsDTO.getSupplementPrice());
-//                seasonSupplementRepository.save(seasonSupplement);
-//            }
-//
-//
-//        }
-//        return "Contract Details Added!";
