@@ -18,7 +18,7 @@ public class BookingSupplements {
 
     private String supplementName;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JsonBackReference("bookingBookingSupplementReference")
     private Booking booking;
 

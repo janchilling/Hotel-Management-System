@@ -13,11 +13,11 @@ public class BookingDiscount {
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Integer bookingDiscountId;
 
-    private String discountName;
-
     private Double discountedAmount;
 
-    @ManyToOne
+    private String discountCode;
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JsonBackReference("bookingBookingDiscountReference")
     private Booking booking;
 

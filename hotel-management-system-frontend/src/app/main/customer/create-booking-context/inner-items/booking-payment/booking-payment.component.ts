@@ -2,6 +2,7 @@ import {Component, Input} from '@angular/core';
 import {MarkupServicesService} from "../../../../../shared/services/markupServices/markup-services.service";
 import {ActivatedRoute} from "@angular/router";
 import {DateServiceService} from "../../../../../shared/services/dateService/date-service.service";
+import {BookingServiceService} from "../../../../../shared/services/bookingService/booking-service.service";
 
 @Component({
   selector: 'app-booking-payment',
@@ -18,7 +19,6 @@ export class BookingPaymentComponent {
   markupDetails: any;
   checkInDate: any;
   checkOutDate: any;
-  bookingData: any;
   today: any;
   subtotal: number = 0;
   supplementsTotal: number = 0;
@@ -33,7 +33,8 @@ export class BookingPaymentComponent {
   constructor(
     private markupServicesService: MarkupServicesService,
     private route: ActivatedRoute,
-    private dateService: DateServiceService
+    private dateService: DateServiceService,
+    private bookingServiceService :BookingServiceService
   ) {}
 
   ngOnInit(): void {
@@ -51,20 +52,22 @@ export class BookingPaymentComponent {
     });
 
     this.checkPrepaymentEligibility();
+    console.log(this.bookingRooms)
+    console.log(this.discount)
   }
 
   calculateTotals(): void {
-    this.subtotal = this.bookingRooms.reduce((total: number, room: { bookedPrice: number; noOfRooms: number; }) => total + (room.bookedPrice * room.noOfRooms), 0);
+    this.subtotal = +(this.bookingRooms.reduce((total: number, room: { bookedPrice: number; noOfRooms: number; }) => total + (room.bookedPrice * room.noOfRooms), 0).toFixed(3));
 
     if (this.bookingSupplements && this.bookingSupplements.length > 0) {
-      this.supplementsTotal = this.bookingSupplements.reduce((total: number, supplement: { supplementPrice: number; noOfRooms: number; }) => total + (supplement.supplementPrice * supplement.noOfRooms), 0);
+      this.supplementsTotal = +(this.bookingSupplements.reduce((total: number, supplement: { supplementPrice: number; noOfRooms: number; }) => total + (supplement.supplementPrice * supplement.noOfRooms), 0).toFixed(3));
     }
 
-    this.totalAfterDiscounts = this.subtotal + this.supplementsTotal;
+    this.totalAfterDiscounts = +(this.subtotal + this.supplementsTotal).toFixed(3);
 
     if (this.discount && this.discount.discountPercentage) {
       const discountPercentage = this.discount.discountPercentage;
-      this.discountedAmount = this.totalAfterDiscounts * (discountPercentage / 100);
+      this.discountedAmount = +(this.totalAfterDiscounts * (discountPercentage / 100)).toFixed(3);
       this.totalAfterDiscounts -= this.discountedAmount;
     }
 
@@ -78,14 +81,13 @@ export class BookingPaymentComponent {
 
     if (this.markupDetails && seasonMarkup.markupPercentage) {
       const markupPercentage = seasonMarkup.markupPercentage;
-      console.log(markupPercentage)
-      this.tax = this.totalAfterDiscounts * (markupPercentage / 100);
+      this.tax = +(this.totalAfterDiscounts * (markupPercentage / 100)).toFixed(3);
     } else {
       this.tax = 0;
     }
 
     // Apply markup percentage to final price
-    this.finalPrice = this.totalAfterDiscounts + this.tax;
+    this.finalPrice = +(this.totalAfterDiscounts + this.tax).toFixed(3);
   }
 
   checkPrepaymentEligibility(): void {
@@ -108,7 +110,7 @@ export class BookingPaymentComponent {
   createBooking(): void {
     const paymentStatus = this.selectedPaymentOption === 'prepayment' ? 'Pre' : 'Full';
 
-    const bookingData = {
+    const bookingRequest = {
       bookingDate: this.dateService.formatDate(this.today),
       checkInDate: this.checkInDate,
       checkOutDate: this.checkOutDate,
@@ -116,19 +118,33 @@ export class BookingPaymentComponent {
       noOfAdults: 5, // Get the number of adults
       bookingStatus: 'Confirmed',
       paymentStatus: paymentStatus, // Set paymentStatus based on payment option
-      hotelId: 1,
-      customerId: 1,
+      hotelHotelId: 1,
+      customerCustomerId: 1,
       payment: {
         paymentDate: this.dateService.formatDate(this.today),
         paymentAmount: this.getTotal(),
         paymentType: 'Credit Card'
       },
       bookingRooms: this.bookingRooms,
-      bookingDiscounts: [this.discount],
+      bookingDiscounts: [{
+        discountCode: this.discount.discountCode,
+        discountId: this.discount.discountId,
+        discountedAmount: this.discountedAmount
+      }],
       bookingSupplements: this.bookingSupplements
     };
 
-    console.log(bookingData);
+    console.log(bookingRequest)
+
+    this.bookingServiceService.addBooking(bookingRequest).subscribe(
+      (response) => {
+        console.log('Booking added successfully:', response);
+        console.log(response)
+      },
+      (error) => {
+        console.error('Booking adding hotel:', error);
+      }
+    )
   }
 
 

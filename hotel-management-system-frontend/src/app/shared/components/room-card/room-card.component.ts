@@ -2,6 +2,7 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import {RoomTypeServicesService} from "../../services/roomTypesServices/room-type-services.service";
 import { MatSnackBar } from '@angular/material/snack-bar';
+import {DateServiceService} from "../../services/dateService/date-service.service";
 
 @Component({
   selector: 'app-room-card',
@@ -26,7 +27,8 @@ export class RoomCardComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private roomTypeServicesService :RoomTypeServicesService,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private dateService: DateServiceService,
   ) {}
 
   ngOnInit(): void {
@@ -177,7 +179,9 @@ export class RoomCardComponent implements OnInit {
       noOfRooms: this.numRooms,
       roomTypeName: this.roomType.roomTypeName,
       bookedPrice: this.roomTypePrice,
-      roomTypeId: this.roomType.roomTypeId
+      roomTypeId: this.roomType.roomTypeId,
+      checkInDate: this.dateService.formatDate(this.checkInDate),
+      checkOutDate: this.dateService.formatDate(this.checkOutDate)
     };
 
     const bookingSupplements = this.selectedSupplements.flatMap((selectedSupplement) => {

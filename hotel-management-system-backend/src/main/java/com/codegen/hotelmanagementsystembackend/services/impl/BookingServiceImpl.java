@@ -9,10 +9,9 @@ import com.codegen.hotelmanagementsystembackend.util.UtilityMethods;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.service.spi.ServiceException;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.stream.Collectors;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -25,6 +24,7 @@ public class BookingServiceImpl implements BookingService {
     private final ModelMapper modelMapper;
     private final UtilityMethods utilityMethods;
 
+
     /**
      * Create a booking based on the provided booking request data, including customer, hotel, payments, rooms, discounts, and supplements.
      *
@@ -34,51 +34,54 @@ public class BookingServiceImpl implements BookingService {
     @Override
     public BookingResponseDTO createBooking(BookingRequestDTO bookingRequestDTO) {
         try {
-            Customer customer = utilityMethods.getCustomer(bookingRequestDTO.getCustomerId());
-            Integer hotelId = bookingRequestDTO.getHotelId();
+            // Retrieve customer and hotel
+            Customer customer = utilityMethods.getCustomer(bookingRequestDTO.getCustomerCustomerId());
+            Hotel hotel = utilityMethods.getHotel(bookingRequestDTO.getHotelHotelId());
 
-            Hotel hotel = utilityMethods.getHotel(hotelId);
-
+            // Map BookingRequestDTO to Booking entity
             Booking booking = modelMapper.map(bookingRequestDTO, Booking.class);
+
+            // Set customer and hotel for the booking
             booking.setHotel(hotel);
             booking.setCustomer(customer);
 
+            // Map and set payment
             Payment newPayment = modelMapper.map(bookingRequestDTO.getPayment(), Payment.class);
             newPayment.setCustomer(customer);
+            newPayment.setBooking(booking);
             booking.getPayments().add(newPayment);
 
+            // Save booking
             Booking savedBooking = bookingRepository.save(booking);
 
-            bookingRequestDTO.getBookingRooms().stream()
-                    .map(bookingRoomDTO -> {
-                        BookingRoom newBookingRoom = modelMapper.map(bookingRoomDTO, BookingRoom.class);
-                        newBookingRoom.setBooking(savedBooking);
-                        newBookingRoom.setRoomType(utilityMethods.getRoomType(bookingRoomDTO.getRoomTypeId()));
-                        return newBookingRoom;
-                    })
-                    .forEach(bookingRoomRepository::save);
+            // Map and save booking rooms
+            bookingRequestDTO.getBookingRooms().forEach(bookingRoomDTO -> {
+                BookingRoom newBookingRoom = modelMapper.map(bookingRoomDTO, BookingRoom.class);
+                newBookingRoom.setBooking(savedBooking);
+                newBookingRoom.setRoomType(utilityMethods.getRoomType(bookingRoomDTO.getRoomTypeId()));
+                bookingRoomRepository.save(newBookingRoom);
+            });
 
-            bookingRequestDTO.getBookingDiscounts().stream()
-                    .map(bookingDiscountDTO -> {
-                        BookingDiscount newbookingDiscount = modelMapper.map(bookingDiscountDTO, BookingDiscount.class);
-                        newbookingDiscount.setBooking(savedBooking);
-                        newbookingDiscount.setDiscount(utilityMethods.getDiscount(bookingDiscountDTO.getDiscountId()));
-                        return newbookingDiscount;
-                    })
-                    .forEach(bookingDiscountRepository::save);
+            // Map and save booking discounts
+            bookingRequestDTO.getBookingDiscounts().forEach(bookingDiscountDTO -> {
+                BookingDiscount newBookingDiscount = modelMapper.map(bookingDiscountDTO, BookingDiscount.class);
+                newBookingDiscount.setBooking(savedBooking);
+                newBookingDiscount.setDiscount(utilityMethods.getDiscount(bookingDiscountDTO.getDiscountId()));
+                bookingDiscountRepository.save(newBookingDiscount);
+            });
 
-            bookingRequestDTO.getBookingSupplements().stream()
-                    .map(bookingSupplementDTO -> {
-                        BookingSupplements newBookingSupplement = modelMapper.map(bookingSupplementDTO, BookingSupplements.class);
-                        newBookingSupplement.setBooking(savedBooking);
-                        newBookingSupplement.setSupplement(utilityMethods.getSupplement(bookingSupplementDTO.getSupplementId()));
-                        return newBookingSupplement;
-                    })
-                    .forEach(bookingSupplementsRepository::save);
+            // Map and save booking supplements
+            bookingRequestDTO.getBookingSupplements().forEach(bookingSupplementDTO -> {
+                BookingSupplements newBookingSupplement = modelMapper.map(bookingSupplementDTO, BookingSupplements.class);
+                newBookingSupplement.setBooking(savedBooking);
+                newBookingSupplement.setSupplement(utilityMethods.getSupplement(bookingSupplementDTO.getSupplementId()));
+                bookingSupplementsRepository.save(newBookingSupplement);
+            });
 
+            // Return the response DTO
             return getBookingById(savedBooking.getBookingId());
         } catch (Exception e) {
-            throw new ServiceException("Failed to create Bookings", e);
+            throw new ServiceException("Failed to create Bookings" + e.getMessage());
         }
     }
 
@@ -94,13 +97,13 @@ public class BookingServiceImpl implements BookingService {
             BookingResponseDTO bookingResponseDTO = modelMapper.map(booking, BookingResponseDTO.class);
             bookingResponseDTO.setCustomerId(booking.getCustomer().getUser_id());
             bookingResponseDTO.setCustomerName(booking.getCustomer().getCustomer_fname() + " " + booking.getCustomer().getCustomer_lname());
-            bookingResponseDTO.setDiscounts(booking.getDiscounts().stream().map(
+            bookingResponseDTO.setDiscounts(booking.getBookingDiscounts().stream().map(
                     bookingDiscount -> modelMapper.map(bookingDiscount, BookingDiscountResponseDTO.class)
             ).toList());
-            bookingResponseDTO.setSupplements(booking.getSupplements().stream().map(
+            bookingResponseDTO.setSupplements(booking.getBookingSupplements().stream().map(
                     bookingSupplement -> modelMapper.map(bookingSupplement, BookingSupplementResponseDTO.class)
             ).toList());
-            bookingResponseDTO.setRooms(booking.getRooms().stream().map(
+            bookingResponseDTO.setRooms(booking.getBookingRooms().stream().map(
                     room -> modelMapper.map(room, BookingRoomResponseDTO.class)
             ).toList());
 
@@ -124,38 +127,38 @@ public class BookingServiceImpl implements BookingService {
 
             modelMapper.map(bookingRequestDTO, Booking.class);
 
-            bookingRequestDTO.getBookingRooms().forEach(bookingSupplementDTO -> {
-                BookingRoom bookingRoom = utilityMethods.getBookingRoom(bookingSupplementDTO.getBookingRoomId());
-                if (bookingRoom == null) {
-                    throw new ResourceNotFoundException("Booking Room not found with ID: " + bookingSupplementDTO.getBookingRoomId());
-                }
-                bookingRoom = modelMapper.map(bookingSupplementDTO, BookingRoom.class);
-                bookingRoom.setBooking(booking);
-                bookingRoom.setRoomType(utilityMethods.getRoomType(bookingSupplementDTO.getRoomTypeId()));
-                booking.getRooms().add(bookingRoom);
-            });
-
-            bookingRequestDTO.getBookingDiscounts().forEach(bookingDiscountDTO -> {
-                BookingDiscount bookingDiscount = utilityMethods.getBookingDiscount(bookingDiscountDTO.getBookingDiscountId());
-                if (bookingDiscount == null) {
-                    throw new ResourceNotFoundException("Booking Room not found with ID: " + bookingDiscountDTO.getBookingDiscountId());
-                }
-                bookingDiscount = modelMapper.map(bookingDiscountDTO, BookingDiscount.class);
-                bookingDiscount.setBooking(booking);
-                bookingDiscount.setDiscount(utilityMethods.getDiscount(bookingDiscountDTO.getDiscountId()));
-                booking.getDiscounts().add(bookingDiscount);
-            });
-
-            bookingRequestDTO.getBookingSupplements().forEach(bookingSupplementDTO -> {
-                BookingSupplements bookingSupplements = utilityMethods.getBookingSupplement(bookingSupplementDTO.getBookingSupplementId());
-                if (bookingSupplements == null) {
-                    throw new ResourceNotFoundException("Booking Room not found with ID: " + bookingSupplementDTO.getBookingSupplementId());
-                }
-                bookingSupplements = modelMapper.map(bookingSupplementDTO, BookingSupplements.class);
-                bookingSupplements.setBooking(booking);
-                bookingSupplements.setSupplement(utilityMethods.getSupplement(bookingSupplementDTO.getSupplementId()));
-                booking.getSupplements().add(bookingSupplements);
-            });
+//            bookingRequestDTO.getBookingRooms().forEach(bookingSupplementDTO -> {
+//                BookingRoom bookingRoom = utilityMethods.getBookingRoom(bookingSupplementDTO.getBookingRoomId());
+//                if (bookingRoom == null) {
+//                    throw new ResourceNotFoundException("Booking Room not found with ID: " + bookingSupplementDTO.getBookingRoomId());
+//                }
+//                bookingRoom = modelMapper.map(bookingSupplementDTO, BookingRoom.class);
+//                bookingRoom.setBooking(booking);
+//                bookingRoom.setRoomType(utilityMethods.getRoomType(bookingSupplementDTO.getRoomTypeId()));
+//                booking.getRooms().add(bookingRoom);
+//            });
+//
+//            bookingRequestDTO.getBookingDiscounts().forEach(bookingDiscountDTO -> {
+//                BookingDiscount bookingDiscount = utilityMethods.getBookingDiscount(bookingDiscountDTO.getBookingDiscountId());
+//                if (bookingDiscount == null) {
+//                    throw new ResourceNotFoundException("Booking Room not found with ID: " + bookingDiscountDTO.getBookingDiscountId());
+//                }
+//                bookingDiscount = modelMapper.map(bookingDiscountDTO, BookingDiscount.class);
+//                bookingDiscount.setBooking(booking);
+//                bookingDiscount.setDiscount(utilityMethods.getDiscount(bookingDiscountDTO.getDiscountId()));
+//                booking.getDiscounts().add(bookingDiscount);
+//            });
+//
+//            bookingRequestDTO.getBookingSupplements().forEach(bookingSupplementDTO -> {
+//                BookingSupplements bookingSupplements = utilityMethods.getBookingSupplement(bookingSupplementDTO.getBookingSupplementId());
+//                if (bookingSupplements == null) {
+//                    throw new ResourceNotFoundException("Booking Room not found with ID: " + bookingSupplementDTO.getBookingSupplementId());
+//                }
+//                bookingSupplements = modelMapper.map(bookingSupplementDTO, BookingSupplements.class);
+//                bookingSupplements.setBooking(booking);
+//                bookingSupplements.setSupplement(utilityMethods.getSupplement(bookingSupplementDTO.getSupplementId()));
+//                booking.getSupplements().add(bookingSupplements);
+//            });
 
             return bookingRepository.save(booking);
 

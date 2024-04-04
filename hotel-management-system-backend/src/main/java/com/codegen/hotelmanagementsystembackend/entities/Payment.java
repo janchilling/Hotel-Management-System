@@ -19,11 +19,11 @@ public class Payment {
 
     private String paymentType;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JsonBackReference("bookingPaymentReference")
     private Booking booking;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JsonBackReference("customerPaymentReference")
     private Customer customer;
 }
