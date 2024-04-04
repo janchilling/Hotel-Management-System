@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import { HotelDetailsByIdService } from '../../../shared/services/hotelDetailsById/hotel-details-by-id.service';
+import {HotelDetails} from "../../../shared/interfaces/hotel-details";
+import {catchError, throwError, timeout} from "rxjs";
 
 @Component({
   selector: 'app-hotel-details-context',
@@ -14,6 +16,8 @@ export class HotelDetailsContextComponent implements OnInit {
   isRoomsVisible: boolean = false;
   checkInDate: any;
   checkOutDate: any;
+  loading: boolean = true;
+  error: boolean = false;
 
   constructor(
     private hotelDetailsByIdService: HotelDetailsByIdService,
@@ -22,7 +26,6 @@ export class HotelDetailsContextComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    // Get the hotel ID from the URL path
     this.hotelId = +this.route.snapshot.params['hotelId'];
     this.route.queryParams.subscribe(params => {
       this.checkInDate = params['checkIn'];
@@ -33,15 +36,30 @@ export class HotelDetailsContextComponent implements OnInit {
   }
 
   fetchHotelDetails() {
-    this.hotelDetailsByIdService.getHotelDetailsById(this.hotelId).subscribe(
-      (response) => {
-        this.hotelDetails = response;
-        this.hotelDetails = this.hotelDetails.data
-        console.log(this.hotelDetails)
+    this.hotelDetailsByIdService.getHotelDetailsById(this.hotelId).pipe(
+      timeout(30000), // Timeout after 30 seconds
+      catchError(error => {
+        this.error = true;
+        this.loading = false;
+        return throwError(error);
+      })
+    ).subscribe(
+      (response: any) => {
+        console.log(response)
+        if (response.statusCode === 200) {
+          this.hotelDetails = response.data as HotelDetails;
+          console.log(this.hotelDetails);
+          this.loading = false;
+        } else {
+          console.error('Error fetching hotel details:', response.message);
+          this.error = true;
+          this.loading = false;
+        }
       },
       (error) => {
-        // Handle error
         console.error('Error fetching hotel details:', error);
+        this.error = true;
+        this.loading = false;
       }
     );
   }

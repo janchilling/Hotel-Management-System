@@ -21,4 +21,14 @@ export class HotelServicesService {
         })
       );
   }
+
+  getHotelImages(hotelId: any): Observable<any> {
+    return this.httpClient.get<any>(`${this.backendHostName}/v1/hotels/${hotelId}/images`)
+      .pipe(
+        catchError((error: any) => {
+          console.error('Error fetching hotel images:', error);
+          return of(null);
+        })
+      );
+  }
 }

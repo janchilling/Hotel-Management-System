@@ -1,32 +1,23 @@
-import { Component, Input } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
+import {HotelServicesService} from "../../../../../shared/services/hotelServices/hotel-services.service";
 
 @Component({
   selector: 'app-hotel-overview',
   templateUrl: './hotel-overview.component.html',
   styleUrls: ['./hotel-overview.component.scss']
 })
-export class HotelOverviewComponent {
-  @Input() hotelDetails: any;
+export class HotelOverviewComponent implements OnInit{
 
-  slides = [
-    {
-      imageUrl: 'https://tecdn.b-cdn.net/img/Photos/Slides/img%20(15).jpg',
-      label: 'First slide label',
-      content: 'Some representative placeholder content for the first slide.'
-    },
-    {
-      imageUrl: 'https://tecdn.b-cdn.net/img/Photos/Slides/img%20(22).jpg',
-      label: 'Second slide label',
-      content: 'Some representative placeholder content for the second slide.'
-    },
-    {
-      imageUrl: 'https://tecdn.b-cdn.net/img/Photos/Slides/img%20(23).jpg',
-      label: 'Third slide label',
-      content: 'Some representative placeholder content for the third slide.'
-    }
-  ];
+  @Input() hotelDetails: any;
+  slides: any[] = [];
 
   activeIndex = 0;
+
+  constructor(
+    private hotelServices: HotelServicesService) { }
+  ngOnInit(): void {
+    this.fetchImages();
+  }
 
   setActiveIndex(index: number) {
     this.activeIndex = index;
@@ -38,5 +29,21 @@ export class HotelOverviewComponent {
 
   prevSlide() {
     this.activeIndex = this.activeIndex > 0 ? this.activeIndex - 1 : this.slides.length - 1;
+  }
+
+  fetchImages() {
+    this.hotelServices.getHotelImages(this.hotelDetails?.hotelId).subscribe(
+      (response) => {
+        let hotelImages = response.data;
+        this.slides = hotelImages.map((image: any) => {
+          return {
+            imageUrl: image.hotelImageURL
+          };
+        });
+      },
+      (error) => {
+        console.error('Error fetching hotel images:', error);
+      }
+    );
   }
 }

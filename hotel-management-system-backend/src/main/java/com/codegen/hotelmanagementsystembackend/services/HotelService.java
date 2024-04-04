@@ -1,5 +1,6 @@
 package com.codegen.hotelmanagementsystembackend.services;
 
+import com.codegen.hotelmanagementsystembackend.dto.HotelImageDTO;
 import com.codegen.hotelmanagementsystembackend.dto.HotelRequestDTO;
 import com.codegen.hotelmanagementsystembackend.dto.HotelResponseDTO;
 import com.codegen.hotelmanagementsystembackend.dto.SearchResponseDTO;
@@ -16,6 +17,6 @@ public interface HotelService {
     HotelResponseDTO getHotelById(Integer hotelId);
 
 
-
+    StandardResponse<List<HotelImageDTO>> getHotelImagesByHotelId(Integer hotelId);
 
 }
