@@ -1,6 +1,15 @@
-<div class="bg-blue-100">
-  <h3>Showing prices for dates between {{ checkInDate | date: 'shortDate' }} and {{ checkOutDate | date: 'shortDate' }}</h3>
-  <ng-container *ngFor="let roomType of roomTypesDetails">
-    <app-room-card [roomType]="roomType" [showSelectSupplements]="false" [supplements] = "supplementsDetails"></app-room-card>
+<div class="relative">
+  <h3>Showing prices for dates between {{ checkInDateFormatted }} and {{ checkOutDateFormatted }}</h3>
+
+  <ng-container *ngIf="loading; else content">
+    <app-loading-spinner></app-loading-spinner>
   </ng-container>
+
+  <ng-template #content>
+    <ng-container *ngFor="let roomType of roomTypesDetails">
+      <app-room-card [roomType]="roomType" [showSelectSupplements]="false" [supplements]="supplementsDetails"></app-room-card>
+    </ng-container>
+  </ng-template>
+
+  <div *ngIf="error" class="text-red-500">Internal Server Error. Please try again later.</div>
 </div>

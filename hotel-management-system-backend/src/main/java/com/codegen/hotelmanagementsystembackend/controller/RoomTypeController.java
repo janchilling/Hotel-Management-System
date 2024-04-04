@@ -35,52 +35,7 @@ public class RoomTypeController {
     }
 
     @GetMapping("/getRoomTypeById/{roomTypeId}")
-    public ResponseEntity<StandardResponse<RoomTypeResponseDTO>> getRoomTypeById(@PathVariable Integer roomTypeId) {
-        try {
-            RoomTypeResponseDTO roomTypeResponseDTO = roomTypeService.getRoomTypeById(roomTypeId);
-            return ResponseEntity.ok(new StandardResponse<>(200, "Success", roomTypeResponseDTO));
-        } catch (ResourceNotFoundException ex) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(new StandardResponse<>(404, ex.getMessage(), null));
-        } catch (Exception ex) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new StandardResponse<>(500, "Internal Server Error", null));
-        }
-    }
-
-    @GetMapping("/getRoomTypeByContract/{contractId}")
-    public ResponseEntity<StandardResponse<List<RoomTypeResponseDTO>>> getRoomTypeByContract(@PathVariable Integer contractId) {
-        try {
-            List<RoomTypeResponseDTO> roomTypeResponseDTOList = roomTypeService.getRoomTypeByContract(contractId);
-            return ResponseEntity.ok(new StandardResponse<>(200, "Success", roomTypeResponseDTOList));
-        } catch (ResourceNotFoundException ex) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(new StandardResponse<>(404, ex.getMessage(), null));
-        } catch (Exception ex) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new StandardResponse<>(500, "Internal Server Error", null));
-        }
-    }
-//    @GetMapping("/getRoomTypeById/{roomTypeId}")
-//    public ResponseEntity<StandardResponse<RoomTypeResponseDTO>> getRoomTypeById(@PathVariable Integer roomTypeId) {
-//        try {
-//            RoomTypeResponseDTO roomTypeResponseDTO = roomTypeService.getRoomTypeById(roomTypeId);
-//            return ResponseEntity.ok(new StandardResponse<>(200, "Success", roomTypeResponseDTO));
-//        } catch (ResourceNotFoundException ex) {
-//            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-//                    .body(new StandardResponse<>(404, ex.getMessage(), null));
-//        } catch (Exception ex) {
-//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-//                    .body(new StandardResponse<>(500, "Internal Server Error", null));
-//        }
-//    }
-//    @GetMapping("/getRoomTypeByContract/{contractId}")
-//    public ResponseEntity<List<RoomTypeResponseDTO>> getRoomTypeByContract(@PathVariable Integer contractId) {
-//        return ResponseEntity.ok(roomTypeService.getRoomTypeByContract(contractId));
-//    }
-
-    @GetMapping("/getRoomTypeByHotel/{hotelId}")
-    public ResponseEntity<List<List<RoomTypeResponseDTO>>> getRoomTypeByHotel(@PathVariable Integer hotelId) {
-        return ResponseEntity.ok(roomTypeService.getRoomTypeByHotel(hotelId));
+    public StandardResponse<RoomTypeResponseDTO> getRoomTypeById(@PathVariable Integer roomTypeId) {
+       return roomTypeService.getRoomTypeById(roomTypeId);
     }
 }

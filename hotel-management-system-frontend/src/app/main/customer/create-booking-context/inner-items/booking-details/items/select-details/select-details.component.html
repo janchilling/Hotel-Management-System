@@ -1,17 +1,15 @@
 <div>
   <h3>Showing prices for dates between {{ checkInDate | date: 'shortDate' }} and {{ checkOutDate | date: 'shortDate' }}</h3>
+  <h2>Select Details</h2>
   <ng-container *ngFor="let roomType of roomTypesDetails">
     <app-room-card [roomType]="roomType" (roomSelected)="receiveRoomSelection($event)" [showSelectSupplements]="true" [supplements] = "supplementsDetails"></app-room-card>
   </ng-container>
-  <p>Available Discounts</p>
-  <div class="grid md:grid-cols-2 md:gap-6">
-    <div class="relative z-0 w-full mb-5 group">
-      <input type="text" name="discountCode" id="discountCode" class="block py-2.5 px-0 w-full text-sm text-gray-900
-      bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600
-      dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-             placeholder="" (change)="applyDiscount($event)" />
-      <label for="discountCode" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400
-      duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Enter Discount Code</label>
+  <div class="bg-background-gray my-10 pt-3 px-3">
+    <h2>Enter Discount Code</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div class="mb-5 px-5">
+        <input type="text" name="discountCode" id="discountCode" class="block w-full px-3 py-2 rounded-md border border-[#e0e0e0] bg-white text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md" placeholder="Enter Discount Code" />
+      </div>
     </div>
   </div>
 </div>

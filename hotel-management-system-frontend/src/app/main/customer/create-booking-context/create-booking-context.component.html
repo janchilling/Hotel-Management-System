@@ -1,3 +1,8 @@
+<ng-template [ngIf]="error">
+  <app-internal-server-error></app-internal-server-error>
+</ng-template>
+
+<ng-template [ngIf]="!loading && !error">
 <div class="container-padding" *ngIf="hotelDetails">
   <div class="mb-4 border-gray-200 dark:border-gray-700">
     <ul class="flex flex-wrap -mb-px text-sm font-medium text-center" id="default-styled-tab"
@@ -46,6 +51,10 @@
                          [discount]="discount"
                          [contractId]="hotelDetails?.contractId"></app-booking-payment>
   </ng-container>
-
 </div>
+</ng-template>
+
+<ng-template [ngIf]="loading && !error">
+  <app-loading-spinner></app-loading-spinner>
+</ng-template>
 

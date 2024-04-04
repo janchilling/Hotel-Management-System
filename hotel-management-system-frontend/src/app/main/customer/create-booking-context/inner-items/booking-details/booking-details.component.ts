@@ -11,12 +11,12 @@ import {
 export class BookingDetailsComponent {
 
   @Input () contractId : any;
-  contactDetails: any;
   @Input() selectedRoomData: any = {
     bookingRooms: [],
     bookingSupplements: []
   };
-  @Output() purchaseClicked = new EventEmitter<any>();
+  @Output() purchaseClicked = new EventEmitter<any>()
+  contactDetails: any;
 
   constructor(
   ) {

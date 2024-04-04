@@ -1,22 +1,45 @@
 <div class="relative">
   <!-- Carousel items -->
   <div class="relative w-full overflow-hidden">
-    <div *ngFor="let slide of slides; let i = index"
-         class="relative float-left transition-transform duration-[600ms] ease-in-out"
-         [class.-mr-[100%]]="activeIndex !== i"
-         [class.hidden]="activeIndex !== i"
-         style="backface-visibility: hidden;">
-      <img [src]="slide.imageUrl" class="block w-full bg-no-repeat" alt="...">
-      <div class="absolute inset-x-[15%] bottom-5 hidden py-5 text-center text-white md:block">
-        <h5 class="text-xl">{{ slide.label }}</h5>
-        <p>{{ slide.content }}</p>
+    <div class="main-wrapper">
+      <div class="nav-box">
+        <div class="box-out">
+          <div class="box-in"><button id="btn-left" (click)="prevSlide()"></button></div>
+        </div>
       </div>
+      <div class="slider-wrapper">
+        <ul>
+          <li *ngFor="let slide of slides; let i = index"
+              [class.hidden]="activeIndex !== i"
+              [style.background-image]="'url(' + slide.imageUrl + ')'">
+            <div class="bait">+</div>
+            <!--            <div class="description">-->
+            <!--              <div class="title">{{ slide.label }}</div>-->
+            <!--              <div class="teaser">{{ slide.content }}</div>-->
+            <!--            </div>-->
+          </li>
+        </ul>
+      </div>
+      <div class="nav-box">
+        <div class="box-out">
+          <div class="box-in"><button id="btn-right" (click)="nextSlide()"></button></div>
+        </div>
+      </div>
+    </div>
+    <div class="thumbnails">
+      <ul>
+        <li *ngFor="let slide of slides; let i = index"
+            [class.selected]="activeIndex === i"
+            (click)="setActiveIndex(i)"
+            [style.background-image]="'url(' + slide.imageUrl + ')'">
+        </li>
+      </ul>
     </div>
   </div>
 
   <!-- Carousel controls -->
   <button type="button"
-          class="absolute bottom-0 left-0 top-0 z-10 flex w-[15%] items-center justify-center border-0 bg-none p-0 text-center text-white opacity-50 transition-opacity duration-150 ease-[cubic-bezier(0.25,0.1,0.25,1.0)] hover:text-white hover:no-underline hover:opacity-90 hover:outline-none focus:text-white focus:no-underline focus:opacity-90 focus:outline-none motion-reduce:transition-none"
+          class="absolute slider-btn bottom-0 left-0 top-0 z-10 flex w-[15%] items-center justify-center border-0 bg-none p-0 text-center text-white opacity-50 transition-opacity duration-150 ease-[cubic-bezier(0.25,0.1,0.25,1.0)] hover:text-white hover:no-underline hover:opacity-90 hover:outline-none focus:text-white focus:no-underline focus:opacity-90 focus:outline-none motion-reduce:transition-none"
           (click)="prevSlide()">
     <span class="inline-block h-8 w-8">
       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-6 w-6">
@@ -27,7 +50,7 @@
   </button>
 
   <button type="button"
-          class="absolute bottom-0 right-0 top-0 z-10 flex w-[15%] items-center justify-center border-0 bg-none p-0 text-center text-white opacity-50 transition-opacity duration-150 ease-[cubic-bezier(0.25,0.1,0.25,1.0)] hover:text-white hover:no-underline hover:opacity-90 hover:outline-none focus:text-white focus:no-underline focus:opacity-90 focus:outline-none motion-reduce:transition-none"
+          class="absolute slider-btn bottom-0 right-0 top-0 z-10 flex w-[15%] items-center justify-center border-0 bg-none p-0 text-center text-white opacity-50 transition-opacity duration-150 ease-[cubic-bezier(0.25,0.1,0.25,1.0)] hover:text-white hover:no-underline hover:opacity-90 hover:outline-none focus:text-white focus:no-underline focus:opacity-90 focus:outline-none motion-reduce:transition-none"
           (click)="nextSlide()">
     <span class="inline-block h-8 w-8">
       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-6 w-6">
@@ -40,6 +63,46 @@
 <div class="flex justify-between items-center mb-5 mt-5">
   <div>
     <p class="text-xl sm:text-lg md:text-xl lg:text-xl font-bold">Hotel Description</p>
-    <p class="text-base sm:text-sm md:text-lg lg:text-lg">{{hotelDetails?.hotelDescription}}</p>
+    <hr>
+    <p class=" hr-tag text-base sm:text-sm md:text-lg lg:text-lg">{{hotelDetails.hotelDescription}}</p>
+  </div>
+</div>
+<div class="flex justify-between items-center mb-1 mt-5">
+  <div>
+    <p class="text-xl sm:text-lg md:text-xl lg:text-xl font-bold">Facilities</p>
+    <hr>
+    <p class="flex justify-center items-center hr-tag text-base sm:text-sm md:text-lg lg:text-lg"></p>
+    <div class="container">
+      <div class="items-container">
+        <div class="item">
+          <img id="map-icon" class="item-icon" src="https://img.icons8.com/plasticine/100/000000/map-marker.png">
+          <p class="item-details">Enter your trip details into quote form</p>
+        </div>
+        <div class="item">
+          <img class="item-icon" id="coin-icon" src="https://img.icons8.com/ultraviolet/40/000000/expensive-2.png">
+          <p class="item-details">Get quotes from top rated companies</p>
+        </div>
+        <div class="item">
+          <img class="item-icon" id="comparison-icon" src="https://img.icons8.com/dusk/40/000000/price-comparison.png">
+          <p class="item-details">Compare plans, prices, and benefits</p>
+        </div>
+        <div class="item">
+          <img class="item-icon" id="laptop-icon2" src="https://img.icons8.com/color/48/000000/laptop--v1.png">
+          <p class="item-details">Buy online and get covered instantly</p>
+        </div>
+        <div class="item">
+          <img class="item-icon" id="coin-icon2" src="https://img.icons8.com/ultraviolet/40/000000/expensive-2.png">
+          <p class="item-details">Get quotes from top rated companies</p>
+        </div>
+        <div class="item">
+          <img class="item-icon" id="comparison-icon2" src="https://img.icons8.com/dusk/40/000000/price-comparison.png">
+          <p class="item-details">Compare plans, prices, and benefits</p>
+        </div>
+        <div class="item">
+          <img class="item-icon" id="laptop-icon" src="https://img.icons8.com/color/48/000000/laptop--v1.png">
+          <p class="item-details">Buy online and get covered instantly</p>
+        </div>
+      </div>
+    </div>
   </div>
 </div>

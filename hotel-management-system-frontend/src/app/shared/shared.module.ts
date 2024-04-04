@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import {CommonModule, NgOptimizedImage} from '@angular/common';
 
 import { SharedRoutingModule } from './shared-routing.module';
 import { SharedComponent } from './shared.component';
@@ -12,6 +12,9 @@ import { BookingConfirmationCardComponent } from './components/booking-confirmat
 import { BookedRoomCardComponent } from './components/booked-room-card/booked-room-card.component';
 import { BookedBillCardComponent } from './components/booked-bill-card/booked-bill-card.component';
 import { RoomCardComponent } from './components/room-card/room-card.component';
+import { LoadingSpinnerComponent } from './components/loading-spinner/loading-spinner.component';
+import { MainButtonComponent } from './components/main-button/main-button.component';
+import { InternalServerErrorComponent } from './components/internal-server-error/internal-server-error.component';
 
 
 @NgModule({
@@ -24,18 +27,25 @@ import { RoomCardComponent } from './components/room-card/room-card.component';
     BookingConfirmationCardComponent,
     BookedRoomCardComponent,
     BookedBillCardComponent,
-    RoomCardComponent
+    RoomCardComponent,
+    LoadingSpinnerComponent,
+    MainButtonComponent,
+    InternalServerErrorComponent
   ],
-  exports: [
-    MainHeaderNavbarComponent,
-    MainFooterComponent,
-    MainSearchbarComponent,
-    RoomCardComponent
-  ],
-  imports: [
-    CommonModule,
-    SharedRoutingModule,
-    ReactiveFormsModule
-  ]
+    exports: [
+        MainHeaderNavbarComponent,
+        MainFooterComponent,
+        MainSearchbarComponent,
+        RoomCardComponent,
+        LoadingSpinnerComponent,
+        MainButtonComponent,
+        InternalServerErrorComponent
+    ],
+    imports: [
+        CommonModule,
+        SharedRoutingModule,
+        ReactiveFormsModule,
+        NgOptimizedImage
+    ]
 })
 export class SharedModule { }

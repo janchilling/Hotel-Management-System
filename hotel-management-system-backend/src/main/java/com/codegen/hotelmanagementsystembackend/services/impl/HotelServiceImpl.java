@@ -1,5 +1,6 @@
 package com.codegen.hotelmanagementsystembackend.services.impl;
 
+import com.codegen.hotelmanagementsystembackend.dto.HotelImageDTO;
 import com.codegen.hotelmanagementsystembackend.dto.HotelRequestDTO;
 import com.codegen.hotelmanagementsystembackend.dto.HotelResponseDTO;
 import com.codegen.hotelmanagementsystembackend.entities.Hotel;
@@ -11,6 +12,7 @@ import com.codegen.hotelmanagementsystembackend.services.HotelService;
 import com.codegen.hotelmanagementsystembackend.entities.Contract;
 
 import com.codegen.hotelmanagementsystembackend.util.StandardResponse;
+import com.codegen.hotelmanagementsystembackend.util.UtilityMethods;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.service.spi.ServiceException;
 import org.modelmapper.ModelMapper;
@@ -27,6 +29,7 @@ public class HotelServiceImpl implements HotelService {
 
     private final ModelMapper modelMapper;
     private final HotelRepository hotelRepository;
+    private final UtilityMethods utilityMethods;
 
     /**
      * Creates a new Hotel using the provided HotelRequestDTO.
@@ -104,6 +107,23 @@ public class HotelServiceImpl implements HotelService {
         } catch (Exception e) {
             // Handle other exceptions!!!!!
             throw new ServiceException("An error occurred while retrieving the hotel", e);
+        }
+    }
+
+    public StandardResponse<List<HotelImageDTO>> getHotelImagesByHotelId(Integer hotelId) {
+        try {
+            Hotel hotel = utilityMethods.getHotel(hotelId);
+            if ( hotel == null) {
+                return new StandardResponse<>(HttpStatus.NOT_FOUND.value(), "Hotel not found", null);
+            }else {
+                List<HotelImage> hotelImages = hotel.getHotelImages();
+                List<HotelImageDTO> hotelImageDTOs = hotelImages.stream()
+                        .map(hotelImage -> modelMapper.map(hotelImage, HotelImageDTO.class))
+                        .collect(Collectors.toList());
+                return new StandardResponse<>(HttpStatus.OK.value(), "Hotel images retrieved successfully", hotelImageDTOs);
+            }
+           } catch (Exception e) {
+            return new StandardResponse<>(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Failed to retrieve hotel images", null);
         }
     }
 

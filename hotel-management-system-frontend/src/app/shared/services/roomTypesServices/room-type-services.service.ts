@@ -12,7 +12,7 @@ export class RoomTypeServicesService {
   backendHostName: string = this.apiPathService.baseURL;
 
   getRoomsByContractId(contractId: number): Observable<any> {
-    return this.httpClient.get<any>(`${this.backendHostName}/v1/roomTypes/getRoomTypeByContract/${contractId}`)
+    return this.httpClient.get<any>(`${this.backendHostName}/v1/contracts/${contractId}/roomTypes/`)
       .pipe(
         catchError((error: any) => {
           console.error('Error fetching rooms:', error);

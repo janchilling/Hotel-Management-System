@@ -107,10 +107,13 @@ public class RoomTypeServiceImpl implements RoomTypeService {
      * @return              description of return value
      */
     @Override
-    public RoomTypeResponseDTO getRoomTypeById(Integer roomTypeId) {
-
-        try{
+    public StandardResponse<RoomTypeResponseDTO> getRoomTypeById(Integer roomTypeId) {
+        try {
             RoomType roomType = utilityMethods.getRoomType(roomTypeId);
+            if (roomType == null) {
+                return new StandardResponse<>(HttpStatus.NOT_FOUND.value(), "Room type not found", null);
+            }
+
             Contract contract = utilityMethods.getContract(roomType.getContract().getContractId());
             Hotel hotel = utilityMethods.getHotel(contract.getHotel().getHotelId());
 
@@ -135,12 +138,12 @@ public class RoomTypeServiceImpl implements RoomTypeService {
                     }
             ).collect(Collectors.toList()));
 
-            return roomTypeResponseDTO;
-
-        }catch(Exception e){
-            throw new ServiceException("Failed to get Room Type", e);
+            return new StandardResponse<>(HttpStatus.OK.value(), "Room type found", roomTypeResponseDTO);
+        } catch (Exception e) {
+            return new StandardResponse<>(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Failed to get Room Type", null);
         }
     }
+
 
     /**
      * Retrieves a list of room types associated with a contract.
@@ -149,50 +152,26 @@ public class RoomTypeServiceImpl implements RoomTypeService {
      * @return             a list of room types associated with the specified contract
      */
     @Override
-    public List<RoomTypeResponseDTO> getRoomTypeByContract(Integer contractId) {
-
-        try{
-            List<RoomType> roomTypeList =  roomTypeRepository.findAllRoomTypesByContractContractId(contractId);
+    public StandardResponse<List<RoomTypeResponseDTO>> getRoomTypeByContract(Integer contractId) {
+        try {
+            List<RoomType> roomTypeList = roomTypeRepository.findAllRoomTypesByContractContractId(contractId);
             if (roomTypeList.isEmpty()) {
-                throw new ResourceNotFoundException("No room types found for the contract" + contractId);
+                return new StandardResponse<>(HttpStatus.NOT_FOUND.value(), "No room types found for the contract" + contractId, null);
             }
 
-            return roomTypeList.stream()
-                    .map(
-                    roomType ->
-                        getRoomTypeById(roomType.getRoomTypeId())
-                    ).collect(Collectors.toList());
+            List<RoomTypeResponseDTO> roomTypeResponseDTOList = roomTypeList.stream()
+                    .map(roomType -> {
+                        StandardResponse<RoomTypeResponseDTO> response = getRoomTypeById(roomType.getRoomTypeId());
+                        return response.getData();
+                    })
+                    .collect(Collectors.toList());
 
-        }catch (Exception e){
-            throw new ServiceException("Failed to get Room Type", e);
+            return new StandardResponse<>(HttpStatus.OK.value(), "Room types found for the contract" + contractId, roomTypeResponseDTOList);
+        } catch (Exception e) {
+            return new StandardResponse<>(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Failed to get Room Type", null);
         }
     }
 
-    /**
-     * Retrieves the room types for a given hotel.
-     *
-     * @param  hotelId   the ID of the hotel
-     * @return          a list of lists of RoomTypeResponseDTO objects
-     */
-    @Override
-    public List<List<RoomTypeResponseDTO>> getRoomTypeByHotel(Integer hotelId) {
-
-        try{
-
-            List<Contract> contracts = contractRepository.findAllContractsByHotelHotelId(hotelId);
-            if (contracts.isEmpty()) {
-                throw new ResourceNotFoundException("No contracts found for the hotel" + hotelId);
-            }
-
-            return contracts.stream()
-                    .map(contract ->
-                            getRoomTypeByContract(contract.getContractId())
-                    ).collect(Collectors.toList());
-
-        }catch (Exception e){
-            throw new ServiceException("Failed to get Room Type", e);
-        }
-    }
 
     public StandardResponse<Integer> getAvailableRoomTypeCount(Integer roomTypeId, Date checkInDate, Date checkOutDate, Integer seasonId) {
         try {

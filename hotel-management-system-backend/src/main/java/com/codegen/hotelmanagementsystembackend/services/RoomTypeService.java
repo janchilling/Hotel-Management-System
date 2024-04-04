@@ -15,10 +15,8 @@ public interface RoomTypeService {
 
     List<RoomType> createRoomType(List<RoomTypeRequestDTO> roomTypeRequestDTOS);
 
-    RoomTypeResponseDTO getRoomTypeById(Integer discountId);
+    StandardResponse<RoomTypeResponseDTO> getRoomTypeById(Integer discountId);
 
-    List<RoomTypeResponseDTO> getRoomTypeByContract(Integer contractId);
-
-    List<List<RoomTypeResponseDTO>> getRoomTypeByHotel(Integer hotelId);
+    StandardResponse<List<RoomTypeResponseDTO>> getRoomTypeByContract(Integer contractId);
 
 }

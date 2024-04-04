@@ -1,5 +1,6 @@
 package com.codegen.hotelmanagementsystembackend.controller;
 
+import com.codegen.hotelmanagementsystembackend.dto.HotelImageDTO;
 import com.codegen.hotelmanagementsystembackend.dto.HotelRequestDTO;
 import com.codegen.hotelmanagementsystembackend.dto.HotelResponseDTO;
 import com.codegen.hotelmanagementsystembackend.entities.Hotel;
@@ -27,5 +28,10 @@ public class HotelController {
     @GetMapping("/{hotelId}")
     public ResponseEntity<HotelResponseDTO> getHotelById(@PathVariable Integer hotelId){
         return ResponseEntity.ok(hotelService.getHotelById(hotelId));
+    }
+
+    @GetMapping("/{hotelId}/images")
+    public StandardResponse<List<HotelImageDTO>> getHotelImagesByHotelId(@PathVariable Integer hotelId){
+        return hotelService.getHotelImagesByHotelId(hotelId);
     }
 }
