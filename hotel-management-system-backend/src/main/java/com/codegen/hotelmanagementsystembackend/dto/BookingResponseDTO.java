@@ -12,6 +12,10 @@ public class BookingResponseDTO {
     private String checkInDate;
     private String checkOutDate;
     private Double finalBookingPrice;
+    private Double subtotal;
+    private Double supplementsTotal;
+    private Double discountedAmount;
+    private Double tax;
     private Integer noOfAdults;
     private String bookingStatus;
     private String paymentStatus;
@@ -19,7 +23,11 @@ public class BookingResponseDTO {
     private Integer hotelId;
     private String customerName;
     private Long customerId;
-
+    private String contactEmail;
+    private String contactPhone;
+    private String contactFirstName;
+    private String contactLastName;
+    private List<PaymentResponseDTO> payment;
     private List<BookingRoomResponseDTO> rooms;
     private List<BookingDiscountResponseDTO> discounts;
     private List<BookingSupplementResponseDTO> supplements;

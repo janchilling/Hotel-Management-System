@@ -26,11 +26,27 @@ public class Booking {
 
     private Double finalBookingPrice;
 
+    private Double subtotal;
+
+    private Double supplementsTotal;
+
+    private Double discountedAmount;
+
+    private Double tax;
+
     private Integer noOfAdults;
 
     private String bookingStatus;
 
     private String paymentStatus;
+
+    private String contactEmail;
+
+    private String contactPhone;
+
+    private String contactFirstName;
+
+    private String contactLastName;
 
     @ManyToOne
     @JsonBackReference("bookingHotelReference")

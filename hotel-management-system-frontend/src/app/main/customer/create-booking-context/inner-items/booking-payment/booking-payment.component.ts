@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {MarkupServicesService} from "../../../../../shared/services/markupServices/markup-services.service";
 import {ActivatedRoute} from "@angular/router";
 import {DateServiceService} from "../../../../../shared/services/dateService/date-service.service";
@@ -20,6 +20,7 @@ export class BookingPaymentComponent {
   @Input() bookingSupplements: any;
   @Input() contractId: any;
   @Input() discount: any;
+  @Output() bookingPlaced = new EventEmitter<any>()
   markupDetails: any;
   checkInDate: any;
   checkOutDate: any;
@@ -134,11 +135,19 @@ export class BookingPaymentComponent {
       checkInDate: this.checkInDate,
       checkOutDate: this.checkOutDate,
       finalBookingPrice: this.finalPrice,
+      subtotal: this.subtotal,
+      supplementsTotal: this.supplementsTotal,
+      discountedAmount: this.discountedAmount,
+      tax: this.tax,
       noOfAdults: 5, // Get the number of adults
       bookingStatus: 'Confirmed',
       paymentStatus: paymentStatus, // Set paymentStatus based on payment option
       hotelHotelId: 1,
       customerCustomerId: 1,
+      contactEmail: this.contactDetails.email,
+      contactPhone: this.contactDetails.phoneNumber,
+      contactFirstName: this.contactDetails.firstName,
+      contactLastName: this.contactDetails.lastName,
       payment: {
         paymentDate: this.dateService.formatDate(this.today),
         paymentAmount: this.getTotal(),
@@ -159,6 +168,7 @@ export class BookingPaymentComponent {
       next: (response) => {
         console.log('Booking added successfully:', response);
         console.log(response)
+        this.bookingPlaced.emit(response.data);
       },
       error: (error) => {
         console.error('Booking adding hotel:', error);

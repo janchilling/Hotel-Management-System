@@ -138,6 +138,9 @@ public class BookingServiceImpl implements BookingService {
         bookingResponseDTO.setRooms(booking.getBookingRooms().stream().map(
                 room -> modelMapper.map(room, BookingRoomResponseDTO.class)
         ).toList());
+        bookingResponseDTO.setPayment(booking.getPayments().stream().map(
+                payment -> modelMapper.map(payment, PaymentResponseDTO.class)
+        ).toList());
         return bookingResponseDTO;
     }
 

@@ -15,11 +15,13 @@ export class CreateBookingContextComponent implements OnInit {
   hotelDetails: any;
   isBookingDetailsVisible: boolean = true;
   isPaymentVisible: boolean = false;
+  isConfirmationVisible: boolean = false;
   contractId: any;
   contactDetails: any;
   bookingRooms: any;
   bookingSupplements: any;
   discount: any;
+  confirmedBooking: any;
   loading: boolean = true;
   error: boolean = false;
 
@@ -79,6 +81,14 @@ export class CreateBookingContextComponent implements OnInit {
     console.log(this.discount)
     this.isBookingDetailsVisible = false;
     this.isPaymentVisible = true;
+  }
+
+  handleBookingPlaced(data: any) {
+
+    this.confirmedBooking = data;
+    this.isBookingDetailsVisible = false;
+    this.isPaymentVisible = false;
+    this.isConfirmationVisible = true;
   }
 
   showPayment() {
