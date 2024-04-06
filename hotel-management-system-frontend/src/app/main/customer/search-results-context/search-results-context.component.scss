@@ -1,3 +1,248 @@
-*{
-  padding : 0 72px;
+body {
+  font-family: "Lato", Arial, sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.7;
+  background: #fff;
+  color: #777;
+}
+
+/* nav */
+nav {
+  margin-bottom: 1rem;
+}
+
+nav a {
+  color: white;
+  -webkit-transition: 0.5s;
+  -o-transition: 0.5s;
+  transition: 0.5s;
+}
+
+nav a:hover,
+a:active,
+a:focus {
+  color: red;
+  outline: none;
+  text-decoration: none;
+}
+
+/* jumbotron*/
+.colorful {
+  background: #4b79a1;
+  /* fallback for old browsers */
+  background: -webkit-linear-gradient(to bottom, #283e51, #4b79a1);
+  /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to bottom, #283e51, #4b79a1);
+  /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  border-radius: 0px;
+  padding: 0px 0 1rem 0 !important;
+}
+
+.form-card {
+  background: #fff;
+  border-bottom: 7px solid #1e3c72;
+  border-top: 7px solid #1e3c72;
+  color: black;
+  padding: 0 2rem;
+}
+
+.form-card h3 {
+  color: #000;
+  padding: 1rem 0 0.1rem 0;
+}
+
+#process {
+  background: #2980b9;
+  /* fallback for old browsers */
+  background: -webkit-linear-gradient(to bottom, #2c3e50, #2980b9);
+  /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to bottom, #2c3e50, #2980b9);
+  /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  color: #fff;
+}
+
+#process h2,
+h3 {
+  border-bottom: 2px solid #fff;
+  color: #fff;
+  margin: 1rem 0;
+  padding: 0 0 1rem 0;
+}
+
+#process h2 {
+  font-size: 3rem;
+  font-weight: 700;
+}
+
+#process h3 {
+  font-size: 1.7rem;
+}
+
+#process p {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.icon {
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  padding: 33px 29px;
+
+  background: #2980b9;
+  color: #fff;
+}
+
+#process .icon {
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  -ms-border-radius: 50%;
+  border-radius: 50%;
+}
+
+#process .icon .fa {
+  font-size: 2rem;
+  margin: 11px 2px;
+}
+
+#process .process-step {
+  text-align: center;
+}
+
+#process .process-step h3 {
+  color: white;
+  margin-top: 2.2rem;
+}
+
+#stat-counter {
+  text-align: center;
+}
+#stat-counter h2 {
+  font-size: 3rem;
+
+  border-bottom: 1px solid #777;
+  margin-bottom: 0.25rem;
+  padding-bottom: 0.25rem;
+}
+
+#stat-counter p {
+  padding-top: 1rem;
+}
+
+#stat-counter .counter {
+  display: block;
+
+  margin-bottom: 10px;
+
+  color: #2980b9;
+  font-size: 50px;
+  font-weight: 100;
+}
+
+
+.hotels-container {
+  padding: 0.5rem 0 7rem 0;
+}
+
+.search-container {
+  background: #d3d3d3;
+}
+
+.search-card-result {
+  box-shadow: 0px 1px 4px rgba(41, 51, 57, 0.5);
+  margin: 1rem 0;
+  padding: 0.5rem 0;
+  background-color: #fff;
+}
+.search-card-result img {
+  height: 190px;
+}
+.search-card-result h5 {
+  font-style: 1.1rem;
+  font-weight: 700;
+}
+.search-card-result p {
+  font-size: 0.9rem;
+}
+
+.search-card-result .more-offers p {
+  margin-bottom: 0.3rem;
+}
+
+.more-offers .additional {
+  padding-top: 0.2rem;
+  font-weight: 700;
+}
+
+.fa.checked {
+  color: orange;
+}
+
+.map-container-btn {
+  height: 100px;
+
+  box-shadow: 0px 1px 4px rgba(41, 51, 57, 0.5);
+  background-color: wheat;
+}
+
+.map-container-btn .btn {
+  margin-top: 30px;
+}
+
+.filter-card {
+  padding: 0;
+  background: #fff;
+  color: black;
+}
+
+.filter-card h5 {
+  margin: 10px 0;
+  padding: 1rem;
+
+  box-shadow: 0px 1px 4px rgba(41, 51, 57, 0.5);
+  color: #000;
+}
+.filter-card form {
+  box-shadow: 0px 1px 4px rgba(41, 51, 57, 0.5);
+  padding: 0.5rem 2rem;
+}
+.map-btn {
+  background-color: #fff !important;
+}
+
+
+.slidecontainer {
+  width: 100%;
+}
+
+.slider {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 25px;
+
+  background: #d3d3d3;
+  outline: none;
+  opacity: 0.7;
+  -webkit-transition: .2s;
+  transition: opacity .2s;
+}
+
+.slider:hover {
+  opacity: 1;
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 25px;
+  height: 25px;
+
+  background: #1e3c72;
+  cursor: pointer;
+}
+
+.slider::-moz-range-thumb {
+  width: 25px;
+  height: 25px;
+
+  background: #1e3c72;
+  cursor: pointer;
 }

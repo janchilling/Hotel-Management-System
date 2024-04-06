@@ -10,15 +10,19 @@ import com.codegen.hotelmanagementsystembackend.repository.ContractRepository;
 import com.codegen.hotelmanagementsystembackend.repository.DiscountRepository;
 import com.codegen.hotelmanagementsystembackend.repository.SeasonRepository;
 import com.codegen.hotelmanagementsystembackend.services.DiscountService;
+import com.codegen.hotelmanagementsystembackend.util.StandardResponse;
 import com.codegen.hotelmanagementsystembackend.util.UtilityMethods;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.service.spi.ServiceException;
 import org.modelmapper.ModelMapper;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.toList;
 
 @Service
 @RequiredArgsConstructor
@@ -87,9 +91,8 @@ public class DiscountServiceImpl implements DiscountService {
      * @return             the DiscountResponseDTO object representing the retrieved discount
      */
     @Override
-    public DiscountResponseDTO getDiscountById(Integer discountId) {
-
-        try{
+    public StandardResponse<DiscountResponseDTO> getDiscountById(Integer discountId) {
+        try {
             Discount discount = utilityMethods.getDiscount(discountId);
             Contract contract = utilityMethods.getContract(discount.getContract().getContractId());
             Hotel hotel = utilityMethods.getHotel(contract.getHotel().getHotelId());
@@ -110,10 +113,11 @@ public class DiscountServiceImpl implements DiscountService {
             discountResponseDTO.setHotelId(hotel.getHotelId());
             discountResponseDTO.setHotelName(hotel.getHotelName());
 
-            return discountResponseDTO;
-
-        }catch (Exception e){
-            throw new ServiceException("Discount search failed");
+            return new StandardResponse<>(HttpStatus.OK.value(), "Discount found", discountResponseDTO);
+        } catch (ResourceNotFoundException e) {
+            return new StandardResponse<>(HttpStatus.NOT_FOUND.value(), "Discount not found", null);
+        } catch (Exception e) {
+            return new StandardResponse<>(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Discount search failed", null);
         }
     }
 
@@ -124,43 +128,18 @@ public class DiscountServiceImpl implements DiscountService {
      * @return             a list of discount response DTOs
      */
     @Override
-    public List<DiscountResponseDTO> getDiscountByContract(Integer contractId) {
-
-        try{
-            List<Discount> discountList =  discountRepository.findAllDiscountsByContractContractId(contractId);
+    public StandardResponse<List<DiscountResponseDTO>> getDiscountByContract(Integer contractId) {
+        try {
+            List<Discount> discountList = discountRepository.findAllDiscountsByContractContractId(contractId);
             if (discountList.isEmpty()) {
-                throw new ResourceNotFoundException("No discounts found for the contract" + contractId);
+                return new StandardResponse<>(HttpStatus.NOT_FOUND.value(), "No discounts found for the contract", null);
             }
 
-            return discountList.stream().map(discounts -> getDiscountById(discounts.getDiscountId())).collect(Collectors.toList());
-
-        }catch(Exception e){
-            throw new ServiceException("Getting Discount failed");
+            List<DiscountResponseDTO> discountResponseDTOs = discountList.stream().map(discounts -> getDiscountById(discounts.getDiscountId()).getData()).toList();
+            return new StandardResponse<>(HttpStatus.OK.value(), "Discounts found", discountResponseDTOs);
+        } catch (Exception e) {
+            return new StandardResponse<>(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Getting discounts failed", null);
         }
     }
 
-    /**
-     * Retrieves a list of discounts by hotel ID.
-     *
-     * @param  hotelId  the ID of the hotel
-     * @return          a list of discounts for the hotel
-     */
-    @Override
-    public List<List<DiscountResponseDTO>> getDiscountByHotel(Integer hotelId) {
-
-        try{
-            List<Contract> contractList = contractRepository.findAllContractsByHotelHotelId(hotelId);
-            if (contractList.isEmpty()) {
-                throw new ResourceNotFoundException("No contracts found for the hotel" + hotelId);
-            }
-            return contractList.stream()
-                    .map(contract ->
-                            getDiscountByContract(contract.getContractId())
-                    )
-                    .collect(Collectors.toList());
-
-        }catch(Exception e){
-            throw new ServiceException("Getting Discount failed");
-        }
-    }
 }

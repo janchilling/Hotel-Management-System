@@ -144,7 +144,7 @@ export class RoomCardComponent implements OnInit {
       // Show snackbar notification to add rooms
       this.snackBar.open('Please add rooms before selecting supplements.', 'Close', {
         duration: 3000, // Duration in milliseconds
-        verticalPosition: 'top' // Position of the snackbar
+        verticalPosition: 'top'
       });
     }
   }
@@ -162,11 +162,11 @@ export class RoomCardComponent implements OnInit {
     let totalSupplementPrice = 0;
     this.selectedSupplements.forEach((selectedSupplement) => {
       selectedSupplement.supplements.forEach((supplement: any) => {
-        totalSupplementPrice += supplement.price;
+        totalSupplementPrice += supplement.price * this.numRooms;
       });
     });
-    const roomPrice = this.roomTypePrice * this.numRooms; // Calculate total room price
-    this.totalPrice = roomPrice + totalSupplementPrice; // Add room price and supplement price
+    const roomPrice = this.roomTypePrice * this.numRooms;
+    this.totalPrice = roomPrice + totalSupplementPrice;
   }
 
   updateRoomData() {
@@ -179,6 +179,7 @@ export class RoomCardComponent implements OnInit {
       roomTypeName: this.roomType.roomTypeName,
       bookedPrice: this.roomTypePrice,
       roomTypeId: this.roomType.roomTypeId,
+      maxAdults: this.roomType.maxAdults,
       checkInDate: this.dateService.formatDate(this.checkInDate),
       checkOutDate: this.dateService.formatDate(this.checkOutDate)
     };
