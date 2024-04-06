@@ -6,15 +6,13 @@
     <div class="p-4 flex flex-col justify-center w-full md:w-2/3 md:flex-row">
       <div class="subheading flex-1">
         <div class="flex items-center justify-between mb-2">
-          <h2 class="mb-2 font-bold text-sm text-black">{{ hotel.hotelName }}</h2>
-          <app-main-button [buttonText]="'View Hotel'" (click)="viewHotelDetails(hotel.hotelId)"></app-main-button>
+          <h2 class="mb-2 font-bold text-sm text-black">{{ booking.hotelName }}</h2>
+          <app-main-button [buttonText]="'View Booking'" (click)="viewBookingDetails(booking.bookingId)"></app-main-button>
         </div>
         <hr class="mb-2 bg-black">
-        <ul class="flex flex-wrap facility-list-1 bg-background-gray w-1/2">
-          <li class="icon1"><i class="fa-solid fa-location-dot"></i> {{hotel.hotelStreetAddress}}, {{hotel.hotelPostalCode}} {{hotel.hotelCity}}, {{hotel.hotelCountry}}</li>
-        </ul>
         <ul class="flex flex-wrap facility-list-1 bg-background-gray">
-          <li class="icon1">{{hotel.hotelBriefDescription}}</li>
+          <li class="icon1">Check in Date : {{ booking.checkInDate }}</li>
+          <li class="icon1">Check out Date : {{ booking.checkOutDate }}</li>
         </ul>
       </div>
     </div>

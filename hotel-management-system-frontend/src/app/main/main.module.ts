@@ -20,6 +20,11 @@ import { ContactDetailsComponent } from './customer/create-booking-context/inner
 import { BookingPaymentComponent } from './customer/create-booking-context/inner-items/booking-payment/booking-payment.component';
 import { BookingConfirmationComponent } from './customer/create-booking-context/inner-items/booking-confirmation/booking-confirmation.component';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import { AllHotelsTopContainerComponent } from './customer/search-results-context/inner-items/all-hotels-top-container/all-hotels-top-container.component';
+import { AllHotelsBottomContainerComponent } from './customer/search-results-context/inner-items/all-hotels-bottom-container/all-hotels-bottom-container.component';
+import { AllBookingsContextComponent } from './customer/all-bookings-context/all-bookings-context.component';
+import { AllBookingResultCardsComponent } from './customer/all-bookings-context/all-booking-result-cards/all-booking-result-cards.component';
+import {ViewBookingContextComponent} from "./customer/view-booking-context/view-booking-context.component";
 
 
 @NgModule({
@@ -40,6 +45,11 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
     ContactDetailsComponent,
     BookingPaymentComponent,
     BookingConfirmationComponent,
+    AllHotelsTopContainerComponent,
+    AllHotelsBottomContainerComponent,
+    AllBookingsContextComponent,
+    AllBookingResultCardsComponent,
+    ViewBookingContextComponent,
   ],
   imports: [
     CommonModule,

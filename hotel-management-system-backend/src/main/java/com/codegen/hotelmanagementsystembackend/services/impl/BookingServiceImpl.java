@@ -5,10 +5,11 @@ import com.codegen.hotelmanagementsystembackend.entities.*;
 import com.codegen.hotelmanagementsystembackend.exception.ResourceNotFoundException;
 import com.codegen.hotelmanagementsystembackend.repository.*;
 import com.codegen.hotelmanagementsystembackend.services.BookingService;
+import com.codegen.hotelmanagementsystembackend.util.StandardResponse;
 import com.codegen.hotelmanagementsystembackend.util.UtilityMethods;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.service.spi.ServiceException;
 import org.modelmapper.ModelMapper;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -32,7 +33,7 @@ public class BookingServiceImpl implements BookingService {
      * @return                     the created booking
      */
     @Override
-    public BookingResponseDTO createBooking(BookingRequestDTO bookingRequestDTO) {
+    public StandardResponse<BookingResponseDTO> createBooking(BookingRequestDTO bookingRequestDTO) {
         try {
             // Retrieve customer and hotel
             Customer customer = utilityMethods.getCustomer(bookingRequestDTO.getCustomerCustomerId());
@@ -72,99 +73,72 @@ public class BookingServiceImpl implements BookingService {
 
             // Map and save booking supplements
             bookingRequestDTO.getBookingSupplements().forEach(bookingSupplementDTO -> {
+                System.out.println(bookingSupplementDTO);
                 BookingSupplements newBookingSupplement = modelMapper.map(bookingSupplementDTO, BookingSupplements.class);
                 newBookingSupplement.setBooking(savedBooking);
                 newBookingSupplement.setSupplement(utilityMethods.getSupplement(bookingSupplementDTO.getSupplementId()));
                 bookingSupplementsRepository.save(newBookingSupplement);
             });
 
-            // Return the response DTO
-            return getBookingById(savedBooking.getBookingId());
+            // Map the saved booking to response DTO
+            BookingResponseDTO bookingResponseDTO = mapToBookingResponseDTO(savedBooking);
+
+            return new StandardResponse<>(HttpStatus.OK.value(), "Booking created successfully", bookingResponseDTO);
         } catch (Exception e) {
-            throw new ServiceException("Failed to create Bookings" + e.getMessage());
+            return new StandardResponse<>(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Failed to create booking: " + e.getMessage(), null);
         }
     }
 
     @Override
-    public BookingResponseDTO getBookingById(Integer bookingId) {
-        try{
-
+    public StandardResponse<BookingResponseDTO> getBookingById(Integer bookingId) {
+        try {
             Booking booking = utilityMethods.getBooking(bookingId);
             if (booking == null) {
-                throw new ResourceNotFoundException("Booking not found with ID: " + bookingId);
+                 return new StandardResponse<>(HttpStatus.NOT_FOUND.value(), "Booking not found", null);
             }
 
-            BookingResponseDTO bookingResponseDTO = modelMapper.map(booking, BookingResponseDTO.class);
-            bookingResponseDTO.setCustomerId(booking.getCustomer().getUser_id());
-            bookingResponseDTO.setCustomerName(booking.getCustomer().getCustomer_fname() + " " + booking.getCustomer().getCustomer_lname());
-            bookingResponseDTO.setDiscounts(booking.getBookingDiscounts().stream().map(
-                    bookingDiscount -> modelMapper.map(bookingDiscount, BookingDiscountResponseDTO.class)
-            ).toList());
-            bookingResponseDTO.setSupplements(booking.getBookingSupplements().stream().map(
-                    bookingSupplement -> modelMapper.map(bookingSupplement, BookingSupplementResponseDTO.class)
-            ).toList());
-            bookingResponseDTO.setRooms(booking.getBookingRooms().stream().map(
-                    room -> modelMapper.map(room, BookingRoomResponseDTO.class)
-            ).toList());
+            BookingResponseDTO bookingResponseDTO = mapToBookingResponseDTO(booking);
 
-            return bookingResponseDTO;
-
-        }catch (Exception e){
-            throw new ServiceException("Booking search failed");
+            return new StandardResponse<>(HttpStatus.OK.value(), "Booking found", bookingResponseDTO);
+        } catch (ResourceNotFoundException e) {
+            return new StandardResponse<>(HttpStatus.NOT_FOUND.value(), e.getMessage(), null);
+        } catch (Exception e) {
+            return new StandardResponse<>(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Failed to retrieve booking: " + e.getMessage(), null);
         }
     }
 
-
-    // Should I return as a BookingResponseDTO?????????
     @Override
-    public Booking updateBookingById(Integer bookingId, BookingRequestDTO bookingRequestDTO) {
-        try{
-
-            Booking booking = utilityMethods.getBooking(bookingId);
-            if (booking == null) {
-                throw new ResourceNotFoundException("Booking not found with ID: " + bookingId);
+    public StandardResponse<List<BookingResponseDTO>> getBookingByCustomer(Long userId) {
+        try {
+            List<Booking> bookingsList = bookingRepository.findAllByCustomerUserId(userId);
+            if (bookingsList.isEmpty()) {
+                return new StandardResponse<>(HttpStatus.NOT_FOUND.value(), "No bookings found for user ID: " + userId, null);
             }
 
-            modelMapper.map(bookingRequestDTO, Booking.class);
+            List<BookingResponseDTO> bookingResponseDTOList = bookingsList.stream()
+                    .map(booking -> getBookingById(booking.getBookingId()).getData()).toList();
 
-//            bookingRequestDTO.getBookingRooms().forEach(bookingSupplementDTO -> {
-//                BookingRoom bookingRoom = utilityMethods.getBookingRoom(bookingSupplementDTO.getBookingRoomId());
-//                if (bookingRoom == null) {
-//                    throw new ResourceNotFoundException("Booking Room not found with ID: " + bookingSupplementDTO.getBookingRoomId());
-//                }
-//                bookingRoom = modelMapper.map(bookingSupplementDTO, BookingRoom.class);
-//                bookingRoom.setBooking(booking);
-//                bookingRoom.setRoomType(utilityMethods.getRoomType(bookingSupplementDTO.getRoomTypeId()));
-//                booking.getRooms().add(bookingRoom);
-//            });
-//
-//            bookingRequestDTO.getBookingDiscounts().forEach(bookingDiscountDTO -> {
-//                BookingDiscount bookingDiscount = utilityMethods.getBookingDiscount(bookingDiscountDTO.getBookingDiscountId());
-//                if (bookingDiscount == null) {
-//                    throw new ResourceNotFoundException("Booking Room not found with ID: " + bookingDiscountDTO.getBookingDiscountId());
-//                }
-//                bookingDiscount = modelMapper.map(bookingDiscountDTO, BookingDiscount.class);
-//                bookingDiscount.setBooking(booking);
-//                bookingDiscount.setDiscount(utilityMethods.getDiscount(bookingDiscountDTO.getDiscountId()));
-//                booking.getDiscounts().add(bookingDiscount);
-//            });
-//
-//            bookingRequestDTO.getBookingSupplements().forEach(bookingSupplementDTO -> {
-//                BookingSupplements bookingSupplements = utilityMethods.getBookingSupplement(bookingSupplementDTO.getBookingSupplementId());
-//                if (bookingSupplements == null) {
-//                    throw new ResourceNotFoundException("Booking Room not found with ID: " + bookingSupplementDTO.getBookingSupplementId());
-//                }
-//                bookingSupplements = modelMapper.map(bookingSupplementDTO, BookingSupplements.class);
-//                bookingSupplements.setBooking(booking);
-//                bookingSupplements.setSupplement(utilityMethods.getSupplement(bookingSupplementDTO.getSupplementId()));
-//                booking.getSupplements().add(bookingSupplements);
-//            });
-
-            return bookingRepository.save(booking);
-
-        }catch (Exception e){
-            throw new ServiceException("Booking update failed" + e.getMessage());
+            return new StandardResponse<>(HttpStatus.OK.value(), "Bookings found for user ID: " + userId, bookingResponseDTOList);
+        } catch (Exception e) {
+            return new StandardResponse<>(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Failed to get bookings", null);
         }
+    }
+
+    // Helper method to map Booking entity to BookingResponseDTO
+    private BookingResponseDTO mapToBookingResponseDTO(Booking booking) {
+        BookingResponseDTO bookingResponseDTO = modelMapper.map(booking, BookingResponseDTO.class);
+        bookingResponseDTO.setCustomerId(booking.getCustomer().getUserId());
+        bookingResponseDTO.setCustomerName(booking.getCustomer().getCustomerFname() + " " + booking.getCustomer().getCustomerLname());
+        bookingResponseDTO.setDiscounts(booking.getBookingDiscounts().stream().map(
+                bookingDiscount -> modelMapper.map(bookingDiscount, BookingDiscountResponseDTO.class)
+        ).toList());
+        bookingResponseDTO.setSupplements(booking.getBookingSupplements().stream().map(
+                bookingSupplement -> modelMapper.map(bookingSupplement, BookingSupplementResponseDTO.class)
+        ).toList());
+        bookingResponseDTO.setRooms(booking.getBookingRooms().stream().map(
+                room -> modelMapper.map(room, BookingRoomResponseDTO.class)
+        ).toList());
+        return bookingResponseDTO;
     }
 
 }

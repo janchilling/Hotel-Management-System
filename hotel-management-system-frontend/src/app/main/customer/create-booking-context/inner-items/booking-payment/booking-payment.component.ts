@@ -121,7 +121,7 @@ export class BookingPaymentComponent {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        // this.createBooking();
+        this.createBooking();
       }
     });
   }

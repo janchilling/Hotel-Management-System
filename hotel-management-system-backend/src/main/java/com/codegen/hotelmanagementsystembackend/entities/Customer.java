@@ -13,26 +13,26 @@ public class Customer {
 
     @Id
     @Column(name = "user_id")
-    private Long user_id;
+    private Long userId;
 
     @OneToOne
     @MapsId
     @JoinColumn(name = "user_id")
     private User user;
 
-    private String customer_fname;
+    private String customerFname;
 
-    private String customer_lname;
+    private String customerLname;
 
-    private String customer_street_address;
+    private String customerStreetAddress;
 
-    private String customer_city;
+    private String customerCity;
 
-    private String customer_state;
+    private String customerState;
 
-    private String customer_postal_code;
+    private String customerPostalCode;
 
-    private String customer_country;
+    private String customerCountry;
 
     @OneToMany(mappedBy="customer")
     @JsonManagedReference("customerPaymentReference")

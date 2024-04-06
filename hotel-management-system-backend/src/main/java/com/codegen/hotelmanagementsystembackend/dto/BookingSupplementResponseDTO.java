@@ -8,5 +8,7 @@ public class BookingSupplementResponseDTO {
     private Integer bookingSupplementId;
     private Long supplementPrice;
     private String supplementName;
+    private Integer roomTypeId;
+    private Integer noOfRooms;
 
 }

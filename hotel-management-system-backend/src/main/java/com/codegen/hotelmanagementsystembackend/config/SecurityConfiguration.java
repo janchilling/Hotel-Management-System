@@ -45,6 +45,7 @@ public class SecurityConfiguration {
                         .requestMatchers("/api/v1/seasons/**").permitAll()
                         .requestMatchers("/api/v1/payments/**").permitAll()
                         .requestMatchers("/api/v1/products/**").permitAll()
+                        .requestMatchers("/api/v1/customers/**").permitAll()
                         .anyRequest().authenticated())
 
                 .sessionManagement(manager -> manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
