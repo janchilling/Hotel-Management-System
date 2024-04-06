@@ -49,11 +49,16 @@
     </ng-container>
 
     <ng-container *ngIf="isPaymentVisible">
-      <app-booking-payment [bookingRooms]="bookingRooms"
+      <app-booking-payment (bookingPlaced)="handleBookingPlaced($event)"
+                           [bookingRooms]="bookingRooms"
                            [bookingSupplements]="bookingSupplements"
                            [contactDetails]="contactDetails"
                            [contractId]="hotelDetails?.contractId"
                            [discount]="discount"></app-booking-payment>
+    </ng-container>
+
+    <ng-container *ngIf="isConfirmationVisible">
+      <app-booking-confirmation [bookingDetails]="confirmedBooking"></app-booking-confirmation>
     </ng-container>
   </div>
 </ng-template>

@@ -22,7 +22,7 @@ public class BookingController {
         return bookingService.createBooking(bookingRequestDTO);
     }
 
-    @GetMapping("/getBookingById/{bookingId}")
+    @GetMapping("/{bookingId}")
     public StandardResponse<BookingResponseDTO>getBookingById(@PathVariable Integer bookingId) {
         return bookingService.getBookingById(bookingId);
     }

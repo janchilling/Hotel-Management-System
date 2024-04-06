@@ -43,7 +43,8 @@ import {MatButtonModule} from "@angular/material/button";
         RoomCardComponent,
         LoadingSpinnerComponent,
         MainButtonComponent,
-        InternalServerErrorComponent
+        InternalServerErrorComponent,
+        BookingConfirmationCardComponent
     ],
   imports: [
     CommonModule,

@@ -31,4 +31,14 @@ export class BookingServiceService {
         })
       );
   }
+
+  getBookingsByBookingId(bookingId: number): Observable<any> {
+    return this.httpClient.get<any>(`${this.backendHostName}/v1/bookings/${bookingId}`)
+      .pipe(
+        catchError((error: any) => {
+          console.error('Error fetching Booking:', error);
+          return of(null);
+        })
+      );
+  }
 }
