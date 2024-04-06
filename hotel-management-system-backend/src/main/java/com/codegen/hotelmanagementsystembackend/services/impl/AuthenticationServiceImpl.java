@@ -46,13 +46,13 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         Customer customer = new Customer();
 
         customer.setUser(user);
-        customer.setCustomer_fname(signUpRequestDTO.getFirstName());
-        customer.setCustomer_lname(signUpRequestDTO.getLastName());
-        customer.setCustomer_street_address(signUpRequestDTO.getStreetAddress());
-        customer.setCustomer_city(signUpRequestDTO.getCity());
-        customer.setCustomer_state(signUpRequestDTO.getState());
-        customer.setCustomer_postal_code(signUpRequestDTO.getPostal_code());
-        customer.setCustomer_country(signUpRequestDTO.getCountry());
+        customer.setCustomerFname(signUpRequestDTO.getFirstName());
+        customer.setCustomerLname(signUpRequestDTO.getLastName());
+        customer.setCustomerStreetAddress(signUpRequestDTO.getStreetAddress());
+        customer.setCustomerCity(signUpRequestDTO.getCity());
+        customer.setCustomerState(signUpRequestDTO.getState());
+        customer.setCustomerPostalCode(signUpRequestDTO.getPostal_code());
+        customer.setCustomerCountry(signUpRequestDTO.getCountry());
 
         customerRepository.save(customer);
 
@@ -71,7 +71,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
             jwtAuthenticationResponse.setToken(jwt);
             jwtAuthenticationResponse.setRefreshToken(refreshToken);
-            jwtAuthenticationResponse.setUserId(String.valueOf(user.getUser_id()));
+            jwtAuthenticationResponse.setUserId(String.valueOf(user.getUserId()));
             return jwtAuthenticationResponse;
         }catch (AuthenticationException e){
             throw new IllegalArgumentException("Invalid email or password.");

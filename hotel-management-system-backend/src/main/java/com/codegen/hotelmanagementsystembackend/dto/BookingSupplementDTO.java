@@ -9,4 +9,6 @@ public class BookingSupplementDTO {
     private Long supplementPrice;
     private String supplementName;
     private Integer supplementId;
+    private Integer roomTypeId;
+    private Integer noOfRooms;
 }

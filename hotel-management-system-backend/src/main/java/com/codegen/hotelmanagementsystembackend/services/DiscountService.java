@@ -3,6 +3,7 @@ package com.codegen.hotelmanagementsystembackend.services;
 import com.codegen.hotelmanagementsystembackend.dto.DiscountRequestDTO;
 import com.codegen.hotelmanagementsystembackend.dto.DiscountResponseDTO;
 import com.codegen.hotelmanagementsystembackend.entities.Discount;
+import com.codegen.hotelmanagementsystembackend.util.StandardResponse;
 
 import java.util.List;
 
@@ -22,7 +23,7 @@ public interface DiscountService {
      * @param  discountId   The ID of the discount to retrieve
      * @return              The DiscountResponseDTO object for the specified ID
      */
-    DiscountResponseDTO getDiscountById(Integer discountId);
+    StandardResponse<DiscountResponseDTO> getDiscountById(Integer discountId);
 
     /**
      * A description of the getDiscountByContract Java function.
@@ -30,14 +31,6 @@ public interface DiscountService {
      * @param  contractId   description of parameter
      * @return              description of return value
      */
-    List<DiscountResponseDTO> getDiscountByContract(Integer contractId);
-
-    /**
-     * Get discount information for a specific hotel.
-     *
-     * @param  hotelId    the ID of the hotel to retrieve discount information for
-     * @return           a list of discount response DTOs for the specified hotel
-     */
-    List<List<DiscountResponseDTO>> getDiscountByHotel(Integer hotelId);
+    StandardResponse<List<DiscountResponseDTO>> getDiscountByContract(Integer contractId);
 
 }

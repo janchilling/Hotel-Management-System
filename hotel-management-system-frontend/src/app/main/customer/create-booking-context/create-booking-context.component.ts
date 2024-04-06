@@ -29,9 +29,7 @@ export class CreateBookingContextComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.route.queryParams.subscribe(params => {
-      // this.checkInDate = params['checkIn'];
-      // this.checkOutDate = params['checkOut'];
+    this.route.queryParams.subscribe(params => {;
       this.hotelId = params['hotelId'];
     });
 
@@ -66,7 +64,7 @@ export class CreateBookingContextComponent implements OnInit {
       }
     );
   }
-  
+
   showBookingDetails() {
     this.isBookingDetailsVisible = true;
     this.isPaymentVisible = false;

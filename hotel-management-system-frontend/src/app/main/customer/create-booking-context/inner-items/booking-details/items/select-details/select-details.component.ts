@@ -16,19 +16,22 @@ import {DiscountServicesService} from "../../../../../../../shared/services/disc
 })
 export class SelectDetailsComponent implements OnInit {
 
-  @Output() selectDetailsChanged = new EventEmitter<any>();
   @Input() contractId : any;
-  selectedRoomData: any = {
-    bookingRooms: [],
-    bookingSupplements: [],
-    discount: null
-  };
+  @Output() selectDetailsChanged = new EventEmitter<any>();
   protected roomTypesDetails: any;
   protected supplementsDetails: any;
   protected discountDetails: any;
   checkInDate: any;
   checkOutDate: any;
   discountCode: string = '';
+  selectedRoomData: any = {
+    bookingRooms: [],
+    bookingSupplements: [],
+    discount: null
+  };
+  isLoading: boolean = true;
+  isError: boolean = false;
+  invalidDiscountCode: boolean = false;
 
   constructor(
     private roomTypeServicesService: RoomTypeServicesService,
@@ -53,41 +56,54 @@ export class SelectDetailsComponent implements OnInit {
   }
 
   fetchRoomTypes(contractId: number) {
-    this.roomTypeServicesService.getRoomsByContractId(contractId).subscribe(
-      (response) => {
+    this.roomTypeServicesService.getRoomsByContractId(contractId).subscribe({
+      next: (response) => {
         this.roomTypesDetails = response.data;
         console.log(this.roomTypesDetails);
+        this.checkLoadingState();
       },
-      (error) => {
+      error: (error) => {
         console.error('Error fetching room types:', error);
+        this.isError = true;
+        this.isLoading = false;
       }
-    );
+    });
   }
 
   fetchSupplements(contractId: number) {
-    this.supplementServicesService.getSupplementsByContractId(contractId).subscribe(
-      (response) => {
+    this.supplementServicesService.getSupplementsByContractId(contractId).subscribe({
+      next: (response) => {
         this.supplementsDetails = response.data;
-        console.log(this.supplementsDetails)
+        console.log(this.supplementsDetails);
+        this.checkLoadingState();
       },
-      (error) => {
-        // Handle error
+      error: (error) => {
         console.error('Error fetching supplements:', error);
+        this.isError = true;
+        this.isLoading = false;
       }
-    );
+    });
   }
 
   fetchDiscounts(contractId: number) {
-    this.discountServicesService.getDiscounts(contractId).subscribe(
-      (response) => {
-        this.discountDetails = response;
-        console.log(this.discountDetails)
+    this.discountServicesService.getDiscounts(contractId).subscribe({
+      next: (response) => {
+        this.discountDetails = response.data;
+        console.log(this.discountDetails);
+        this.checkLoadingState();
       },
-      (error) => {
-        // Handle error
-        console.error('Error fetching supplements:', error);
+      error: (error) => {
+        console.error('Error fetching discounts:', error);
+        this.isError = true;
+        this.isLoading = false;
       }
-    );
+    });
+  }
+
+  private checkLoadingState() {
+    if (this.roomTypesDetails && this.supplementsDetails && this.discountDetails) {
+      this.isLoading = false;
+    }
   }
 
   applyDiscount(event: any) {
@@ -105,29 +121,25 @@ export class SelectDetailsComponent implements OnInit {
       });
 
       if (seasonDiscount) {
-        // Apply the discount percentage to the selected room data
         this.selectedRoomData.discount = {
           discountCode: discount.discountCode,
           discountId: discount.discountId,
           discountPercentage: seasonDiscount.discountPercentage
         };
       } else {
-        // If no applicable discount for the season, apply default discount
         this.selectedRoomData.discount = {
           discountCode: null,
           discountName: null,
           discountPercentage: null
         };
       }
+      this.invalidDiscountCode = false;
     } else {
-      // If discount code is not valid, remove it from selected room data
+      this.invalidDiscountCode = true;
       this.selectedRoomData.discount = null;
     }
-
-    // Emit the updated selected room data
     this.selectDetailsChanged.emit(this.selectedRoomData);
   }
-
 
   receiveRoomSelection(selectedRoomData: any) {
     selectedRoomData.bookingRooms.forEach((selectedRoom: any) => {
@@ -138,7 +150,6 @@ export class SelectDetailsComponent implements OnInit {
           this.selectedRoomData.bookingRooms[existingRoomIndex] = { ...selectedRoom };
         } else {
           this.selectedRoomData.bookingRooms.splice(existingRoomIndex, 1);
-          // Remove associated supplements if the number of rooms is 0
           this.selectedRoomData.bookingSupplements = this.selectedRoomData.bookingSupplements.filter((supplement: any) => supplement.roomTypeId !== selectedRoom.roomTypeId);
         }
       } else if (selectedRoom.noOfRooms > 0) {

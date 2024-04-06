@@ -3,6 +3,10 @@ import {MarkupServicesService} from "../../../../../shared/services/markupServic
 import {ActivatedRoute} from "@angular/router";
 import {DateServiceService} from "../../../../../shared/services/dateService/date-service.service";
 import {BookingServiceService} from "../../../../../shared/services/bookingService/booking-service.service";
+import {MatDialog} from "@angular/material/dialog";
+import {
+  ConfirmationDialogComponentComponent
+} from "../../../../../shared/components/confirmation-dialog-component/confirmation-dialog-component.component";
 
 @Component({
   selector: 'app-booking-payment',
@@ -34,7 +38,8 @@ export class BookingPaymentComponent {
     private markupServicesService: MarkupServicesService,
     private route: ActivatedRoute,
     private dateService: DateServiceService,
-    private bookingServiceService :BookingServiceService
+    private bookingServiceService :BookingServiceService,
+    private dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
@@ -53,6 +58,7 @@ export class BookingPaymentComponent {
 
     this.checkPrepaymentEligibility();
     console.log(this.bookingRooms)
+    console.log(this.bookingSupplements)
     console.log(this.discount)
   }
 
@@ -107,6 +113,19 @@ export class BookingPaymentComponent {
     }
   }
 
+  openConfirmationDialog(): void {
+    const dialogRef = this.dialog.open(ConfirmationDialogComponentComponent, {
+      width: '300px',
+      data: 'Are you sure you want to proceed with the payment?'
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.createBooking();
+      }
+    });
+  }
+
   createBooking(): void {
     const paymentStatus = this.selectedPaymentOption === 'prepayment' ? 'Pre' : 'Full';
 
@@ -136,15 +155,15 @@ export class BookingPaymentComponent {
 
     console.log(bookingRequest)
 
-    this.bookingServiceService.addBooking(bookingRequest).subscribe(
-      (response) => {
+    this.bookingServiceService.addBooking(bookingRequest).subscribe({
+      next: (response) => {
         console.log('Booking added successfully:', response);
         console.log(response)
       },
-      (error) => {
+      error: (error) => {
         console.error('Booking adding hotel:', error);
       }
-    )
+    })
   }
 
 

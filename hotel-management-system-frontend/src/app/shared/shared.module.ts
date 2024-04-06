@@ -15,6 +15,9 @@ import { RoomCardComponent } from './components/room-card/room-card.component';
 import { LoadingSpinnerComponent } from './components/loading-spinner/loading-spinner.component';
 import { MainButtonComponent } from './components/main-button/main-button.component';
 import { InternalServerErrorComponent } from './components/internal-server-error/internal-server-error.component';
+import { ConfirmationDialogComponentComponent } from './components/confirmation-dialog-component/confirmation-dialog-component.component';
+import {MatDialogModule} from "@angular/material/dialog";
+import {MatButtonModule} from "@angular/material/button";
 
 
 @NgModule({
@@ -30,7 +33,8 @@ import { InternalServerErrorComponent } from './components/internal-server-error
     RoomCardComponent,
     LoadingSpinnerComponent,
     MainButtonComponent,
-    InternalServerErrorComponent
+    InternalServerErrorComponent,
+    ConfirmationDialogComponentComponent
   ],
     exports: [
         MainHeaderNavbarComponent,
@@ -41,11 +45,13 @@ import { InternalServerErrorComponent } from './components/internal-server-error
         MainButtonComponent,
         InternalServerErrorComponent
     ],
-    imports: [
-        CommonModule,
-        SharedRoutingModule,
-        ReactiveFormsModule,
-        NgOptimizedImage
-    ]
+  imports: [
+    CommonModule,
+    SharedRoutingModule,
+    ReactiveFormsModule,
+    NgOptimizedImage,
+    MatDialogModule,
+    MatButtonModule
+  ]
 })
 export class SharedModule { }

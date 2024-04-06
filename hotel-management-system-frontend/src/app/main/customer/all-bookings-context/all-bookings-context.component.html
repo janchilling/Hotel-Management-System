@@ -1,0 +1,5 @@
+<h1 class="text-5xl font-extrabold dark:text-white pl-20 py-10">My Bookings</h1>
+
+<ng-container *ngFor="let booking of allBookings">
+  <app-all-booking-result-cards [booking]="booking"></app-all-booking-result-cards>
+</ng-container>

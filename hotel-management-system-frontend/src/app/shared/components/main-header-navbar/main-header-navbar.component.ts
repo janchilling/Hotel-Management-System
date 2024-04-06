@@ -11,4 +11,8 @@ export class MainHeaderNavbarComponent {
     window.location.href = '/main/home';
   }
 
+  navigateToCustomerBookings(){
+    window.location.href = '/main/myBookings/1';
+  }
+
 }

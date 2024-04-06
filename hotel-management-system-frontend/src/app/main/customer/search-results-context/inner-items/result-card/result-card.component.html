@@ -1,29 +1,21 @@
-<div class="w-full shadow-lg max-w-2xl bg-white sm:flex">
-  <div class="w-full sm:w-1/4 hotel-cover bg-center bg-cover border relative h-48 sm:h-auto shadow-inner">
-    <!-- You can put the image of the hotel here if available -->
-  </div>
-  <div class="w-full sm:w-3/4 p-3">
-    <div class="flex justify-between items-center border-b pb-3">
-      <div>
-        <div class="sm:flex items-center mb-1">
-          <h2 class="text-lg font-semibold text-gray-600">{{ hotel.hotelName }}</h2>
-          <!-- You can add other information like hotel ratings, etc. here -->
-        </div>
-        <div class="flex items-center">
-          <!-- Hotel address and other details -->
-        </div>
-      </div>
+<div class="p-10 flex justify-center items-center bg-background-gray">
+  <div class="p-5 bg-white rounded-lg shadow-2xl md:flex md:w-80vw justify-center">
+    <div class="flex flex-col w-full md:w-1/3">
+      <img alt="Boat" class="rounded-t-lg image md:w-full md:rounded-l-lg md:rounded-t-none" src="https://aremorch.com/wp-content/uploads/2016/09/The-Details-That-Matter-Top-Things-Every-Luxury-Hotel-Room-Should-Have.png">
     </div>
-    <div class="flex mt-3">
-      {{ hotel.hotelBriefDescription }}
-    </div>
-    <div class="sm:flex mt-3 items-center justify-between">
-      <div>
-        <!-- Hotel ratings and reviews -->
-      </div>
-      <div class="mt-3 sm:mt-3 sm:-mr-8">
-        <!-- View Hotel button -->
-        <a (click)="viewHotelDetails(hotel.hotelId)"  class="bg-button-gold shadow text-white-100 py-3 px-6 font-bold inline-block">View Hotel</a>
+    <div class="p-4 flex flex-col justify-center w-full md:w-2/3 md:flex-row">
+      <div class="subheading flex-1">
+        <div class="flex items-center justify-between mb-2">
+          <h2 class="mb-2 font-bold text-sm text-black">{{ hotel.hotelName }}</h2>
+          <app-main-button [buttonText]="'View Hotel'" (click)="viewHotelDetails(hotel.hotelId)"></app-main-button>
+        </div>
+        <hr class="mb-2 bg-black">
+        <ul class="flex flex-wrap facility-list-1 bg-background-gray w-1/2">
+          <li class="icon1"><i class="fa-solid fa-location-dot"></i> {{hotel.hotelStreetAddress}}, {{hotel.hotelPostalCode}} {{hotel.hotelCity}}, {{hotel.hotelCountry}}</li>
+        </ul>
+        <ul class="flex flex-wrap facility-list-1 bg-background-gray">
+          <li class="icon1">{{hotel.hotelBriefDescription}}</li>
+        </ul>
       </div>
     </div>
   </div>

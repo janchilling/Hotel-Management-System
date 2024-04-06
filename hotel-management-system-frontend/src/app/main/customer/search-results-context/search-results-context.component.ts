@@ -31,10 +31,8 @@ export class SearchResultsContextComponent implements OnInit, OnDestroy {
 
       this.searchParams = { destination, noOfRooms, checkIn, checkOut };
 
-      // Update SearchParamsService with extracted parameters
       this.searchParamsService.updateSearchParams(this.searchParams);
 
-      // Call the search method with the extracted parameters
       this.search();
     });
   }
@@ -47,14 +45,14 @@ export class SearchResultsContextComponent implements OnInit, OnDestroy {
   search(): void {
     const { destination, noOfRooms, checkIn, checkOut } = this.searchParams;
 
-    this.searchService.getSearchData(destination, noOfRooms, checkIn, checkOut).subscribe(data => {
-      // Assign data to searchData array
-      this.searchData = data;
-      this.searchData = this.searchData.data
-      console.log(this.searchData)
-    }, error => {
-      // Handle errors
-      console.error(error);
+    this.searchService.getSearchData(destination, noOfRooms, checkIn, checkOut).subscribe({
+      next: (response: any) => {
+        this.searchData = response.data;
+        console.log(this.searchData);
+      },
+      error: (error) => {
+        console.error(error);
+      }
     });
   }
 }

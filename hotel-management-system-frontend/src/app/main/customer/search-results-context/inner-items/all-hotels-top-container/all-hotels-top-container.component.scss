@@ -1,0 +1,30 @@
+*{
+  padding:  0 72px;
+}
+
+.hotels{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 60px 0;
+  h1{
+    align-items: flex-start;
+    text-align: left;
+    width: 74%;
+  }
+  .buttons{
+    flex: 1;
+    //text-align: right;
+    button{
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      margin-left: 10px;
+      cursor: pointer;
+    }
+  }
+
+}
+
+
+

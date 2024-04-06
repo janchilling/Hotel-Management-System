@@ -18,6 +18,10 @@ public class BookingSupplements {
 
     private String supplementName;
 
+    private Integer roomTypeId;
+
+    private Integer noOfRooms;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonBackReference("bookingBookingSupplementReference")
     private Booking booking;

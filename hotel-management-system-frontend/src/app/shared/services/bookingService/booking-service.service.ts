@@ -21,4 +21,14 @@ export class BookingServiceService {
         })
       );
   }
+
+  getBookingsByCustomer(userId: number): Observable<any> {
+    return this.httpClient.get<any>(`${this.backendHostName}/v1/customers/${userId}/bookings/`)
+      .pipe(
+        catchError((error: any) => {
+          console.error('Error fetching Bookings:', error);
+          return of(null);
+        })
+      );
+  }
 }
