@@ -11,6 +11,7 @@ import {AngularFireStorageModule} from "@angular/fire/compat/storage";
 import {environment} from "../environments/environment";
 import {AngularFireModule} from "@angular/fire/compat";
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { JwtHelperService, JWT_OPTIONS  } from '@auth0/angular-jwt';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,9 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     MatSnackBarModule
   ],
     providers: [
-      { provide: DateAdapter, useClass: CustomDateAdapter }
+      { provide: DateAdapter, useClass: CustomDateAdapter },
+      { provide: JWT_OPTIONS, useValue: JWT_OPTIONS },
+      JwtHelperService
     ],
   bootstrap: [AppComponent]
 })
