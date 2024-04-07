@@ -25,6 +25,7 @@ import { AllHotelsBottomContainerComponent } from './customer/search-results-con
 import { AllBookingsContextComponent } from './customer/all-bookings-context/all-bookings-context.component';
 import { AllBookingResultCardsComponent } from './customer/all-bookings-context/all-booking-result-cards/all-booking-result-cards.component';
 import {ViewBookingContextComponent} from "./customer/view-booking-context/view-booking-context.component";
+import {SecurityModule} from "../security/security.module";
 
 
 @NgModule({
@@ -57,7 +58,8 @@ import {ViewBookingContextComponent} from "./customer/view-booking-context/view-
     SharedModule,
     NgOptimizedImage,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    SecurityModule
   ]
 })
 export class MainModule { }

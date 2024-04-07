@@ -7,19 +7,37 @@ import {HotelDetailsContextComponent} from "./customer/hotel-details-context/hot
 import {CreateBookingContextComponent} from "./customer/create-booking-context/create-booking-context.component";
 import {AllBookingsContextComponent} from "./customer/all-bookings-context/all-bookings-context.component";
 import {ViewBookingContextComponent} from "./customer/view-booking-context/view-booking-context.component";
+import { PermissionsService } from '../security/services/permissionService/permission-service.service';
 
 const routes: Routes = [
   {
     path: '',
     component: MainComponent,
     children: [
-      { path: '', redirectTo: 'home', pathMatch: 'full' },
-      { path: 'home', component: HomeContextComponent },
-      { path: 'results', component: SearchResultsContextComponent },
-      { path: 'hotel/:hotelId', component: HotelDetailsContextComponent },
-      { path: 'booking', component: CreateBookingContextComponent },
-      { path: 'myBookings/:userId', component: AllBookingsContextComponent },
-      { path: 'booking/:bookingId', component: ViewBookingContextComponent }
+      { path: '',
+        redirectTo: 'home',
+        pathMatch: 'full'
+      },
+      { path: 'home',
+        component: HomeContextComponent
+      },
+      { path: 'results',
+        component: SearchResultsContextComponent
+      },
+      { path: 'hotel/:hotelId',
+        component: HotelDetailsContextComponent
+      },
+      { path: 'booking',
+        component: CreateBookingContextComponent,
+        canActivate: [PermissionsService],
+        data: { expectedRole: 'CUSTOMER' }
+      },
+      { path: 'myBookings/:userId',
+        component: AllBookingsContextComponent
+      },
+      { path: 'booking/:bookingId',
+        component: ViewBookingContextComponent
+      }
     ],
   },
 ];

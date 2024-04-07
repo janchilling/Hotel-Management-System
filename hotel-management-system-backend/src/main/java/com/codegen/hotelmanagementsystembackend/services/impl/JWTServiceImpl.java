@@ -1,5 +1,6 @@
 package com.codegen.hotelmanagementsystembackend.services.impl;
 
+import com.codegen.hotelmanagementsystembackend.services.CustomUserDetails;
 import com.codegen.hotelmanagementsystembackend.services.JWTService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -17,13 +18,27 @@ import java.util.function.Function;
 @Service
 public class JWTServiceImpl implements JWTService {
 
-    public String generateToken(UserDetails userDetails){
-        return Jwts.builder().setSubject(userDetails.getUsername())
-                .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 24))
-                .signWith(getSigninKey(), SignatureAlgorithm.HS256)
-                .compact();
+    public String generateToken(UserDetails userDetails) {
+        if (userDetails instanceof CustomUserDetails) {
+            return Jwts.builder().setSubject(userDetails.getUsername())
+                    .claim("role", ((CustomUserDetails) userDetails).getRole().toString())
+                    .claim("userId", ((CustomUserDetails) userDetails).getUserId())
+                    .setIssuedAt(new Date(System.currentTimeMillis()))
+                    .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 24))
+                    .signWith(getSigninKey(), SignatureAlgorithm.HS256)
+                    .compact();
+        } else {
+            // handle case where UserDetails is not of the expected type
+            throw new IllegalArgumentException("UserDetails is not of the expected type");
+        }
     }
+//        return Jwts.builder().setSubject(userDetails.getUsername())
+//                .claim("role", userDetails.)
+//                .claim("userId", userDetails.)
+//                .setIssuedAt(new Date(System.currentTimeMillis()))
+//                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 24))
+//                .signWith(getSigninKey(), SignatureAlgorithm.HS256)
+//                .compact();
 
     public String generateRefreshToken(Map<String, Object> extraClaims, UserDetails userDetails){
         return Jwts.builder().setClaims(extraClaims).setSubject(userDetails.getUsername())
