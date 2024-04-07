@@ -34,7 +34,7 @@ import {MatButtonModule} from "@angular/material/button";
     LoadingSpinnerComponent,
     MainButtonComponent,
     InternalServerErrorComponent,
-    ConfirmationDialogComponentComponent
+    ConfirmationDialogComponentComponent,
   ],
     exports: [
         MainHeaderNavbarComponent,

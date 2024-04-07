@@ -7,7 +7,7 @@ const routes: Routes = [
     path: 'main', loadChildren: () => import('./main/main.module').then(m => m.MainModule)
   },
   {
-    path: 'security', loadChildren: () => import('./security/security.module').then(m => m.SecurityModule)
+    path: 'auth', loadChildren: () => import('./security/security.module').then(m => m.SecurityModule)
   },
   {
     path: 'share', loadChildren: () => import('./shared/shared.module').then(m => m.SharedModule)

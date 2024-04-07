@@ -5,13 +5,14 @@ import com.codegen.hotelmanagementsystembackend.dto.LoginRequestDTO;
 import com.codegen.hotelmanagementsystembackend.dto.RefreshTokenRequest;
 import com.codegen.hotelmanagementsystembackend.dto.SignUpRequestDTO;
 import com.codegen.hotelmanagementsystembackend.entities.User;
+import com.codegen.hotelmanagementsystembackend.util.StandardResponse;
 
 public interface AuthenticationService {
 
-    User signup(SignUpRequestDTO signUpRequestDTO);
+    StandardResponse<User> signup(SignUpRequestDTO signUpRequestDTO);
 
-    JwtAuthenticationResponse login(LoginRequestDTO loginRequestDTO);
+    StandardResponse<JwtAuthenticationResponse>  login(LoginRequestDTO loginRequestDTO);
 
-    JwtAuthenticationResponse refreshToken(RefreshTokenRequest refreshTokenRequest);
+    StandardResponse<JwtAuthenticationResponse> refreshToken(RefreshTokenRequest refreshTokenRequest);
 
 }

@@ -6,6 +6,7 @@ import com.codegen.hotelmanagementsystembackend.dto.RefreshTokenRequest;
 import com.codegen.hotelmanagementsystembackend.dto.SignUpRequestDTO;
 import com.codegen.hotelmanagementsystembackend.entities.User;
 import com.codegen.hotelmanagementsystembackend.services.AuthenticationService;
+import com.codegen.hotelmanagementsystembackend.util.StandardResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,17 +22,17 @@ public class AuthenticationController {
     private final AuthenticationService authenticationService;
 
     @PostMapping("/signup")
-    public ResponseEntity<User> signup(@RequestBody SignUpRequestDTO signUpRequestDTO){
-        return ResponseEntity.ok(authenticationService.signup(signUpRequestDTO));
+    public StandardResponse<User> signup(@RequestBody SignUpRequestDTO signUpRequestDTO){
+        return authenticationService.signup(signUpRequestDTO);
     }
 
     @PostMapping("/login")
-    public ResponseEntity<JwtAuthenticationResponse> login(@RequestBody LoginRequestDTO loginRequestDTO){
-        return ResponseEntity.ok(authenticationService.login(loginRequestDTO));
+    public StandardResponse<JwtAuthenticationResponse>  login(@RequestBody LoginRequestDTO loginRequestDTO){
+        return authenticationService.login(loginRequestDTO);
     }
 
     @PostMapping("/refresh")
-    public ResponseEntity<JwtAuthenticationResponse> refresh(@RequestBody RefreshTokenRequest refreshTokenRequest){
-        return ResponseEntity.ok(authenticationService.refreshToken(refreshTokenRequest));
+    public StandardResponse<JwtAuthenticationResponse> refresh(@RequestBody RefreshTokenRequest refreshTokenRequest){
+        return authenticationService.refreshToken(refreshTokenRequest);
     }
 }
