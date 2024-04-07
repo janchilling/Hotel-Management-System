@@ -11,7 +11,9 @@ import com.codegen.hotelmanagementsystembackend.repository.CustomerRepository;
 import com.codegen.hotelmanagementsystembackend.repository.UserRepository;
 import com.codegen.hotelmanagementsystembackend.services.AuthenticationService;
 import com.codegen.hotelmanagementsystembackend.services.JWTService;
+import com.codegen.hotelmanagementsystembackend.util.StandardResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
@@ -34,32 +36,40 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     private final JWTService jwtService;
 
-    public User signup(SignUpRequestDTO signUpRequestDTO){
-        User user = new User();
+    public StandardResponse<User> signup(SignUpRequestDTO signUpRequestDTO){
+        try {
+            if (userRepository.existsByEmail(signUpRequestDTO.getEmail())) {
+                return new StandardResponse<>(HttpStatus.BAD_REQUEST.value(), "User with this email already exists", null);
+            }
 
-        user.setEmail(signUpRequestDTO.getEmail());
-        user.setRole(Role.CUSTOMER);
-        user.setPassword(passwordEncoder.encode(signUpRequestDTO.getPassword()));
+            User user = new User();
 
-        user = userRepository.save(user);
+            user.setEmail(signUpRequestDTO.getEmail());
+            user.setRole(Role.CUSTOMER);
+            user.setPassword(passwordEncoder.encode(signUpRequestDTO.getPassword()));
 
-        Customer customer = new Customer();
+            user = userRepository.save(user);
 
-        customer.setUser(user);
-        customer.setCustomerFname(signUpRequestDTO.getFirstName());
-        customer.setCustomerLname(signUpRequestDTO.getLastName());
-        customer.setCustomerStreetAddress(signUpRequestDTO.getStreetAddress());
-        customer.setCustomerCity(signUpRequestDTO.getCity());
-        customer.setCustomerState(signUpRequestDTO.getState());
-        customer.setCustomerPostalCode(signUpRequestDTO.getPostal_code());
-        customer.setCustomerCountry(signUpRequestDTO.getCountry());
+            Customer customer = new Customer();
 
-        customerRepository.save(customer);
+            customer.setUser(user);
+            customer.setCustomerFname(signUpRequestDTO.getFirstName());
+            customer.setCustomerLname(signUpRequestDTO.getLastName());
+            customer.setCustomerStreetAddress(signUpRequestDTO.getStreetAddress());
+            customer.setCustomerCity(signUpRequestDTO.getCity());
+            customer.setCustomerState(signUpRequestDTO.getState());
+            customer.setCustomerPostalCode(signUpRequestDTO.getPostalCode());
+            customer.setCustomerCountry(signUpRequestDTO.getCountry());
 
-        return user;
+            customerRepository.save(customer);
+
+            return new StandardResponse<>(HttpStatus.OK.value(), "User signed up successfully", user);
+        } catch (Exception e) {
+            return new StandardResponse<>(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Internal Server Error", null);
+        }
     }
 
-    public JwtAuthenticationResponse login(LoginRequestDTO loginRequestDTO){
+    public StandardResponse<JwtAuthenticationResponse> login(LoginRequestDTO loginRequestDTO){
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequestDTO.getEmail(), loginRequestDTO.getPassword()));
 
@@ -72,26 +82,32 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             jwtAuthenticationResponse.setToken(jwt);
             jwtAuthenticationResponse.setRefreshToken(refreshToken);
             jwtAuthenticationResponse.setUserId(String.valueOf(user.getUserId()));
-            return jwtAuthenticationResponse;
-        }catch (AuthenticationException e){
-            throw new IllegalArgumentException("Invalid email or password.");
+
+            return new StandardResponse<>(HttpStatus.OK.value(), "Login successful", jwtAuthenticationResponse);
+        } catch (AuthenticationException e) {
+            return new StandardResponse<>(HttpStatus.UNAUTHORIZED.value(), "Invalid email or password", null);
         }
     }
 
-    public JwtAuthenticationResponse refreshToken(RefreshTokenRequest refreshTokenRequest){
-        String userEmail = jwtService.extractUsernames(refreshTokenRequest.getToken());
+    public StandardResponse<JwtAuthenticationResponse> refreshToken(RefreshTokenRequest refreshTokenRequest){
+        try {
+            String userEmail = jwtService.extractUsernames(refreshTokenRequest.getToken());
 
-        User user = userRepository.findByEmail(userEmail).orElseThrow();
+            User user = userRepository.findByEmail(userEmail).orElse(null);
 
-        if(jwtService.isTokenValid(refreshTokenRequest.getToken(), user)){
-            var jwt = jwtService.generateToken(user);
+            if(user != null && jwtService.isTokenValid(refreshTokenRequest.getToken(), user)){
+                var jwt = jwtService.generateToken(user);
 
-            JwtAuthenticationResponse jwtAuthenticationResponse = new JwtAuthenticationResponse();
+                JwtAuthenticationResponse jwtAuthenticationResponse = new JwtAuthenticationResponse();
 
-            jwtAuthenticationResponse.setToken(jwt);
-            jwtAuthenticationResponse.setRefreshToken(refreshTokenRequest.getToken());
-            return jwtAuthenticationResponse;
+                jwtAuthenticationResponse.setToken(jwt);
+                jwtAuthenticationResponse.setRefreshToken(refreshTokenRequest.getToken());
+
+                return new StandardResponse<>(HttpStatus.OK.value(), "Token refreshed successfully", jwtAuthenticationResponse);
+            }
+            return new StandardResponse<>(HttpStatus.UNAUTHORIZED.value(), "Unauthorized", null);
+        } catch (Exception e) {
+            return new StandardResponse<>(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Internal Server Error", null);
         }
-        return null;
     }
 }
