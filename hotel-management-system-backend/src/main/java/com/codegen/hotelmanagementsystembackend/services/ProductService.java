@@ -13,4 +13,6 @@ public interface ProductService {
 
     StandardResponse<SearchResponseDTO> getHotelByIdActive(Integer hotelId);
 
+    StandardResponse<List<SearchResponseDTO>> adminSearchHotels(String hotel);
+
 }

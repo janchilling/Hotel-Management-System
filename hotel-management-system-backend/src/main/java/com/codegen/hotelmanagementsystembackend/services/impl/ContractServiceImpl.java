@@ -39,13 +39,12 @@ public class ContractServiceImpl implements ContractService {
     @Override
     public StandardResponse<Contract> createContract(ContractRequestDTO contractRequestDTO) {
         try {
-
             boolean hasOverlappingDates = contractRepository.existsByHotelHotelIdAndStartDateBeforeAndEndDateAfter(
                     contractRequestDTO.getHotelId(), contractRequestDTO.getEndDate(), contractRequestDTO.getStartDate());
             if (hasOverlappingDates) {
                 return new StandardResponse<>(HttpStatus.CONFLICT.value(), "Contract dates overlap with existing contracts", null);
-
             }
+            System.out.println(contractRequestDTO.getHotelId());
 
             Contract newContract = modelMapper.map(contractRequestDTO, Contract.class);
             newContract.setHotel(hotelRepository.findById(contractRequestDTO.getHotelId())
@@ -63,10 +62,10 @@ public class ContractServiceImpl implements ContractService {
 
             seasonRepository.saveAll(seasons);
 
-            return new StandardResponse<>(HttpStatus.OK.value(), "Contract created successfully", savedContract);
+            return new StandardResponse<>(HttpStatus.CREATED.value(), "Contract created successfully", savedContract);
 
         } catch (Exception e) {
-            return new StandardResponse<>(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Failed to create Contract", null);
+            return new StandardResponse<>(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Failed to create Contract : " + e.getMessage(), null);
         }
     }
 

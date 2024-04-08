@@ -15,7 +15,7 @@ public interface DiscountService {
      * @param  discountRequestDTOS   the list of discount request DTOs
      * @return                      a list of discounts
      */
-    List<Discount> createDiscount(List<DiscountRequestDTO> discountRequestDTOS);
+    StandardResponse<List<Discount>> createDiscount(List<DiscountRequestDTO> discountRequestDTOS);
 
     /**
      * Get discount by ID.

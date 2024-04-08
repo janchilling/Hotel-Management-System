@@ -52,6 +52,9 @@ import {SecurityModule} from "../security/security.module";
     AllBookingResultCardsComponent,
     ViewBookingContextComponent,
   ],
+  exports: [
+    ResultCardComponent
+  ],
   imports: [
     CommonModule,
     MainRoutingModule,

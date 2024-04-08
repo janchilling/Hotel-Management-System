@@ -1,2 +1,67 @@
+<ng-template [ngIf]="error">
+  <app-internal-server-error></app-internal-server-error>
+</ng-template>
+
+<ng-template [ngIf]="!loading && !error">
+  <div class="container-padding">
+    <div class="mb-4 border-gray-200 dark:border-gray-700">
+      <ul class="flex flex-wrap -mb-px text-sm font-medium text-center" data-tabs-active-classes="text-purple-600 hover:text-purple-600 dark:text-purple-500 dark:hover:text-purple-500 border-purple-600 dark:border-purple-500"
+          data-tabs-inactive-classes="dark:border-transparent text-gray-500 hover:text-gray-600 dark:text-gray-400 border-gray-100 hover:border-gray-300 dark:border-gray-700 dark:hover:text-gray-300"
+          data-tabs-toggle="#default-styled-tab-content"
+          id="default-styled-tab"
+          role="tablist">
+        <li class="me-2" role="presentation">
+          <button [class.gold-underline]="isAddMarkupVisible"
+                  aria-controls="profile" aria-selected="false"
+                  class="inline-block p-4 border-b-2 rounded-t-lg"
+                  data-tabs-target="#styled-profile" id="markup-styled-tab" role="tab" type="button">Markups
+          </button>
+        </li>
+        <li class="me-2" role="presentation">
+          <button
+            [class.gold-underline]="isAddDiscountVisible"
+            aria-controls="dashboard" aria-selected="false" class="inline-block p-4 border-b-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"
+            data-tabs-target="#styled-dashboard" id="discount-styled-tab" role="tab" type="button">Discounts
+          </button>
+        </li>
+        <li class="me-2" role="presentation">
+          <button
+            [class.gold-underline]="isAddSupplementsVisible"
+            aria-controls="dashboard" aria-selected="false" class="inline-block p-4 border-b-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"
+            data-tabs-target="#styled-dashboard" id="supplements-styled-tab" role="tab" type="button">Supplements
+          </button>
+        </li>
+        <li class="me-2" role="presentation">
+          <button
+            [class.gold-underline]="isAddRoomTypesVisible"
+            aria-controls="dashboard" aria-selected="false" class="inline-block p-4 border-b-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"
+            data-tabs-target="#styled-dashboard" id="roomTypes-styled-tab" role="tab" type="button">Room Types
+          </button>
+        </li>
+      </ul>
+      <hr>
+    </div>
+
+    <ng-container *ngIf="isAddMarkupVisible">
+      <app-markup-details></app-markup-details>
+    </ng-container>
+
+    <ng-container *ngIf="isAddDiscountVisible">
+      <app-discount-details></app-discount-details>
+    </ng-container>
+
+    <ng-container *ngIf="isAddSupplementsVisible">
+      <app-supplement-details></app-supplement-details>
+    </ng-container>
+
+    <ng-container *ngIf="isAddRoomTypesVisible">
+      <app-roomtypes-details></app-roomtypes-details>
+    </ng-container>
+  </div>
+</ng-template>
+
+<ng-template [ngIf]="loading && !error">
+  <app-loading-spinner></app-loading-spinner>
+</ng-template>
 
 

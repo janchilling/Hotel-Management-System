@@ -7,4 +7,11 @@ import { Component } from '@angular/core';
 })
 export class AddContractDetailsContextComponent {
 
+  loading: boolean = false;
+  error: boolean = false;
+  isAddMarkupVisible: boolean = false;
+  isAddDiscountVisible: boolean = false;
+  isAddSupplementsVisible: boolean = false;
+  isAddRoomTypesVisible: boolean = true;
+
 }

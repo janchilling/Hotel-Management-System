@@ -2,6 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
 import {ContractServicesService} from "../../../../shared/services/contractServices/contract-services.service";
+import {
+  ConfirmationDialogComponentComponent
+} from "../../../../shared/components/confirmation-dialog-component/confirmation-dialog-component.component";
+import {MatDialog} from "@angular/material/dialog";
+import {MatSnackBar, matSnackBarAnimations} from "@angular/material/snack-bar";
 
 @Component({
   selector: 'app-contract-season-details',
@@ -16,7 +21,9 @@ export class ContractSeasonDetailsComponent implements OnInit {
     private fb: FormBuilder,
     private route: ActivatedRoute,
     private contractServicesService: ContractServicesService,
-    private router: Router
+    private router: Router,
+    private dialog: MatDialog,
+    private snackBar: MatSnackBar,
   ) {
     this.contractSeasonForm = this.fb.group({
       startDate: ['', Validators.required],
@@ -26,35 +33,56 @@ export class ContractSeasonDetailsComponent implements OnInit {
       cancellationAmount: ['', Validators.required],
       prepayment: ['', Validators.required],
       balancePayment: ['', Validators.required],
-      hotelId: [''] ,
-      seasons: this.fb.array([])
+      seasons: this.fb.array([]),
+      hotelId: ['']
     });
   }
 
   ngOnInit(): void {
-    this.route.queryParams.subscribe(params => {
-      this.hotelId = params['hotelId'];
-    });
+    this.hotelId = +this.route.snapshot.params['hotelId'];
+    console.log(this.hotelId)
   }
 
   submitForm() {
-    console.log("Clicked")
+    const dialogRef = this.dialog.open(ConfirmationDialogComponentComponent, {
+      width: '300px',
+      data: 'Are you sure you want to submit?'
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.submitMethod();
+      }
+    });
+  }
+
+  submitMethod() {
     if (this.contractSeasonForm.invalid) {
       return;
     }
     this.contractSeasonForm.patchValue({ hotelId: this.hotelId });
 
     const contractData = this.contractSeasonForm.value;
-    this.contractServicesService.addContract(contractData).subscribe(
-      (response) => {
-        console.log('Contract added successfully:', response);
-        this.router.navigate(['/administration/addMarkup'], { queryParams: { contractId: response.data.contractId } });
-      },
-      (error) => {
+    console.log(contractData)
+    this.contractServicesService.addContract(contractData).subscribe({
+      next: (response) => {
+        if(response.statusCode === 201) {
+          console.log('Contract added successfully:', response);
+          this.router.navigate(['/administration/addContractDetails'], { queryParams: { contractId: response.data.contractId } });
+        }else if(response.statusCode === 409){
+          this.snackBar.open('Contract Dates overlap', 'Close', {
+            duration: 3000,
+            verticalPosition: 'top'
+          });
+        }else{
+          console.error('Failed to add contract:', response);
+        }
+        },
+      error: (error) => {
         console.error('Failed to add contract:', error);
-        // Handle error, show error message, etc.
       }
-    );
+    });
+
   }
 
   get f() {

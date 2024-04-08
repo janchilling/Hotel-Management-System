@@ -40,9 +40,9 @@ public class DiscountServiceImpl implements DiscountService {
      * @return                      the list of created discounts
      */
     @Override
-    public List<Discount> createDiscount(List<DiscountRequestDTO> discountRequestDTOS) {
+    public StandardResponse<List<Discount>> createDiscount(List<DiscountRequestDTO> discountRequestDTOS) {
         if (discountRequestDTOS == null || discountRequestDTOS.isEmpty()) {
-            return null;
+            return new StandardResponse<>(HttpStatus.BAD_REQUEST.value(), "Empty request", null);
         }
 
         List<Discount> discountsList = new ArrayList<>();
@@ -78,9 +78,11 @@ public class DiscountServiceImpl implements DiscountService {
                 }
                 discountsList.add(newDiscount);
             }
-            return discountRepository.saveAll(discountsList);
-        }catch (Exception e){
-            throw new ServiceException("Discount creation failed" + e.getMessage());
+            return new StandardResponse<>(HttpStatus.CREATED.value(), "Discounts created successfully", discountRepository.saveAll(discountsList));
+        } catch (ResourceNotFoundException e) {
+            return new StandardResponse<>(HttpStatus.NOT_FOUND.value(), e.getMessage(), null);
+        } catch (Exception e) {
+            return new StandardResponse<>(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Discount creation failed: " + e.getMessage(), null);
         }
     }
 

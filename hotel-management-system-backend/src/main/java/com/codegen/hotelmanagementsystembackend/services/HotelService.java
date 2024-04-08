@@ -14,7 +14,7 @@ public interface HotelService {
 
     StandardResponse<Hotel> createHotel(HotelRequestDTO hotelRequestDTO);
 
-    HotelResponseDTO getHotelById(Integer hotelId);
+    StandardResponse<HotelResponseDTO> getHotelById(Integer hotelId);
 
 
     StandardResponse<List<HotelImageDTO>> getHotelImagesByHotelId(Integer hotelId);

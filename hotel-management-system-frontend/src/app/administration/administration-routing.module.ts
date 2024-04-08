@@ -19,6 +19,9 @@ import {
 import {
   RoomtypesDetailsComponent
 } from "./add-contract-details-context/inner-items/roomtypes-details/roomtypes-details.component";
+import {FindHotelContextComponent} from "./find-hotel-context/find-hotel-context.component";
+import {HotelDetailsComponent} from "./admin-hotel-details/inner-items/hotel-details/hotel-details.component";
+import {AdminHotelDetailsComponent} from "./admin-hotel-details/admin-hotel-details.component";
 
 const routes: Routes = [{
   path: '',
@@ -27,15 +30,16 @@ const routes: Routes = [{
     { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
     { path: 'dashboard', component: DashboardContextComponent },
     { path: 'addHotel', component: AddHotelContextComponent },
-    { path: 'addContract', component: AddContractContextComponent },
+    { path: 'findHotel', component: FindHotelContextComponent },
+    { path: 'hotel/:hotelId', component: AdminHotelDetailsComponent },
+    { path: 'addContract/:hotelId', component: AddContractContextComponent },
     { path: 'addContractDetails', component: AddContractDetailsContextComponent },
     { path: 'addMarkup', component: MarkupDetailsComponent },
     { path: 'addDiscount', component: DiscountDetailsComponent },
     { path: 'addSupplement', component: SupplementDetailsComponent },
     { path: 'addRoomType', component: RoomtypesDetailsComponent },
   ],
-},
-];
+},];
 @NgModule({
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]

@@ -15,4 +15,8 @@ export class HotelDetailsByIdService {
   getHotelDetailsById(hotelId: number) {
     return this.httpClient.get(this.backendHostName + "/v1/products/" + hotelId);
   }
+
+  getHotelDetailsByIdAdmin(hotelId: number) {
+    return this.httpClient.get(this.backendHostName + "/v1/hotels/" + hotelId);
+  }
 }

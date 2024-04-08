@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface SupplementService {
 
-    List<Supplement> createSupplement(List<SupplementRequestDTO> supplementRequestDTO);
+    StandardResponse<List<Supplement>> createSupplement(List<SupplementRequestDTO> supplementRequestDTO);
 
     StandardResponse<SupplementResponseDTO> getSupplementById(Integer supplementId);
 
