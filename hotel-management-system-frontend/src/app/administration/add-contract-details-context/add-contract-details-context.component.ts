@@ -9,9 +9,9 @@ export class AddContractDetailsContextComponent {
 
   loading: boolean = false;
   error: boolean = false;
-  isAddMarkupVisible: boolean = true;
+  isAddMarkupVisible: boolean = false;
   isAddDiscountVisible: boolean = false;
   isAddSupplementsVisible: boolean = false;
-  isAddRoomTypesVisible: boolean = false;
+  isAddRoomTypesVisible: boolean = true;
 
 }

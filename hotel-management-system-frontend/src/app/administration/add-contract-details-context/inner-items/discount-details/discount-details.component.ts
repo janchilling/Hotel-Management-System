@@ -6,6 +6,9 @@ import {DiscountServicesService} from "../../../../shared/services/discountServi
 import {MatDialog} from "@angular/material/dialog";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {AddContractDetailsContextComponent} from "../../add-contract-details-context.component";
+import {
+  ConfirmationDialogComponentComponent
+} from "../../../../shared/components/confirmation-dialog-component/confirmation-dialog-component.component";
 
 @Component({
   selector: 'app-discount-details',
@@ -110,6 +113,19 @@ export class DiscountDetailsComponent implements OnInit {
 
 
   onSubmit() {
+    const dialogRef = this.dialog.open(ConfirmationDialogComponentComponent, {
+      width: '300px',
+      data: 'Are you sure you want to submit?'
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.submitData();
+      }
+    });
+  }
+
+  submitData(){
     if (this.discountForm.valid) {
       // Extract season details from the form
       const dataToSend = this.discountForm.get("discounts")?.value;
@@ -117,8 +133,18 @@ export class DiscountDetailsComponent implements OnInit {
       console.log(dataToSend);
       this.discountService.addDiscount(dataToSend).subscribe({
         next: (response) => {
-          console.log('Discount details sent successfully:', response);
-          this.router.navigate(['/administration/addSupplement'], { queryParams: { contractId: this.contractId } });
+          if(response.statusCode == 201){
+            this.snackBar.open('Discount details sent successfully', 'Close', {
+              duration: 2000,
+              verticalPosition: 'top'
+            });
+            console.log('Discount details sent successfully:', response);
+            this.addContractDetailsContextComponent.isAddDiscountVisible = false;
+            this.addContractDetailsContextComponent.isAddSupplementsVisible = true;
+          }
+          else {
+            console.error('Failed to send discount details:', response);
+          }
         },
         error: (error) => {
           console.error('Failed to send discount details:', error);

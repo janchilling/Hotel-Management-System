@@ -101,7 +101,7 @@ export class MarkupDetailsComponent implements OnInit {
       console.log(dataToSend)
       this.markupServicesService.addMarkup(dataToSend).subscribe({
         next: (response) => {
-          if(response.statusCode === 200) {
+          if(response.statusCode === 201) {
             this.snackBar.open('Markups sent successfully', 'Close', {
               duration: 3000,
               verticalPosition: 'top'

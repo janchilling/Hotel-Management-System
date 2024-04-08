@@ -13,7 +13,7 @@ public interface RoomTypeService {
 
     StandardResponse<Integer> getAvailableRoomTypeCount(Integer roomTypeId, Date checkInDate, Date checkOutDate, Integer seasonId);
 
-    List<RoomType> createRoomType(List<RoomTypeRequestDTO> roomTypeRequestDTOS);
+    StandardResponse<List<RoomType>> createRoomType(List<RoomTypeRequestDTO> roomTypeRequestDTOS);
 
     StandardResponse<RoomTypeResponseDTO> getRoomTypeById(Integer discountId);
 

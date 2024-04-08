@@ -62,7 +62,7 @@ public class ContractServiceImpl implements ContractService {
 
             seasonRepository.saveAll(seasons);
 
-            return new StandardResponse<>(HttpStatus.OK.value(), "Contract created successfully", savedContract);
+            return new StandardResponse<>(HttpStatus.CREATED.value(), "Contract created successfully", savedContract);
 
         } catch (Exception e) {
             return new StandardResponse<>(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Failed to create Contract : " + e.getMessage(), null);

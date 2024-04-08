@@ -74,7 +74,7 @@ public class MarkupServiceImpl implements MarkupService {
             newMarkup.setSeasonMarkups(seasonMarkups);
             markupRepository.save(newMarkup);
 
-            return new StandardResponse<>(HttpStatus.OK.value(), "Markup created successfully", newMarkup);
+            return new StandardResponse<>(HttpStatus.CREATED.value(), "Markup created successfully", newMarkup);
         } catch (ResourceNotFoundException e) {
             logger.error("Resource not found: {}", e.getMessage());
             return new StandardResponse<>(HttpStatus.NOT_FOUND.value(), "Resource not found: " + e.getMessage(), null);

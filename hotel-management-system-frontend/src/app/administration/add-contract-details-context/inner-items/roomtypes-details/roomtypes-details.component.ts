@@ -1,10 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import { SeasonServicesService } from '../../../../shared/services/seasonServices/season-services.service';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
-import { finalize } from 'rxjs/operators';
 import {RoomTypeServicesService} from "../../../../shared/services/roomTypesServices/room-type-services.service";
+import {MatDialog} from "@angular/material/dialog";
+import {MatSnackBar} from "@angular/material/snack-bar";
+import {AddContractDetailsContextComponent} from "../../add-contract-details-context.component";
+import {
+  ConfirmationDialogComponentComponent
+} from "../../../../shared/components/confirmation-dialog-component/confirmation-dialog-component.component";
+import {forkJoin, Observable, ObservableInput, of} from 'rxjs';
+import {catchError, finalize, map} from 'rxjs/operators';
 
 @Component({
   selector: 'app-roomtypes-details',
@@ -24,7 +31,11 @@ export class RoomtypesDetailsComponent {
     private route: ActivatedRoute,
     private roomTypeService: RoomTypeServicesService,
     private seasonServicesService: SeasonServicesService,
-    private storage: AngularFireStorage
+    private storage: AngularFireStorage,
+    private dialog: MatDialog,
+    private router: Router,
+    private snackBar: MatSnackBar,
+    private addContractDetailsContextComponent: AddContractDetailsContextComponent
   ) {
     this.roomTypeForm = this.fb.group({
       roomTypes: this.fb.array([])
@@ -39,16 +50,16 @@ export class RoomtypesDetailsComponent {
   }
 
   loadSeasons() {
-    this.seasonServicesService.getSeasonsByContractId(this.contractId).subscribe(
-      (response) => {
+    this.seasonServicesService.getSeasonsByContractId(this.contractId).subscribe({
+      next: (response) => {
         this.seasons = response;
         this.seasonRoomTypeCount = this.seasons.length;
         this.addRoomTypeControls();
       },
-      (error) => {
+      error: (error) => {
         console.error('Failed to load seasons:', error);
       }
-    );
+    });
   }
 
   addRoomTypeControls() {
@@ -120,7 +131,7 @@ export class RoomtypesDetailsComponent {
         img.src = window.URL.createObjectURL(file);
       } else {
         // Handle invalid file types
-        control.setErrors({ invalidFileType: true });
+        control.setErrors({invalidFileType: true});
       }
     }
     return null;
@@ -142,12 +153,24 @@ export class RoomtypesDetailsComponent {
     }
   }
 
-
   onSubmit() {
-    console.log("Clicked")
+    const dialogRef = this.dialog.open(ConfirmationDialogComponentComponent, {
+      width: '300px',
+      data: 'Are you sure you want to submit?'
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.createRequest();
+      }
+    });
+  }
+
+  createRequest() {
     if (this.roomTypeForm.valid) {
-      console.log("Clicked")
       const roomTypes = this.roomTypeForm.value.roomTypes;
+
+      const uploadTasks: any = [];
 
       roomTypes.forEach((roomType: any, roomTypeIndex: number) => {
 
@@ -159,31 +182,44 @@ export class RoomtypesDetailsComponent {
             const fileRef = this.storage.ref(filePath);
             const uploadTask = this.storage.upload(filePath, file);
 
-            uploadTask.snapshotChanges().pipe(
+            const task$ = uploadTask.snapshotChanges().pipe(
               finalize(() => {
                 fileRef.getDownloadURL().subscribe((url) => {
                   images.push({ imageURL: url });
                 });
               })
-            ).subscribe();
+            );
+            uploadTasks.push(task$);
           });
         }
         roomType.roomTypeImages = images;
       });
-      this.sendRoomTypeData(roomTypes);
+
+      forkJoin(uploadTasks).subscribe(() => {
+        this.sendRoomTypeData(roomTypes);
+      });
     }
   }
 
-
   sendRoomTypeData(roomTypes: any[]) {
     console.log('Room type data to be sent to the backend:', roomTypes);
-    this.roomTypeService.addRoomType(roomTypes).subscribe(
-      (response) => {
+    this.roomTypeService.addRoomType(roomTypes).subscribe({
+      next: (response) => {
+        if (response.statusCode == 201) {
+          console.log('Room type details sent successfully:', response);
+          this.snackBar.open('Markups sent successfully', 'Close', {
+            duration: 3000,
+            verticalPosition: 'top'
+          })
+          this.router.navigate(['administration/dashboard'], );
+        } else {
+          console.error('Failed to send room type details:', response);
+        }
         console.log('Room type details sent successfully:', response);
       },
-      (error) => {
+      error: (error) => {
         console.error('Failed to send room type details:', error);
       }
-    );
+    });
   }
 }

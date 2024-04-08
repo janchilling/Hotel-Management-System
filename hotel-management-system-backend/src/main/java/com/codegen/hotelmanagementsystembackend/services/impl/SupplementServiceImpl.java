@@ -36,10 +36,10 @@ public class SupplementServiceImpl implements SupplementService {
      * @return list of created supplements
      */
     @Override
-    public List<Supplement> createSupplement(List<SupplementRequestDTO> supplementRequestDTOs) {
+    public StandardResponse<List<Supplement>> createSupplement(List<SupplementRequestDTO> supplementRequestDTOs) {
 
         if (supplementRequestDTOs == null || supplementRequestDTOs.isEmpty()) {
-            return null;
+            return new StandardResponse<>(HttpStatus.BAD_REQUEST.value(), "Empty request", null);
         }
 
         List<Supplement> supplementsList = new ArrayList<>();
@@ -47,9 +47,11 @@ public class SupplementServiceImpl implements SupplementService {
         try {
             for (SupplementRequestDTO supplementRequestDTO : supplementRequestDTOs) {
                 Supplement newSupplement = new Supplement();
+                System.out.println(supplementRequestDTO);
                 newSupplement.setSupplementDescription(supplementRequestDTO.getSupplementDescription());
                 newSupplement.setSupplementName(supplementRequestDTO.getSupplementName());
                 newSupplement.setImageIconURL(supplementRequestDTO.getImageIconURL());
+                System.out.println(supplementRequestDTO.getImageIconURL());
                 newSupplement.setContract(contractRepository.findById(supplementRequestDTO.getContractId())
                         .orElseThrow(() -> new ResourceNotFoundException("Contract not found with ID: " + supplementRequestDTO.getContractId())));
 
@@ -73,10 +75,11 @@ public class SupplementServiceImpl implements SupplementService {
                 supplementsList.add(newSupplement);
             }
 
-            return supplementRepository.saveAll(supplementsList);
-
+            return new StandardResponse<>(HttpStatus.CREATED.value(), "Supplements created successfully", supplementRepository.saveAll(supplementsList));
+        } catch (ResourceNotFoundException e) {
+            return new StandardResponse<>(HttpStatus.NOT_FOUND.value(), e.getMessage(), null);
         } catch (Exception e) {
-            throw new ServiceException("Error while creating supplements: " + e.getMessage());
+            return new StandardResponse<>(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Supplements creation failed: " + e.getMessage(), null);
         }
     }
 

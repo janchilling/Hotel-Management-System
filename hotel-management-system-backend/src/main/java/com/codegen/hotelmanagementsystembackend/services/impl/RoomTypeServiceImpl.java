@@ -40,15 +40,16 @@ public class RoomTypeServiceImpl implements RoomTypeService {
      * @return                      the list of created room types
      */
     @Override
-    public List<RoomType> createRoomType(List<RoomTypeRequestDTO> roomTypeRequestDTOS) {
+    public StandardResponse<List<RoomType>> createRoomType(List<RoomTypeRequestDTO> roomTypeRequestDTOS) {
         if (roomTypeRequestDTOS == null || roomTypeRequestDTOS.isEmpty()) {
-            return null;
+            return new StandardResponse<>(HttpStatus.BAD_REQUEST.value(), "Empty request", null);
         }
 
         List<RoomType> roomTypesList = new ArrayList<>();
 
         try {
             for (RoomTypeRequestDTO roomTypeRequestDTO : roomTypeRequestDTOS) {
+                System.out.println(roomTypeRequestDTO);
                 RoomType newRoomType = new RoomType();
                 newRoomType.setRoomTypeId(roomTypeRequestDTO.getRoomTypeId());
                 newRoomType.setRoomTypeName(roomTypeRequestDTO.getRoomTypeName());
@@ -60,15 +61,10 @@ public class RoomTypeServiceImpl implements RoomTypeService {
                 RoomType savedRoomType = roomTypeRepository.save(newRoomType);
 
                 for (RoomTypeImagesDTO roomTypeImagesDTO : roomTypeRequestDTO.getRoomTypeImages()) {
-                    System.out.println("Hello");
                     System.out.println(roomTypeImagesDTO.getImageURL());
-                    System.out.println("Hello");
                     RoomTypeImages roomTypeImages = new RoomTypeImages();
-                    System.out.println("Hello");
                     roomTypeImages.setRoomType(savedRoomType);
-                    System.out.println("Hello");
                     roomTypeImages.setImageURL(roomTypeImagesDTO.getImageURL());
-                    System.out.println("Hello");
                     roomTypeImagesRepository.save(roomTypeImages);
                 }
 
@@ -94,9 +90,11 @@ public class RoomTypeServiceImpl implements RoomTypeService {
                 roomTypesList.add(savedRoomType);
             }
 
-            return roomTypesList;
+            return new StandardResponse<>(HttpStatus.CREATED.value(), "Room Types created successfully", roomTypesList);
+        } catch (ResourceNotFoundException e) {
+            return new StandardResponse<>(HttpStatus.NOT_FOUND.value(), e.getMessage(), null);
         } catch (Exception e) {
-            throw new ServiceException("Failed to create Room Types"+ e.getMessage());
+            return new StandardResponse<>(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Room Types creation failed: " + e.getMessage(), null);
         }
     }
 

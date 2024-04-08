@@ -22,8 +22,8 @@ public class RoomTypeController {
     private final RoomTypeService roomTypeService;
 
     @PostMapping("/")
-    public ResponseEntity<List<RoomType>> createRoomType(@RequestBody List<RoomTypeRequestDTO> roomTypeRequestDTOS){
-        return ResponseEntity.ok(roomTypeService.createRoomType(roomTypeRequestDTOS));
+    public StandardResponse<List<RoomType>> createRoomType(@RequestBody List<RoomTypeRequestDTO> roomTypeRequestDTOS){
+        return roomTypeService.createRoomType(roomTypeRequestDTOS);
     }
 
     @GetMapping("/{roomTypeId}/availableNoOfRooms/{checkInDate}/{checkOutDate}/{seasonId}")

@@ -5,6 +5,12 @@ import { SeasonServicesService } from '../../../../shared/services/seasonService
 import { SupplementServicesService } from "../../../../shared/services/supplementServices/supplement-services.service";
 import { AngularFireStorage, AngularFireStorageReference } from "@angular/fire/compat/storage";
 import {finalize} from "rxjs/operators";
+import {MatDialog} from "@angular/material/dialog";
+import {MatSnackBar} from "@angular/material/snack-bar";
+import {AddContractDetailsContextComponent} from "../../add-contract-details-context.component";
+import {
+  ConfirmationDialogComponentComponent
+} from "../../../../shared/components/confirmation-dialog-component/confirmation-dialog-component.component";
 
 @Component({
   selector: 'app-supplement-details',
@@ -24,7 +30,10 @@ export class SupplementDetailsComponent implements OnInit {
     private supplementService: SupplementServicesService,
     private seasonServicesService: SeasonServicesService,
     private storage: AngularFireStorage,
-    private router: Router
+    private router: Router,
+    private dialog: MatDialog,
+    private snackBar: MatSnackBar,
+    private addContractDetailsContextComponent: AddContractDetailsContextComponent
   ) {
     this.supplementForm = this.fb.group({
       supplements: this.fb.array([])
@@ -39,16 +48,16 @@ export class SupplementDetailsComponent implements OnInit {
   }
 
   loadSeasons() {
-    this.seasonServicesService.getSeasonsByContractId(this.contractId).subscribe(
-      (response) => {
+    this.seasonServicesService.getSeasonsByContractId(this.contractId).subscribe({
+      next: (response) => {
         this.seasons = response;
         this.seasonSupplementCount = this.seasons.length;
         this.addSupplementControls();
       },
-      (error) => {
+      error: (error) => {
         console.error('Failed to load seasons:', error);
       }
-    );
+    });
   }
 
   addSupplementControls() {
@@ -140,8 +149,20 @@ export class SupplementDetailsComponent implements OnInit {
     this.images[supplementIndex][0] = file;
   }
 
-
   onSubmit() {
+    const dialogRef = this.dialog.open(ConfirmationDialogComponentComponent, {
+      width: '300px',
+      data: 'Are you sure you want to submit?'
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.createRequest();
+      }
+    });
+  }
+
+  createRequest() {
     if (this.supplementForm.valid) {
       const supplements = this.supplementForm.value.supplements;
 
@@ -155,25 +176,40 @@ export class SupplementDetailsComponent implements OnInit {
           finalize(() => {
             fileRef.getDownloadURL().subscribe((url) => {
               supplement.imageIconURL = url;
+
+              // Check if URL is set before sending supplement data
+              if (url) {
+                this.sendSupplementData([supplement]); // Send supplement data
+              } else {
+                console.error('Failed to get image URL for supplement:', supplement);
+              }
             });
           })
         ).subscribe();
       });
-        this.sendSupplementData(supplements);
     }
   }
 
 
   sendSupplementData(supplements: any[]) {
     console.log('Supplement data to be sent to the backend:', supplements);
-    this.supplementService.addSupplement(supplements).subscribe(
-      (response) => {
-        console.log('Supplement details sent successfully:', response);
-        this.router.navigate(['/administration/addRoomType'], { queryParams: { contractId: this.contractId } });
-      },
-      (error) => {
+    this.supplementService.addSupplement(supplements).subscribe({
+      next: (response) => {
+        if(response.statusCode == 201){
+          this.snackBar.open('Supplement details sent successfully', 'Close', {
+            duration: 2000,
+            verticalPosition: 'top'
+          });
+          console.log('Supplement details sent successfully:', response);
+          this.addContractDetailsContextComponent.isAddSupplementsVisible = false;
+          this.addContractDetailsContextComponent.isAddRoomTypesVisible = true;
+        }
+        else {
+          console.error('Failed to send supplement details:', response);
+        }},
+      error: (error) => {
         console.error('Failed to send supplement details:', error);
       }
-    );
+    });
   }
 }

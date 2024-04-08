@@ -19,8 +19,8 @@ public class DiscountController {
     private final DiscountService discountService;
 
     @PostMapping("/")
-    public ResponseEntity<List<Discount>> createDiscount(@RequestBody List<DiscountRequestDTO> discountRequestDTOS){
-        return ResponseEntity.ok(discountService.createDiscount(discountRequestDTOS));
+    public StandardResponse<List<Discount>> createDiscount(@RequestBody List<DiscountRequestDTO> discountRequestDTOS){
+        return discountService.createDiscount(discountRequestDTOS);
     }
 
     @GetMapping("/{discountId}")

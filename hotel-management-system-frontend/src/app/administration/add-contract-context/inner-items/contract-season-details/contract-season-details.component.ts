@@ -66,7 +66,7 @@ export class ContractSeasonDetailsComponent implements OnInit {
     console.log(contractData)
     this.contractServicesService.addContract(contractData).subscribe({
       next: (response) => {
-        if(response.statusCode === 200) {
+        if(response.statusCode === 201) {
           console.log('Contract added successfully:', response);
           this.router.navigate(['/administration/addContractDetails'], { queryParams: { contractId: response.data.contractId } });
         }else if(response.statusCode === 409){
