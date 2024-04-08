@@ -108,4 +108,22 @@ public class ProductServiceImpl implements ProductService {
                         contract.getStartDate().before(checkOut) &&
                         contract.getEndDate().after(checkIn));
     }
+
+    @Override
+    public StandardResponse<List<SearchResponseDTO>> adminSearchHotels(String hotel) {
+        try {
+            List<Hotel> hotelsList = hotelRepository.findByHotelNameContainingOrHotelCityContainingOrHotelCountryContaining(hotel, hotel, hotel);
+
+            List<SearchResponseDTO> searchResponseDTOS = hotelsList.stream()
+                    .map(hotelResult -> modelMapper.map(hotelResult, SearchResponseDTO.class))
+                    .collect(Collectors.toList());
+
+            return new StandardResponse<>(200, "Hotels found", searchResponseDTOS);
+        } catch (Exception e) {
+            // Log the exception
+            // logger.error("An error occurred while searching hotels", e);
+            return new StandardResponse<>(500, "An error occurred while searching hotels", null);
+        }
+    }
+
 }

@@ -16,6 +16,7 @@ import org.hibernate.service.spi.ServiceException;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -73,13 +74,13 @@ public class MarkupServiceImpl implements MarkupService {
             newMarkup.setSeasonMarkups(seasonMarkups);
             markupRepository.save(newMarkup);
 
-            return new StandardResponse<>(200, "Markup created successfully", newMarkup);
+            return new StandardResponse<>(HttpStatus.OK.value(), "Markup created successfully", newMarkup);
         } catch (ResourceNotFoundException e) {
             logger.error("Resource not found: {}", e.getMessage());
-            return new StandardResponse<>(404, "Resource not found: " + e.getMessage(), null);
+            return new StandardResponse<>(HttpStatus.NOT_FOUND.value(), "Resource not found: " + e.getMessage(), null);
         } catch (Exception e) {
             logger.error("Failed to create markups: {}", e.getMessage());
-            return new StandardResponse<>(500, "Failed to create markups: " + e.getMessage(), null);
+            return new StandardResponse<>(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Failed to create markups: " + e.getMessage(), null);
         }
     }
 

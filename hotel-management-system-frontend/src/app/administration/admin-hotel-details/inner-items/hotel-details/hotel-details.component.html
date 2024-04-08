@@ -1,0 +1,137 @@
+<div *ngIf="hotelDetails">
+<div class="container mb-3 -mt-7 sm:mb-8 md:mb-12 lg:mb-16 xl:mb-20 ">
+  <section class=" py-1 bg-blueGray-50">
+    <div class="w-full lg:w-8/12 px-4 mx-auto mt-6">
+      <div class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-lg bg-blueGray-100 border-0">
+        <div class="rounded-t bg-white mb-0 px-6 py-6">
+          <div class="text-center flex justify-between">
+            <h2 class="text-blueGray-700 text-xl font-bold">
+              Details of {{hotelDetails.hotelName}}</h2>
+          </div>
+        </div>
+        <div class="flex-auto px-4 lg:px-10 py-10 pt-0">
+          <form>
+            <h6 class="text-blueGray-400 text-sm mt-3 mb-6 font-bold uppercase">
+              General Information
+            </h6>
+            <div class="flex flex-wrap">
+              <div class="w-full lg:w-6/12 px-4">
+                <div class="relative w-full mb-3">
+                  <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2" for="hotelName">
+                    Hotel Name
+                  </label>
+                  <input id="hotelName" type="text" class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" placeholder={{hotelDetails.hotelName}} required>
+                 </div>
+              </div>
+              <div class="w-full lg:w-6/12 px-4">
+                <div class="relative w-full mb-3">
+                  <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2" for="email">
+                    Email address
+                  </label>
+                  <input id="email" type="email" class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" placeholder="Email address" required>
+                  </div>
+              </div>
+
+              <div class="w-full lg:w-6/12 px-4">
+                <div class="relative w-full mb-3">
+                  <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2" for="hotelStarRating">
+                    Hotel Star Rating
+                  </label>
+                  <div class="flex items-center">
+                    <input id="hotelStarRating" type="number" class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" placeholder="Hotel Star Rating" required min="1" max="5" step="1">
+                    </div>
+                 </div>
+              </div>
+              <div class="w-full lg:w-12/12 px-4">
+                <div class="relative w-full mb-3">
+                  <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2" htmlfor="hotelPhones">
+                    Hotel Phone
+                  </label>
+                  <!-- Iterate over hotelPhones FormArray to create phone input fields -->
+                  <div >
+                    <div *ngFor="let phone of hotelDetails.hotelPhones; let i = index">
+                        <input type="number" class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" placeholder={{phone.phoneNumber}} required>
+                     </div>
+                  </div>
+
+
+                  <!-- Button to add a new phone input field -->
+                   </div>
+              </div>
+
+              <div class="w-full lg:w-12/12 px-4">
+                <div class="relative w-full mb-3">
+                  <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2" for="address">
+                    Address
+                  </label>
+                  <input id="address" type="text" class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" placeholder="Address" required>
+                  </div>
+              </div>
+
+              <div class="w-full lg:w-4/12 px-4">
+                <div class="relative w-full mb-3">
+                  <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2" for="city">
+                    City
+                  </label>
+                  <input id="city" type="text" class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" placeholder="City" required>
+                  </div>
+              </div>
+
+              <div class="w-full lg:w-4/12 px-4">
+                <div class="relative w-full mb-3">
+                  <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2" for="state">
+                    State
+                  </label>
+                  <input id="state" type="text" class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" placeholder="State" required>
+                  </div>
+              </div>
+
+              <div class="w-full lg:w-4/12 px-4">
+                <div class="relative w-full mb-3">
+                  <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2" for="country">
+                    Country
+                  </label>
+                  <input  id="country" type="text" class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" placeholder="Country" required>
+                 </div>
+              </div>
+
+              <div class="w-full lg:w-4/12 px-4">
+                <div class="relative w-full mb-3">
+                  <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2" for="postalCode">
+                    Postal Code
+                  </label>
+                  <input  id="postalCode" type="text" class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" placeholder="Postal Code" required>
+                  </div>
+              </div>
+
+
+              <hr class="mt-6 border-b-1 border-blueGray-300">
+              <div class="flex flex-wrap">
+                <div class="w-full lg:w-12/12 px-4">
+                  <div class="relative w-full mb-3">
+                    <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2" for="description">
+                      Description (min 750 characters, max 1000 characters)
+                    </label>
+                    <textarea id="description" class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" rows="4" required minlength="750" maxlength="1000" placeholder="Description"></textarea>
+                   </div>
+                </div>
+
+                <div class="w-full lg:w-12/12 px-4">
+                  <div class="relative w-full mb-3">
+                    <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2" for="briefDescription">
+                      Brief Description (min 50 characters, max 250 characters)
+                    </label>
+                    <textarea id="briefDescription" class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" rows="4" required minlength="50" maxlength="250" placeholder="Brief Description"></textarea>
+                    </div>
+                </div>
+              </div>
+            </div>
+          </form>
+          <app-main-button [buttonText]="'Add Contract'" (click)="addContract(hotelDetails.hotelId)"></app-main-button>n>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+</div>
+

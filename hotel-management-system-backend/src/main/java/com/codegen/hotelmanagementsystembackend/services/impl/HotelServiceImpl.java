@@ -87,9 +87,8 @@ public class HotelServiceImpl implements HotelService {
      */
 
 //    Log4j  use logs
-
     @Override
-    public HotelResponseDTO getHotelById(Integer hotelId) {
+    public StandardResponse<HotelResponseDTO> getHotelById(Integer hotelId) {
         try {
             Hotel hotel = hotelRepository.findById(hotelId)
                     .orElseThrow(() -> new ServiceException("Hotel not found"));
@@ -103,12 +102,14 @@ public class HotelServiceImpl implements HotelService {
                     .map(Contract::getContractStatus)
                     .collect(Collectors.toList()));
 
-            return hotelResponseDTO;
+            return new StandardResponse<>(HttpStatus.OK.value(), "Hotel retrieved successfully", hotelResponseDTO);
+        } catch (ServiceException e) {
+            return new StandardResponse<>(HttpStatus.NOT_FOUND.value(), e.getMessage(), null);
         } catch (Exception e) {
-            // Handle other exceptions!!!!!
-            throw new ServiceException("An error occurred while retrieving the hotel", e);
+            return new StandardResponse<>(HttpStatus.INTERNAL_SERVER_ERROR.value(), "An error occurred while retrieving the hotel", null);
         }
     }
+
 
     public StandardResponse<List<HotelImageDTO>> getHotelImagesByHotelId(Integer hotelId) {
         try {

@@ -3,6 +3,9 @@ import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
 import { SeasonServicesService } from '../../../../shared/services/seasonServices/season-services.service';
 import {DiscountServicesService} from "../../../../shared/services/discountServices/discount-services.service";
+import {MatDialog} from "@angular/material/dialog";
+import {MatSnackBar} from "@angular/material/snack-bar";
+import {AddContractDetailsContextComponent} from "../../add-contract-details-context.component";
 
 @Component({
   selector: 'app-discount-details',
@@ -20,7 +23,10 @@ export class DiscountDetailsComponent implements OnInit {
     private route: ActivatedRoute,
     private discountService: DiscountServicesService,
     private seasonServicesService: SeasonServicesService,
-    private router: Router
+    private router: Router,
+    private dialog: MatDialog,
+    private snackBar: MatSnackBar,
+    private addContractDetailsContextComponent: AddContractDetailsContextComponent
   ) {
     this.discountForm = this.fb.group({
       discounts: this.fb.array([])
@@ -35,16 +41,16 @@ export class DiscountDetailsComponent implements OnInit {
   }
 
   loadSeasons() {
-    this.seasonServicesService.getSeasonsByContractId(this.contractId).subscribe(
-      (response) => {
+    this.seasonServicesService.getSeasonsByContractId(this.contractId).subscribe({
+      next: (response) => {
         this.seasons = response;
         this.seasonDiscountCount = this.seasons.length;
         this.addDiscountControls();
       },
-      (error) => {
+      error: (error) => {
         console.error('Failed to load seasons:', error);
       }
-    );
+    });
   }
 
   addDiscountControls() {
@@ -68,8 +74,6 @@ export class DiscountDetailsComponent implements OnInit {
     }
     return discountGroup;
   }
-
-
 
   addDiscount() {
     this.discountsArray.push(this.createDiscountFormGroup());
@@ -111,16 +115,15 @@ export class DiscountDetailsComponent implements OnInit {
       const dataToSend = this.discountForm.get("discounts")?.value;
 
       console.log(dataToSend);
-      this.discountService.addDiscount(dataToSend).subscribe(
-        (response) => {
-          console.log('Season details sent successfully:', response);
+      this.discountService.addDiscount(dataToSend).subscribe({
+        next: (response) => {
+          console.log('Discount details sent successfully:', response);
           this.router.navigate(['/administration/addSupplement'], { queryParams: { contractId: this.contractId } });
         },
-        (error) => {
-          console.error('Failed to send season details:', error);
-          // Handle error response
+        error: (error) => {
+          console.error('Failed to send discount details:', error);
         }
-      );
+      });
     }
   }
 

@@ -35,6 +35,18 @@ public class ProductsController {
         }
     }
 
+    @GetMapping("/admin")
+    public StandardResponse<List<SearchResponseDTO>> adminSearchHotels(
+            @RequestParam(required = false) String hotel) {
+        try {
+            return productService.adminSearchHotels(hotel);
+        } catch (Exception e) {
+            // Log the exception
+            // logger.error("An error occurred while searching hotels", e);
+            return new StandardResponse<>(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Internal Server Error", null);
+        }
+    }
+
     @GetMapping("/{hotelId}")
     public StandardResponse<SearchResponseDTO> getHotelByIdActive(@PathVariable Integer hotelId) {
         try {

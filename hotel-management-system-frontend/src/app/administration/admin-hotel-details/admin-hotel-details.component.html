@@ -1,0 +1,6 @@
+<ng-template [ngIf]="!loading && !error">
+<app-hotel-details [hotelDetails]="hotelDetails"></app-hotel-details>
+</ng-template>
+<ng-template [ngIf]="loading && !error">
+  <app-loading-spinner></app-loading-spinner>
+</ng-template>

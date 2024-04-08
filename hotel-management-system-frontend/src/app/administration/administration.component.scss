@@ -1,0 +1,56 @@
+.container {
+  display: flex;
+  flex-direction: row;
+}
+
+.content {
+  display: flex;
+  flex: 1;
+}
+
+.main-content {
+  flex: 1;
+}
+
+.tab-container {
+  margin-bottom: 20px;
+}
+
+.tab-list {
+  display: flex;
+  justify-content: space-between;
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.tab-list li {
+  margin-right: 10px;
+}
+
+/* Adjust sidebar width and styling as needed */
+app-main-admin-sidebar {
+  width: 200px; /* Adjust width */
+  background-color: #f4f4f4; /* Example background color */
+}
+
+/* Ensure main content is not covered by the sidebar */
+.main-content {
+  padding-left: 20px;
+  padding-top: 100px/* Adjust according to sidebar width */
+}
+
+/* Adjustments for responsive layout */
+@media screen and (max-width: 768px) {
+  .container {
+    flex-direction: column;
+  }
+
+  app-main-admin-sidebar {
+    width: 100%; /* Take full width on smaller screens */
+  }
+
+  .main-content {
+    padding-left: 0; /* Reset padding */
+  }
+}

@@ -4,6 +4,12 @@ import {ActivatedRoute, Router} from '@angular/router';
 import { ContractServicesService } from '../../../../shared/services/contractServices/contract-services.service';
 import { SeasonServicesService } from '../../../../shared/services/seasonServices/season-services.service';
 import {MarkupServicesService} from "../../../../shared/services/markupServices/markup-services.service";
+import {MatDialog} from "@angular/material/dialog";
+import {MatSnackBar} from "@angular/material/snack-bar";
+import {
+  ConfirmationDialogComponentComponent
+} from "../../../../shared/components/confirmation-dialog-component/confirmation-dialog-component.component";
+import {AddContractDetailsContextComponent} from "../../add-contract-details-context.component";
 
 @Component({
   selector: 'app-markup-details',
@@ -22,7 +28,10 @@ export class MarkupDetailsComponent implements OnInit {
     private route: ActivatedRoute,
     private seasonServicesService: SeasonServicesService,
     private markupServicesService: MarkupServicesService,
-    private router: Router
+    private router: Router,
+    private dialog: MatDialog,
+    private snackBar: MatSnackBar,
+    private addContractDetailsContextComponent: AddContractDetailsContextComponent
   ) {
     this.markupForm = this.fb.group({
       markups: this.fb.array([]) // Initialize as FormArray
@@ -37,21 +46,22 @@ export class MarkupDetailsComponent implements OnInit {
   }
 
   loadSeasons() {
-    this.seasonServicesService.getSeasonsByContractId(this.contractId).subscribe(
-      (response) => {
+    this.seasonServicesService.getSeasonsByContractId(this.contractId).subscribe({
+      next: (response) => {
         this.seasons = response;
+        console.log(this.seasons)
         this.addMarkupControls(); // Add markup controls based on seasons
-      },
-      (error) => {
+    },
+      error: (error) => {
         console.error('Failed to load seasons:', error);
       }
-    );
+    });
   }
 
   addMarkupControls() {
     this.seasons.forEach((season: any) => {
       this.markupForm.addControl(`season_${season.seasonId}`, this.fb.group({
-        markupPercentage: ['', Validators.required] // Add markup control for each season
+        ['markupPercentage_' + season.seasonId]: ['', Validators.required]
       }));
     });
   }
@@ -62,11 +72,24 @@ export class MarkupDetailsComponent implements OnInit {
   }
 
   onSubmit() {
+    const dialogRef = this.dialog.open(ConfirmationDialogComponentComponent, {
+      width: '300px',
+      data: 'Are you sure you want to submit?'
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.submitData();
+      }
+    });
+  }
+
+  submitData(){
     if (this.markupForm.valid) {
-      const markups = Object.entries(this.markupForm.controls).map(([key, value]) => {
+      const markups = this.seasons.map((season: any) => {
         return {
-          seasonId: key.split('_')[1],
-          markupPercentage: value.value.markupPercentage
+          seasonId: season.seasonId,
+          markupPercentage: this.markupForm.get(`season_${season.seasonId}.markupPercentage_${season.seasonId}`)?.value
         };
       });
 
@@ -75,17 +98,27 @@ export class MarkupDetailsComponent implements OnInit {
         seasonMarkups: markups
       };
 
-      // Now you can send the markups data to the backend
-      this.markupServicesService.addMarkup(dataToSend).subscribe(
-        (response) => {
-          console.log('Markups sent successfully:', response);
-          this.router.navigate(['/administration/addDiscount'], { queryParams: { contractId: this.contractId } });
+      console.log(dataToSend)
+      this.markupServicesService.addMarkup(dataToSend).subscribe({
+        next: (response) => {
+          if(response.statusCode === 200) {
+            this.snackBar.open('Markups sent successfully', 'Close', {
+              duration: 3000,
+              verticalPosition: 'top'
+            })
+            console.log('Markups sent successfully:', response);
+            this.addContractDetailsContextComponent.isAddMarkupVisible = false;
+            this.addContractDetailsContextComponent.isAddDiscountVisible = true;
+          } else {
+            console.error('Failed to send markups:', response);
+          }
         },
-        (error) => {
+        error: (error) => {
           console.error('Failed to send markups:', error);
           // Handle error response
         }
-      );
+      });
     }
   }
+
 }

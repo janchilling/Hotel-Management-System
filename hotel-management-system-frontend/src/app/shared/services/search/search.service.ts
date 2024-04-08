@@ -15,4 +15,8 @@ export class SearchService {
   getSearchData(destination: String, noOfRooms: String, checkIn: String, checkOut: String) {
     return this.httpClient.get(this.backendHostName + "/v1/products?destination=" + destination + "&noOfRooms=" + noOfRooms + "&checkIn=" + checkIn + "&checkOut=" + checkOut);
   }
+
+  adminSearchData(hotel: String) {
+    return this.httpClient.get(this.backendHostName + "/v1/products/admin?hotel=" + hotel);
+  }
 }

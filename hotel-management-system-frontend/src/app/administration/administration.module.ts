@@ -14,6 +14,11 @@ import { MarkupDetailsComponent } from './add-contract-details-context/inner-ite
 import { DiscountDetailsComponent } from './add-contract-details-context/inner-items/discount-details/discount-details.component';
 import { RoomtypesDetailsComponent } from './add-contract-details-context/inner-items/roomtypes-details/roomtypes-details.component';
 import { AddContractDetailsContextComponent } from './add-contract-details-context/add-contract-details-context.component';
+import { FindHotelContextComponent } from './find-hotel-context/find-hotel-context.component';
+import { SearchComponent } from './find-hotel-context/inner-items/search/search.component';
+import { ResultsComponent } from './find-hotel-context/inner-items/results/results.component';
+import { AdminHotelDetailsComponent } from './admin-hotel-details/admin-hotel-details.component';
+import { HotelDetailsComponent } from './admin-hotel-details/inner-items/hotel-details/hotel-details.component';
 
 
 @NgModule({
@@ -27,7 +32,12 @@ import { AddContractDetailsContextComponent } from './add-contract-details-conte
     MarkupDetailsComponent,
     DiscountDetailsComponent,
     RoomtypesDetailsComponent,
-    AddContractDetailsContextComponent
+    AddContractDetailsContextComponent,
+    FindHotelContextComponent,
+    SearchComponent,
+    ResultsComponent,
+    AdminHotelDetailsComponent,
+    HotelDetailsComponent
   ],
     imports: [
         CommonModule,

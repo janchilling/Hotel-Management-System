@@ -26,8 +26,8 @@ public class HotelController {
     }
 
     @GetMapping("/{hotelId}")
-    public ResponseEntity<HotelResponseDTO> getHotelById(@PathVariable Integer hotelId){
-        return ResponseEntity.ok(hotelService.getHotelById(hotelId));
+    public StandardResponse<HotelResponseDTO> getHotelById(@PathVariable Integer hotelId){
+        return hotelService.getHotelById(hotelId);
     }
 
     @GetMapping("/{hotelId}/images")
