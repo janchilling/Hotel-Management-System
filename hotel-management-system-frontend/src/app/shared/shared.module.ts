@@ -18,6 +18,8 @@ import { InternalServerErrorComponent } from './components/internal-server-error
 import { ConfirmationDialogComponentComponent } from './components/confirmation-dialog-component/confirmation-dialog-component.component';
 import {MatDialogModule} from "@angular/material/dialog";
 import {MatButtonModule} from "@angular/material/button";
+import { MainHeaderNavbarAdminComponent } from './components/main-header-navbar-admin/main-header-navbar-admin.component';
+import { MainAdminSidebarComponent } from './components/main-admin-sidebar/main-admin-sidebar.component';
 
 
 @NgModule({
@@ -35,17 +37,21 @@ import {MatButtonModule} from "@angular/material/button";
     MainButtonComponent,
     InternalServerErrorComponent,
     ConfirmationDialogComponentComponent,
+    MainHeaderNavbarAdminComponent,
+    MainAdminSidebarComponent,
   ],
-    exports: [
-        MainHeaderNavbarComponent,
-        MainFooterComponent,
-        MainSearchbarComponent,
-        RoomCardComponent,
-        LoadingSpinnerComponent,
-        MainButtonComponent,
-        InternalServerErrorComponent,
-        BookingConfirmationCardComponent
-    ],
+  exports: [
+    MainHeaderNavbarComponent,
+    MainFooterComponent,
+    MainSearchbarComponent,
+    RoomCardComponent,
+    LoadingSpinnerComponent,
+    MainButtonComponent,
+    InternalServerErrorComponent,
+    BookingConfirmationCardComponent,
+    MainHeaderNavbarAdminComponent,
+    MainAdminSidebarComponent
+  ],
   imports: [
     CommonModule,
     SharedRoutingModule,

@@ -34,8 +34,7 @@ const routes: Routes = [{
     { path: 'addSupplement', component: SupplementDetailsComponent },
     { path: 'addRoomType', component: RoomtypesDetailsComponent },
   ],
-},
-];
+},];
 @NgModule({
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
