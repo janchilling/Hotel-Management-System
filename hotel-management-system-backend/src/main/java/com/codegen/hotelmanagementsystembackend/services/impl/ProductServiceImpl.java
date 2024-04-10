@@ -60,7 +60,9 @@ public class ProductServiceImpl implements ProductService {
                     .map(contract -> {
                         Hotel hotel = utilityMethods.getHotel(contract.getHotel().getHotelId());
                         SearchResponseDTO searchResponseDTO = modelMapper.map(hotel, SearchResponseDTO.class);
-                        searchResponseDTO.setContractId(contract.getContractId()); // Set the contract ID
+                        searchResponseDTO.setHotelImage(hotel.getHotelImages().get(0).getHotelImageURL());
+                        searchResponseDTO.setLowestRoomTypePrice(lowestRoomTypePrice(contract, checkIn, checkOut));
+                        searchResponseDTO.setContractId(contract.getContractId());
                         return searchResponseDTO;
                     })
                     .collect(Collectors.toList());
@@ -100,6 +102,22 @@ public class ProductServiceImpl implements ProductService {
         }
     }
 
+    @Override
+    public StandardResponse<List<SearchResponseDTO>> adminSearchHotels(String hotel) {
+        try {
+            List<Hotel> hotelsList = hotelRepository.findByHotelNameContainingOrHotelCityContainingOrHotelCountryContaining(hotel, hotel, hotel);
+
+            List<SearchResponseDTO> searchResponseDTOS = hotelsList.stream()
+                    .map(hotelResult -> modelMapper.map(hotelResult, SearchResponseDTO.class))
+                    .collect(Collectors.toList());
+
+            return new StandardResponse<>(200, "Hotels found", searchResponseDTOS);
+        } catch (Exception e) {
+            // Log the exception
+            // logger.error("An error occurred while searching hotels", e);
+            return new StandardResponse<>(500, "An error occurred while searching hotels", null);
+        }
+    }
 
     private Contract getActiveContract(Hotel hotel, Date checkIn, Date checkOut) {
         Optional<Contract> activeContractOptional = hotel.getContracts().stream()
@@ -132,21 +150,28 @@ public class ProductServiceImpl implements ProductService {
         return totalNumberOfRooms - bookedRooms >= noOfRooms;
     }
 
-    @Override
-    public StandardResponse<List<SearchResponseDTO>> adminSearchHotels(String hotel) {
-        try {
-            List<Hotel> hotelsList = hotelRepository.findByHotelNameContainingOrHotelCityContainingOrHotelCountryContaining(hotel, hotel, hotel);
+    private Double lowestRoomTypePrice(Contract contract, Date checkIn, Date checkOut) {
 
-            List<SearchResponseDTO> searchResponseDTOS = hotelsList.stream()
-                    .map(hotelResult -> modelMapper.map(hotelResult, SearchResponseDTO.class))
-                    .collect(Collectors.toList());
+        Double lowestRoomTypePrice = null;
+        Integer seasonId = seasonService.getSeasonByCheckInOutDates(contract, checkIn, checkOut);
 
-            return new StandardResponse<>(200, "Hotels found", searchResponseDTOS);
-        } catch (Exception e) {
-            // Log the exception
-            // logger.error("An error occurred while searching hotels", e);
-            return new StandardResponse<>(500, "An error occurred while searching hotels", null);
+        double initialPrice = Double.MAX_VALUE;
+        lowestRoomTypePrice = initialPrice;
+
+        for (RoomType roomType : contract.getRoomTypes()) {
+            for (SeasonRoomType seasonRoomType : roomType.getSeasonRoomtype()) {
+                if (seasonRoomType.getSeason().getSeasonId().equals(seasonId)) {
+                    lowestRoomTypePrice = Math.min(lowestRoomTypePrice, seasonRoomType.getRoomTypePrice());
+                }
+            }
         }
+
+        if (lowestRoomTypePrice.equals(initialPrice)) {
+            return null;
+        }
+
+        return lowestRoomTypePrice;
     }
+
 
 }

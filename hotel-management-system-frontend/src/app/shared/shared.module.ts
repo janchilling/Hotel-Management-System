@@ -20,6 +20,7 @@ import {MatDialogModule} from "@angular/material/dialog";
 import {MatButtonModule} from "@angular/material/button";
 import { MainHeaderNavbarAdminComponent } from './components/main-header-navbar-admin/main-header-navbar-admin.component';
 import { MainAdminSidebarComponent } from './components/main-admin-sidebar/main-admin-sidebar.component';
+import { MainSmallButtonComponent } from './components/main-small-button/main-small-button.component';
 
 
 @NgModule({
@@ -39,6 +40,7 @@ import { MainAdminSidebarComponent } from './components/main-admin-sidebar/main-
     ConfirmationDialogComponentComponent,
     MainHeaderNavbarAdminComponent,
     MainAdminSidebarComponent,
+    MainSmallButtonComponent,
   ],
   exports: [
     MainHeaderNavbarComponent,
@@ -50,7 +52,8 @@ import { MainAdminSidebarComponent } from './components/main-admin-sidebar/main-
     InternalServerErrorComponent,
     BookingConfirmationCardComponent,
     MainHeaderNavbarAdminComponent,
-    MainAdminSidebarComponent
+    MainAdminSidebarComponent,
+    MainSmallButtonComponent
   ],
   imports: [
     CommonModule,

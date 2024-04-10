@@ -8,7 +8,7 @@ import {catchError, Observable, of} from "rxjs";
 })
 export class DiscountServicesService {
 
-  constructor(private apiPathService: ApiPathService, private httpClient: HttpClient) { }
+  constructor(private apiPathService: ApiPathService, public httpClient: HttpClient) { }
 
   backendHostName: string = this.apiPathService.baseURL;
 

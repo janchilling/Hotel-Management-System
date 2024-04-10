@@ -1,13 +1,15 @@
 import { TestBed } from '@angular/core/testing';
+import {
+  ConfirmationDialogComponentComponent
+} from "../../components/confirmation-dialog-component/confirmation-dialog-component.component";
 
-import { CustomDateAdapterService } from './custom-date-adapter.service';
 
 describe('CustomDateAdapterService', () => {
-  let service: CustomDateAdapterService;
+  let service: ConfirmationDialogComponentComponent;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(CustomDateAdapterService);
+    service = TestBed.inject(ConfirmationDialogComponentComponent);
   });
 
   it('should be created', () => {

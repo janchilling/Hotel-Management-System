@@ -10,8 +10,8 @@ import {ActivatedRoute} from "@angular/router";
 })
 export class HotelRoomComponent implements OnInit {
   @Input() contractId: any;
-  protected roomTypesDetails: any;
-  protected supplementsDetails: any;
+  roomTypesDetails: any;
+  supplementsDetails: any;
   checkInDate: Date | undefined;
   checkOutDate: Date | undefined;
   checkInDateFormatted: any;

@@ -17,6 +17,8 @@ public class SearchResponseDTO {
     private String hotelState;
     private String hotelCountry;
     private Integer hotelPostalCode;
+    private String hotelImage;
+    private Double lowestRoomTypePrice;
     private Integer contractId;
 
 }
