@@ -18,6 +18,7 @@ export class HotelDetailsContextComponent implements OnInit {
   checkOutDate: any;
   loading: boolean = true;
   error: boolean = false;
+  showPopupCarousel = false;
 
   constructor(
     private hotelDetailsByIdService: HotelDetailsByIdService,
