@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Router} from "@angular/router";
 import {
   AuthenticationServicesService
@@ -9,14 +9,19 @@ import {
   templateUrl: './main-header-navbar.component.html',
   styleUrls: ['./main-header-navbar.component.scss']
 })
-export class MainHeaderNavbarComponent {
+export class MainHeaderNavbarComponent implements OnInit{
 
   userDropdownOpen: boolean = false;
+  userId: any | null;
 
   constructor(
     private router: Router,
     private authenticationService: AuthenticationServicesService
   ) {
+  }
+
+  ngOnInit(): void {
+    this.userId = this.authenticationService.getUserId();
   }
 
   isLoggedIn(): boolean {
@@ -33,7 +38,7 @@ export class MainHeaderNavbarComponent {
   }
 
   navigateToCustomerBookings(){
-    this.router.navigate(['main/myBookings']);
+    this.router.navigate(['main/myBookings/', this.userId]);
   }
 
   navigateToLogin(){

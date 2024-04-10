@@ -1,18 +1,30 @@
-<div *ngIf="roomTypesDetails && supplementsDetails && discountDetails; else loadingOrError">
-  <h3>Showing prices for dates between {{ checkInDate | date: 'shortDate' }} and {{ checkOutDate | date: 'shortDate' }}</h3>
-  <h2>Select Details</h2>
-  <ng-container *ngFor="let roomType of roomTypesDetails">
-    <app-room-card [roomType]="roomType" (roomSelected)="receiveRoomSelection($event)" [showSelectSupplements]="true" [supplements]="supplementsDetails"></app-room-card>
-  </ng-container>
-  <div class="bg-background-gray my-10 pt-3 px-3">
-    <h2>Enter Discount Code</h2>
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-      <div class="mb-5 px-5">
-        <input type="text" name="discountCode" id="discountCode" class="block w-full px-3 py-2 rounded-md border border-[#e0e0e0] bg-white text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md" placeholder="Enter Discount Code" (keyup)="applyDiscount($event)" />
+<div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
+  <div *ngIf="roomTypesDetails && supplementsDetails && discountDetails; else loadingOrError">
+    <h3>Showing prices for dates between {{ checkInDate | date: 'shortDate' }} and {{ checkOutDate | date: 'shortDate' }}</h3>
+    <h2>Select Details</h2>
+    <ng-container *ngFor="let roomType of roomTypesDetails">
+      <app-room-card [roomType]="roomType" (roomSelected)="receiveRoomSelection($event)" [showSelectSupplements]="true" [supplements]="supplementsDetails"></app-room-card>
+    </ng-container>
+    <div class="bg-background-gray my-10 pt-3 px-3">
+      <h2>Enter Discount Code</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="mb-5 px-5">
+          <input type="text" name="discountCode" id="discountCode" class="block w-full px-3 py-2 rounded-md border border-[#e0e0e0] bg-white text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md" placeholder="Enter Discount Code" (keyup)="applyDiscount($event)" />
+        </div>
       </div>
+      <!-- Display invalid message if the discount code is invalid -->
+      <p *ngIf="invalidDiscountCode" class="text-red-500">Invalid discount code</p>
     </div>
-    <!-- Display invalid message if the discount code is invalid -->
-    <p *ngIf="invalidDiscountCode" class="text-red-500">Invalid discount code</p>
+    <div class="bg-background-gray my-10 pt-3 px-3">
+      <h2>Enter Number of Guests</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="mb-5 px-5">
+          <input type="text" name="noOfPersons" id="noOfPersons" class="block w-full px-3 py-2 rounded-md border border-[#e0e0e0] bg-white text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md" placeholder="Enter Number of Guests" (keyup)="applyDiscount($event)" />
+        </div>
+      </div>
+      <!-- Display invalid message if the discount code is invalid -->
+      <p *ngIf="invalidDiscountCode" class="text-red-500">Invalid discount code</p>
+    </div>
   </div>
 </div>
 <ng-template #loadingOrError>

@@ -33,10 +33,14 @@ const routes: Routes = [
         data: { expectedRole: 'CUSTOMER' }
       },
       { path: 'myBookings/:userId',
-        component: AllBookingsContextComponent
+        component: AllBookingsContextComponent,
+        canActivate: [PermissionsService],
+        data: { expectedRole: 'CUSTOMER' }
       },
       { path: 'booking/:bookingId',
-        component: ViewBookingContextComponent
+        component: ViewBookingContextComponent,
+        canActivate: [PermissionsService],
+        data: { expectedRole: 'CUSTOMER' }
       }
     ],
   },

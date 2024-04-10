@@ -16,8 +16,6 @@ export class LoginComponent implements OnInit{
   isError: boolean = false;
   returnUrl: any;
 
-
-
   constructor(
     private fb: FormBuilder,
     private authService: AuthenticationServicesService,
@@ -33,7 +31,6 @@ export class LoginComponent implements OnInit{
 
   ngOnInit(): void {
     this.authService.logout();
-
     this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
     }
 
@@ -66,6 +63,10 @@ export class LoginComponent implements OnInit{
       console.log("Invalid form")
       this.loginForm.markAllAsTouched();
     }
+  }
+
+  navigateToSignup(){
+    this.router.navigate(['auth/signup']);
   }
 
 }

@@ -31,7 +31,7 @@
       </div>
       <div class="subheading flex-1">
         <h2 class="mb-2 font-bold text-xl md:text-2xl text-black-700">USD {{roomTypePrice}} Per Night</h2>
-        <h3 class="mb-2 font-bold text-sm text-black">{{ showSelectSupplements ? 'Select Supplements' : 'Supplements' }}</h3>
+        <h3 class="mb-2 font-bold text-sm text-black">{{ showSelectSupplements ? 'Click to select Supplements' : 'Supplements' }}</h3>
         <hr class="mb-2">
         <ul class="facility-list bg-background-gray">
           <li class="icon" *ngFor="let supplement of supplements" [ngClass]="{ 'selected': isSupplementSelected(supplement) }" (click)="selectSupplement(supplement)">

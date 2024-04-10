@@ -19,7 +19,7 @@ export class ContactDetailsComponent implements OnInit {
       email: ['', [Validators.required, Validators.email]],
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
-      phoneNumber: ['', [Validators.required, Validators.pattern('[0-9]{3}-[0-9]{3}-[0-9]{4}')]]
+      phoneNumber: ['', [Validators.required, Validators.pattern('[0-9]{9}')]]
     });
     this.contactForm.valueChanges.subscribe(() => {
       this.emitContactDetails();
