@@ -188,7 +188,8 @@ export class RoomCardComponent implements OnInit {
       roomTypeId: this.roomType.roomTypeId,
       maxAdults: this.roomType.maxAdults,
       checkInDate: this.dateService.formatDate(this.checkInDate),
-      checkOutDate: this.dateService.formatDate(this.checkOutDate)
+      checkOutDate: this.dateService.formatDate(this.checkOutDate),
+      imageURL: this.roomType.roomTypeImages[0].roomTypeImageUrl,
     };
 
     const bookingSupplements = this.selectedSupplements.flatMap((selectedSupplement) => {

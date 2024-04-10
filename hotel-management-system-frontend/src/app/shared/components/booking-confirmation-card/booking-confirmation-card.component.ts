@@ -3,6 +3,7 @@ import {
   AuthenticationServicesService
 } from "../../../security/services/authenticationServices/authentication-services.service";
 import {CustomerServicesService} from "../../services/customerServices/customer-services.service";
+import {RoomTypeServicesService} from "../../services/roomTypesServices/room-type-services.service";
 
 @Component({
   selector: 'app-booking-confirmation-card',
@@ -24,11 +25,13 @@ export class BookingConfirmationCardComponent implements OnInit {
 
   constructor(
     private authenticationService: AuthenticationServicesService,
-    private customerService: CustomerServicesService
+    private customerService: CustomerServicesService,
+    private roomTypeService: RoomTypeServicesService
   ) {
   }
 
   ngOnInit(): void {
+    console.log(this.bookingDetails)
     this.userId = this.authenticationService.getUserId()
     this.rooms = this.bookingDetails.rooms
     this.supplements = this.bookingDetails.supplements
@@ -38,6 +41,7 @@ export class BookingConfirmationCardComponent implements OnInit {
     this.checkInDate = new Date(this.bookingDetails.checkInDate).toDateString();
     this.checkOutDate = new Date(this.bookingDetails.checkOutDate).toDateString();
     this.fetchCustomerDetails()
+
   }
 
   fetchCustomerDetails(){
@@ -54,6 +58,23 @@ export class BookingConfirmationCardComponent implements OnInit {
       console.log(error)
     }
     })
+  }
+
+  fetchRoomTypesByContractId(contractId: number){
+    this.roomTypeService.getRoomsByContractId(contractId).subscribe({
+      next: (response) => {
+        if(response.statusCode == 200){
+          this.rooms = response.data
+          console.log(this.rooms)
+        }else {
+          console.log(response)
+        }
+      },
+      error: (error) => {
+        console.log(error)
+      }
+    })
+
   }
 
 }

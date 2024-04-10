@@ -22,6 +22,7 @@ export class CreateBookingContextComponent implements OnInit {
   bookingSupplements: any;
   discount: any;
   confirmedBooking: any;
+  noOfPersons: any;
   loading: boolean = true;
   error: boolean = false;
 
@@ -78,6 +79,7 @@ export class CreateBookingContextComponent implements OnInit {
     this.bookingRooms = data.bookingRooms;
     this.bookingSupplements = data.bookingSupplements;
     this.discount = data.discount;
+    this.noOfPersons = data.noOfPersons;
     console.log(this.discount)
     this.isBookingDetailsVisible = false;
     this.isPaymentVisible = true;

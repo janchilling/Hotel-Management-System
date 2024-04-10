@@ -19,11 +19,11 @@
       <h2>Enter Number of Guests</h2>
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div class="mb-5 px-5">
-          <input type="text" name="noOfPersons" id="noOfPersons" class="block w-full px-3 py-2 rounded-md border border-[#e0e0e0] bg-white text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md" placeholder="Enter Number of Guests" (keyup)="applyDiscount($event)" />
+          <input type="number" name="noOfPersons" id="noOfPersons" class="block w-full px-3 py-2 rounded-md border border-[#e0e0e0] bg-white text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md" placeholder="Enter Number of Guests" [(ngModel)]="noOfPersons" (change)="validateGuests()" />
         </div>
       </div>
-      <!-- Display invalid message if the discount code is invalid -->
-      <p *ngIf="invalidDiscountCode" class="text-red-500">Invalid discount code</p>
+      <!-- Display invalid message if the number of guests is invalid -->
+      <p *ngIf="guestsRequired" class="text-red-500">Number of guests should be greater than 0</p>
     </div>
   </div>
 </div>

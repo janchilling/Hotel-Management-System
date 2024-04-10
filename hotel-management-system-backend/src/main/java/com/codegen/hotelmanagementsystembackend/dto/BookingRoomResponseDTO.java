@@ -14,5 +14,6 @@ public class BookingRoomResponseDTO {
     private Double bookedPrice;
     private Date checkInDate;
     private Date checkOutDate;
+    private String imageURL;
 
 }

@@ -20,7 +20,6 @@ public class CustomerServiceImpl implements CustomerService {
     public StandardResponse<CustomerResponseDTO> getCustomerById(Long userId) {
         try{
             Customer customer = utilityMethods.getCustomer(userId);
-            System.out.println(customer);
             if(customer == null){
                 return new StandardResponse<>(HttpStatus.NOT_FOUND.value(), "Customer not found", null);
             }
