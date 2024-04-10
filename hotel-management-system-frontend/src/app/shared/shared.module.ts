@@ -21,6 +21,7 @@ import {MatButtonModule} from "@angular/material/button";
 import { MainHeaderNavbarAdminComponent } from './components/main-header-navbar-admin/main-header-navbar-admin.component';
 import { MainAdminSidebarComponent } from './components/main-admin-sidebar/main-admin-sidebar.component';
 import { MainSmallButtonComponent } from './components/main-small-button/main-small-button.component';
+import { PopUpCarouselComponent } from './components/pop-up-carousel/pop-up-carousel.component';
 
 
 @NgModule({
@@ -41,6 +42,7 @@ import { MainSmallButtonComponent } from './components/main-small-button/main-sm
     MainHeaderNavbarAdminComponent,
     MainAdminSidebarComponent,
     MainSmallButtonComponent,
+    PopUpCarouselComponent,
   ],
   exports: [
     MainHeaderNavbarComponent,

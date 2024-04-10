@@ -3,6 +3,8 @@ import { ActivatedRoute } from '@angular/router';
 import {RoomTypeServicesService} from "../../services/roomTypesServices/room-type-services.service";
 import { MatSnackBar } from '@angular/material/snack-bar';
 import {DateServiceService} from "../../services/dateService/date-service.service";
+import {PopUpCarouselComponent} from "../pop-up-carousel/pop-up-carousel.component";
+import {MatDialog} from "@angular/material/dialog";
 
 @Component({
   selector: 'app-room-card',
@@ -23,12 +25,15 @@ export class RoomCardComponent implements OnInit {
   seasonId:  any;
   selectedSupplements: any[] = [];
   totalPrice: number = 0;
+  slides: any[] = [];
+  showPopupCarousel = false;
 
   constructor(
     private route: ActivatedRoute,
     private roomTypeServicesService :RoomTypeServicesService,
     private snackBar: MatSnackBar,
     private dateService: DateServiceService,
+    private dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
@@ -54,6 +59,8 @@ export class RoomCardComponent implements OnInit {
         console.log(this.availableRooms)
       })
     });
+    this.slides = this.roomType?.roomTypeImages
+    console.log(this.slides)
   }
 
   getRoomTypePriceAndSetSeasonId(): void {
@@ -201,6 +208,15 @@ export class RoomCardComponent implements OnInit {
       bookingSupplements: bookingSupplements
     };
     this.roomSelected.emit(selectedRoomData);
+  }
+
+  openCarouselDialog(): void {
+    this.dialog.open(PopUpCarouselComponent, {
+      width: '80vw',
+      height: '70vh',
+      panelClass: 'pop-up-carousel-dialog',
+      data: { slides: this.slides }
+    });
   }
 
 }
