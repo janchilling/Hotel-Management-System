@@ -49,7 +49,7 @@ export class RoomTypeServicesService {
       );
   }
 
-  private formatDateForSQL(date: Date): string {
+  formatDateForSQL(date: Date): string {
     // Format date as YYYY-MM-DD
     return date.toISOString().split('T')[0];
   }

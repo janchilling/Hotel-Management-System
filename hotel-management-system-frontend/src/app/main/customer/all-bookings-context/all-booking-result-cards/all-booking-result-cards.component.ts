@@ -10,7 +10,7 @@ export class AllBookingResultCardsComponent {
 
   @Input () booking: any;
   constructor(
-    private router: Router
+    public router: Router
   ) {
   }
 

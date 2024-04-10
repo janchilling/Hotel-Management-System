@@ -3,11 +3,15 @@ package com.codegen.hotelmanagementsystembackend.services.impl;
 import com.codegen.hotelmanagementsystembackend.dto.*;
 import com.codegen.hotelmanagementsystembackend.entities.*;
 import com.codegen.hotelmanagementsystembackend.exception.ResourceNotFoundException;
-import com.codegen.hotelmanagementsystembackend.repository.*;
+import com.codegen.hotelmanagementsystembackend.repository.BookingDiscountRepository;
+import com.codegen.hotelmanagementsystembackend.repository.BookingRepository;
+import com.codegen.hotelmanagementsystembackend.repository.BookingRoomRepository;
+import com.codegen.hotelmanagementsystembackend.repository.BookingSupplementsRepository;
 import com.codegen.hotelmanagementsystembackend.services.BookingService;
 import com.codegen.hotelmanagementsystembackend.util.StandardResponse;
 import com.codegen.hotelmanagementsystembackend.util.UtilityMethods;
 import lombok.RequiredArgsConstructor;
+import org.apache.logging.log4j.Logger;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -24,7 +28,7 @@ public class BookingServiceImpl implements BookingService {
     private final BookingRoomRepository bookingRoomRepository;
     private final ModelMapper modelMapper;
     private final UtilityMethods utilityMethods;
-
+    private final Logger logger;
 
     /**
      * Create a booking based on the provided booking request data, including customer, hotel, payments, rooms, discounts, and supplements.
@@ -34,6 +38,7 @@ public class BookingServiceImpl implements BookingService {
      */
     @Override
     public StandardResponse<BookingResponseDTO> createBooking(BookingRequestDTO bookingRequestDTO) {
+
         try {
             // Retrieve customer and hotel
             Customer customer = utilityMethods.getCustomer(bookingRequestDTO.getCustomerCustomerId());
@@ -83,12 +88,19 @@ public class BookingServiceImpl implements BookingService {
             // Map the saved booking to response DTO
             BookingResponseDTO bookingResponseDTO = mapToBookingResponseDTO(savedBooking);
 
-            return new StandardResponse<>(HttpStatus.OK.value(), "Booking created successfully", bookingResponseDTO);
+            return new StandardResponse<>(HttpStatus.CREATED.value(), "Booking created successfully", bookingResponseDTO);
         } catch (Exception e) {
+            logger.error("Failed to create booking: ", e.getMessage());
             return new StandardResponse<>(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Failed to create booking: " + e.getMessage(), null);
         }
     }
 
+    /**
+     * Get a booking by ID.
+     *
+     * @param  bookingId   the ID of the booking to retrieve
+     * @return             a standard response containing the booking information
+     */
     @Override
     public StandardResponse<BookingResponseDTO> getBookingById(Integer bookingId) {
         try {
@@ -101,12 +113,20 @@ public class BookingServiceImpl implements BookingService {
 
             return new StandardResponse<>(HttpStatus.OK.value(), "Booking found", bookingResponseDTO);
         } catch (ResourceNotFoundException e) {
+            logger.error("Failed to get a booking by ID: ", e.getMessage());
             return new StandardResponse<>(HttpStatus.NOT_FOUND.value(), e.getMessage(), null);
         } catch (Exception e) {
+            logger.error("Failed to get a booking by ID: ", e.getMessage());
             return new StandardResponse<>(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Failed to retrieve booking: " + e.getMessage(), null);
         }
     }
 
+    /**
+     * Get a booking by Customer ID.
+     *
+     * @param  userId    description of parameter
+     * @return          description of return value
+     */
     @Override
     public StandardResponse<List<BookingResponseDTO>> getBookingByCustomer(Long userId) {
         try {
@@ -125,7 +145,7 @@ public class BookingServiceImpl implements BookingService {
     }
 
     // Helper method to map Booking entity to BookingResponseDTO
-    private BookingResponseDTO mapToBookingResponseDTO(Booking booking) {
+    public BookingResponseDTO mapToBookingResponseDTO(Booking booking) {
         BookingResponseDTO bookingResponseDTO = modelMapper.map(booking, BookingResponseDTO.class);
         bookingResponseDTO.setCustomerId(booking.getCustomer().getUserId());
         bookingResponseDTO.setCustomerName(booking.getCustomer().getCustomerFname() + " " + booking.getCustomer().getCustomerLname());

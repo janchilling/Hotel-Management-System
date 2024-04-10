@@ -1,10 +1,21 @@
+<ng-template [ngIf]="!isLoading && !isError">
 <div class="container mb-3 mt-20 sm:mb-8 md:mb-12 lg:mb-16 xl:mb-20 flex item-center justify-center">
   <app-main-searchbar></app-main-searchbar>
 </div>
-<div class="px-10 mb-2 mt-10 sm:mb-8 md:mb-12 lg:mb-16 xl:mb-20flex item-center justify-center">
-  <app-all-hotels-top-container></app-all-hotels-top-container>
+<div class="px-10 mb-2 mt-5 sm:mb-8 md:mb-12 lg:mb-16 xl:mb-20flex item-center justify-center">
+  <app-all-hotels-top-container [noOfHotels]="numberOfHotels" [searchParams]="searchParams"></app-all-hotels-top-container>
   <ng-container *ngFor="let hotel of searchData">
     <app-result-card [checkIn]="searchParams.checkIn" [checkOut]="searchParams.checkOut"
                      [hotel]="hotel"></app-result-card>
   </ng-container>
 </div>
+</ng-template>
+
+
+<ng-template [ngIf]="isError">
+  <app-internal-server-error></app-internal-server-error>
+</ng-template>
+
+<ng-template [ngIf]="isLoading && !isError">
+  <app-loading-spinner></app-loading-spinner>
+</ng-template>

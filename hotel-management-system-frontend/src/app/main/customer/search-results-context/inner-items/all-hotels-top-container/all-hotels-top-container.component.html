@@ -1,12 +1,25 @@
-<h1>Found 3 Hotel(s) in Colombo, Sri Lanka</h1>
+<div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto">
+  <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-2">
+    <div class="flex flex-wrap items-center justify-between">
+      <div class="w-full sm:w-auto mb-4 sm:mb-0">
+        <h1 class="text-lg font-semibold">Found {{noOfHotels}} Hotel(s) in {{searchParams.destination}}</h1>
+      </div>
+    </div>
 
-<div class="hotels">
-  <h1>Available Hotels</h1>
-  <div class="buttons">
-    <button class="focus:outline-none text-white text-md bg-button-gold hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 dark:focus:ring-yellow-900">Sort By</button>
-    <button class="focus:outline-none text-white text-md bg-button-gold hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 dark:focus:ring-yellow-900">Filter</button>
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-10">
+      <div>
+        <h1 class="text-lg font-semibold">Available Hotels</h1>
+        <!-- Place your available hotels content here -->
+      </div>
+      <div class="flex justify-end items-center">
+        <div class="buttons flex flex-wrap">
+          <app-main-small-button [buttonText]="'Sort By'"></app-main-small-button>
+          <div class="ml-2"> <!-- Add margin between buttons -->
+            <app-main-small-button [buttonText]="'Filter'"></app-main-small-button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <hr class="my-2 bg-black">
   </div>
 </div>
-<hr class="mb-2 bg-black">
-
-

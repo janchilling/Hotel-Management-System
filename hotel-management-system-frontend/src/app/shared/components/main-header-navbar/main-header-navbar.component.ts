@@ -1,4 +1,8 @@
 import { Component } from '@angular/core';
+import {Router} from "@angular/router";
+import {
+  AuthenticationServicesService
+} from "../../../security/services/authenticationServices/authentication-services.service";
 
 @Component({
   selector: 'app-main-header-navbar',
@@ -7,12 +11,37 @@ import { Component } from '@angular/core';
 })
 export class MainHeaderNavbarComponent {
 
+  userDropdownOpen: boolean = false;
+
+  constructor(
+    private router: Router,
+    private authenticationService: AuthenticationServicesService
+  ) {
+  }
+
+  isLoggedIn(): boolean {
+    return this.authenticationService.isAuthenticated();
+  }
+
+  toggleUserDropdown(): void {
+    console.log("Clicked")
+    this.userDropdownOpen = !this.userDropdownOpen;
+  }
+
   navigateToHome(){
-    window.location.href = '/main/home';
+    this.router.navigate(['main/home']);
   }
 
   navigateToCustomerBookings(){
-    window.location.href = '/main/myBookings/1';
+    this.router.navigate(['main/myBookings']);
+  }
+
+  navigateToLogin(){
+    this.router.navigate(['auth/login']);
+  }
+
+  navigateToSignup(){
+    this.router.navigate(['auth/signup']);
   }
 
 }

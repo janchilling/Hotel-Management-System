@@ -12,6 +12,8 @@ export class MainSearchbarComponent implements OnInit {
   searchForm!: FormGroup;
   minCheckInDate: string = '';
   minCheckOutDate: string = '';
+  showCheckIn: boolean = false;
+  showCheckOut: boolean = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -22,9 +24,10 @@ export class MainSearchbarComponent implements OnInit {
   ngOnInit(): void {
     this.searchForm = this.formBuilder.group({
       destination: ['', Validators.required],
-      noOfRooms: [''],
-      checkIn: [''],
-      checkOut: ['']
+      noOfRooms: ['', Validators.required],
+      nofPersons: ['', Validators.required],
+      checkIn: ['', Validators.required],
+      checkOut: ['', Validators.required]
     });
     this.setCheckinMinDate();
     this.searchParamsService.searchParams$.subscribe(params => {
@@ -45,13 +48,26 @@ export class MainSearchbarComponent implements OnInit {
   }
 
   onSearch(): void {
-    const destination = this.searchForm.value.destination;
-    const noOfRooms = this.searchForm.value.noOfRooms;
-    const checkIn = this.searchForm.value.checkIn;
-    const checkOut = this.searchForm.value.checkOut;
+    if (this.searchForm.valid) {
+      const destination = this.searchForm.value.destination;
+      const noOfRooms = this.searchForm.value.noOfRooms;
+      const nofPersons = this.searchForm.value.nofPersons;
+      const checkIn = this.searchForm.value.checkIn;
+      const checkOut = this.searchForm.value.checkOut;
 
-    this.router.navigate(['/main/results'], { queryParams: { destination, noOfRooms, checkIn, checkOut } });
+      this.router.navigate(['/main/results'], { queryParams: { destination, noOfRooms, nofPersons, checkIn, checkOut } });
+    }
   }
+
+  toggleCheckIn() {
+    this.showCheckIn = !this.showCheckIn;
+  }
+
+  // Method to toggle the visibility of Check Out date input
+  toggleCheckOut() {
+    this.showCheckOut = !this.showCheckOut;
+  }
+
 }
 
 // Add validation if checkout selected first

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, Input} from '@angular/core';
 
 @Component({
   selector: 'app-all-hotels-top-container',
@@ -6,5 +6,8 @@ import { Component } from '@angular/core';
   styleUrls: ['./all-hotels-top-container.component.scss']
 })
 export class AllHotelsTopContainerComponent {
+
+  @Input() noOfHotels: number = 0;
+  @Input() searchParams: any;
 
 }

@@ -18,9 +18,9 @@ export class SelectDetailsComponent implements OnInit {
 
   @Input() contractId : any;
   @Output() selectDetailsChanged = new EventEmitter<any>();
-  protected roomTypesDetails: any;
-  protected supplementsDetails: any;
-  protected discountDetails: any;
+  roomTypesDetails: any;
+  supplementsDetails: any;
+  discountDetails: any;
   checkInDate: any;
   checkOutDate: any;
   discountCode: string = '';

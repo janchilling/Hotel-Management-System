@@ -13,6 +13,7 @@ import org.hibernate.service.spi.ServiceException;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -113,5 +114,15 @@ public class SeasonServiceImpl implements SeasonService {
             // Handle other exceptions!!!!!
             throw new ServiceException("An error occurred while retrieving the hotel", e);
         }
+    }
+
+    public Integer getSeasonByCheckInOutDates(Contract contract, Date checkInDate, Date checkOutDate) {
+        List<Season> seasons = contract.getSeasons();
+        for (Season season : seasons) {
+            if (checkInDate.after(season.getStartDate()) && checkOutDate.before(season.getEndDate())) {
+                return season.getSeasonId();
+            }
+        }
+        return null; // No season found for the given dates within the contract
     }
 }
