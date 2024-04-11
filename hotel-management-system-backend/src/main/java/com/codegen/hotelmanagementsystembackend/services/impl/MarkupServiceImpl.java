@@ -39,7 +39,7 @@ public class MarkupServiceImpl implements MarkupService {
     @Transactional
     public StandardResponse<Markup> createMarkup(MarkupRequestDTO markupRequestDTO) {
         if (markupRequestDTO == null) {
-            return new StandardResponse<>(400, "Invalid request: Markup request DTO is null", null);
+            return new StandardResponse<>(HttpStatus.BAD_REQUEST.value(), "Invalid request: Markup request DTO is null", null);
         }
 
         try {
@@ -61,7 +61,7 @@ public class MarkupServiceImpl implements MarkupService {
                     seasonMarkupKey.setSeasonId(seasonMarkupDto.getSeasonId());
                 } else {
                     logger.warn("Season ID is null for a markup. Skipping this markup entry.");
-                    continue; // Skip this markup entry as it's invalid
+                    continue;
                 }
 
                 seasonMarkup.setMarkupPercentage(seasonMarkupDto.getMarkupPercentage());
@@ -75,9 +75,6 @@ public class MarkupServiceImpl implements MarkupService {
             markupRepository.save(newMarkup);
 
             return new StandardResponse<>(HttpStatus.CREATED.value(), "Markup created successfully", newMarkup);
-        } catch (ResourceNotFoundException e) {
-            logger.error("Resource not found: {}", e.getMessage());
-            return new StandardResponse<>(HttpStatus.NOT_FOUND.value(), "Resource not found: " + e.getMessage(), null);
         } catch (Exception e) {
             logger.error("Failed to create markups: {}", e.getMessage());
             return new StandardResponse<>(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Failed to create markups: " + e.getMessage(), null);

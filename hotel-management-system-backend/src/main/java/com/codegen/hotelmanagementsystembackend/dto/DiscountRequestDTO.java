@@ -17,6 +17,5 @@ public class DiscountRequestDTO {
     private String discountDescription;
     private List<SeasonDiscountDTO> seasonDiscounts = new ArrayList<>();
     private Integer contractId;
-//    private List<BookingDiscount> discounts = new ArrayList<>();
 
 }

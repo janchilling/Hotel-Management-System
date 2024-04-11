@@ -45,17 +45,22 @@ public class DiscountServiceImpl implements DiscountService {
             return new StandardResponse<>(HttpStatus.BAD_REQUEST.value(), "Empty request", null);
         }
 
+
         List<Discount> discountsList = new ArrayList<>();
 
         try {
             for (DiscountRequestDTO discountRequestDTO : discountRequestDTOS) {
+
+                Discount existingDiscount = discountRepository.findByDiscountCode(discountRequestDTO.getDiscountCode());
+                if (existingDiscount != null) {
+                    return new StandardResponse<>(HttpStatus.CONFLICT.value(), "Discount with the provided code already exists", null);
+                }
+
                 Discount newDiscount = new Discount();
                 newDiscount.setDiscountId(discountRequestDTO.getDiscountId());
                 newDiscount.setDiscountName(discountRequestDTO.getDiscountName());
                 newDiscount.setDiscountDescription(discountRequestDTO.getDiscountDescription());
                 newDiscount.setDiscountCode(discountRequestDTO.getDiscountCode());
-//                newDiscount.setContract(contractRepository.findById(discountRequestDTO.getContractId())
-//                        .orElseThrow(() -> new ResourceNotFoundException("Contract not found with ID: " + discountRequestDTO.getContractId())));
                 newDiscount.setContract(utilityMethods.getContract(discountRequestDTO.getContractId()));
 
                 for (SeasonDiscountDTO seasonDiscountDTO : discountRequestDTO.getSeasonDiscounts()) {
@@ -70,8 +75,6 @@ public class DiscountServiceImpl implements DiscountService {
                     }
                     seasonDiscount.setSeasonDiscountKey(seasonDiscountKey);
                     seasonDiscount.setDiscountPercentage(seasonDiscountDTO.getDiscountPercentage());
-//                    seasonDiscount.setSeason(seasonRepository.findById(seasonDiscountDTO.getSeasonId())
-//                            .orElseThrow(() -> new ResourceNotFoundException("Season not found with ID: " + seasonDiscountDTO.getSeasonId())));
                     seasonDiscount.setSeason(utilityMethods.getSeason(seasonDiscountDTO.getSeasonId()));
 
                     newDiscount.getSeasonDiscounts().add(seasonDiscount);

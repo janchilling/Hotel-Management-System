@@ -20,6 +20,8 @@ export class DiscountDetailsComponent implements OnInit {
   contractId: any;
   seasons: any[] = [];
   seasonDiscountCount: any;
+  isLoading: boolean = false;
+  isError: boolean = false;
 
   constructor(
     private fb: FormBuilder,
@@ -126,24 +128,32 @@ export class DiscountDetailsComponent implements OnInit {
   }
 
   submitData(){
+    this.isLoading = true;
     if (this.discountForm.valid) {
-      // Extract season details from the form
       const dataToSend = this.discountForm.get("discounts")?.value;
 
-      console.log(dataToSend);
       this.discountService.addDiscount(dataToSend).subscribe({
         next: (response) => {
+          this.isLoading = false;
           if(response.statusCode == 201){
             this.snackBar.open('Discount details sent successfully', 'Close', {
-              duration: 2000,
+              duration: 3000,
               verticalPosition: 'top'
             });
-            console.log('Discount details sent successfully:', response);
             this.addContractDetailsContextComponent.isAddDiscountVisible = false;
             this.addContractDetailsContextComponent.isAddSupplementsVisible = true;
-          }
-          else {
-            console.error('Failed to send discount details:', response);
+          }else if(response.statusCode == 400){
+            this.snackBar.open('Bad Request, Try again', 'Close', {
+              duration: 3000,
+              verticalPosition: 'top'
+            })
+          }else if(response.statusCode == 409){
+            this.snackBar.open('Discount code already exists', 'Close', {
+              duration: 3000,
+              verticalPosition: 'top'
+            })
+          }else {
+            this.isError = true;
           }
         },
         error: (error) => {

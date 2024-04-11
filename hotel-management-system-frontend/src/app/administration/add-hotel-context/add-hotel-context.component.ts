@@ -1,8 +1,14 @@
-import { Component } from '@angular/core';
-import { AngularFireStorage } from "@angular/fire/compat/storage";
-import { finalize } from "rxjs/operators";
-import { FormBuilder, FormGroup, Validators, FormArray } from "@angular/forms";
+import {Component} from '@angular/core';
+import {AngularFireStorage} from "@angular/fire/compat/storage";
+import {finalize} from "rxjs/operators";
+import {FormBuilder, FormGroup, Validators, FormArray} from "@angular/forms";
 import {HotelServicesService} from "../../shared/services/hotelServices/hotel-services.service";
+import {MatSnackBar} from "@angular/material/snack-bar";
+import {Router} from "@angular/router";
+import {
+  ConfirmationDialogComponentComponent
+} from "../../shared/components/confirmation-dialog-component/confirmation-dialog-component.component";
+import {MatDialog} from "@angular/material/dialog";
 
 @Component({
   selector: 'app-add-hotel-context',
@@ -16,10 +22,15 @@ export class AddHotelContextComponent {
   uploadProgress: { [key: string]: number } = {};
   downloadUrls: string[] = [];
   hotelStarRating: number = 1;
+  isLoading: boolean = false;
+  isError: boolean = false;
 
   constructor(
     private storage: AngularFireStorage,
     private fb: FormBuilder,
+    private snackBar: MatSnackBar,
+    private router: Router,
+    private dialog: MatDialog,
     private hotelService: HotelServicesService) {
     this.hotelForm = this.fb.group({
       hotelName: ['', Validators.required],
@@ -36,7 +47,21 @@ export class AddHotelContextComponent {
     });
   }
 
-  submitForm() {
+  submitForm(): void {
+    const dialogRef = this.dialog.open(ConfirmationDialogComponentComponent, {
+      width: '300px',
+      data: 'Confirm submit Hotel details?'
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.sendData();
+      }
+    });
+  }
+
+  sendData() {
+    this.isLoading = true;
     this.uploadImages();
     console.log('Form submitted successfully');
   }
@@ -71,18 +96,36 @@ export class AddHotelContextComponent {
                 hotelDescription: this.hotelForm.value.hotelDescription,
                 hotelBriefDescription: this.hotelForm.value.hotelBriefDescription,
                 hotelRating: this.hotelForm.value.hotelStarRating,
-                hotelPhones: this.hotelForm.value.hotelPhones.map((phone: { phoneNumber: any; }) => ({ hotelPhone: phone.phoneNumber })),
-                hotelImages: this.downloadUrls.map(imageUrl => ({ hotelImageURL: imageUrl })),
+                hotelPhones: this.hotelForm.value.hotelPhones.map((phone: {
+                  phoneNumber: any;
+                }) => ({hotelPhone: phone.phoneNumber})),
+                hotelImages: this.downloadUrls.map(imageUrl => ({hotelImageURL: imageUrl})),
               };
 
-              this.hotelService.addHotel(hotelRequest).subscribe(
-                (response) => {
-                  console.log('Hotel added successfully:', response);
+              this.hotelService.addHotel(hotelRequest).subscribe({
+                next: (response) => {
+                  if (response.statusCode == 201) {
+                    this.isLoading = false;
+                    this.snackBar.open('Hotel Added successfully.', 'Close', {
+                      duration: 3000, // Duration in milliseconds
+                      verticalPosition: 'top'
+                    });
+                    this.router.navigate(['/administration/dashboard']);
+                  }else if(response.statusCode == 409){
+                    this.isLoading = false;
+                    this.snackBar.open('This hotel already exists.', 'Close', {
+                      duration: 3000, // Duration in milliseconds
+                      verticalPosition: 'top'
+                    });
+                  }else{
+                    this.isLoading = false;
+                    this.isError = true;
+                  }
                 },
-                (error) => {
+                error: (error) => {
                   console.error('Error adding hotel:', error);
                 }
-              )
+              })
               // Now you can send the hotelRequest DTO to your backend API
               console.log('Hotel Request DTO:', hotelRequest);
             }
@@ -118,18 +161,18 @@ export class AddHotelContextComponent {
   // Function to create a new phone input FormGroup
   createPhone(): FormGroup {
     return this.fb.group({
-      phoneNumber: [''] // Define the phone number control
+      phoneNumber: ['', [Validators.required, Validators.pattern('[0-9]{10}')]]
     });
   }
 
   // Function to add a new phone input field
   addPhone() {
-    this.phoneControls.push(this.createPhone()); // Push a new phone input FormGroup to the FormArray
+    this.phoneControls.push(this.createPhone());
   }
 
   // Function to remove a phone input field
   removePhone(index: number) {
-    this.phoneControls.removeAt(index); // Remove the phone input FormGroup at the specified index
+    this.phoneControls.removeAt(index);
   }
 
   protected readonly Math = Math;

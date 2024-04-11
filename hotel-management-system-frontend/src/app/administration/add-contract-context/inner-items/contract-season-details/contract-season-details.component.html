@@ -1,3 +1,4 @@
+<ng-template [ngIf]="!isLoading && !isError">
 <div class="container mb-3 -mt-7 sm:mb-8 md:mb-12 lg:mb-16 xl:mb-20 ">
   <section class=" py-1 bg-blueGray-50">
     <div class="w-full lg:w-8/12 px-4 mx-auto mt-6">
@@ -155,5 +156,13 @@
     </div>
 </section>
 </div>
+</ng-template>
 
+<ng-template [ngIf]="isError">
+  <app-internal-server-error></app-internal-server-error>
+</ng-template>
+
+<ng-template [ngIf]="isLoading && !isError">
+  <app-loading-spinner></app-loading-spinner>
+</ng-template>
 

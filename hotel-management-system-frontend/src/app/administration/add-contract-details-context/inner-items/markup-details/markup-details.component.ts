@@ -22,6 +22,8 @@ export class MarkupDetailsComponent implements OnInit {
   seasons: any;
   showMarkup: boolean = true;
   showDiscount: boolean = false;
+  isLoading: boolean = false;
+  isError: boolean = false;
 
   constructor(
     private fb: FormBuilder,
@@ -50,7 +52,7 @@ export class MarkupDetailsComponent implements OnInit {
       next: (response) => {
         this.seasons = response;
         console.log(this.seasons)
-        this.addMarkupControls(); // Add markup controls based on seasons
+        this.addMarkupControls();
     },
       error: (error) => {
         console.error('Failed to load seasons:', error);
@@ -85,6 +87,7 @@ export class MarkupDetailsComponent implements OnInit {
   }
 
   submitData(){
+    this.isLoading = true;
     if (this.markupForm.valid) {
       const markups = this.seasons.map((season: any) => {
         return {
@@ -98,24 +101,27 @@ export class MarkupDetailsComponent implements OnInit {
         seasonMarkups: markups
       };
 
-      console.log(dataToSend)
       this.markupServicesService.addMarkup(dataToSend).subscribe({
         next: (response) => {
+          this.isLoading = false;
           if(response.statusCode === 201) {
             this.snackBar.open('Markups sent successfully', 'Close', {
               duration: 3000,
               verticalPosition: 'top'
             })
-            console.log('Markups sent successfully:', response);
             this.addContractDetailsContextComponent.isAddMarkupVisible = false;
             this.addContractDetailsContextComponent.isAddDiscountVisible = true;
-          } else {
-            console.error('Failed to send markups:', response);
+          } else if(response.statusCode === 400){
+            this.snackBar.open('Bad Request, Try again', 'Close', {
+              duration: 3000,
+              verticalPosition: 'top'
+            })
+          }else {
+            this.isError = true;
           }
         },
         error: (error) => {
           console.error('Failed to send markups:', error);
-          // Handle error response
         }
       });
     }

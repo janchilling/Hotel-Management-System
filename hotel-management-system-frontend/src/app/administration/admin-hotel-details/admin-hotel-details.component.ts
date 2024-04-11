@@ -16,46 +16,11 @@ export class AdminHotelDetailsComponent implements OnInit {
   error: boolean = false
 
   constructor(
-    private hotelDetailsByIdService: HotelDetailsByIdService,
-    private route: ActivatedRoute,
-    private router: Router) {
+    private route: ActivatedRoute) {
   }
 
   ngOnInit(): void {
-    console.log("Hello")
     this.hotelId = +this.route.snapshot.params['hotelId'];
-    console.log(this.hotelId)
-    this.fetchHotelDetailsAdmin()
-  }
-
-  fetchHotelDetailsAdmin() {
-    console.log("Hello")
-    this.hotelDetailsByIdService.getHotelDetailsByIdAdmin(this.hotelId).pipe(
-      timeout(30000),
-      catchError(error => {
-        this.error = true;
-        this.loading = false;
-        return throwError(() => error);
-      })
-    ).subscribe({
-        next: (response: any) => {
-          if (response.statusCode === 200) {
-            this.hotelDetails = response.data
-            console.log(this.hotelDetails);
-            this.loading = false;
-          } else {
-            console.error('Error fetching hotel details:', response.message);
-            this.error = true;
-            this.loading = false;
-          }
-        },
-        error: (error) => {
-          console.error('Error fetching hotel details:', error);
-          this.error = true;
-          this.loading = false;
-        }
-      }
-    );
   }
 
 }

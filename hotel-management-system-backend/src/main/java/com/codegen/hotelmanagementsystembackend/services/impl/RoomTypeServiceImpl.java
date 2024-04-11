@@ -49,7 +49,6 @@ public class RoomTypeServiceImpl implements RoomTypeService {
 
         try {
             for (RoomTypeRequestDTO roomTypeRequestDTO : roomTypeRequestDTOS) {
-                System.out.println(roomTypeRequestDTO);
                 RoomType newRoomType = new RoomType();
                 newRoomType.setRoomTypeId(roomTypeRequestDTO.getRoomTypeId());
                 newRoomType.setRoomTypeName(roomTypeRequestDTO.getRoomTypeName());
@@ -61,7 +60,6 @@ public class RoomTypeServiceImpl implements RoomTypeService {
                 RoomType savedRoomType = roomTypeRepository.save(newRoomType);
 
                 for (RoomTypeImagesDTO roomTypeImagesDTO : roomTypeRequestDTO.getRoomTypeImages()) {
-                    System.out.println(roomTypeImagesDTO.getImageURL());
                     RoomTypeImages roomTypeImages = new RoomTypeImages();
                     roomTypeImages.setRoomType(savedRoomType);
                     roomTypeImages.setImageURL(roomTypeImagesDTO.getImageURL());

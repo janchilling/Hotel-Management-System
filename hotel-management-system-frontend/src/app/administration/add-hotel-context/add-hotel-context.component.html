@@ -1,3 +1,4 @@
+<ng-template [ngIf]="!isLoading && !isError">
 <div class="container mb-3 -mt-7 sm:mb-8 md:mb-12 lg:mb-16 xl:mb-20 ">
   <section class=" py-1 bg-blueGray-50">
     <div class="w-full lg:w-8/12 px-4 mx-auto mt-6">
@@ -59,7 +60,8 @@
                         <button type="button" (click)="removePhone(i)" class="ml-2 bg-gray-200 text-gray-700 rounded-full p-2 hover:bg-gray-300">Remove</button>
                       </div>
                       <!-- Display validation error message -->
-                      <span class="text-red-600" *ngIf="phoneControls.controls[i].get('phoneNumber')?.invalid && phoneControls.controls[i].get('phoneNumber')?.touched">Hotel Phone is required</span>
+                      <span class="text-red-600" *ngIf="phoneControls.controls[i].get('phoneNumber')?.invalid && phoneControls.controls[i].get('phoneNumber')?.touched && !phoneControls.controls[i].get('phoneNumber')?.errors?.['pattern']">Hotel Phone is required</span>
+                      <span *ngIf="phoneControls.controls[i].get('phoneNumber')?.errors?.['pattern'] && phoneControls.controls[i].get('phoneNumber')?.touched" class="text-red-600">Invalid phone number, should be 10 digits</span>
                     </div>
                   </div>
 
@@ -144,13 +146,22 @@
 
                   <div class="w-full lg:w-12/12 px-4">
                     <div class="relative w-full mb-3">
-                      <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2" htmlfor="image">
+                      <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2" htmlFor="image">
                         Upload Images
                       </label>
                       <input type="file" (change)="handleImageUpload($event)" multiple accept="image/*">
-                      <!-- You can display uploaded images here if needed -->
+                      <!-- Display the names of uploaded images -->
+                      <div *ngFor="let image of images" class="mt-2">
+                        {{ image.name }}
+                        <button type="button" class="ml-2 bg-gray-200 text-gray-700 rounded-full p-2 hover:bg-gray-300" (click)="removeImage(images.indexOf(image))">Remove</button>
+                      </div>
+                      <!-- Optionally, display uploaded images -->
+                      <div *ngFor="let imageUrl of downloadUrls" class="mt-2">
+                        <img [src]="imageUrl" alt="Uploaded Image" class="w-32 h-32 object-cover rounded">
+                      </div>
                     </div>
                   </div>
+
                   <div class="w-full lg:w-12/12 px-4">
                     <button type="submit" [disabled]="hotelForm?.invalid" class="bg-pink-500 text-white active:bg-pink-600 font-bold uppercase text-sm px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 mt-4 ease-linear transition-all duration-150">
                       Create Hotel
@@ -164,5 +175,14 @@
     </div>
   </section>
 </div>
+</ng-template>
+
+<ng-template [ngIf]="isError">
+  <app-internal-server-error></app-internal-server-error>
+</ng-template>
+
+<ng-template [ngIf]="isLoading && !isError">
+  <app-loading-spinner></app-loading-spinner>
+</ng-template>
 
 

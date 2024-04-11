@@ -207,7 +207,7 @@ export class RoomtypesDetailsComponent {
       next: (response) => {
         if (response.statusCode == 201) {
           console.log('Room type details sent successfully:', response);
-          this.snackBar.open('Markups sent successfully', 'Close', {
+          this.snackBar.open('Room Types sent successfully', 'Close', {
             duration: 3000,
             verticalPosition: 'top'
           })

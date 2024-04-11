@@ -63,11 +63,40 @@ public class ContractServiceImpl implements ContractService {
             seasonRepository.saveAll(seasons);
 
             return new StandardResponse<>(HttpStatus.CREATED.value(), "Contract created successfully", savedContract);
-
         } catch (Exception e) {
             return new StandardResponse<>(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Failed to create Contract : " + e.getMessage(), null);
         }
     }
+
+    @Override
+    public StandardResponse<List<ContractResponseDTO>> getContractsByHotelId(Integer hotelId) {
+        try {
+            // Fetch contracts for the given hotelId
+            List<Contract> contracts = contractRepository.findAllContractsByHotelHotelId(hotelId);
+
+            // Check if contracts list is null or empty
+            if (contracts == null || contracts.isEmpty()) {
+                return new StandardResponse<>(HttpStatus.NOT_FOUND.value(), "No contracts found for the hotel", null);
+            }
+
+            // Map Contract entities to ContractResponseDTOs
+            List<ContractResponseDTO> contractResponseDTOs = contracts.stream()
+                    .map(contract -> {
+                        ContractResponseDTO contractResponseDTO = modelMapper.map(contract, ContractResponseDTO.class);
+                        contractResponseDTO.setHotelId(hotelId);
+                        return contractResponseDTO;
+                    })
+                    .collect(Collectors.toList());
+
+            return new StandardResponse<>(HttpStatus.OK.value(), "Contracts retrieved successfully", contractResponseDTOs);
+
+        } catch (Exception e) {
+            // Handle any unexpected exceptions
+            return new StandardResponse<>(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Failed to get Contracts: " + e.getMessage(), null);
+        }
+    }
+
+
 
     @Override
     public ContractResponseDTO getContractById(Integer contractId) {

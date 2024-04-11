@@ -58,6 +58,7 @@ export class SearchResultsContextComponent implements OnInit, OnDestroy {
           this.isLoading = false;
           console.log(this.searchData);
         } else if(response.statusCode === 500){
+          console.log(response)
           this.isLoading = false;
           this.isError = true;
         }
