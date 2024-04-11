@@ -6,7 +6,6 @@ import {
   SupplementServicesService
 } from "../../../../../../../shared/services/supplementServices/supplement-services.service";
 import {ActivatedRoute} from "@angular/router";
-import { BookingDataServiceService } from 'src/app/shared/services/bookingDataService/booking-data-service.service';
 import {DiscountServicesService} from "../../../../../../../shared/services/discountServices/discount-services.service";
 
 @Component({
@@ -27,11 +26,14 @@ export class SelectDetailsComponent implements OnInit {
   selectedRoomData: any = {
     bookingRooms: [],
     bookingSupplements: [],
-    discount: null
+    discount: null,
+    noOfPersons: null
   };
   isLoading: boolean = true;
   isError: boolean = false;
   invalidDiscountCode: boolean = false;
+  guestsRequired: boolean = false;
+  noOfPersons: number = 0;
 
   constructor(
     private roomTypeServicesService: RoomTypeServicesService,
@@ -172,6 +174,15 @@ export class SelectDetailsComponent implements OnInit {
     });
 
     this.selectDetailsChanged.emit(this.selectedRoomData);
+  }
+
+  validateGuests() {
+    if (this.noOfPersons <= 0) {
+      this.guestsRequired = true;
+    } else {
+      this.guestsRequired = false;
+      this.selectedRoomData.noOfPersons = this.noOfPersons;
+    }
   }
 }
 

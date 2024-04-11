@@ -1,3 +1,4 @@
+<ng-template [ngIf]="!isLoading && !isError">
 <div class="container mx-auto mt-6">
   <div class="bg-blueGray-100 rounded-lg shadow-lg">
     <div class="bg-white px-6 py-6 rounded-t">
@@ -25,3 +26,12 @@
     </div>
   </div>
 </div>
+</ng-template>
+
+<ng-template [ngIf]="isError">
+  <app-internal-server-error></app-internal-server-error>
+</ng-template>
+
+<ng-template [ngIf]="isLoading && !isError">
+  <app-loading-spinner></app-loading-spinner>
+</ng-template>

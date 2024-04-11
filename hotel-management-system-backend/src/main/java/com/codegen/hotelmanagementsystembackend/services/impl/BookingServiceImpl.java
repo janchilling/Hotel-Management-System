@@ -69,12 +69,16 @@ public class BookingServiceImpl implements BookingService {
             });
 
             // Map and save booking discounts
-            bookingRequestDTO.getBookingDiscounts().forEach(bookingDiscountDTO -> {
-                BookingDiscount newBookingDiscount = modelMapper.map(bookingDiscountDTO, BookingDiscount.class);
-                newBookingDiscount.setBooking(savedBooking);
-                newBookingDiscount.setDiscount(utilityMethods.getDiscount(bookingDiscountDTO.getDiscountId()));
-                bookingDiscountRepository.save(newBookingDiscount);
-            });
+            if (bookingRequestDTO.getBookingDiscounts() != null) {
+                bookingRequestDTO.getBookingDiscounts().forEach(bookingDiscountDTO -> {
+                    BookingDiscount newBookingDiscount = modelMapper.map(bookingDiscountDTO, BookingDiscount.class);
+                    newBookingDiscount.setBooking(savedBooking);
+                    if(bookingDiscountDTO.getDiscountId() != null) {
+                        newBookingDiscount.setDiscount(utilityMethods.getDiscount(bookingDiscountDTO.getDiscountId()));
+                    }
+                    bookingDiscountRepository.save(newBookingDiscount);
+                });
+            }
 
             // Map and save booking supplements
             bookingRequestDTO.getBookingSupplements().forEach(bookingSupplementDTO -> {
@@ -90,7 +94,7 @@ public class BookingServiceImpl implements BookingService {
 
             return new StandardResponse<>(HttpStatus.CREATED.value(), "Booking created successfully", bookingResponseDTO);
         } catch (Exception e) {
-            logger.error("Failed to create booking: ", e.getMessage());
+            logger.error("Failed to create booking: ", e);
             return new StandardResponse<>(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Failed to create booking: " + e.getMessage(), null);
         }
     }
@@ -156,7 +160,12 @@ public class BookingServiceImpl implements BookingService {
                 bookingSupplement -> modelMapper.map(bookingSupplement, BookingSupplementResponseDTO.class)
         ).toList());
         bookingResponseDTO.setRooms(booking.getBookingRooms().stream().map(
-                room -> modelMapper.map(room, BookingRoomResponseDTO.class)
+                room -> {
+                    BookingRoomResponseDTO bookingRoomResponseDTO = modelMapper.map(room, BookingRoomResponseDTO.class);
+                    // Assuming there's only one image per room type
+                    room.getRoomType().getRoomTypeImages().stream().findFirst().ifPresent(roomTypeImage -> bookingRoomResponseDTO.setImageURL(roomTypeImage.getImageURL()));
+                    return bookingRoomResponseDTO;
+                }
         ).toList());
         bookingResponseDTO.setPayment(booking.getPayments().stream().map(
                 payment -> modelMapper.map(payment, PaymentResponseDTO.class)

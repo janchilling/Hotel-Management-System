@@ -42,8 +42,6 @@ public class HotelServiceImpl implements HotelService {
         try {
             if (hotelRepository.existsByHotelNameAndHotelStreetAddress(
                     hotelRequestDTO.getHotelName(), hotelRequestDTO.getHotelStreetAddress())) {
-//                return new ResourceAlreadyExistsException("Hotel with the same name and address already exists" + " hotelName : "
-//                        + hotelRequestDTO.getHotelName() +  " hotelStreetAddress : " + hotelRequestDTO.getHotelStreetAddress());
                 String message = "Hotel with the same name and address already exists";
 //                logger.error(message);
                 return new StandardResponse<>(HttpStatus.CONFLICT.value(), message, null);
@@ -78,6 +76,28 @@ public class HotelServiceImpl implements HotelService {
         }
     }
 
+    @Override
+    public StandardResponse<Hotel> updateHotel(Integer hotelId, HotelRequestDTO hotelRequestDTO) {
+        try {
+            // Retrieve the hotel entity from the database
+            Hotel existingHotel = hotelRepository.findById(hotelId)
+                    .orElseThrow(() -> new ServiceException("Hotel not found"));
+
+            // Map the fields from the DTO to the existing hotel entity
+            modelMapper.map(hotelRequestDTO, existingHotel);
+
+            // Update other related entities if needed (e.g., hotel images, phone numbers)
+
+            // Save the updated hotel entity back to the database
+            Hotel updatedHotel = hotelRepository.save(existingHotel);
+
+            return new StandardResponse<>(HttpStatus.OK.value(), "Hotel updated successfully", updatedHotel);
+        } catch (ServiceException e) {
+            return new StandardResponse<>(HttpStatus.NOT_FOUND.value(), e.getMessage(), null);
+        } catch (Exception e) {
+            return new StandardResponse<>(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Failed to update Hotel", null);
+        }
+    }
 
     /**
      * Retrieves a hotel by its ID.

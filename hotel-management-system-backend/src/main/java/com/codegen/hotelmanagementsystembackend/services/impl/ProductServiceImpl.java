@@ -1,5 +1,6 @@
 package com.codegen.hotelmanagementsystembackend.services.impl;
 
+import com.codegen.hotelmanagementsystembackend.config.LoggingConfig;
 import com.codegen.hotelmanagementsystembackend.dto.HotelResponseDTO;
 import com.codegen.hotelmanagementsystembackend.dto.SearchResponseDTO;
 import com.codegen.hotelmanagementsystembackend.entities.Hotel;
@@ -31,6 +32,7 @@ public class ProductServiceImpl implements ProductService {
     private final UtilityMethods utilityMethods;
     private final SeasonService seasonService;
     private final BookingRoomRepository bookingRoomRepository;
+    private final LoggingConfig logger;
 
     /**
      * Searches hotels based on the destination, number of rooms, check-in and check-out dates.
@@ -69,8 +71,7 @@ public class ProductServiceImpl implements ProductService {
 
             return new StandardResponse<>(200, "Hotels found", searchResponseDTOS);
         } catch (Exception e) {
-            // Log the exception
-            // logger.error("An error occurred while searching hotels", e);
+             logger.logger().error("An error occurred while searching hotels", e);
             return new StandardResponse<>(500, "An error occurred while searching hotels", null);
         }
     }
@@ -132,12 +133,15 @@ public class ProductServiceImpl implements ProductService {
     public boolean hasAvailableRooms(Contract contract, Date checkIn, Date checkOut, Integer noOfRooms) {
 
         Integer totalNumberOfRooms = 0;
-        Integer bookedRooms = 0;
+        int bookedRooms = 0;
         // Get the season ID for the provided check-in and check-out dates
         Integer seasonId = seasonService.getSeasonByCheckInOutDates(contract, checkIn, checkOut);
 
         for (RoomType roomType : contract.getRoomTypes()) {
-            bookedRooms += bookingRoomRepository.countBookedRooms(roomType.getRoomTypeId(), checkIn, checkOut);
+            Integer bookedRoomsCount = bookingRoomRepository.countBookedRooms(roomType.getRoomTypeId(), checkIn, checkOut);
+            if (bookedRoomsCount != null) {
+                bookedRooms += bookedRoomsCount;
+            }
             for (SeasonRoomType seasonRoomType : roomType.getSeasonRoomtype()) {
                 if (seasonRoomType.getSeason().getSeasonId().equals(seasonId)) {
                     totalNumberOfRooms += seasonRoomType.getNoOfRooms();

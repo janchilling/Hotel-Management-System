@@ -21,4 +21,14 @@ export class ContractServicesService {
         })
       );
   }
+
+  getContractsByHotel(hotelId: number): Observable<any> {
+    return this.httpClient.get<any>(`${this.backendHostName}/v1/hotels/${hotelId}/contracts`)
+      .pipe(
+        catchError((error: any) => {
+          console.error('Error fetching Contracts:', error);
+          return of(null);
+        })
+      );
+  }
 }

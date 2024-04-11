@@ -1,5 +1,6 @@
 <ng-template [ngIf]="!loading && !error">
-<app-hotel-details [hotelDetails]="hotelDetails"></app-hotel-details>
+<app-hotel-details [hotelDetails]="hotelDetails" [hotelId]="hotelId"></app-hotel-details>
+  <app-hotel-contracts [hotelId]="hotelId"></app-hotel-contracts>
 </ng-template>
 <ng-template [ngIf]="loading && !error">
   <app-loading-spinner></app-loading-spinner>

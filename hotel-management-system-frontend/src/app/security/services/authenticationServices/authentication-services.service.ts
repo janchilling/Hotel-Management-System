@@ -50,7 +50,7 @@ export class AuthenticationServicesService {
   logout() {
     localStorage.removeItem('user');
     this.userSubject.next(null);
-    this.router.navigate(['/account/login']);
+    this.router.navigate(['/auth/login']);
   }
 
   signup(user: any) {
@@ -66,6 +66,10 @@ export class AuthenticationServicesService {
   public isAuthenticated(): boolean {
     const token = localStorage.getItem('token');
     return !this.jwtHelper.isTokenExpired(token);
+  }
+
+  public getUserId(): any | null {
+    return localStorage.getItem('userId');
   }
 
 }

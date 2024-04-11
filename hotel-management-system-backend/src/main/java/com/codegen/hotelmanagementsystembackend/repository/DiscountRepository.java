@@ -9,4 +9,6 @@ import java.util.List;
 
 public interface DiscountRepository extends JpaRepository<Discount, Integer> {
     List<Discount> findAllDiscountsByContractContractId(Integer contractId);
+
+    Discount findByDiscountCode(String discountCode);
 }

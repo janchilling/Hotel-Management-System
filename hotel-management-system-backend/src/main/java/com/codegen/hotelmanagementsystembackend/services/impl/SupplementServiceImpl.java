@@ -47,11 +47,9 @@ public class SupplementServiceImpl implements SupplementService {
         try {
             for (SupplementRequestDTO supplementRequestDTO : supplementRequestDTOs) {
                 Supplement newSupplement = new Supplement();
-                System.out.println(supplementRequestDTO);
                 newSupplement.setSupplementDescription(supplementRequestDTO.getSupplementDescription());
                 newSupplement.setSupplementName(supplementRequestDTO.getSupplementName());
                 newSupplement.setImageIconURL(supplementRequestDTO.getImageIconURL());
-                System.out.println(supplementRequestDTO.getImageIconURL());
                 newSupplement.setContract(contractRepository.findById(supplementRequestDTO.getContractId())
                         .orElseThrow(() -> new ResourceNotFoundException("Contract not found with ID: " + supplementRequestDTO.getContractId())));
 

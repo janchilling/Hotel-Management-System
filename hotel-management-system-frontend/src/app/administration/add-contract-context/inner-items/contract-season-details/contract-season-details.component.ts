@@ -16,6 +16,8 @@ import {MatSnackBar, matSnackBarAnimations} from "@angular/material/snack-bar";
 export class ContractSeasonDetailsComponent implements OnInit {
   contractSeasonForm: FormGroup;
   hotelId: any;
+  isLoading: boolean = false;
+  isError: boolean = false;
 
   constructor(
     private fb: FormBuilder,
@@ -28,7 +30,7 @@ export class ContractSeasonDetailsComponent implements OnInit {
     this.contractSeasonForm = this.fb.group({
       startDate: ['', Validators.required],
       endDate: ['', Validators.required],
-      contractStatus: ['Active', Validators.required],
+      contractStatus: ['', Validators.required],
       cancellationDeadline: ['', Validators.required],
       cancellationAmount: ['', Validators.required],
       prepayment: ['', Validators.required],
@@ -57,6 +59,7 @@ export class ContractSeasonDetailsComponent implements OnInit {
   }
 
   submitMethod() {
+    this.isLoading = true;
     if (this.contractSeasonForm.invalid) {
       return;
     }
@@ -67,15 +70,22 @@ export class ContractSeasonDetailsComponent implements OnInit {
     this.contractServicesService.addContract(contractData).subscribe({
       next: (response) => {
         if(response.statusCode === 201) {
-          console.log('Contract added successfully:', response);
+          this.isLoading = false;
+          this.snackBar.open('Contract Added successfully', 'Close', {
+            duration: 3000,
+            verticalPosition: 'top'
+          });
           this.router.navigate(['/administration/addContractDetails'], { queryParams: { contractId: response.data.contractId } });
         }else if(response.statusCode === 409){
+          this.isLoading = false;
           this.snackBar.open('Contract Dates overlap', 'Close', {
             duration: 3000,
             verticalPosition: 'top'
           });
         }else{
           console.error('Failed to add contract:', response);
+          this.isLoading = false;
+          this.isError = true;
         }
         },
       error: (error) => {

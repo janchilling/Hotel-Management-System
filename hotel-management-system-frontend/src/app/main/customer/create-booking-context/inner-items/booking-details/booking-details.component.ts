@@ -24,7 +24,9 @@ export class BookingDetailsComponent {
 
   purchase() {
     if (this.isPurchaseEnabled) {
-      this.purchaseClicked.emit({ contactDetails: this.contactDetails, bookingRooms: this.selectedRoomData.bookingRooms, bookingSupplements: this.selectedRoomData.bookingSupplements, discount: this.selectedRoomData.discount});
+      this.purchaseClicked.emit({ contactDetails: this.contactDetails, bookingRooms: this.selectedRoomData.bookingRooms,
+        bookingSupplements: this.selectedRoomData.bookingSupplements, discount: this.selectedRoomData.discount,
+        noOfPersons: this.selectedRoomData.noOfPersons });
     } else {
       this.openSnackBar('Please select at least one room and provide all contact details.');
     }

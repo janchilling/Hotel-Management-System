@@ -22,6 +22,17 @@ export class HotelServicesService {
       );
   }
 
+  updateHotel(hotelId: any, hotel: any): Observable<any> {
+    return this.httpClient.put<any>(`${this.backendHostName}/v1/hotels/${hotelId}`, hotel)
+      .pipe(
+        catchError((error: any) => {
+          console.error('Error updating hotel:', error);
+          return of(null);
+        })
+      );
+  }
+
+
   getHotelImages(hotelId: any): Observable<any> {
     return this.httpClient.get<any>(`${this.backendHostName}/v1/hotels/${hotelId}/images`)
       .pipe(

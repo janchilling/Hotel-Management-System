@@ -22,6 +22,8 @@ import {
 import {FindHotelContextComponent} from "./find-hotel-context/find-hotel-context.component";
 import {HotelDetailsComponent} from "./admin-hotel-details/inner-items/hotel-details/hotel-details.component";
 import {AdminHotelDetailsComponent} from "./admin-hotel-details/admin-hotel-details.component";
+import {ViewContractDetailsComponent} from "./view-contract-details/view-contract-details.component";
+import {UpdateHotelContextComponent} from "./update-hotel-context/update-hotel-context.component";
 
 const routes: Routes = [{
   path: '',
@@ -32,8 +34,10 @@ const routes: Routes = [{
     { path: 'addHotel', component: AddHotelContextComponent },
     { path: 'findHotel', component: FindHotelContextComponent },
     { path: 'hotel/:hotelId', component: AdminHotelDetailsComponent },
+    { path: 'updateHotel/:hotelId', component: UpdateHotelContextComponent },
     { path: 'addContract/:hotelId', component: AddContractContextComponent },
     { path: 'addContractDetails', component: AddContractDetailsContextComponent },
+    { path: 'contracts/:contractId', component: ViewContractDetailsComponent },
     { path: 'addMarkup', component: MarkupDetailsComponent },
     { path: 'addDiscount', component: DiscountDetailsComponent },
     { path: 'addSupplement', component: SupplementDetailsComponent },

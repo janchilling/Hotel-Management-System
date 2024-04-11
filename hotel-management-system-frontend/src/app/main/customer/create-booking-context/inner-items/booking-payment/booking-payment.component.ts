@@ -7,6 +7,9 @@ import {MatDialog} from "@angular/material/dialog";
 import {
   ConfirmationDialogComponentComponent
 } from "../../../../../shared/components/confirmation-dialog-component/confirmation-dialog-component.component";
+import {
+  AuthenticationServicesService
+} from "../../../../../security/services/authenticationServices/authentication-services.service";
 
 @Component({
   selector: 'app-booking-payment',
@@ -20,6 +23,7 @@ export class BookingPaymentComponent {
   @Input() bookingSupplements: any;
   @Input() contractId: any;
   @Input() discount: any;
+  @Input() noOfPersons: any;
   @Output() bookingPlaced = new EventEmitter<any>()
   markupDetails: any;
   checkInDate: any;
@@ -34,21 +38,26 @@ export class BookingPaymentComponent {
   finalPrice: number = 0;
   discountedAmount: number = 0;
   tax: number = 0;
+  customerId: any;
+  hotelId: any;
 
   constructor(
     private markupServicesService: MarkupServicesService,
     private route: ActivatedRoute,
     private dateService: DateServiceService,
     private bookingServiceService :BookingServiceService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private authenticationService: AuthenticationServicesService
   ) {}
 
   ngOnInit(): void {
     this.route.queryParams.subscribe(params => {
       this.checkInDate = params['checkIn'];
       this.checkOutDate = params['checkOut'];
+      this.hotelId = params['hotelId'];
     });
 
+    this.customerId = this.authenticationService.getUserId();
     this.today = new Date();
 
     this.markupServicesService.getMarkupsByContractId(this.contractId).subscribe(data => {
@@ -60,7 +69,7 @@ export class BookingPaymentComponent {
     this.checkPrepaymentEligibility();
     console.log(this.bookingRooms)
     console.log(this.bookingSupplements)
-    console.log(this.discount)
+    console.log(this.noOfPersons)
   }
 
   calculateTotals(): void {
@@ -139,11 +148,11 @@ export class BookingPaymentComponent {
       supplementsTotal: this.supplementsTotal,
       discountedAmount: this.discountedAmount,
       tax: this.tax,
-      noOfAdults: 5, // Get the number of adults
+      noOfAdults: this.noOfPersons, // Get the number of adults
       bookingStatus: 'Confirmed',
       paymentStatus: paymentStatus, // Set paymentStatus based on payment option
-      hotelHotelId: 1,
-      customerCustomerId: 1,
+      hotelHotelId: this.hotelId,
+      customerCustomerId: this.customerId,
       contactEmail: this.contactDetails.email,
       contactPhone: this.contactDetails.phoneNumber,
       contactFirstName: this.contactDetails.firstName,
@@ -154,26 +163,32 @@ export class BookingPaymentComponent {
         paymentType: 'Credit Card'
       },
       bookingRooms: this.bookingRooms,
-      bookingDiscounts: [{
-        discountCode: this.discount.discountCode,
-        discountId: this.discount.discountId,
-        discountedAmount: this.discountedAmount
-      }],
+        bookingDiscounts : [{
+          discountCode: this.discount ? this.discount.discountCode || null : null,
+          discountId: this.discount ? this.discount.discountId || null : null,
+          discountedAmount: this.discount ? this.discountedAmount || null : null
+        }],
       bookingSupplements: this.bookingSupplements
     };
 
     console.log(bookingRequest)
 
-    this.bookingServiceService.addBooking(bookingRequest).subscribe({
-      next: (response) => {
-        console.log('Booking added successfully:', response);
-        console.log(response)
-        this.bookingPlaced.emit(response.data);
-      },
-      error: (error) => {
-        console.error('Booking adding hotel:', error);
-      }
-    })
+    // this.bookingServiceService.addBooking(bookingRequest).subscribe({
+    //   next: (response) => {
+    //     if(response.statusCode == 201){
+    //       console.log('Booking added successfully:', response);
+    //       console.log(response)
+    //       this.bookingPlaced.emit(response.data);
+    //     }else {
+    //       console.log('Booking not added successfully:', response);
+    //       console.log(response)
+    //     }
+    //
+    //   },
+    //   error: (error) => {
+    //     console.error('Booking adding hotel:', error);
+    //   }
+    // })
   }
 
 
