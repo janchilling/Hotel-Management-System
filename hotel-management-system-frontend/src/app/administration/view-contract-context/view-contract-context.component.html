@@ -1,0 +1,8 @@
+<ng-template [ngIf]="!isLoading && !isError">
+  <app-view-contract-details [contractDetails]="contractDetails"></app-view-contract-details>
+  <app-view-season-details [contractDetails]="contractDetails"></app-view-season-details>
+  <app-view-discount-details [contractDetails]="contractDetails"></app-view-discount-details>
+</ng-template>
+<ng-template [ngIf]="isLoading && !isError">
+  <app-loading-spinner></app-loading-spinner>
+</ng-template>

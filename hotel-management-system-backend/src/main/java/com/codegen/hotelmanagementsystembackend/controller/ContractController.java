@@ -44,9 +44,9 @@ public class ContractController {
         return discountService.getDiscountByContract(contractId);
     }
 
-    @GetMapping("/getContractById/{contractId}")
-    public ResponseEntity<ContractResponseDTO> getContractById(@PathVariable Integer contractId) {
-        return ResponseEntity.ok(contractService.getContractById(contractId));
+    @GetMapping("/{contractId}")
+    public StandardResponse<ContractResponseDTO> getContractById(@PathVariable Integer contractId) {
+        return contractService.getContractById(contractId);
     }
 
     @GetMapping("/{contractId}/seasons")

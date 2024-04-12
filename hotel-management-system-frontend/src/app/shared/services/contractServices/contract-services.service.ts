@@ -31,4 +31,14 @@ export class ContractServicesService {
         })
       );
   }
+
+  getContractsById(contractId: number): Observable<any> {
+    return this.httpClient.get<any>(`${this.backendHostName}/v1/contracts/${contractId}`)
+      .pipe(
+        catchError((error: any) => {
+          console.error('Error fetching Contract:', error);
+          return of(null);
+        })
+      );
+  }
 }

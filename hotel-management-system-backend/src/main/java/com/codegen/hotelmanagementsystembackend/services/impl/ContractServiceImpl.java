@@ -96,12 +96,9 @@ public class ContractServiceImpl implements ContractService {
         }
     }
 
-
-
     @Override
-    public ContractResponseDTO getContractById(Integer contractId) {
-        try{
-
+    public StandardResponse<ContractResponseDTO> getContractById(Integer contractId) {
+        try {
             Contract contract = utilityMethods.getContract(contractId);
             Hotel hotel = utilityMethods.getHotel(contract.getHotel().getHotelId());
 
@@ -109,7 +106,7 @@ public class ContractServiceImpl implements ContractService {
 
             contractResponseDTO.setSeasons(contract.getSeasons().stream()
                     .map(season -> {
-                        SeasonResponseDTO seasonResponseDTO =modelMapper.map(season, SeasonResponseDTO.class);
+                        SeasonResponseDTO seasonResponseDTO = modelMapper.map(season, SeasonResponseDTO.class);
                         seasonResponseDTO.setHotelName(hotel.getHotelName());
                         seasonResponseDTO.setHotelId(hotel.getHotelId());
                         return seasonResponseDTO;
@@ -118,7 +115,7 @@ public class ContractServiceImpl implements ContractService {
 
             contractResponseDTO.setDiscounts(contract.getDiscounts().stream()
                     .map(discount -> {
-                        DiscountResponseDTO discountResponseDTO =modelMapper.map(discount, DiscountResponseDTO.class);
+                        DiscountResponseDTO discountResponseDTO = modelMapper.map(discount, DiscountResponseDTO.class);
                         discountResponseDTO.setHotelName(hotel.getHotelName());
                         discountResponseDTO.setHotelId(hotel.getHotelId());
                         return discountResponseDTO;
@@ -127,7 +124,7 @@ public class ContractServiceImpl implements ContractService {
 
             contractResponseDTO.setRoomTypes(contract.getRoomTypes().stream()
                     .map(roomType -> {
-                        RoomTypeResponseDTO roomTypeResponseDTO =modelMapper.map(roomType, RoomTypeResponseDTO.class);
+                        RoomTypeResponseDTO roomTypeResponseDTO = modelMapper.map(roomType, RoomTypeResponseDTO.class);
                         roomTypeResponseDTO.setHotelName(hotel.getHotelName());
                         roomTypeResponseDTO.setHotelId(hotel.getHotelId());
                         return roomTypeResponseDTO;
@@ -136,17 +133,19 @@ public class ContractServiceImpl implements ContractService {
 
             contractResponseDTO.setSupplements(contract.getSupplements().stream()
                     .map(supplement -> {
-                        SupplementResponseDTO supplementResponseDTO =modelMapper.map(supplement, SupplementResponseDTO.class);
+                        SupplementResponseDTO supplementResponseDTO = modelMapper.map(supplement, SupplementResponseDTO.class);
                         supplementResponseDTO.setHotelName(hotel.getHotelName());
                         supplementResponseDTO.setHotelId(hotel.getHotelId());
                         return supplementResponseDTO;
                     })
                     .collect(Collectors.toList()));
 
-            return contractResponseDTO;
+            return new StandardResponse<>(HttpStatus.OK.value(), "Contract retrieved successfully", contractResponseDTO);
 
-        }catch (Exception e){
-            throw new ServiceException("Failed to find Contract", e);
+        } catch (ResourceNotFoundException e) {
+            return new StandardResponse<>(HttpStatus.NOT_FOUND.value(), "Contract not found", null);
+        } catch (Exception e) {
+            return new StandardResponse<>(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Failed to find Contract: " + e.getMessage(), null);
         }
     }
 }
