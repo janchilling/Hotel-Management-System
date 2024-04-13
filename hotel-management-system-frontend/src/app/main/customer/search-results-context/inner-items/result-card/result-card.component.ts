@@ -15,4 +15,8 @@ export class ResultCardComponent {
   viewHotelDetails(hotelId: number) {
     this.router.navigate(['/main/hotel', hotelId], { queryParams: { checkIn: this.checkIn, checkOut: this.checkOut } });
   }
+
+  getStars(rating: number): any[] {
+    return Array(rating).fill(0); // Creates an array of length 'rating' filled with zeros
+  }
 }

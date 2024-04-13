@@ -50,7 +50,7 @@ public class ProductServiceImpl implements ProductService {
 
             List<Contract> activeHotelContracts = hotels.stream().map(hotel -> getActiveContract(hotel, checkIn, checkOut)).toList();
 
-            if (activeHotelContracts.isEmpty()) {
+            if (activeHotelContracts == null) {
                 return new StandardResponse<>(404, "No hotels found with active contracts within the specified dates", null);
             }
 

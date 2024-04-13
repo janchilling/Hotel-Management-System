@@ -12,6 +12,7 @@ public class SearchResponseDTO {
     private String hotelDescription;
     private String hotelBriefDescription;
     private String hotelEmail;
+    private Integer hotelRating;
     private String hotelStreetAddress;
     private String hotelCity;
     private String hotelState;

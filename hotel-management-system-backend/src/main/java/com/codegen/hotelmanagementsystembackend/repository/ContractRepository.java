@@ -13,5 +13,7 @@ public interface ContractRepository extends JpaRepository<Contract, Integer> {
     List<Contract> findAllContractsByHotelHotelId(Integer hotelId);
 
     boolean existsByHotelHotelIdAndStartDateBeforeAndEndDateAfter(Integer hotelId, Date endDate, Date startDate);
+
+    boolean existsByHotelHotelIdAndStartDateBeforeAndEndDateAfterAndContractIdNot(Integer hotelId, Date endDate, Date startDate, Integer contractId);
 }
 

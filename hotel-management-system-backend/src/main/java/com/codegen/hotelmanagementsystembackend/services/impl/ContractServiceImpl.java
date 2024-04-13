@@ -12,7 +12,6 @@ import com.codegen.hotelmanagementsystembackend.services.ContractService;
 import com.codegen.hotelmanagementsystembackend.util.StandardResponse;
 import com.codegen.hotelmanagementsystembackend.util.UtilityMethods;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.service.spi.ServiceException;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -96,57 +95,70 @@ public class ContractServiceImpl implements ContractService {
         }
     }
 
-
-
     @Override
-    public ContractResponseDTO getContractById(Integer contractId) {
-        try{
-
+    public StandardResponse<ContractResponseDTO> getContractById(Integer contractId) {
+        try {
             Contract contract = utilityMethods.getContract(contractId);
             Hotel hotel = utilityMethods.getHotel(contract.getHotel().getHotelId());
 
             ContractResponseDTO contractResponseDTO = modelMapper.map(contract, ContractResponseDTO.class);
 
-            contractResponseDTO.setSeasons(contract.getSeasons().stream()
-                    .map(season -> {
-                        SeasonResponseDTO seasonResponseDTO =modelMapper.map(season, SeasonResponseDTO.class);
-                        seasonResponseDTO.setHotelName(hotel.getHotelName());
-                        seasonResponseDTO.setHotelId(hotel.getHotelId());
-                        return seasonResponseDTO;
-                    })
-                    .collect(Collectors.toList()));
-
-            contractResponseDTO.setDiscounts(contract.getDiscounts().stream()
-                    .map(discount -> {
-                        DiscountResponseDTO discountResponseDTO =modelMapper.map(discount, DiscountResponseDTO.class);
-                        discountResponseDTO.setHotelName(hotel.getHotelName());
-                        discountResponseDTO.setHotelId(hotel.getHotelId());
-                        return discountResponseDTO;
-                    })
-                    .collect(Collectors.toList()));
-
-            contractResponseDTO.setRoomTypes(contract.getRoomTypes().stream()
-                    .map(roomType -> {
-                        RoomTypeResponseDTO roomTypeResponseDTO =modelMapper.map(roomType, RoomTypeResponseDTO.class);
-                        roomTypeResponseDTO.setHotelName(hotel.getHotelName());
-                        roomTypeResponseDTO.setHotelId(hotel.getHotelId());
-                        return roomTypeResponseDTO;
-                    })
-                    .collect(Collectors.toList()));
-
+            // Populate supplements
             contractResponseDTO.setSupplements(contract.getSupplements().stream()
                     .map(supplement -> {
-                        SupplementResponseDTO supplementResponseDTO =modelMapper.map(supplement, SupplementResponseDTO.class);
+                        SupplementResponseDTO supplementResponseDTO = modelMapper.map(supplement, SupplementResponseDTO.class);
                         supplementResponseDTO.setHotelName(hotel.getHotelName());
                         supplementResponseDTO.setHotelId(hotel.getHotelId());
+
+                        // Map SeasonSupplement entities to SeasonSupplementResponseDTO
+                        supplementResponseDTO.setSeasonSupplements(supplement.getSupplementsSeasons().stream()
+                                .map(seasonSupplement -> {
+                                    SeasonSupplementResponseDTO seasonSupplementResponseDTO = modelMapper.map(seasonSupplement, SeasonSupplementResponseDTO.class);
+                                    // Add additional mappings if needed
+                                    return seasonSupplementResponseDTO;
+                                })
+                                .collect(Collectors.toList()));
+
                         return supplementResponseDTO;
                     })
                     .collect(Collectors.toList()));
 
-            return contractResponseDTO;
+            return new StandardResponse<>(HttpStatus.OK.value(), "Contract retrieved successfully", contractResponseDTO);
 
-        }catch (Exception e){
-            throw new ServiceException("Failed to find Contract", e);
+        } catch (ResourceNotFoundException e) {
+            return new StandardResponse<>(HttpStatus.NOT_FOUND.value(), "Contract not found", null);
+        } catch (Exception e) {
+            return new StandardResponse<>(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Failed to find Contract: " + e.getMessage(), null);
         }
     }
+
+    @Override
+    public StandardResponse<Contract> updateContract(Integer contractId, ContractRequestDTO contractRequestDTO) {
+        try {
+            // Check if the contract exists
+            Contract existingContract = utilityMethods.getContract(contractId);
+
+            // Check for overlapping dates with other contracts excluding the current one
+            boolean hasOverlappingDates = contractRepository.existsByHotelHotelIdAndStartDateBeforeAndEndDateAfterAndContractIdNot(
+                    contractRequestDTO.getHotelId(), contractRequestDTO.getEndDate(), contractRequestDTO.getStartDate(), contractId);
+
+            if (hasOverlappingDates) {
+                return new StandardResponse<>(HttpStatus.CONFLICT.value(), "Contract dates overlap with existing contracts", null);
+            }
+
+            // Update the existing contract with the new data
+            modelMapper.map(contractRequestDTO, existingContract);
+            existingContract.setHotel(hotelRepository.findById(contractRequestDTO.getHotelId())
+                    .orElseThrow(() -> new ResourceNotFoundException("Hotel not found with ID: " + contractRequestDTO.getHotelId())));
+
+            Contract savedContract = contractRepository.save(existingContract);
+
+            return new StandardResponse<>(HttpStatus.OK.value(), "Contract updated successfully", savedContract);
+        } catch (ResourceNotFoundException e) {
+            return new StandardResponse<>(HttpStatus.NOT_FOUND.value(), "Contract not found", null);
+        } catch (Exception e) {
+            return new StandardResponse<>(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Failed to update Contract : " + e.getMessage(), null);
+        }
+    }
+
 }

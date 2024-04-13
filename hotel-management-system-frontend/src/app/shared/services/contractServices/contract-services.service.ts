@@ -31,4 +31,24 @@ export class ContractServicesService {
         })
       );
   }
+
+  updateContract(contractId: number, contract: any): Observable<any> {
+    return this.httpClient.put<any>(`${this.backendHostName}/v1/contracts/${contractId}`, contract)
+      .pipe(
+        catchError((error: any) => {
+          console.error('Error Updating Contract:', error);
+          return of(null);
+        })
+      );
+  }
+
+  getContractsById(contractId: number): Observable<any> {
+    return this.httpClient.get<any>(`${this.backendHostName}/v1/contracts/${contractId}`)
+      .pipe(
+        catchError((error: any) => {
+          console.error('Error fetching Contract:', error);
+          return of(null);
+        })
+      );
+  }
 }

@@ -29,6 +29,11 @@ public class ContractController {
         return contractService.createContract(contractRequestDTO);
     }
 
+    @PutMapping("/{contractId}")
+    public StandardResponse<Contract> updateContract(@PathVariable Integer contractId, @RequestBody ContractRequestDTO contractRequestDTO){
+        return contractService.updateContract(contractId, contractRequestDTO);
+    }
+
     @GetMapping("{contractId}/roomTypes/")
     public StandardResponse<List<RoomTypeResponseDTO>> getRoomTypeByContract(@PathVariable Integer contractId) {
         return roomTypeService.getRoomTypeByContract(contractId);
@@ -44,9 +49,9 @@ public class ContractController {
         return discountService.getDiscountByContract(contractId);
     }
 
-    @GetMapping("/getContractById/{contractId}")
-    public ResponseEntity<ContractResponseDTO> getContractById(@PathVariable Integer contractId) {
-        return ResponseEntity.ok(contractService.getContractById(contractId));
+    @GetMapping("/{contractId}")
+    public StandardResponse<ContractResponseDTO> getContractById(@PathVariable Integer contractId) {
+        return contractService.getContractById(contractId);
     }
 
     @GetMapping("/{contractId}/seasons")

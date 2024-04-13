@@ -13,6 +13,7 @@ public interface ContractService {
 
     StandardResponse<List<ContractResponseDTO>> getContractsByHotelId(Integer hotelId);
 
-    ContractResponseDTO getContractById(Integer contractId);
+    StandardResponse<ContractResponseDTO> getContractById(Integer contractId);
 
+    StandardResponse<Contract> updateContract(Integer contractId, ContractRequestDTO contractRequestDTO);
 }

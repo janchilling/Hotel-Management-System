@@ -20,16 +20,20 @@ import { ResultsComponent } from './find-hotel-context/inner-items/results/resul
 import { AdminHotelDetailsComponent } from './admin-hotel-details/admin-hotel-details.component';
 import { HotelDetailsComponent } from './admin-hotel-details/inner-items/hotel-details/hotel-details.component';
 import { HotelContractsComponent } from './admin-hotel-details/inner-items/hotel-contracts/hotel-contracts.component';
-import { ViewContractDetailsComponent } from './view-contract-details/view-contract-details.component';
 import { UpdateHotelContextComponent } from './update-hotel-context/update-hotel-context.component';
 import { UpdateContractContextComponent } from './update-contract-context/update-contract-context.component';
 import { MarkupUpdateComponent } from './update-contract-context/inner-items/markup-update/markup-update.component';
 import { DiscountUpdateComponent } from './update-contract-context/inner-items/discount-update/discount-update.component';
 import { SupplementsUpdateComponent } from './update-contract-context/inner-items/supplements-update/supplements-update.component';
 import { RoomTypeUpdateComponent } from './update-contract-context/inner-items/room-type-update/room-type-update.component';
-import { ContractDetailsComponent } from './view-contract-details/inner-items/contract-details/contract-details.component';
-import { SeasonDetailsComponent } from './view-contract-details/inner-items/season-details/season-details.component';
-import { RoomtypeDetailsComponent } from './view-contract-details/inner-items/roomtype-details/roomtype-details.component';
+import { ViewContractContextComponent } from './view-contract-context/view-contract-context.component';
+import { ViewContractDetailsComponent } from './view-contract-context/inner-items/view-contract-details/view-contract-details.component';
+import { ViewSeasonDetailsComponent } from './view-contract-context/inner-items/view-season-details/view-season-details.component';
+import { ViewDiscountDetailsComponent } from './view-contract-context/inner-items/view-discount-details/view-discount-details.component';
+import { ViewMarkupDetailsComponent } from './view-contract-context/inner-items/view-markup-details/view-markup-details.component';
+import { ViewSupplementsDetailsComponent } from './view-contract-context/inner-items/view-supplements-details/view-supplements-details.component';
+import { ViewRoomtypesDetailsComponent } from './view-contract-context/inner-items/view-roomtypes-details/view-roomtypes-details.component';
+import { ContractUpdateComponent } from './update-contract-context/inner-items/contract-update/contract-update.component';
 
 
 @NgModule({
@@ -50,16 +54,20 @@ import { RoomtypeDetailsComponent } from './view-contract-details/inner-items/ro
     AdminHotelDetailsComponent,
     HotelDetailsComponent,
     HotelContractsComponent,
-    ViewContractDetailsComponent,
     UpdateHotelContextComponent,
     UpdateContractContextComponent,
     MarkupUpdateComponent,
     DiscountUpdateComponent,
     SupplementsUpdateComponent,
     RoomTypeUpdateComponent,
-    ContractDetailsComponent,
-    SeasonDetailsComponent,
-    RoomtypeDetailsComponent
+    ViewContractContextComponent,
+    ViewContractDetailsComponent,
+    ViewSeasonDetailsComponent,
+    ViewDiscountDetailsComponent,
+    ViewMarkupDetailsComponent,
+    ViewSupplementsDetailsComponent,
+    ViewRoomtypesDetailsComponent,
+    ContractUpdateComponent,
   ],
     imports: [
         CommonModule,
