@@ -33,6 +33,7 @@ import { ViewDiscountDetailsComponent } from './view-contract-context/inner-item
 import { ViewMarkupDetailsComponent } from './view-contract-context/inner-items/view-markup-details/view-markup-details.component';
 import { ViewSupplementsDetailsComponent } from './view-contract-context/inner-items/view-supplements-details/view-supplements-details.component';
 import { ViewRoomtypesDetailsComponent } from './view-contract-context/inner-items/view-roomtypes-details/view-roomtypes-details.component';
+import { ContractUpdateComponent } from './update-contract-context/inner-items/contract-update/contract-update.component';
 
 
 @NgModule({
@@ -66,6 +67,7 @@ import { ViewRoomtypesDetailsComponent } from './view-contract-context/inner-ite
     ViewMarkupDetailsComponent,
     ViewSupplementsDetailsComponent,
     ViewRoomtypesDetailsComponent,
+    ContractUpdateComponent,
   ],
     imports: [
         CommonModule,

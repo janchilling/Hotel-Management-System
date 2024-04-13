@@ -37,6 +37,7 @@ export class UpdateHotelContextComponent {
       hotelEmail: ['', [Validators.required, Validators.email]],
       hotelStreetAddress: ['', Validators.required],
       hotelCity: ['', Validators.required],
+      hotelRating: ['', Validators.required],
       hotelState: ['', Validators.required],
       hotelCountry: ['', Validators.required],
       hotelPostalCode: ['', Validators.required],

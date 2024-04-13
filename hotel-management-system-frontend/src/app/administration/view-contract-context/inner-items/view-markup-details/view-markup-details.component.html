@@ -1,1 +1,72 @@
-<p>view-markup-details works!</p>
+<!--<ng-template [ngIf]="!isLoading && !isError">-->
+<!--  <div *ngIf="contractDetails">-->
+<!--    <div class="container mb-3 -mt-7 sm:mb-8 md:mb-12 lg:mb-16 xl:mb-20 ">-->
+<!--      <section class=" py-1 bg-blueGray-50">-->
+<!--        <div class="w-full lg:w-8/12 px-4 mx-auto mt-6">-->
+<!--          <div class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-lg bg-blueGray-100 border-0">-->
+<!--            <div class="flex-auto px-4 lg:px-10 py-10 pt-0">-->
+<!--              <form [formGroup]="seasonDetailsForm" >-->
+<!--                <h2 class="text-blueGray-400 text-sm mt-3 mb-6 font-bold uppercase">-->
+<!--                  Season Information-->
+<!--                </h2>-->
+<!--                <div formArrayName="seasonDetails">-->
+<!--                  <ng-container *ngFor="let season of seasonDetailsForm.get('seasonDetails')?.value; let i = index">-->
+<!--                    <div formGroupName ="{{i}}">-->
+<!--                      <div class="flex flex-wrap">-->
+<!--                        <div class="w-full lg:w-6/12 px-4">-->
+<!--                          <div class="relative w-full mb-3">-->
+<!--                            <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2" for="seasonId">-->
+<!--                              Season ID-->
+<!--                            </label>-->
+<!--                            <input formControlName="seasonId" id="seasonId" type="text" class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" placeholder="{{season?.seasonId}}" required>-->
+<!--                          </div>-->
+<!--                        </div>-->
+
+<!--                        <div class="w-full lg:w-6/12 px-4">-->
+<!--                          <div class="relative w-full mb-3">-->
+<!--                            <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2" for="seasonName">-->
+<!--                              Season Name-->
+<!--                            </label>-->
+<!--                            <input formControlName="seasonName" id="seasonName" type="text" class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" placeholder="{{season?.seasonName}}" required>-->
+<!--                          </div>-->
+<!--                        </div>-->
+
+<!--                        <div class="w-full lg:w-12/12 px-4">-->
+<!--                          <div class="relative w-full mb-3">-->
+<!--                            <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2" for="startDate">-->
+<!--                              Start Date-->
+<!--                            </label>-->
+<!--                            <input formControlName="startDate" id="startDate" type="text" class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" placeholder="{{season?.startDate}}" required>-->
+<!--                          </div>-->
+<!--                        </div>-->
+
+<!--                        <div class="w-full lg:w-4/12 px-4">-->
+<!--                          <div class="relative w-full mb-3">-->
+<!--                            <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2" for="endDate">-->
+<!--                              End Date-->
+<!--                            </label>-->
+<!--                            <input formControlName="endDate" id="endDate" type="text" class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" placeholder="{{season?.endDate}}" required>-->
+<!--                          </div>-->
+<!--                        </div>-->
+<!--                      </div>-->
+<!--                      <hr>-->
+<!--                    </div>-->
+<!--                  </ng-container>-->
+<!--                </div>-->
+<!--                <app-main-button [buttonText]="'Update Season'" (click)="handleUpdate(contractDetails.contractId)"></app-main-button>-->
+<!--              </form>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--      </section>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--</ng-template>-->
+
+<!--<ng-template [ngIf]="isError">-->
+<!--  <app-internal-server-error></app-internal-server-error>-->
+<!--</ng-template>-->
+
+<!--<ng-template [ngIf]="isLoading && !isError">-->
+<!--  <app-loading-spinner></app-loading-spinner>-->
+<!--</ng-template>-->

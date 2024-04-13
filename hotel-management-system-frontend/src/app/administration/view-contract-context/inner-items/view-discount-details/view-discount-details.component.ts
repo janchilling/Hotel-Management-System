@@ -58,14 +58,6 @@ export class ViewDiscountDetailsComponent implements OnInit {
     return seasonDiscountsArray;
   }
 
-  getDiscountFormGroup(index: number): FormGroup {
-    return (this.discountDetailsForm.get('discountDetails') as FormArray).at(index) as FormGroup;
-  }
-
-  getSeasonDiscounts(discountIndex: number): FormArray {
-    return this.getDiscountFormGroup(discountIndex).get('seasonDiscounts') as FormArray;
-  }
-
   handleUpdate(contractID: number) {
     // Handle update logic
   }

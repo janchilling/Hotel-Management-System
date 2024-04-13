@@ -68,4 +68,5 @@ export class SearchResultsContextComponent implements OnInit, OnDestroy {
       }
     });
   }
+
 }

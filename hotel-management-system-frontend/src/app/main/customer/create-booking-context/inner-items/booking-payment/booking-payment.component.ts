@@ -173,22 +173,22 @@ export class BookingPaymentComponent {
 
     console.log(bookingRequest)
 
-    // this.bookingServiceService.addBooking(bookingRequest).subscribe({
-    //   next: (response) => {
-    //     if(response.statusCode == 201){
-    //       console.log('Booking added successfully:', response);
-    //       console.log(response)
-    //       this.bookingPlaced.emit(response.data);
-    //     }else {
-    //       console.log('Booking not added successfully:', response);
-    //       console.log(response)
-    //     }
-    //
-    //   },
-    //   error: (error) => {
-    //     console.error('Booking adding hotel:', error);
-    //   }
-    // })
+    this.bookingServiceService.addBooking(bookingRequest).subscribe({
+      next: (response) => {
+        if(response.statusCode == 201){
+          console.log('Booking added successfully:', response);
+          console.log(response)
+          this.bookingPlaced.emit(response.data);
+        }else {
+          console.log('Booking not added successfully:', response);
+          console.log(response)
+        }
+
+      },
+      error: (error) => {
+        console.error('Booking adding hotel:', error);
+      }
+    })
   }
 
 

@@ -15,4 +15,5 @@ public interface ContractService {
 
     StandardResponse<ContractResponseDTO> getContractById(Integer contractId);
 
+    StandardResponse<Contract> updateContract(Integer contractId, ContractRequestDTO contractRequestDTO);
 }
