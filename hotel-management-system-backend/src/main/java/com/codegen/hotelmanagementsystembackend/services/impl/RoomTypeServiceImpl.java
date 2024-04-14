@@ -8,16 +8,13 @@ import com.codegen.hotelmanagementsystembackend.services.RoomTypeService;
 import com.codegen.hotelmanagementsystembackend.util.StandardResponse;
 import com.codegen.hotelmanagementsystembackend.util.UtilityMethods;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.service.spi.ServiceException;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.sql.Date;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -193,6 +190,32 @@ public class RoomTypeServiceImpl implements RoomTypeService {
             return new StandardResponse<>(HttpStatus.OK.value(), "Available room count: " + availableRooms, availableRooms);
         } catch (Exception e) {
             return new StandardResponse<>(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Failed to get room type count", null);
+        }
+    }
+
+    @Override
+    public StandardResponse<List<RoomType>> updateRoomTypes(List<RoomTypeRequestDTO> roomTypeRequestDTOS) {
+        List<RoomType> updatedRoomTypes = new ArrayList<>();
+
+        try {
+            for (RoomTypeRequestDTO roomTypeRequestDTO : roomTypeRequestDTOS) {
+                RoomType existingRoomType = roomTypeRepository.findById(roomTypeRequestDTO.getRoomTypeId())
+                        .orElseThrow(() -> new ResourceNotFoundException("Room type not found with ID: " + roomTypeRequestDTO.getRoomTypeId()));
+
+                // Update room type fields
+                existingRoomType.setRoomTypeName(roomTypeRequestDTO.getRoomTypeName());
+                existingRoomType.setRoomDimensions(roomTypeRequestDTO.getRoomDimensions());
+                existingRoomType.setMaxAdults(roomTypeRequestDTO.getMaxAdults());
+
+                // Save updated room type
+                updatedRoomTypes.add(roomTypeRepository.save(existingRoomType));
+            }
+
+            return new StandardResponse<>(HttpStatus.OK.value(), "Room types updated successfully", updatedRoomTypes);
+        } catch (ResourceNotFoundException e) {
+            return new StandardResponse<>(HttpStatus.NOT_FOUND.value(), e.getMessage(), null);
+        } catch (Exception e) {
+            return new StandardResponse<>(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Room types update failed: " + e.getMessage(), null);
         }
     }
 

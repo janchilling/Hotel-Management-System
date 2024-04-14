@@ -19,4 +19,5 @@ public interface RoomTypeService {
 
     StandardResponse<List<RoomTypeResponseDTO>> getRoomTypeByContract(Integer contractId);
 
+    StandardResponse<List<RoomType>> updateRoomTypes(List<RoomTypeRequestDTO> roomTypeRequestDTOS);
 }

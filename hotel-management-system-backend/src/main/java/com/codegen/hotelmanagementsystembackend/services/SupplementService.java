@@ -16,4 +16,5 @@ public interface SupplementService {
 
     StandardResponse<List<SupplementResponseDTO>> getSupplementByContract(Integer contractId);
 
+    StandardResponse<List<Supplement>> updateSupplements(List<SupplementRequestDTO> supplementRequestDTOs);
 }

@@ -1,6 +1,5 @@
 package com.codegen.hotelmanagementsystembackend.services.impl;
 
-import ch.qos.logback.core.model.Model;
 import com.codegen.hotelmanagementsystembackend.dto.*;
 import com.codegen.hotelmanagementsystembackend.entities.*;
 import com.codegen.hotelmanagementsystembackend.exception.ResourceNotFoundException;
@@ -126,5 +125,43 @@ public class MarkupServiceImpl implements MarkupService {
             throw new ServiceException("Getting markups failed");
         }
     }
+
+    @Override
+    @Transactional
+    public StandardResponse<Markup> updateMarkup(MarkupRequestDTO markupRequestDTO) {
+        try {
+            Markup existingMarkup = markupRepository.findById(markupRequestDTO.getMarkupId())
+                    .orElseThrow(() -> new ResourceNotFoundException("Markup not found with ID: " + markupRequestDTO.getMarkupId()));
+
+            // Update markup fields
+            existingMarkup.setMarkupId(markupRequestDTO.getMarkupId());
+
+            // Update season markups
+            List<SeasonMarkup> updatedSeasonMarkups = new ArrayList<>();
+            for (SeasonMarkup seasonMarkup : existingMarkup.getSeasonMarkups()) {
+                SeasonMarkupKey seasonMarkupKey = seasonMarkup.getSeasonMarkupKey();
+                // Find corresponding DTO for the season markup
+                SeasonMarkupDTO seasonMarkupDTO = markupRequestDTO.getSeasonMarkups().stream()
+                        .filter(dto -> dto.getSeasonId().equals(seasonMarkupKey.getSeasonId()))
+                        .findFirst()
+                        .orElse(null);
+                if (seasonMarkupDTO != null) {
+                    seasonMarkup.setMarkupPercentage(seasonMarkupDTO.getMarkupPercentage());
+                    updatedSeasonMarkups.add(seasonMarkup);
+                }
+            }
+            existingMarkup.setSeasonMarkups(updatedSeasonMarkups);
+
+            // Save updated markup
+            Markup updatedMarkup = markupRepository.save(existingMarkup);
+
+            return new StandardResponse<>(HttpStatus.OK.value(), "Markup updated successfully", updatedMarkup);
+        } catch (ResourceNotFoundException e) {
+            return new StandardResponse<>(HttpStatus.NOT_FOUND.value(), e.getMessage(), null);
+        } catch (Exception e) {
+            return new StandardResponse<>(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Markup update failed: " + e.getMessage(), null);
+        }
+    }
+
 
 }

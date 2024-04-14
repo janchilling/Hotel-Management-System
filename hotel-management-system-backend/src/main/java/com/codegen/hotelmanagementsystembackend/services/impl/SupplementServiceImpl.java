@@ -17,7 +17,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -142,6 +141,31 @@ public class SupplementServiceImpl implements SupplementService {
 
         } catch (Exception e) {
             return new StandardResponse<>(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Failed to get Supplements", null);
+        }
+    }
+
+    @Override
+    public StandardResponse<List<Supplement>> updateSupplements(List<SupplementRequestDTO> supplementRequestDTOs) {
+        List<Supplement> updatedSupplements = new ArrayList<>();
+
+        try {
+            for (SupplementRequestDTO supplementRequestDTO : supplementRequestDTOs) {
+                Supplement existingSupplement = supplementRepository.findById(supplementRequestDTO.getSupplementId())
+                        .orElseThrow(() -> new ResourceNotFoundException("Supplement not found with ID: " + supplementRequestDTO.getSupplementId()));
+
+                // Update supplement fields
+                existingSupplement.setSupplementName(supplementRequestDTO.getSupplementName());
+                existingSupplement.setSupplementDescription(supplementRequestDTO.getSupplementDescription());
+
+                // Save updated supplement
+                updatedSupplements.add(supplementRepository.save(existingSupplement));
+            }
+
+            return new StandardResponse<>(HttpStatus.OK.value(), "Supplements updated successfully", updatedSupplements);
+        } catch (ResourceNotFoundException e) {
+            return new StandardResponse<>(HttpStatus.NOT_FOUND.value(), e.getMessage(), null);
+        } catch (Exception e) {
+            return new StandardResponse<>(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Supplements update failed: " + e.getMessage(), null);
         }
     }
 }

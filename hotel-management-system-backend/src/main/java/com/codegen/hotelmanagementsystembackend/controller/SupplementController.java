@@ -31,4 +31,9 @@ public class SupplementController {
         return supplementService.getSupplementById(supplementId);
     }
 
+    @GetMapping("/batch")
+    public StandardResponse<List<Supplement>> updateSupplements(@RequestBody List<SupplementRequestDTO> supplementRequestDTO){
+        return supplementService.updateSupplements(supplementRequestDTO);
+    }
+
 }

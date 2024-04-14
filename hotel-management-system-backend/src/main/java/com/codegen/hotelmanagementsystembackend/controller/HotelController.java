@@ -47,4 +47,9 @@ public class HotelController {
     public StandardResponse<List<ContractResponseDTO>> getContractsByHotelId(@PathVariable Integer hotelId){
         return contractService.getContractsByHotelId(hotelId);
     }
+
+    @DeleteMapping("/{hotelId}")
+    public StandardResponse<Void> deleteHotelById(@PathVariable Integer hotelId){
+        return hotelService.deleteHotelById(hotelId);
+    }
 }

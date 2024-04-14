@@ -19,6 +19,7 @@ public class ContractResponseDTO {
     private Integer hotelId;
     private String hotelName;
     private List<SeasonResponseDTO> seasons;
+    private List<MarkupResponseDTO> markups;
     private List<DiscountResponseDTO> discounts;
     private List<RoomTypeResponseDTO> roomTypes;
     private List<SupplementResponseDTO> supplements;

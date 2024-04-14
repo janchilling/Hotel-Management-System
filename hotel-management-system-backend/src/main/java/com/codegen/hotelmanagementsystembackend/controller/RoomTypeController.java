@@ -38,4 +38,9 @@ public class RoomTypeController {
     public StandardResponse<RoomTypeResponseDTO> getRoomTypeById(@PathVariable Integer roomTypeId) {
        return roomTypeService.getRoomTypeById(roomTypeId);
     }
+
+    @PutMapping("/batch")
+    public StandardResponse<List<RoomType>> updateRoomTypes(@RequestBody List<RoomTypeRequestDTO> roomTypeRequestDTOS) {
+        return roomTypeService.updateRoomTypes(roomTypeRequestDTOS);
+    }
 }
