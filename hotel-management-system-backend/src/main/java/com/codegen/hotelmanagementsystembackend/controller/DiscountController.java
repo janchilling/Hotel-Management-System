@@ -27,4 +27,19 @@ public class DiscountController {
     public StandardResponse<DiscountResponseDTO> getDiscountById(@PathVariable Integer discountId){
         return discountService.getDiscountById(discountId);
     }
+
+    @PutMapping("/batch")
+    public StandardResponse<List<DiscountResponseDTO>> updateDiscounts(@RequestBody List<DiscountRequestDTO> discountRequestDTOS){
+        return discountService.updateDiscounts(discountRequestDTOS);
+    }
+
+    @DeleteMapping("/{discountId}")
+    public StandardResponse<Void> deleteDiscountById(@PathVariable Integer discountId){
+        return discountService.deleteDiscountById(discountId);
+    }
+
+    @DeleteMapping("/batch")
+    public StandardResponse<Void> deleteDiscountsByIds(@RequestBody List<Integer> discountIds){
+        return discountService.deleteDiscountsByIds(discountIds);
+    }
 }

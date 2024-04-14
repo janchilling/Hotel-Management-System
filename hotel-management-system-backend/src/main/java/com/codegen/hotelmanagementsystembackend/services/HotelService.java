@@ -19,6 +19,8 @@ public interface HotelService {
     StandardResponse<HotelResponseDTO> getHotelById(Integer hotelId);
 
 
+    StandardResponse<Void> deleteHotelById(Integer hotelId);
+
     StandardResponse<List<HotelImageDTO>> getHotelImagesByHotelId(Integer hotelId);
 
 }

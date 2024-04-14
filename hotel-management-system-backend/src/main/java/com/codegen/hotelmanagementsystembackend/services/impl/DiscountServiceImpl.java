@@ -8,12 +8,10 @@ import com.codegen.hotelmanagementsystembackend.entities.*;
 import com.codegen.hotelmanagementsystembackend.exception.ResourceNotFoundException;
 import com.codegen.hotelmanagementsystembackend.repository.ContractRepository;
 import com.codegen.hotelmanagementsystembackend.repository.DiscountRepository;
-import com.codegen.hotelmanagementsystembackend.repository.SeasonRepository;
 import com.codegen.hotelmanagementsystembackend.services.DiscountService;
 import com.codegen.hotelmanagementsystembackend.util.StandardResponse;
 import com.codegen.hotelmanagementsystembackend.util.UtilityMethods;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.service.spi.ServiceException;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -21,8 +19,6 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-
-import static java.util.stream.Collectors.toList;
 
 @Service
 @RequiredArgsConstructor
@@ -44,7 +40,6 @@ public class DiscountServiceImpl implements DiscountService {
         if (discountRequestDTOS == null || discountRequestDTOS.isEmpty()) {
             return new StandardResponse<>(HttpStatus.BAD_REQUEST.value(), "Empty request", null);
         }
-
 
         List<Discount> discountsList = new ArrayList<>();
 
@@ -146,5 +141,102 @@ public class DiscountServiceImpl implements DiscountService {
             return new StandardResponse<>(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Getting discounts failed", null);
         }
     }
+
+    @Override
+    public StandardResponse<List<DiscountResponseDTO>> updateDiscounts(List<DiscountRequestDTO> discountRequestDTOS) {
+        if (discountRequestDTOS == null || discountRequestDTOS.isEmpty()) {
+            return new StandardResponse<>(HttpStatus.BAD_REQUEST.value(), "Empty request", null);
+        }
+
+        List<Discount> updatedDiscountsList = new ArrayList<>();
+
+        try {
+            for (DiscountRequestDTO discountRequestDTO : discountRequestDTOS) {
+                Discount existingDiscount = discountRepository.findByDiscountId(discountRequestDTO.getDiscountId());
+                if (existingDiscount == null) {
+                    return new StandardResponse<>(HttpStatus.NOT_FOUND.value(), "Discount with ID " + discountRequestDTO.getDiscountId() + " not found", null);
+                }
+
+                // Update discount fields
+                existingDiscount.setDiscountName(discountRequestDTO.getDiscountName());
+                existingDiscount.setDiscountDescription(discountRequestDTO.getDiscountDescription());
+
+                // Update season discounts
+                List<SeasonDiscount> updatedSeasonDiscounts = new ArrayList<>();
+                for (SeasonDiscountDTO seasonDiscountDTO : discountRequestDTO.getSeasonDiscounts()) {
+                    SeasonDiscount existingSeasonDiscount = existingDiscount.getSeasonDiscounts().stream()
+                            .filter(sd -> sd.getSeason().getSeasonId().equals(seasonDiscountDTO.getSeasonId()))
+                            .findFirst()
+                            .orElse(null);
+                    if (existingSeasonDiscount != null) {
+                        existingSeasonDiscount.setDiscountPercentage(seasonDiscountDTO.getDiscountPercentage());
+                        updatedSeasonDiscounts.add(existingSeasonDiscount);
+                    } else {
+                        SeasonDiscount newSeasonDiscount = new SeasonDiscount();
+                        newSeasonDiscount.setDiscount(existingDiscount);
+                        SeasonDiscountKey seasonDiscountKey = new SeasonDiscountKey();
+                        seasonDiscountKey.setSeasonId(seasonDiscountDTO.getSeasonId());
+                        seasonDiscountKey.setDiscountId(existingDiscount.getDiscountId());
+                        newSeasonDiscount.setSeasonDiscountKey(seasonDiscountKey);
+                        newSeasonDiscount.setDiscountPercentage(seasonDiscountDTO.getDiscountPercentage());
+                        updatedSeasonDiscounts.add(newSeasonDiscount);
+                    }
+                }
+
+                existingDiscount.setSeasonDiscounts(updatedSeasonDiscounts);
+                updatedDiscountsList.add(existingDiscount);
+            }
+
+            // Save updated discounts
+            List<Discount> savedDiscounts = discountRepository.saveAll(updatedDiscountsList);
+            List<DiscountResponseDTO> responseDTOs = savedDiscounts.stream()
+                    .map(discount -> modelMapper.map(discount, DiscountResponseDTO.class))
+                    .collect(Collectors.toList());
+
+            return new StandardResponse<>(HttpStatus.OK.value(), "Discounts updated successfully", responseDTOs);
+        } catch (Exception e) {
+            return new StandardResponse<>(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Discount update failed: " + e.getMessage(), null);
+        }
+    }
+
+    @Override
+    public StandardResponse<Void> deleteDiscountById(Integer discountId) {
+        try {
+            // Check if the discount exists
+            Discount discount = utilityMethods.getDiscount(discountId);
+
+            // Delete the discount
+            discountRepository.delete(discount);
+
+            return new StandardResponse<>(HttpStatus.OK.value(), "Discount deleted successfully", null);
+        } catch (ResourceNotFoundException e) {
+            return new StandardResponse<>(HttpStatus.NOT_FOUND.value(), "Discount not found", null);
+        } catch (Exception e) {
+            return new StandardResponse<>(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Failed to delete discount: " + e.getMessage(), null);
+        }
+    }
+
+    @Override
+    public StandardResponse<Void> deleteDiscountsByIds(List<Integer> discountIds) {
+        try {
+            // Find discounts by their IDs
+            List<Discount> discountsToDelete = new ArrayList<>();
+            for (Integer discountId : discountIds) {
+                Discount discount = utilityMethods.getDiscount(discountId);
+                discountsToDelete.add(discount);
+            }
+
+            // Delete the discounts
+            discountRepository.deleteInBatch(discountsToDelete);
+
+            return new StandardResponse<>(HttpStatus.OK.value(), "Discounts deleted successfully", null);
+        } catch (ResourceNotFoundException e) {
+            return new StandardResponse<>(HttpStatus.NOT_FOUND.value(), "One or more discounts not found", null);
+        } catch (Exception e) {
+            return new StandardResponse<>(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Failed to delete discounts: " + e.getMessage(), null);
+        }
+    }
+
+
 
 }

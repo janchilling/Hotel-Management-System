@@ -1,10 +1,7 @@
-
 .facility-list-1 {
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Adjust the values as needed */
   border-radius: 0.5rem;
   padding: 1rem;
-  display: flex;
-  flex-wrap: wrap; /* Ensure items wrap to new rows */
   margin-top: 10px;
 }
 
@@ -12,3 +9,15 @@
   display: inline-block;
 }
 
+.address-description {
+  flex-basis: 66.666%;
+  padding-right: 10px; /* Add padding to the right */
+}
+
+.prices {
+  padding-left: 10px; /* Remove flex-basis and change padding */
+}
+
+.prices > div {
+  flex: 1; /* Add flex property */
+}

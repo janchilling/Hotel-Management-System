@@ -44,6 +44,4 @@ export class ViewSeasonDetailsComponent implements OnInit{
   handleUpdate(contractID: number) {
     // Handle update logic
   }
-
-
 }

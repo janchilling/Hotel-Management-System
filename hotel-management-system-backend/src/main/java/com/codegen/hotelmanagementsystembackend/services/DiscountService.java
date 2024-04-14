@@ -33,4 +33,9 @@ public interface DiscountService {
      */
     StandardResponse<List<DiscountResponseDTO>> getDiscountByContract(Integer contractId);
 
+    StandardResponse<List<DiscountResponseDTO>> updateDiscounts(List<DiscountRequestDTO> discountRequestDTOS);
+
+    StandardResponse<Void> deleteDiscountById(Integer discountId);
+
+    StandardResponse<Void> deleteDiscountsByIds(List<Integer> discountIds);
 }

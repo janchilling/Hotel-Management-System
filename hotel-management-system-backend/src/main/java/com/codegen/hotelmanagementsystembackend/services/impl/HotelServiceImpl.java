@@ -6,7 +6,6 @@ import com.codegen.hotelmanagementsystembackend.dto.HotelResponseDTO;
 import com.codegen.hotelmanagementsystembackend.entities.Hotel;
 import com.codegen.hotelmanagementsystembackend.entities.HotelImage;
 import com.codegen.hotelmanagementsystembackend.entities.HotelPhone;
-import com.codegen.hotelmanagementsystembackend.exception.ResourceAlreadyExistsException;
 import com.codegen.hotelmanagementsystembackend.repository.HotelRepository;
 import com.codegen.hotelmanagementsystembackend.services.HotelService;
 import com.codegen.hotelmanagementsystembackend.entities.Contract;
@@ -19,7 +18,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import java.sql.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -129,6 +127,24 @@ public class HotelServiceImpl implements HotelService {
             return new StandardResponse<>(HttpStatus.INTERNAL_SERVER_ERROR.value(), "An error occurred while retrieving the hotel", null);
         }
     }
+
+    @Override
+    public StandardResponse<Void> deleteHotelById(Integer hotelId) {
+        try {
+            // Check if the hotel exists
+            if (!hotelRepository.existsById(hotelId)) {
+                return new StandardResponse<>(HttpStatus.NOT_FOUND.value(), "Hotel not found", null);
+            }
+
+            // Delete the hotel by ID
+            hotelRepository.deleteById(hotelId);
+
+            return new StandardResponse<>(HttpStatus.OK.value(), "Hotel deleted successfully", null);
+        } catch (Exception e) {
+            return new StandardResponse<>(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Failed to delete hotel", null);
+        }
+    }
+
 
 
     public StandardResponse<List<HotelImageDTO>> getHotelImagesByHotelId(Integer hotelId) {
