@@ -29,7 +29,6 @@ export class MainHeaderNavbarComponent implements OnInit{
   }
 
   toggleUserDropdown(): void {
-    console.log("Clicked")
     this.userDropdownOpen = !this.userDropdownOpen;
   }
 
@@ -47,6 +46,10 @@ export class MainHeaderNavbarComponent implements OnInit{
 
   navigateToSignup(){
     this.router.navigate(['auth/signup']);
+  }
+
+  handleLogout(): void {
+    this.authenticationService.logout();
   }
 
 }

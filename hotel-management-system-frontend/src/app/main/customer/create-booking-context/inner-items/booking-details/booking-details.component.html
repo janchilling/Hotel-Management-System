@@ -1,5 +1,5 @@
 <div class="flex flex-col justify-between h-full p-4">
-  <app-select-details [contractId]="contractId" (selectDetailsChanged)="handleSelectDetailsChanged($event)"></app-select-details>
+  <app-select-details [totalGuestsAllowed]="totalGuestsAllowed" [contractId]="contractId" (selectDetailsChanged)="handleSelectDetailsChanged($event)"></app-select-details>
   <app-contact-details (contactDetailsChanged)="handleContactDetailsChanged($event)"></app-contact-details>
   <div class="mt-7 mb-10 flex items-center justify-between">
     <div class="flex items-center">

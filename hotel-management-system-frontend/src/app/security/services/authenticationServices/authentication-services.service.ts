@@ -33,12 +33,12 @@ export class AuthenticationServicesService {
   login(email: string, password: string) {
     return this.http.post<any>(`${this.backendHostName}/v1/auth/login`, { email, password })
       .pipe( tap(response => {
-        console.log(response)
-          localStorage.setItem('token', response.data.token);
-          const decodedToken = this.jwtHelper.decodeToken(response.data.token);
-          console.log(decodedToken)
-          localStorage.setItem('userRole', decodedToken.role);
-          localStorage.setItem('userId', decodedToken.userId);
+          if (response && response.data && response.data.token) {
+            localStorage.setItem('token', response.data.token);
+            const decodedToken = this.jwtHelper.decodeToken(response.data.token);
+            localStorage.setItem('userRole', decodedToken.role || '');
+            localStorage.setItem('userId', decodedToken.userId || '');
+          }
         }),
         catchError(error => {
           console.error('Login error:', error);
@@ -48,7 +48,7 @@ export class AuthenticationServicesService {
   }
 
   logout() {
-    localStorage.removeItem('user');
+    localStorage.removeItem('token');
     this.userSubject.next(null);
     this.router.navigate(['/auth/login']);
   }

@@ -7,6 +7,7 @@ import {
 } from "../../../../../../../shared/services/supplementServices/supplement-services.service";
 import {ActivatedRoute} from "@angular/router";
 import {DiscountServicesService} from "../../../../../../../shared/services/discountServices/discount-services.service";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
   selector: 'app-select-details',
@@ -16,6 +17,7 @@ import {DiscountServicesService} from "../../../../../../../shared/services/disc
 export class SelectDetailsComponent implements OnInit {
 
   @Input() contractId : any;
+  @Input() totalGuestsAllowed: any;
   @Output() selectDetailsChanged = new EventEmitter<any>();
   roomTypesDetails: any;
   supplementsDetails: any;
@@ -34,18 +36,23 @@ export class SelectDetailsComponent implements OnInit {
   invalidDiscountCode: boolean = false;
   guestsRequired: boolean = false;
   noOfPersons: number = 0;
+  checkInDateFormatted: any;
+  checkOutDateFormatted: any;
 
   constructor(
     private roomTypeServicesService: RoomTypeServicesService,
     private supplementServicesService: SupplementServicesService,
     private discountServicesService :DiscountServicesService,
     private route: ActivatedRoute,
+    private snackBar: MatSnackBar,
   ) {}
 
   ngOnInit(): void {
     this.route.queryParams.subscribe(params => {
-      this.checkInDate = params['checkIn'];
-      this.checkOutDate = params['checkOut'];
+      this.checkInDate = params['checkIn'] ? new Date(params['checkIn']) : undefined;
+      this.checkOutDate = params['checkOut'] ? new Date(params['checkOut']) : undefined;
+      this.checkInDateFormatted = this.checkInDate?.toDateString();
+      this.checkOutDateFormatted = this.checkOutDate?.toDateString();
     });
 
     if (this.contractId) {
@@ -177,12 +184,21 @@ export class SelectDetailsComponent implements OnInit {
   }
 
   validateGuests() {
+    console.log(this.totalGuestsAllowed)
     if (this.noOfPersons <= 0) {
       this.guestsRequired = true;
+      this.noOfPersons = 0;
+    } else if (this.noOfPersons > this.totalGuestsAllowed) {
+      this.snackBar.open('Increase rooms to add more guests.', 'Close', {
+        duration: 3000,
+        verticalPosition: 'top'
+      });
+      this.noOfPersons = this.totalGuestsAllowed;
     } else {
       this.guestsRequired = false;
       this.selectedRoomData.noOfPersons = this.noOfPersons;
     }
   }
+
 }
 
