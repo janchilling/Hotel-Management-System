@@ -1,6 +1,20 @@
 <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
-  <div *ngIf="roomTypesDetails && supplementsDetails && discountDetails; else loadingOrError">
-    <h3>Showing prices for dates between {{ checkInDate | date: 'shortDate' }} and {{ checkOutDate | date: 'shortDate' }}</h3>
+  <div class="w-full md:w-1/2">
+    <h3>Current Check In Date: {{ checkInDateFormatted }}</h3>
+    <h3>Current Check Out Date: {{ checkOutDateFormatted }}</h3>
+  </div>
+  <div class="w-full md:w-1/2">
+    <div class="text-right">
+      <h3>Want to Change Dates?</h3>
+      <div>
+        <app-main-button [buttonText]="'Check Availability'"></app-main-button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
+  <div *ngIf="roomTypesDetails && supplementsDetails && discountDetails; else loadingOrError" class="w-full">
     <h2>Select Details</h2>
     <ng-container *ngFor="let roomType of roomTypesDetails">
       <app-room-card [roomType]="roomType" (roomSelected)="receiveRoomSelection($event)" [showSelectSupplements]="true" [supplements]="supplementsDetails"></app-room-card>
@@ -27,6 +41,7 @@
     </div>
   </div>
 </div>
+
 <ng-template #loadingOrError>
   <app-loading-spinner *ngIf="isLoading"></app-loading-spinner>
   <app-internal-server-error *ngIf="isError"></app-internal-server-error>

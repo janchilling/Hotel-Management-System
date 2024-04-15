@@ -26,6 +26,7 @@ export class RoomCardComponent implements OnInit {
   selectedSupplements: any[] = [];
   totalPrice: number = 0;
   slides: any[] = [];
+  maxAdults: number = 0;
   showPopupCarousel = false;
 
   constructor(

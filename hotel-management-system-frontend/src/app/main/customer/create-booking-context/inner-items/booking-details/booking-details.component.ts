@@ -19,6 +19,7 @@ export class BookingDetailsComponent {
   @Output() purchaseClicked = new EventEmitter<any>()
   contactDetails: any;
   isPurchaseEnabled: boolean = false;
+  totalGuestsAllowed: number = 0;
 
   constructor(private _snackBar: MatSnackBar) {}
 
@@ -39,11 +40,14 @@ export class BookingDetailsComponent {
 
   handleSelectDetailsChanged(selectedRoomData: any) {
     this.selectedRoomData = selectedRoomData;
+    this.updateTotalAllowedGuests()
     this.checkPurchaseEnabled();
   }
 
   checkPurchaseEnabled() {
-    this.isPurchaseEnabled = this.selectedRoomData.bookingRooms.length > 0 && this.contactDetails && this.contactDetails.email && this.contactDetails.firstName && this.contactDetails.lastName && this.contactDetails.phoneNumber;
+    this.isPurchaseEnabled = this.selectedRoomData.bookingRooms.length > 0 && this.contactDetails && this.contactDetails.email
+      && this.contactDetails.firstName && this.contactDetails.lastName && this.contactDetails.phoneNumber
+      && this.selectedRoomData.noOfPersons;
   }
 
   openSnackBar(message: string) {
@@ -52,6 +56,13 @@ export class BookingDetailsComponent {
       horizontalPosition: 'center',
       verticalPosition: 'top',
     });
+  }
+
+  updateTotalAllowedGuests(){
+    this.totalGuestsAllowed = 0;
+    this.selectedRoomData.bookingRooms.forEach((bookingRoom: any) => {
+      this.totalGuestsAllowed += bookingRoom.maxAdults * bookingRoom.noOfRooms
+    })
   }
 
 }

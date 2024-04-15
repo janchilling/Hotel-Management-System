@@ -7,9 +7,9 @@
         </div>
         <div class="flex items-center">
           <span *ngIf="showSelectSupplements">No Of Rooms</span>
-          <button *ngIf="showSelectSupplements" (click)="decrementRooms()" class="text-lg mr-2"><i class="fas fa-minus"></i></button>
+          <button *ngIf="showSelectSupplements" (click)="decrementRooms()" class="text-lg mr-2 mx-1"><i class="fas fa-minus"></i></button>
           <span *ngIf="showSelectSupplements">{{ numRooms }}</span>
-          <button *ngIf="showSelectSupplements" (click)="incrementRooms()" class="text-lg ml-2"><i class="fas fa-plus"></i></button>
+          <button *ngIf="showSelectSupplements" (click)="incrementRooms()" class="text-lg ml-2 mx-1"><i class="fas fa-plus"></i></button>
         </div>
       </div>
       <img src="{{slides[0]?.roomTypeImageUrl}}" alt="Boat" class="rounded-t-lg image md:w-full md:rounded-l-lg md:rounded-t-none" (click)="openCarouselDialog()">

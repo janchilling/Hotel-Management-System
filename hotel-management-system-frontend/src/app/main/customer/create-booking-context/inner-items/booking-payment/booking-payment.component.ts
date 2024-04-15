@@ -10,6 +10,7 @@ import {
 import {
   AuthenticationServicesService
 } from "../../../../../security/services/authenticationServices/authentication-services.service";
+import {ContractServicesService} from "../../../../../shared/services/contractServices/contract-services.service";
 
 @Component({
   selector: 'app-booking-payment',
@@ -40,6 +41,7 @@ export class BookingPaymentComponent {
   tax: number = 0;
   customerId: any;
   hotelId: any;
+  contract: any;
 
   constructor(
     private markupServicesService: MarkupServicesService,
@@ -47,7 +49,8 @@ export class BookingPaymentComponent {
     private dateService: DateServiceService,
     private bookingServiceService :BookingServiceService,
     private dialog: MatDialog,
-    private authenticationService: AuthenticationServicesService
+    private authenticationService: AuthenticationServicesService,
+    private contractService: ContractServicesService
   ) {}
 
   ngOnInit(): void {
@@ -63,13 +66,9 @@ export class BookingPaymentComponent {
     this.markupServicesService.getMarkupsByContractId(this.contractId).subscribe(data => {
       this.markupDetails = data[0];
       this.calculateTotals();
-      console.log(this.finalPrice)
     });
 
-    this.checkPrepaymentEligibility();
-    console.log(this.bookingRooms)
-    console.log(this.bookingSupplements)
-    console.log(this.noOfPersons)
+    this.fetchContract();
   }
 
   calculateTotals(): void {
@@ -110,16 +109,16 @@ export class BookingPaymentComponent {
     const checkInDate = new Date(this.checkInDate);
     const today = new Date();
     const differenceInDays = Math.ceil((checkInDate.getTime() - this.today.getTime()) / (1000 * 3600 * 24));
-    if(differenceInDays > 3) {
+    if(differenceInDays > this.contract.balancePayment) {
       this.isPrepaymentEligible = true;
     }
   }
 
   getTotal(): number {
     if (this.selectedPaymentOption === 'prepayment') {
-      return this.finalPrice * 0.25; // 25% prepayment
+      return this.finalPrice * this.contract.prepayment / 100;
     } else {
-      return this.finalPrice; // Full payment
+      return this.finalPrice;
     }
   }
 
@@ -171,13 +170,9 @@ export class BookingPaymentComponent {
       bookingSupplements: this.bookingSupplements
     };
 
-    console.log(bookingRequest)
-
     this.bookingServiceService.addBooking(bookingRequest).subscribe({
       next: (response) => {
         if(response.statusCode == 201){
-          console.log('Booking added successfully:', response);
-          console.log(response)
           this.bookingPlaced.emit(response.data);
         }else {
           console.log('Booking not added successfully:', response);
@@ -191,5 +186,20 @@ export class BookingPaymentComponent {
     })
   }
 
+  fetchContract(){
+    this.contractService.getContractsById(this.contractId).subscribe({
+      next: (response: any) => {
+        if (response.statusCode === 200) {
+          this.contract = response.data;
+          this.checkPrepaymentEligibility();
+        } else {
+          console.error('Error fetching contract:', response.message);
+        }
+      },
+      error: (error) => {
+        console.error('Error fetching contract:', error);
+      }
+    })
+  }
 
 }

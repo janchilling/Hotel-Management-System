@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Renderer2 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from "@angular/router";
 import { SearchParamsService } from "../../services/searchParams/search-params.service";
@@ -18,7 +18,8 @@ export class MainSearchbarComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
-    private searchParamsService: SearchParamsService
+    private searchParamsService: SearchParamsService,
+    private renderer: Renderer2
   ) { }
 
   ngOnInit(): void {

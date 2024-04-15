@@ -51,7 +51,6 @@ export class HotelDetailsContextComponent implements OnInit {
           console.log(this.hotelDetails);
           this.loading = false;
         } else {
-          console.error('Error fetching hotel details:', response.message);
           this.error = true;
           this.loading = false;
         }

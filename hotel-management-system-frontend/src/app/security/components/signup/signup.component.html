@@ -1,13 +1,15 @@
-<div class="formbold-main-wrapper">
-  <div class="formbold-form-wrapper">
-
-    <img src="/assets/images/Travee_white_logo.svg">
+<section>
+  <div class="flex flex-col items-center justify-center px-2 py-2 mx-auto md:h-full my-20 lg:py-0">
+    <a href="#" class="flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white">
+      <img class="w-64 h-32 mr-2" src="/assets/images/Travee_white_logo.svg" alt="logo">
+    </a>
+    <div class="w-full bg-white rounded-lg shadow-md md:shadow-lg dark:border dark:border-gray-700 md:mt-0 sm:max-w-screen-md xl:p-0 dark:bg-gray-800">
+      <div class="p-6 space-y-4 md:space-y-6 sm:p-8 border-2 border-gray-100 max-w-full mx-auto">
+        <h1 class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
+          Register now
+        </h1>
 
     <form [formGroup]="signupForm" (ngSubmit)="onSubmit()">
-      <div class="formbold-form-title">
-        <h2 class="">Register now</h2>
-      </div>
-
       <div class="formbold-input-flex">
         <div>
           <label for="firstname" class="formbold-form-label">
@@ -17,7 +19,7 @@
             type="text"
             name="firstname"
             id="firstname"
-            class="formbold-form-input"
+            class="formbold-form-input w-full"
             formControlName="firstname"
           />
           <div *ngIf="signupForm.get('firstname')?.invalid && signupForm.get('firstname')?.touched">
@@ -32,7 +34,7 @@
             type="text"
             name="lastname"
             id="lastname"
-            class="formbold-form-input"
+            class="formbold-form-input w-full"
             formControlName="lastname"
           />
           <div *ngIf="signupForm.get('lastname')?.invalid && signupForm.get('lastname')?.touched">
@@ -50,7 +52,7 @@
             type="email"
             name="email"
             id="email"
-            class="formbold-form-input"
+            class="formbold-form-input w-full"
             formControlName="email"
           />
           <div *ngIf="signupForm.get('email')?.invalid && signupForm.get('email')?.touched">
@@ -68,7 +70,7 @@
             type="text"
             name="phone"
             id="phone"
-            class="formbold-form-input"
+            class="formbold-form-input w-full"
             formControlName="phone"
           />
           <div *ngIf="signupForm.get('phone')?.invalid && signupForm.get('phone')?.touched">
@@ -87,7 +89,7 @@
           type="text"
           name="address"
           id="address"
-          class="formbold-form-input"
+          class="formbold-form-input w-full"
           formControlName="address"
         />
         <div *ngIf="signupForm.get('address')?.invalid && signupForm.get('address')?.touched">
@@ -104,7 +106,7 @@
             type="text"
             name="state"
             id="state"
-            class="formbold-form-input"
+            class="formbold-form-input w-full"
             formControlName="state"
           />
           <div *ngIf="signupForm.get('state')?.invalid && signupForm.get('state')?.touched">
@@ -119,7 +121,7 @@
             type="text"
             name="country"
             id="country"
-            class="formbold-form-input"
+            class="formbold-form-input w-full"
             formControlName="country"
           />
           <div *ngIf="signupForm.get('country')?.invalid && signupForm.get('country')?.touched">
@@ -137,7 +139,7 @@
             type="text"
             name="post"
             id="post"
-            class="formbold-form-input"
+            class="formbold-form-input w-full"
             formControlName="post"
           />
           <div *ngIf="signupForm.get('post')?.invalid && signupForm.get('post')?.touched">
@@ -152,7 +154,7 @@
             type="text"
             name="city"
             id="city"
-            class="formbold-form-input"
+            class="formbold-form-input w-full"
             formControlName="city"
           />
           <div *ngIf="signupForm.get('city')?.invalid && signupForm.get('city')?.touched">
@@ -171,7 +173,7 @@
           type="password"
           name="password"
           id="password"
-          class="formbold-form-input"
+          class="formbold-form-input w-full"
           formControlName="password"
         />
         <div *ngIf="signupForm.get('password')?.invalid && signupForm.get('password')?.touched">
@@ -192,7 +194,7 @@
           type="password"
           name="confirmPassword"
           id="confirmPassword"
-          class="formbold-form-input"
+          class="formbold-form-input w-full"
           formControlName="confirmPassword"
         />
         <div *ngIf="signupForm.get('confirmPassword')?.invalid && signupForm.get('confirmPassword')?.touched">
@@ -204,8 +206,11 @@
           </div>
         </div>
       </div>
-
-      <button type="submit" class="w-full h-20 bg-button-gold hover:bg-black text-white font-bold focus:ring-4 focus:outline-none focus:ring-primary-300 rounded-lg text-lg px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800" [disabled]="signupForm.invalid">Register Now</button>
+      <div class="flex justify-center"> <!-- Add this line to center the button -->
+        <button type="submit" class="bg-button-gold hover:bg-black text-white font-bold focus:ring-4 focus:outline-none focus:ring-primary-300 rounded-lg text-lg py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800" style="padding: 8px 150px; margin: 4px;" [disabled]="signupForm.invalid">Register Now</button>
+      </div>
     </form>
+      </div>
+    </div>
   </div>
-</div>
+</section>
