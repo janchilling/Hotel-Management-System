@@ -5,7 +5,8 @@
   <div class="container-padding">
     <div
       class="mb-4 border-gray-200 dark:border-gray-700 max-w-screen-xl flex flex-wrap items-center justify-between mx-auto">
-      <ul class="flex flex-wrap -mb-px text-lg font-medium text-center" data-tabs-active-classes="text-purple-600 hover:text-purple-600 dark:text-purple-500 dark:hover:text-purple-500 border-purple-600 dark:border-purple-500"
+      <ul class="flex flex-wrap -mb-px text-lg font-medium text-center"
+          data-tabs-active-classes="text-purple-600 hover:text-purple-600 dark:text-purple-500 dark:hover:text-purple-500 border-purple-600 dark:border-purple-500"
           data-tabs-inactive-classes="dark:border-transparent text-gray-500 hover:text-gray-600 dark:text-gray-400 border-gray-100 hover:border-gray-300 dark:border-gray-700 dark:hover:text-gray-300"
           data-tabs-toggle="#default-styled-tab-content"
           id="default-styled-tab"
@@ -13,29 +14,36 @@
         <li class="me-2" role="presentation">
           <button (click)="showOverview()"
                   [class.gold-underline]="isOverviewVisible"
-                  aria-controls="profile" aria-selected="false" class="p-4 border-b-2 hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"
+                  aria-controls="profile" aria-selected="false"
+                  class="p-4 border-b-2 hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"
                   data-tabs-target="#styled-profile" id="profile-styled-tab" role="tab" type="button">Overview
           </button>
         </li>
         <li class="me-2" role="presentation">
           <button (click)="showRooms()"
                   [class.gold-underline]="isRoomsVisible"
-                  aria-controls="dashboard" aria-selected="false" class="p-4 border-b-2 hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"
+                  aria-controls="dashboard" aria-selected="false"
+                  class="p-4 border-b-2 hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"
                   data-tabs-target="#styled-dashboard" id="dashboard-styled-tab" role="tab" type="button">Rooms
           </button>
         </li>
         <li class="me-2" role="presentation">
-          <button
-            aria-controls="settings"
-            aria-selected="false" class="inline-block p-4 border-b-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300" data-tabs-target="#styled-settings" id="settings-styled-tab"
-            role="tab"
-            type="button">Offers
+          <button (click)="showOffers()"
+                  [class.gold-underline]="isOffersVisible"
+                  aria-controls="settings"
+                  aria-selected="false"
+                  class="inline-block p-4 border-b-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"
+                  data-tabs-target="#styled-settings" id="settings-styled-tab"
+                  role="tab"
+                  type="button">Offers
           </button>
         </li>
         <li role="presentation">
           <button
             aria-controls="contacts"
-            aria-selected="false" class="inline-block p-4 border-b-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300" data-tabs-target="#styled-contacts" id="contacts-styled-tab"
+            aria-selected="false"
+            class="inline-block p-4 border-b-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"
+            data-tabs-target="#styled-contacts" id="contacts-styled-tab"
             role="tab"
             type="button">Reviews
           </button>
@@ -56,6 +64,9 @@
     </ng-container>
     <ng-container *ngIf="isRoomsVisible">
       <app-hotel-room [contractId]="hotelDetails?.contractId"></app-hotel-room>
+    </ng-container>
+    <ng-container *ngIf="isOffersVisible">
+      <app-hotel-offers [contractId]="hotelDetails?.contractId"></app-hotel-offers>
     </ng-container>
   </div>
 </ng-template>

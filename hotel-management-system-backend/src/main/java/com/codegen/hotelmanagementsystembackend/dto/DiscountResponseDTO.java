@@ -11,6 +11,7 @@ public class DiscountResponseDTO {
     private String discountName;
     private String discountCode;
     private String discountDescription;
+    private String discountImageURL;
     private Integer contractId;
     private String contractStatus;
     private Integer hotelId;

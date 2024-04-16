@@ -1,0 +1,47 @@
+<div *ngIf="!isLoading">
+<form [formGroup]="availabilityForm" class="p-8">
+  <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
+    <div>
+      <label for="checkIn" class="block text-sm font-medium leading-5 text-gray-700">Check In Date</label>
+      <input formControlName="checkIn" id="checkIn" type="date"
+             class="mt-1 form-input block w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5"
+             [min]="minCheckInDate" (change)="updateMinCheckoutDate()">
+      <div *ngIf="availabilityForm.get('checkIn')?.invalid && availabilityForm.get('checkIn')?.touched"
+           class="text-red-500 text-xs mt-1">Check-in date is required
+      </div>
+    </div>
+    <div>
+      <label for="checkOut" class="block text-sm font-medium leading-5 text-gray-700">Check Out Date</label>
+      <input formControlName="checkOut" id="checkOut" type="date"
+             class="mt-1 form-input block w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5"
+             [min]="minCheckOutDate">
+      <div *ngIf="availabilityForm.get('checkOut')?.invalid && availabilityForm.get('checkOut')?.touched"
+           class="text-red-500 text-xs mt-1">Check-out date is required
+      </div>
+    </div>
+    <div>
+      <label for="noOfRooms" class="block text-sm font-medium leading-5 text-gray-700">No of Rooms</label>
+      <input formControlName="noOfRooms" id="noOfRooms" type="number"
+             class="mt-1 form-input block w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5">
+      <div *ngIf="availabilityForm.get('noOfRooms')?.invalid && availabilityForm.get('noOfRooms')?.touched"
+           class="text-red-500 text-xs mt-1">Please enter a valid number of rooms
+      </div>
+    </div>
+    <div>
+      <label for="noOfPersons" class="block text-sm font-medium leading-5 text-gray-700">No of Guests</label>
+      <input formControlName="noOfPersons" id="noOfPersons" type="number"
+             class="mt-1 form-input block w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5">
+      <div *ngIf="availabilityForm.get('noOfPersons')?.invalid && availabilityForm.get('noOfPersons')?.touched"
+           class="text-red-500 text-xs mt-1">Please enter a valid number of guests
+      </div>
+    </div>
+  </div>
+  <div class="mt-6 flex justify-center">
+    <app-main-button [buttonText]="'Check Availability'" (click)="checkAvailability()"></app-main-button>
+  </div>
+</form>
+</div>
+
+<div *ngIf="isLoading">
+  <app-loading-spinner></app-loading-spinner>
+</div>

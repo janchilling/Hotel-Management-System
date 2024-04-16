@@ -6,6 +6,7 @@ import com.codegen.hotelmanagementsystembackend.services.HotelService;
 import com.codegen.hotelmanagementsystembackend.services.ProductService;
 import com.codegen.hotelmanagementsystembackend.util.StandardResponse;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.sql.ast.tree.predicate.BooleanExpressionPredicate;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -51,6 +52,21 @@ public class ProductsController {
     public StandardResponse<SearchResponseDTO> getHotelByIdActive(@PathVariable Integer hotelId) {
         try {
             return productService.getHotelByIdActive(hotelId);
+        } catch (Exception e) {
+            // Log the exception
+            // logger.error("An error occurred while searching hotels", e);
+            return new StandardResponse<>(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Internal Server Error", null);
+        }
+    }
+
+    @GetMapping("/{hotelId}/availability")
+    public StandardResponse<Boolean> checkAvailabilityByHotelId(
+            @PathVariable Integer hotelId,
+            @RequestParam(required = false) Integer noOfRooms,
+            @RequestParam(required = false) Date checkIn,
+            @RequestParam(required = false) Date checkOut)  {
+        try {
+            return productService.checkAvailabilityByHotelId(hotelId, noOfRooms, checkIn, checkOut);
         } catch (Exception e) {
             // Log the exception
             // logger.error("An error occurred while searching hotels", e);

@@ -8,6 +8,11 @@ import {
 import {ActivatedRoute} from "@angular/router";
 import {DiscountServicesService} from "../../../../../../../shared/services/discountServices/discount-services.service";
 import {MatSnackBar} from "@angular/material/snack-bar";
+import {PopUpCarouselComponent} from "../../../../../../../shared/components/pop-up-carousel/pop-up-carousel.component";
+import {MatDialog} from "@angular/material/dialog";
+import {
+  PopUpAvailabilityFormComponent
+} from "../../../../../../../shared/components/pop-up-availability-form/pop-up-availability-form.component";
 
 @Component({
   selector: 'app-select-details',
@@ -45,6 +50,7 @@ export class SelectDetailsComponent implements OnInit {
     private discountServicesService :DiscountServicesService,
     private route: ActivatedRoute,
     private snackBar: MatSnackBar,
+    private dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
@@ -198,6 +204,14 @@ export class SelectDetailsComponent implements OnInit {
       this.guestsRequired = false;
       this.selectedRoomData.noOfPersons = this.noOfPersons;
     }
+  }
+
+  openPopUpAvailabilityForm(){
+    this.dialog.open(PopUpAvailabilityFormComponent, {
+      width: '50vw',
+      height: '45vh',
+      panelClass: 'pop-up-carousel-dialog'
+    });
   }
 
 }

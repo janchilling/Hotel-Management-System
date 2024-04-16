@@ -11,6 +11,7 @@ import {
   AuthenticationServicesService
 } from "../../../../../security/services/authenticationServices/authentication-services.service";
 import {ContractServicesService} from "../../../../../shared/services/contractServices/contract-services.service";
+import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 
 @Component({
   selector: 'app-booking-payment',
@@ -42,6 +43,7 @@ export class BookingPaymentComponent {
   customerId: any;
   hotelId: any;
   contract: any;
+  cardDetailsForm: FormGroup;
 
   constructor(
     private markupServicesService: MarkupServicesService,
@@ -50,8 +52,16 @@ export class BookingPaymentComponent {
     private bookingServiceService :BookingServiceService,
     private dialog: MatDialog,
     private authenticationService: AuthenticationServicesService,
-    private contractService: ContractServicesService
-  ) {}
+    private contractService: ContractServicesService,
+    private formBuilder: FormBuilder
+  ) {
+    this.cardDetailsForm = this.formBuilder.group({
+      cardHolder: ['', [Validators.required]],
+      cardNumber: ['', [Validators.required, Validators.pattern('[0-9]{4}-[0-9]{4}-[0-9]{4}-[0-9]{4}')]],
+      expiryDate: ['', [Validators.required, Validators.pattern('[0-9]{2}/[0-9]{2}')]],
+      cvc: ['', [Validators.required, Validators.pattern('[0-9]{3}')]]
+    });
+  }
 
   ngOnInit(): void {
     this.route.queryParams.subscribe(params => {
@@ -68,6 +78,7 @@ export class BookingPaymentComponent {
       this.calculateTotals();
     });
 
+    console.log(this.bookingRooms)
     this.fetchContract();
   }
 

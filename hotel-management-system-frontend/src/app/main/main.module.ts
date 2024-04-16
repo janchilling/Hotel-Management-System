@@ -25,6 +25,7 @@ import { AllBookingsContextComponent } from './customer/all-bookings-context/all
 import { AllBookingResultCardsComponent } from './customer/all-bookings-context/all-booking-result-cards/all-booking-result-cards.component';
 import {ViewBookingContextComponent} from "./customer/view-booking-context/view-booking-context.component";
 import {SecurityModule} from "../security/security.module";
+import { HotelOffersComponent } from './customer/hotel-details-context/inner-items/hotel-offers/hotel-offers.component';
 
 
 @NgModule({
@@ -49,6 +50,7 @@ import {SecurityModule} from "../security/security.module";
     AllBookingsContextComponent,
     AllBookingResultCardsComponent,
     ViewBookingContextComponent,
+    HotelOffersComponent,
   ],
   exports: [
     ResultCardComponent

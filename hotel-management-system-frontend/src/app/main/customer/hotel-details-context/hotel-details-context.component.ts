@@ -14,6 +14,7 @@ export class HotelDetailsContextComponent implements OnInit {
   hotelDetails: any;
   isOverviewVisible: boolean = true;
   isRoomsVisible: boolean = false;
+  isOffersVisible: boolean = false;
   checkInDate: any;
   checkOutDate: any;
   loading: boolean = true;
@@ -67,11 +68,19 @@ export class HotelDetailsContextComponent implements OnInit {
   showOverview() {
     this.isOverviewVisible = true;
     this.isRoomsVisible = false;
+    this.isOffersVisible = false;
   }
 
   showRooms() {
     this.isOverviewVisible = false;
     this.isRoomsVisible = true;
+    this.isOffersVisible = false;
+  }
+
+  showOffers() {
+    this.isOverviewVisible = false;
+    this.isRoomsVisible = false;
+    this.isOffersVisible = true;
   }
 
   viewbookingContext() {
