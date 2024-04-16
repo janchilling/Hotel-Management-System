@@ -26,6 +26,8 @@ public class Discount {
 
     private String discountDescription;
 
+    private String discountImageURL;
+
     @OneToMany(mappedBy = "discount", cascade = CascadeType.ALL)
     @JsonManagedReference("seasonDiscountSeasonReference")
     private List<SeasonDiscount> seasonDiscounts = new ArrayList<>();

@@ -5,36 +5,30 @@
       <div class="flex flex-col">
         <div class="px-2 py-2 sm:px-6">
           <p class="text-xl font-medium">Order Summary</p>
-          <p class="text-gray-400">Check your items. And select a suitable shipping method.</p>
+          <p class="text-gray-400">Check if the items in the summary are correct.</p>
         </div>
         <ng-container *ngFor="let room of bookingRooms">
-        <div class="my-4 space-y-3 rounded-lg border bg-white px-2 py-2 sm:px-6">
-            <div class="flex flex-col rounded-lg bg-white sm:flex-row">
-              <!-- Room image -->
-              <img alt=""
-                   class="m-2 h-24 w-28 rounded-md border object-cover object-center"
-                   src="{{room.imageURL}}"/>
-              <div class="flex w-full flex-col px-4 py-4">
-                <!-- Room name -->
-                <span class="font-semibold">{{ room.roomTypeName }}
-                  Room with maximum Occupancy {{ room.maxAdults }}</span>
-                <!-- Number of rooms and price -->
-                <span class="float-right text-gray-400">{{ room.noOfRooms }} Room(s)</span>
-                <p class="text-lg font-bold">USD {{ room.bookedPrice }}</p>
-                <!-- Display selected supplements -->
-                <div *ngIf="room.supplements && room.supplements.length > 0" class="mt-4">
-                  <p class="font-semibold">Selected Supplements:</p>
-                  <ul class="list-disc list-inside">
-                    <ng-container *ngFor="let supplement of bookingSupplements">
-                      <li *ngIf="supplement.roomtypeId == room.roomtypeId">
-                        {{ supplement.supplementName }} (RoomTypeID: {{ supplement.roomtypeId }})
-                      </li>
-                    </ng-container>
-                  </ul>
+          <div class="bg-white my-4 md:mt-4 flex flex-col md:flex-row justify-start items-start md:items-center md:space-x-6 xl:space-x-8 w-full">
+            <div class="md:pb-8 w-full md:w-40 px-2">
+              <img class="w-full py-2 hidden md:block" src="{{room.imageURL}}" alt="Room Image" />
+            </div>
+            <div class="border-b border-gray-200 md:flex-row flex-col flex justify-between items-start w-full py-3 space-y-4 md:space-y-0">
+              <div class="w-full flex flex-col justify-start items-start">
+                <h3 class="text-xl dark:text-white xl:text-2xl font-semibold leading-6 text-gray-800"><b>{{room.roomTypeName}} Room(s) with maximum occupancy of {{room.maxAdults}}</b></h3>
+                <div class="flex justify-start items-start flex-col">
+                  <p class="text-sm dark:text-white font-semibold leading-4 text-center md:text-left text-black-800">Supplements</p>
+                  <ng-container *ngFor="let supplement of bookingSupplements">
+                    <p class="text-sm dark:text-white leading-none text-gray-800" *ngIf="supplement.roomTypeId == room.roomTypeId">{{supplement.supplementName}} at USD {{supplement.supplementPrice}} per Room</p>
+                  </ng-container>
                 </div>
               </div>
+              <div class="flex justify-end space-x-8 px-4 items-start w-full">
+                <p class="text-base dark:text-white xl:text-lg leading-6 text-gray-800">USD {{room.bookedPrice}} Per Room</p>
+                <p class="text-base dark:text-white xl:text-lg leading-6 text-gray-800">{{room.noOfRooms}} Room(s)</p>
+                <p class="text-base dark:text-white xl:text-lg font-semibold leading-6 text-gray-800">USD {{room.bookedPrice * room.noOfRooms}}</p>
+              </div>
             </div>
-        </div>
+          </div>
         </ng-container>
       </div>
     </div>
@@ -47,8 +41,8 @@
     <div class="">
       <div class="mt-10 bg-background-gray px-4 py-4 lg:mt-0">
         <div class="px-2 py-4 sm:px-6">
-          <p class="text-xl font-medium">Total</p>
-          <p class="text-gray-400">Your total payment</p>
+          <p class="text-xl font-medium">Payment Summary </p>
+          <p class="text-gray-400">Your Payment breakdown</p>
         </div>
         <div class="mt-4 space-y-3 rounded-lg border bg-white px-2 py-4 sm:px-6">
           <div class="flex items-center justify-between">
@@ -69,7 +63,7 @@
           <!-- Discounted amount -->
           <div *ngIf="discountedAmount > 0" class="flex items-center justify-between">
             <p class="text-sm font-medium text-gray-900">Discount</p>
-            <p class="font-semibold text-gray-900">USD {{ discountedAmount }}</p>
+            <p class="font-semibold text-gray-900">- USD {{ discountedAmount }}</p>
           </div>
           <div *ngIf="discountedAmount == 0" class="flex items-center justify-between">
             <p class="text-sm font-medium text-gray-900">Discount</p>
@@ -94,11 +88,11 @@
   </div>
 
   <!-- Payment Details -->
-  <div class="px-4">
+  <div class="pl-4">
     <div class="mt-10 bg-background-gray px-4 pt-4 lg:mt-0">
       <div class="px-2 py-4 sm:px-6">
         <p class="text-xl font-medium">Payment Details</p>
-        <p class="text-gray-400">Complete your order by providing your payment details.</p>
+        <p class="text-gray-400">Complete your booking by providing your payment details.</p>
       </div>
       <div class="mb-2">
         <label class="block text-sm font-medium" for="payment-option">Payment Option</label>
@@ -107,9 +101,10 @@
                 id="payment-option"
                 name="payment-option">
           <option value="full">Full Payment</option>
-          <option *ngIf="isPrepaymentEligible" value="prepayment">Prepayment (25% deposit)</option>
+          <option *ngIf="isPrepaymentEligible" value="prepayment">Prepayment ({{contract.prepayment}}% deposit)</option>
         </select>
       </div>
+      <form [formGroup]="cardDetailsForm">
       <div class="">
         <label class="mt-4 mb-2 block text-sm font-medium" for="card-holder">Card Holder</label>
         <div class="relative">
@@ -117,7 +112,9 @@
             class="w-full rounded-md border border-gray-200 px-4 py-3 pl-11 text-sm uppercase shadow-sm outline-none focus:z-10 focus:border-blue-500 focus:ring-blue-500"
             id="card-holder" name="card-holder"
             placeholder="Your full name here"
+            formControlName="cardHolder"
             type="text"/>
+          <div *ngIf="cardDetailsForm.get('cardHolder')?.invalid && (cardDetailsForm.get('cardHolder')?.dirty || cardDetailsForm.get('cardHolder')?.touched)" class="text-red-500 text-sm mt-1">Card holder name is required.</div>
           <div class="pointer-events-none absolute inset-y-0 left-0 inline-flex items-center px-3">
             <svg class="h-4 w-4 text-gray-400" fill="none" stroke="currentColor" stroke-width="2"
                  viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -135,7 +132,11 @@
               class="w-full rounded-md border border-gray-200 px-2 py-3 pl-11 text-sm shadow-sm outline-none focus:z-10 focus:border-blue-500 focus:ring-blue-500"
               id="card-no" name="card-no"
               placeholder="xxxx-xxxx-xxxx-xxxx"
+              required
+              formControlName="cardNumber"
+              pattern="[0-9]{4}-[0-9]{4}-[0-9]{4}-[0-9]{4}"
               type="text"/>
+            <div *ngIf="cardDetailsForm.get('cardNumber')?.invalid && (cardDetailsForm.get('cardNumber')?.dirty || cardDetailsForm.get('cardNumber')?.touched)" class="text-red-500 text-sm mt-1">Invalid card number.</div>
             <div class="pointer-events-none absolute inset-y-0 left-0 inline-flex items-center px-3">
               <svg class="h-4 w-4 text-gray-400" fill="currentColor" height="16" viewBox="0 0 16 16"
                    width="16" xmlns="http://www.w3.org/2000/svg">
@@ -149,14 +150,23 @@
             class="w-full rounded-md border border-gray-200 px-2 py-3 text-sm shadow-sm outline-none focus:z-10 focus:border-blue-500 focus:ring-blue-500"
             name="credit-expiry"
             placeholder="MM/YY"
+            required
+            formControlName="expiryDate"
+            pattern="[0-9]{2}/[0-9]{2}"
             type="text"/>
+          <div *ngIf="cardDetailsForm.get('expiryDate')?.invalid && (cardDetailsForm.get('expiryDate')?.dirty || cardDetailsForm.get('expiryDate')?.touched)" class="text-red-500 text-sm mt-1">Invalid expiry date.</div>
           <input
             class="w-1/6 flex-shrink-0 rounded-md border border-gray-200 px-2 py-3 text-sm shadow-sm outline-none focus:z-10 focus:border-blue-500 focus:ring-blue-500"
             name="credit-cvc"
             placeholder="CVC"
+            required
+            formControlName="cvc"
+            pattern="[0-9]{3}"
             type="text"/>
+          <div *ngIf="cardDetailsForm.get('cvc')?.invalid && (cardDetailsForm.get('cvc')?.dirty || cardDetailsForm.get('cvc')?.touched)" class="text-red-500 text-sm mt-1">Invalid CVC.</div>
         </div>
       </div>
+      </form>
       <div class="mt-6 flex items-center justify-between">
         <p class="text-sm font-medium text-gray-900">Total</p>
         <p class="text-2xl font-semibold text-gray-900">USD {{ getTotal() }}</p>

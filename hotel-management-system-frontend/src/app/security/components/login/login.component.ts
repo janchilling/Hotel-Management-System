@@ -46,6 +46,7 @@ export class LoginComponent implements OnInit{
             this.router.navigateByUrl(this.returnUrl);
             this.authService.redirectUrl = null;
           }else if (response.statusCode === 401) {
+            this.isLoading = false;
             this.snackBar.open(response.message, 'Close', { duration: 5000, verticalPosition: 'top' });
           } else if (response.statusCode === 500) {
             this.isLoading = false;

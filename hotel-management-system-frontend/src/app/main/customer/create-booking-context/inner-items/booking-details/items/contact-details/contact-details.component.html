@@ -1,5 +1,5 @@
 <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
-<div class="bg-background-gray w-full">
+<div class="bg-background-gray w-full pt-3 px-3">
   <div class="flex items-start">
     <div class="w-full">
       <h2 class="text-left text-2xl font-semibold mb-8 px-3">Enter Contact Details</h2>
@@ -30,10 +30,10 @@
 
         <div class="mb-5">
           <label for="phoneNumber" class="block text-base font-medium text-[#07074D] mb-3">Phone Number</label>
-          <input type="tel" formControlName="phoneNumber" id="phoneNumber" placeholder="123-456-7890" class="w-full px-3 py-2 rounded-md border border-[#e0e0e0] bg-white text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md" pattern="[0-9]{9}" />
+          <input type="tel" formControlName="phoneNumber" id="phoneNumber" placeholder="1234567890" class="w-full px-3 py-2 rounded-md border border-[#e0e0e0] bg-white text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md" pattern="[0-9]{10}" />
           <!-- Display error message for phone number -->
           <span *ngIf="contactForm.get('phoneNumber')?.errors?.['required'] && contactForm.get('phoneNumber')?.touched" class="text-red-600">Phone number is required</span>
-          <span *ngIf="contactForm.get('phoneNumber')?.errors?.['pattern'] && contactForm.get('phoneNumber')?.touched" class="text-red-600">Invalid phone number format (123-456-7890)</span>
+          <span *ngIf="contactForm.get('phoneNumber')?.errors?.['pattern'] && contactForm.get('phoneNumber')?.touched" class="text-red-600">Invalid phone number format (1234567890)</span>
         </div>
       </form>
     </div>

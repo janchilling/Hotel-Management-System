@@ -145,8 +145,6 @@ public class HotelServiceImpl implements HotelService {
         }
     }
 
-
-
     public StandardResponse<List<HotelImageDTO>> getHotelImagesByHotelId(Integer hotelId) {
         try {
             Hotel hotel = utilityMethods.getHotel(hotelId);

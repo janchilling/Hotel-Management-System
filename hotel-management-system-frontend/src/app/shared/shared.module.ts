@@ -22,6 +22,7 @@ import { MainHeaderNavbarAdminComponent } from './components/main-header-navbar-
 import { MainAdminSidebarComponent } from './components/main-admin-sidebar/main-admin-sidebar.component';
 import { MainSmallButtonComponent } from './components/main-small-button/main-small-button.component';
 import { PopUpCarouselComponent } from './components/pop-up-carousel/pop-up-carousel.component';
+import { PopUpAvailabilityFormComponent } from './components/pop-up-availability-form/pop-up-availability-form.component';
 
 
 @NgModule({
@@ -43,6 +44,7 @@ import { PopUpCarouselComponent } from './components/pop-up-carousel/pop-up-caro
     MainAdminSidebarComponent,
     MainSmallButtonComponent,
     PopUpCarouselComponent,
+    PopUpAvailabilityFormComponent,
   ],
   exports: [
     MainHeaderNavbarComponent,

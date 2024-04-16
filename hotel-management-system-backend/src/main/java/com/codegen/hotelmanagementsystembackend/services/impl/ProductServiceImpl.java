@@ -1,7 +1,6 @@
 package com.codegen.hotelmanagementsystembackend.services.impl;
 
 import com.codegen.hotelmanagementsystembackend.config.LoggingConfig;
-import com.codegen.hotelmanagementsystembackend.dto.HotelResponseDTO;
 import com.codegen.hotelmanagementsystembackend.dto.SearchResponseDTO;
 import com.codegen.hotelmanagementsystembackend.entities.Hotel;
 import com.codegen.hotelmanagementsystembackend.entities.Contract;
@@ -13,7 +12,6 @@ import com.codegen.hotelmanagementsystembackend.services.ProductService;
 import com.codegen.hotelmanagementsystembackend.services.SeasonService;
 import com.codegen.hotelmanagementsystembackend.util.StandardResponse;
 import com.codegen.hotelmanagementsystembackend.util.UtilityMethods;
-import jakarta.persistence.criteria.CriteriaBuilder;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -102,6 +100,38 @@ public class ProductServiceImpl implements ProductService {
             return new StandardResponse<>(500, "An error occurred while searching hotels", null);
         }
     }
+
+    @Override
+    public StandardResponse<Boolean> checkAvailabilityByHotelId(Integer hotelId, Integer noOfRooms, Date checkIn, Date checkOut) {
+        try {
+            // Get the hotel by ID
+            Hotel hotel = utilityMethods.getHotel(hotelId);
+
+            // Check if the hotel exists
+            if (hotel == null) {
+                return new StandardResponse<>(404, "Hotel not found", false);
+            }
+
+            // Get the active contract for the hotel within the given dates
+            Contract activeContract = getActiveContract(hotel, checkIn, checkOut);
+
+            // Check if there is an active contract for the hotel within the given dates
+            if (activeContract == null) {
+                return new StandardResponse<>(404, "No active contract found for the hotel within the specified dates", false);
+            }
+
+            // Check if there are enough available rooms in the active contract
+            boolean availability = hasAvailableRooms(activeContract, checkIn, checkOut, noOfRooms);
+
+            return new StandardResponse<>(200, "Availability checked", availability);
+        } catch (Exception e) {
+            // Log the exception
+            // logger.error("An error occurred while checking availability", e);
+            return new StandardResponse<>(500, "An error occurred while checking availability", null);
+        }
+    }
+
+
 
     @Override
     public StandardResponse<List<SearchResponseDTO>> adminSearchHotels(String hotel) {

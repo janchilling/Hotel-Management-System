@@ -13,6 +13,8 @@ public interface ProductService {
 
     StandardResponse<SearchResponseDTO> getHotelByIdActive(Integer hotelId);
 
+    StandardResponse<Boolean> checkAvailabilityByHotelId(Integer hotelId, Integer noOfRooms, Date checkIn, Date checkOut);
+
     StandardResponse<List<SearchResponseDTO>> adminSearchHotels(String hotel);
 
 }
