@@ -1,3 +1,4 @@
+<div *ngIf="!isLoading && !isError">
 <div class="sm:px-4 py-4 lg:px-4 xl:px-4">
   <!-- Order Summary Section -->
   <div class="lg:w-full"> <!-- Adjusted width for order summary -->
@@ -24,8 +25,8 @@
               </div>
               <div class="flex justify-end space-x-8 px-4 items-start w-full">
                 <p class="text-base dark:text-white xl:text-lg leading-6 text-gray-800">USD {{room.bookedPrice}} Per Room</p>
-                <p class="text-base dark:text-white xl:text-lg leading-6 text-gray-800">{{room.noOfRooms}} Room(s)</p>
-                <p class="text-base dark:text-white xl:text-lg font-semibold leading-6 text-gray-800">USD {{room.bookedPrice * room.noOfRooms}}</p>
+                <p class="text-base dark:text-white xl:text-md leading-6 text-gray-800">{{room.noOfRooms}} Room(s), {{noOfDays}} Night(s)</p>
+                <p class="text-base dark:text-white xl:text-lg font-semibold leading-6 text-gray-800">USD {{(room.bookedPrice * room.noOfRooms) * noOfDays}}</p>
               </div>
             </div>
           </div>
@@ -176,4 +177,9 @@
 </div>
 <div class="flex justify-end sm:px-4 lg:px-4 xl:px-4 py-4">
   <app-main-button [buttonText]="'Confirm Payment'" (click)="openConfirmationDialog()"></app-main-button>
+</div>
+</div>
+
+<div *ngIf="isLoading"> <!-- Display loading component while loading -->
+  <app-loading-spinner></app-loading-spinner>
 </div>

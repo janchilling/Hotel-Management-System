@@ -3,7 +3,7 @@
 </div>
 
 <div *ngIf="!loading && !error"> <!-- Render content if not loading and no error -->
-  <app-booking-confirmation-card [bookingDetails]="bookingDetails"></app-booking-confirmation-card>
+  <app-booking-confirmation-card [bookingId]="bookingDetails.bookingId" [isViewBookingContext]="false"></app-booking-confirmation-card>
 </div>
 
 <div *ngIf="error"> <!-- Display internal server error component if error occurred -->

@@ -26,11 +26,12 @@ public class RoomTypeController {
         return roomTypeService.createRoomType(roomTypeRequestDTOS);
     }
 
-    @GetMapping("/{roomTypeId}/availableNoOfRooms/{checkInDate}/{checkOutDate}/{seasonId}")
-    public StandardResponse<Integer> availableNoOfRooms(@PathVariable Integer roomTypeId,
-                                                        @PathVariable Date checkInDate,
-                                                        @PathVariable Date checkOutDate,
-                                                        @PathVariable Integer seasonId) {
+    @GetMapping("/{roomTypeId}/availability")
+    public StandardResponse<Integer> availableNoOfRooms(
+            @PathVariable Integer roomTypeId,
+            @RequestParam(required = false) Date checkInDate,
+            @RequestParam(required = false) Date checkOutDate,
+            @RequestParam(required = false) Integer seasonId) {
         return roomTypeService.getAvailableRoomTypeCount(roomTypeId, checkInDate, checkOutDate, seasonId);
     }
 

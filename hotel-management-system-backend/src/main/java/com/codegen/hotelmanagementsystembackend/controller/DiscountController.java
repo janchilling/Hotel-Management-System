@@ -7,6 +7,7 @@ import com.codegen.hotelmanagementsystembackend.services.DiscountService;
 import com.codegen.hotelmanagementsystembackend.util.StandardResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,6 +20,7 @@ public class DiscountController {
     private final DiscountService discountService;
 
     @PostMapping("/")
+    @PreAuthorize("hasAuthority('SYSTEM_ADMIN')")
     public StandardResponse<List<Discount>> createDiscount(@RequestBody List<DiscountRequestDTO> discountRequestDTOS){
         return discountService.createDiscount(discountRequestDTOS);
     }

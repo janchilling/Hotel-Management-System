@@ -16,6 +16,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -61,12 +62,14 @@ public class BookingServiceImpl implements BookingService {
             Booking savedBooking = bookingRepository.save(booking);
 
             // Map and save booking rooms
+            List<BookingRoom> bookingRooms = new ArrayList<>();
             bookingRequestDTO.getBookingRooms().forEach(bookingRoomDTO -> {
                 BookingRoom newBookingRoom = modelMapper.map(bookingRoomDTO, BookingRoom.class);
                 newBookingRoom.setBooking(savedBooking);
                 newBookingRoom.setRoomType(utilityMethods.getRoomType(bookingRoomDTO.getRoomTypeId()));
-                bookingRoomRepository.save(newBookingRoom);
+                bookingRooms.add(newBookingRoom);
             });
+            bookingRoomRepository.saveAll(bookingRooms);
 
             // Map and save booking discounts
             if (bookingRequestDTO.getBookingDiscounts() != null) {
@@ -81,13 +84,14 @@ public class BookingServiceImpl implements BookingService {
             }
 
             // Map and save booking supplements
+            List<BookingSupplements> bookingSupplements = new ArrayList<>();
             bookingRequestDTO.getBookingSupplements().forEach(bookingSupplementDTO -> {
-                System.out.println(bookingSupplementDTO);
                 BookingSupplements newBookingSupplement = modelMapper.map(bookingSupplementDTO, BookingSupplements.class);
                 newBookingSupplement.setBooking(savedBooking);
                 newBookingSupplement.setSupplement(utilityMethods.getSupplement(bookingSupplementDTO.getSupplementId()));
-                bookingSupplementsRepository.save(newBookingSupplement);
+                bookingSupplements.add(newBookingSupplement);
             });
+            bookingSupplementsRepository.saveAll(bookingSupplements);
 
             // Map the saved booking to response DTO
             BookingResponseDTO bookingResponseDTO = mapToBookingResponseDTO(savedBooking);

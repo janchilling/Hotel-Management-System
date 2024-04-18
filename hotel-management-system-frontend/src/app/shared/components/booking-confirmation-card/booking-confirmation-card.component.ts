@@ -4,6 +4,8 @@ import {
 } from "../../../security/services/authenticationServices/authentication-services.service";
 import {CustomerServicesService} from "../../services/customerServices/customer-services.service";
 import {RoomTypeServicesService} from "../../services/roomTypesServices/room-type-services.service";
+import {BookingServiceService} from "../../services/bookingService/booking-service.service";
+import {switchMap} from "rxjs";
 
 @Component({
   selector: 'app-booking-confirmation-card',
@@ -12,7 +14,9 @@ import {RoomTypeServicesService} from "../../services/roomTypesServices/room-typ
 })
 export class BookingConfirmationCardComponent implements OnInit {
 
-  @Input() bookingDetails: any;
+  @Input() isViewBookingContext: any;
+  @Input() bookingId: any;
+  bookingDetails: any;
   rooms: any;
   supplements: any;
   discounts: any;
@@ -21,60 +25,56 @@ export class BookingConfirmationCardComponent implements OnInit {
   checkOutDate: any;
   payment: any;
   customer: any;
-  userId: any
+  userId: any;
+  isLoading: boolean = false;
+  isError: boolean = false;
 
   constructor(
     private authenticationService: AuthenticationServicesService,
     private customerService: CustomerServicesService,
-    private roomTypeService: RoomTypeServicesService
-  ) {
-  }
+    private roomTypeService: RoomTypeServicesService,
+    private bookingService: BookingServiceService,
+  ) {}
 
   ngOnInit(): void {
-    console.log(this.bookingDetails)
-    this.userId = this.authenticationService.getUserId()
-    this.rooms = this.bookingDetails.rooms
-    this.supplements = this.bookingDetails.supplements
-    this.discounts = this.bookingDetails.discounts
-    this.payment = this.bookingDetails.payment[0]
-    this.bookedDate = new Date(this.bookingDetails.bookingDate).toDateString();
-    this.checkInDate = new Date(this.bookingDetails.checkInDate).toDateString();
-    this.checkOutDate = new Date(this.bookingDetails.checkOutDate).toDateString();
-    this.fetchCustomerDetails()
-
+    this.userId = this.authenticationService.getUserId();
+    this.fetchBookingDetailsAndOtherDetails();
   }
 
-  fetchCustomerDetails(){
-    this.customerService.getCustomerById(this.userId).subscribe({
-    next: (response) => {
-      if(response.statusCode == 200){
-        this.customer = response.data
-        console.log(this.customer)
-      }else {
-        console.log(response)
-      }
-    },
-    error: (error) => {
-      console.log(error)
-    }
-    })
-  }
-
-  fetchRoomTypesByContractId(contractId: number){
-    this.roomTypeService.getRoomsByContractId(contractId).subscribe({
-      next: (response) => {
-        if(response.statusCode == 200){
-          this.rooms = response.data
-          console.log(this.rooms)
-        }else {
+  fetchBookingDetailsAndOtherDetails() {
+    this.isLoading = true;
+    this.bookingService.getBookingsByBookingId(this.bookingId).pipe(
+      switchMap((response: any) => {
+        if (response.statusCode === 200) {
           console.log(response)
+          this.bookingDetails = response.data;
+          this.rooms = this.bookingDetails?.rooms;
+          this.supplements = this.bookingDetails?.supplements;
+          this.discounts = this.bookingDetails?.discounts;
+          this.payment = this.bookingDetails?.payment[0];
+          this.bookedDate = new Date(this.bookingDetails?.bookingDate).toDateString();
+          this.checkInDate = new Date(this.bookingDetails?.checkInDate).toDateString();
+          this.checkOutDate = new Date(this.bookingDetails?.checkOutDate).toDateString();
+          return this.customerService.getCustomerById(this.userId);
+        } else {
+          throw new Error('Invalid response');
         }
+      })
+    ).subscribe({
+      next: (customerResponse: any) => {
+        if (customerResponse.statusCode === 200) {
+          this.customer = customerResponse.data;
+          console.log(this.customer);
+        } else {
+          console.log(customerResponse);
+        }
+        this.isLoading = false;
       },
       error: (error) => {
-        console.log(error)
+        console.error(error);
+        this.isLoading = false;
+        this.isError = true;
       }
-    })
-
+    });
   }
-
 }

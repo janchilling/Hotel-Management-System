@@ -33,6 +33,4 @@ public class BookingRoom {
     @ManyToOne
     @JsonBackReference("roomtypeBookingRoomReference")
     private RoomType roomType;
-
-
 }

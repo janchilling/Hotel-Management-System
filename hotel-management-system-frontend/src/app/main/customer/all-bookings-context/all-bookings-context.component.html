@@ -1,5 +1,10 @@
-<h1 class="text-5xl font-extrabold dark:text-white pl-20 py-10">My Bookings</h1>
+<div class="relative max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
+  <h1 class="text-5xl font-extrabold dark:text-white py-10">My Bookings</h1>
+  <hr>
 
-<ng-container *ngFor="let booking of allBookings">
-  <app-all-booking-result-cards [booking]="booking"></app-all-booking-result-cards>
-</ng-container>
+  <div class="bg-background-gray">
+    <ng-container *ngFor="let booking of allBookings">
+      <app-all-booking-result-cards [booking]="booking"></app-all-booking-result-cards>
+    </ng-container>
+  </div>
+</div>
