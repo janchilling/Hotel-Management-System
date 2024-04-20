@@ -60,7 +60,7 @@ public class Booking {
     @JsonBackReference("bookingCustomerReference")
     private Customer customer;
 
-    @OneToMany(mappedBy="booking", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy="booking")
     @JsonManagedReference("bookingBookingRoomReference")
     private List<BookingRoom> bookingRooms = new ArrayList<>();
 
@@ -68,7 +68,7 @@ public class Booking {
     @JsonManagedReference("bookingBookingDiscountReference")
     private List<BookingDiscount> bookingDiscounts = new ArrayList<>();
 
-    @OneToMany(mappedBy="booking", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy="booking")
     @JsonManagedReference("bookingBookingSupplementReference")
     private List<BookingSupplements> bookingSupplements = new ArrayList<>();
 

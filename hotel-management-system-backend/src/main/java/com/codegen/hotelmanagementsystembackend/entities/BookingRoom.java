@@ -30,7 +30,7 @@ public class BookingRoom {
     @JsonBackReference("bookingBookingRoomReference")
     private Booking booking;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JsonBackReference("roomtypeBookingRoomReference")
     private RoomType roomType;
 }

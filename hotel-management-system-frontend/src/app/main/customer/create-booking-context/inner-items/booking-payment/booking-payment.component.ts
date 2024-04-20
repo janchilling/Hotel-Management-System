@@ -102,6 +102,7 @@ export class BookingPaymentComponent {
     if (this.discount && this.discount.discountPercentage) {
       const discountPercentage = this.discount.discountPercentage;
       this.discountedAmount = +(this.totalAfterDiscounts * (discountPercentage / 100)).toFixed(3);
+      this.discount.discountedAmount = this.discountedAmount;
       this.totalAfterDiscounts -= this.discountedAmount;
     }
 
@@ -167,9 +168,9 @@ export class BookingPaymentComponent {
       supplementsTotal: this.supplementsTotal,
       discountedAmount: this.discountedAmount,
       tax: this.tax,
-      noOfAdults: this.noOfPersons, // Get the number of adults
+      noOfAdults: this.noOfPersons,
       bookingStatus: 'Confirmed',
-      paymentStatus: paymentStatus, // Set paymentStatus based on payment option
+      paymentStatus: paymentStatus,
       hotelHotelId: this.hotelId,
       customerCustomerId: this.customerId,
       contactEmail: this.contactDetails.email,
@@ -182,11 +183,7 @@ export class BookingPaymentComponent {
         paymentType: 'Credit Card'
       },
       bookingRooms: this.bookingRooms,
-        bookingDiscounts : [{
-          discountCode: this.discount ? this.discount.discountCode || null : null,
-          discountId: this.discount ? this.discount.discountId || null : null,
-          discountedAmount: this.discount ? this.discountedAmount || null : null
-        }],
+      bookingDiscounts : this.discount,
       bookingSupplements: this.bookingSupplements
     };
 

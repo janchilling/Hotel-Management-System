@@ -10,6 +10,7 @@ import com.codegen.hotelmanagementsystembackend.repository.BookingSupplementsRep
 import com.codegen.hotelmanagementsystembackend.services.BookingService;
 import com.codegen.hotelmanagementsystembackend.util.StandardResponse;
 import com.codegen.hotelmanagementsystembackend.util.UtilityMethods;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.Logger;
 import org.modelmapper.ModelMapper;
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -37,6 +39,7 @@ public class BookingServiceImpl implements BookingService {
      * @param  bookingRequestDTO   the booking request data transfer object
      * @return                     the created booking
      */
+    @Transactional
     @Override
     public StandardResponse<BookingResponseDTO> createBooking(BookingRequestDTO bookingRequestDTO) {
 
@@ -58,20 +61,22 @@ public class BookingServiceImpl implements BookingService {
             newPayment.setBooking(booking);
             booking.getPayments().add(newPayment);
 
-            // Save booking
             Booking savedBooking = bookingRepository.save(booking);
 
-            // Map and save booking rooms
-            List<BookingRoom> bookingRooms = new ArrayList<>();
-            bookingRequestDTO.getBookingRooms().forEach(bookingRoomDTO -> {
-                BookingRoom newBookingRoom = modelMapper.map(bookingRoomDTO, BookingRoom.class);
-                newBookingRoom.setBooking(savedBooking);
-                newBookingRoom.setRoomType(utilityMethods.getRoomType(bookingRoomDTO.getRoomTypeId()));
-                bookingRooms.add(newBookingRoom);
-            });
-            bookingRoomRepository.saveAll(bookingRooms);
+            bookingRequestDTO.getBookingRooms()
+                    .forEach(bookingRoomDTO -> {
+                        BookingRoom newBookingRoom = new BookingRoom();
+                        newBookingRoom.setNoOfRooms(bookingRoomDTO.getNoOfRooms());
+                        newBookingRoom.setRoomTypeName(bookingRoomDTO.getRoomTypeName());
+                        newBookingRoom.setBookedPrice(bookingRoomDTO.getBookedPrice());
+                        newBookingRoom.setCheckInDate(bookingRoomDTO.getCheckInDate());
+                        newBookingRoom.setCheckOutDate(bookingRoomDTO.getCheckOutDate());
+                        newBookingRoom.setBooking(savedBooking);
+                        newBookingRoom.setRoomType(utilityMethods.getRoomType(bookingRoomDTO.getRoomTypeId()));
+                        bookingRoomRepository.save(newBookingRoom);
+                    });
 
-            // Map and save booking discounts
+            // Map booking discounts
             if (bookingRequestDTO.getBookingDiscounts() != null) {
                 bookingRequestDTO.getBookingDiscounts().forEach(bookingDiscountDTO -> {
                     BookingDiscount newBookingDiscount = modelMapper.map(bookingDiscountDTO, BookingDiscount.class);
@@ -79,19 +84,21 @@ public class BookingServiceImpl implements BookingService {
                     if(bookingDiscountDTO.getDiscountId() != null) {
                         newBookingDiscount.setDiscount(utilityMethods.getDiscount(bookingDiscountDTO.getDiscountId()));
                     }
-                    bookingDiscountRepository.save(newBookingDiscount);
+                    booking.getBookingDiscounts().add(newBookingDiscount);
                 });
             }
 
-            // Map and save booking supplements
-            List<BookingSupplements> bookingSupplements = new ArrayList<>();
-            bookingRequestDTO.getBookingSupplements().forEach(bookingSupplementDTO -> {
-                BookingSupplements newBookingSupplement = modelMapper.map(bookingSupplementDTO, BookingSupplements.class);
-                newBookingSupplement.setBooking(savedBooking);
-                newBookingSupplement.setSupplement(utilityMethods.getSupplement(bookingSupplementDTO.getSupplementId()));
-                bookingSupplements.add(newBookingSupplement);
-            });
-            bookingSupplementsRepository.saveAll(bookingSupplements);
+            bookingRequestDTO.getBookingSupplements().stream()
+                    .forEach(bookingSupplementDTO -> {
+                        BookingSupplements newBookingSupplement = new BookingSupplements();
+                        newBookingSupplement.setNoOfRooms(bookingSupplementDTO.getNoOfRooms());
+                        newBookingSupplement.setSupplementPrice(bookingSupplementDTO.getSupplementPrice());
+                        newBookingSupplement.setSupplementName(bookingSupplementDTO.getSupplementName());
+                        newBookingSupplement.setRoomTypeId(bookingSupplementDTO.getRoomTypeId());
+                        newBookingSupplement.setBooking(savedBooking);
+                        newBookingSupplement.setSupplement(utilityMethods.getSupplement(bookingSupplementDTO.getSupplementId()));
+                        bookingSupplementsRepository.save(newBookingSupplement);
+                    });
 
             // Map the saved booking to response DTO
             BookingResponseDTO bookingResponseDTO = mapToBookingResponseDTO(savedBooking);
@@ -157,9 +164,11 @@ public class BookingServiceImpl implements BookingService {
         BookingResponseDTO bookingResponseDTO = modelMapper.map(booking, BookingResponseDTO.class);
         bookingResponseDTO.setCustomerId(booking.getCustomer().getUserId());
         bookingResponseDTO.setCustomerName(booking.getCustomer().getCustomerFname() + " " + booking.getCustomer().getCustomerLname());
-        bookingResponseDTO.setDiscounts(booking.getBookingDiscounts().stream().map(
-                bookingDiscount -> modelMapper.map(bookingDiscount, BookingDiscountResponseDTO.class)
-        ).toList());
+        if (booking.getBookingDiscounts() != null) {
+            bookingResponseDTO.setDiscounts(booking.getBookingDiscounts().stream().map(
+                    bookingDiscount -> modelMapper.map(bookingDiscount, BookingDiscountResponseDTO.class)
+            ).toList());
+        }
         bookingResponseDTO.setSupplements(booking.getBookingSupplements().stream().map(
                 bookingSupplement -> modelMapper.map(bookingSupplement, BookingSupplementResponseDTO.class)
         ).toList());
