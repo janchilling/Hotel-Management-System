@@ -39,6 +39,7 @@ export class HotelOverviewComponent implements OnInit{
       {
       next: (response) => {
       if (response.statusCode === 200) {
+        console.log(response)
         let hotelImages = response.data;
         this.slides = hotelImages.map((image: any) => {
           return {
