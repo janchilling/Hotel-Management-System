@@ -13,7 +13,7 @@ export class HotelServicesService {
   backendHostName: string = this.apiPathService.baseURL;
 
   addHotel(hotel: any): Observable<any> {
-    return this.httpClient.post<any>(`${this.backendHostName}/v1/hotels/`, hotel)
+    return this.httpClient.post<any>(`${this.backendHostName}/v1/hotels`, hotel)
       .pipe(
         catchError((error: any) => {
           console.error('Error adding hotel:', error);

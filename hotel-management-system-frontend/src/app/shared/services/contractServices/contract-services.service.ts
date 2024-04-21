@@ -13,7 +13,7 @@ export class ContractServicesService {
   backendHostName: string = this.apiPathService.baseURL;
 
   addContract(contract: any): Observable<any> {
-    return this.httpClient.post<any>(`${this.backendHostName}/v1/contracts/`, contract)
+    return this.httpClient.post<any>(`${this.backendHostName}/v1/contracts`, contract)
       .pipe(
         catchError((error: any) => {
           console.error('Error adding Contract:', error);

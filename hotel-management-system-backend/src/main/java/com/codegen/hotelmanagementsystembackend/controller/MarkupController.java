@@ -20,12 +20,12 @@ public class MarkupController {
 
     private final MarkupService markupService;
 
-    @PostMapping("/")
+    @PostMapping("")
     public StandardResponse<Markup> createMarkup(@RequestBody MarkupRequestDTO markupRequestDTOS){
         return markupService.createMarkup(markupRequestDTOS);
     }
 
-    @PutMapping("/")
+    @PutMapping("")
     public StandardResponse<Markup> updateMarkup(@RequestBody MarkupRequestDTO markupRequestDTOS){
         return markupService.updateMarkup(markupRequestDTOS);
     }

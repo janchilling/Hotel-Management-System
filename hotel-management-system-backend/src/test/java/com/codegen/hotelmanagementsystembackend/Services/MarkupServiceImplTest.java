@@ -24,6 +24,7 @@ import org.springframework.http.HttpStatus;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -52,7 +53,7 @@ public class MarkupServiceImplTest {
 
     @Test
     public void test_createMarkup_validInput_returnsStandardResponseWithCreatedMarkup() {
-        // Given
+        // Arrange
         SeasonMarkupDTO seasonMarkupDTO = SeasonMarkupDTO.builder()
                 .seasonId(1)
                 .markupPercentage(15.0)
@@ -74,37 +75,37 @@ public class MarkupServiceImplTest {
         mockContract.setContractId(0);
         when(contractRepository.findById(markupRequestDTO.getContractId())).thenReturn(Optional.of(mockContract));
 
-        // When
+        // Act
         StandardResponse<Markup> response = markupService.createMarkup(markupRequestDTO);
 
-        // Then
+        // Assert
         assertEquals(HttpStatus.CREATED.value(), response.getStatusCode());
         assertEquals("Markup created successfully", response.getMessage());
     }
 
-//    @Test
-//    public void test_getMarkupById_validInput_returnsMarkupResponseDTOWithCorrectDetails() {
-//        // Given
-//        Integer markupId = 1;
-//        Markup markup = new Markup();
-//        markup.setMarkupId(markupId);
-//        markup.setContract(new Contract());
-//        markup.setSeasonMarkups(new ArrayList<>());
-//
-//        given(utilityMethods.getMarkup(markupId)).willReturn(markup);
-//        given(utilityMethods.getContract(anyInt())).willReturn(new Contract());
-//        given(utilityMethods.getHotel(anyInt())).willReturn(new Hotel());
-//        given(utilityMethods.getSeason(anyInt())).willReturn(new Season());
-//
-//        // When
-//        MarkupResponseDTO response = markupService.getMarkupById(markupId);
-//
-//        // Then
-//        assertEquals(markupId, response.getMarkupId());
-//        assertNotNull(response.getSeasonMarkups());
-//        assertNotNull(response.getContractId());
-//        assertNotNull(response.getContractStatus());
-//        assertNotNull(response.getHotelId());
-//        assertNotNull(response.getHotelName());
-//    }
+    @Test
+    public void test_getMarkupById_validInput_returnsMarkupResponseDTOWithCorrectDetails() {
+        // Given
+        Integer markupId = 1;
+        Markup markup = new Markup();
+        markup.setMarkupId(markupId);
+        markup.setContract(new Contract());
+        markup.setSeasonMarkups(new ArrayList<>());
+
+        given(utilityMethods.getMarkup(markupId)).willReturn(markup);
+        given(utilityMethods.getContract(anyInt())).willReturn(new Contract());
+        given(utilityMethods.getHotel(anyInt())).willReturn(new Hotel());
+        given(utilityMethods.getSeason(anyInt())).willReturn(new Season());
+
+        // When
+        MarkupResponseDTO response = markupService.getMarkupById(markupId);
+
+        // Then
+        assertEquals(markupId, response.getMarkupId());
+        assertNotNull(response.getSeasonMarkups());
+        assertNotNull(response.getContractId());
+        assertNotNull(response.getContractStatus());
+        assertNotNull(response.getHotelId());
+        assertNotNull(response.getHotelName());
+    }
 }
