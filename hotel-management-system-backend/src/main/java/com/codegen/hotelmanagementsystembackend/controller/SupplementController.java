@@ -21,12 +21,12 @@ public class SupplementController {
 
     private final SupplementService supplementService;
 
-    @PostMapping("/")
+    @PostMapping("")
     public StandardResponse<List<Supplement>> createSupplement(@RequestBody List<SupplementRequestDTO> supplementRequestDTO){
         return supplementService.createSupplement(supplementRequestDTO);
     }
 
-    @GetMapping("/getSupplementById/{supplementId}")
+    @GetMapping("/{supplementId}")
     public StandardResponse<SupplementResponseDTO> getSupplementById(@PathVariable Integer supplementId){
         return supplementService.getSupplementById(supplementId);
     }

@@ -26,20 +26,9 @@ public class SeasonController {
      * @param  seasonId   the ID of the season to retrieve
      * @return            the response containing the season information
      */
-    @GetMapping("/getSeasonById/{seasonId}")
+    @GetMapping("/{seasonId}")
     public ResponseEntity<SeasonResponseDTO> getSeasonById(@PathVariable Integer seasonId){
         return ResponseEntity.ok(seasonService.getSeasonById(seasonId));
-    }
-
-    /**
-     * Get season by hotel.
-     *
-     * @param  hotelId   The ID of the hotel
-     * @return          The list of season response DTO
-     */
-    @GetMapping("/getSeasonByHotel/{hotelId}")
-    public ResponseEntity<List<List<SeasonResponseDTO>>> getSeasonByHotel(@PathVariable Integer hotelId){
-        return ResponseEntity.ok(seasonService.getSeasonByHotel(hotelId));
     }
 
 }

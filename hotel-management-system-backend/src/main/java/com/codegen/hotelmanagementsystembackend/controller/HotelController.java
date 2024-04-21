@@ -23,7 +23,7 @@ public class HotelController {
     private final HotelService hotelService;
     private final ContractService contractService;
 
-    @PostMapping("/")
+    @PostMapping("")
     public StandardResponse<Hotel> createHotel(@RequestBody HotelRequestDTO hotelRequestDTO){
         return hotelService.createHotel(hotelRequestDTO);
     }

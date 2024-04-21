@@ -24,7 +24,7 @@ public class ContractController {
     private final SupplementService supplementService;
     private final DiscountService discountService;
 
-    @PostMapping("/")
+    @PostMapping("")
     public StandardResponse<Contract> createContract(@RequestBody ContractRequestDTO contractRequestDTO){
         return contractService.createContract(contractRequestDTO);
     }
@@ -34,17 +34,17 @@ public class ContractController {
         return contractService.updateContract(contractId, contractRequestDTO);
     }
 
-    @GetMapping("{contractId}/roomTypes/")
+    @GetMapping("{contractId}/roomTypes")
     public StandardResponse<List<RoomTypeResponseDTO>> getRoomTypeByContract(@PathVariable Integer contractId) {
         return roomTypeService.getRoomTypeByContract(contractId);
     }
 
-    @GetMapping("/{contractId}/supplements/")
+    @GetMapping("/{contractId}/supplements")
     public StandardResponse<List<SupplementResponseDTO>> getSupplementByContract(@PathVariable Integer contractId) {
         return supplementService.getSupplementByContract(contractId);
     }
 
-    @GetMapping("/{contractId}/discounts/")
+    @GetMapping("/{contractId}/discounts")
     public StandardResponse<List<DiscountResponseDTO>> getDiscountByContract(@PathVariable Integer contractId) {
         return discountService.getDiscountByContract(contractId);
     }

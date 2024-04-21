@@ -11,7 +11,7 @@ export class SupplementServicesService {
 
   backendHostName: string = this.apiPathService.baseURL;
   getSupplementsByContractId(contractId: number): Observable<any> {
-    return this.httpClient.get<any>(`${this.backendHostName}/v1/contracts/${contractId}/supplements/`)
+    return this.httpClient.get<any>(`${this.backendHostName}/v1/contracts/${contractId}/supplements`)
       .pipe(
         catchError((error: any) => {
           console.error('Error fetching supplements:', error);
@@ -21,7 +21,7 @@ export class SupplementServicesService {
   }
 
   addSupplement(supplement: any): Observable<any> {
-    return this.httpClient.post<any>(`${this.backendHostName}/v1/supplements/`, supplement)
+    return this.httpClient.post<any>(`${this.backendHostName}/v1/supplements`, supplement)
       .pipe(
         catchError((error: any) => {
           console.error('Error adding Supplement:', error);
