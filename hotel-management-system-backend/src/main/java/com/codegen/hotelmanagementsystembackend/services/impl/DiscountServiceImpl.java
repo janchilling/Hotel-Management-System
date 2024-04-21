@@ -56,6 +56,7 @@ public class DiscountServiceImpl implements DiscountService {
                 newDiscount.setDiscountName(discountRequestDTO.getDiscountName());
                 newDiscount.setDiscountDescription(discountRequestDTO.getDiscountDescription());
                 newDiscount.setDiscountCode(discountRequestDTO.getDiscountCode());
+                newDiscount.setDiscountImageURL(discountRequestDTO.getDiscountImageURL());
                 newDiscount.setContract(utilityMethods.getContract(discountRequestDTO.getContractId()));
 
                 for (SeasonDiscountDTO seasonDiscountDTO : discountRequestDTO.getSeasonDiscounts()) {
@@ -149,17 +150,21 @@ public class DiscountServiceImpl implements DiscountService {
         }
 
         List<Discount> updatedDiscountsList = new ArrayList<>();
+        List<DiscountRequestDTO> discountsToBeCreated = new ArrayList<>();
 
         try {
             for (DiscountRequestDTO discountRequestDTO : discountRequestDTOS) {
                 Discount existingDiscount = discountRepository.findByDiscountId(discountRequestDTO.getDiscountId());
                 if (existingDiscount == null) {
-                    return new StandardResponse<>(HttpStatus.NOT_FOUND.value(), "Discount with ID " + discountRequestDTO.getDiscountId() + " not found", null);
+                    discountsToBeCreated.add(discountRequestDTO);
+                    continue;
                 }
 
                 // Update discount fields
                 existingDiscount.setDiscountName(discountRequestDTO.getDiscountName());
                 existingDiscount.setDiscountDescription(discountRequestDTO.getDiscountDescription());
+                existingDiscount.setDiscountImageURL(discountRequestDTO.getDiscountImageURL());
+                existingDiscount.setDiscountCode(discountRequestDTO.getDiscountCode());
 
                 // Update season discounts
                 List<SeasonDiscount> updatedSeasonDiscounts = new ArrayList<>();
@@ -187,6 +192,7 @@ public class DiscountServiceImpl implements DiscountService {
                 updatedDiscountsList.add(existingDiscount);
             }
 
+            this.createDiscount(discountsToBeCreated);
             // Save updated discounts
             List<Discount> savedDiscounts = discountRepository.saveAll(updatedDiscountsList);
             List<DiscountResponseDTO> responseDTOs = savedDiscounts.stream()
@@ -219,16 +225,7 @@ public class DiscountServiceImpl implements DiscountService {
     @Override
     public StandardResponse<Void> deleteDiscountsByIds(List<Integer> discountIds) {
         try {
-            // Find discounts by their IDs
-            List<Discount> discountsToDelete = new ArrayList<>();
-            for (Integer discountId : discountIds) {
-                Discount discount = utilityMethods.getDiscount(discountId);
-                discountsToDelete.add(discount);
-            }
-
-            // Delete the discounts
-            discountRepository.deleteInBatch(discountsToDelete);
-
+            discountRepository.deleteAllByIdInBatch(discountIds);
             return new StandardResponse<>(HttpStatus.OK.value(), "Discounts deleted successfully", null);
         } catch (ResourceNotFoundException e) {
             return new StandardResponse<>(HttpStatus.NOT_FOUND.value(), "One or more discounts not found", null);

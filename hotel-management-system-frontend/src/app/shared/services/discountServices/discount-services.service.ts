@@ -42,4 +42,14 @@ export class DiscountServicesService {
         })
       );
   }
+
+  deleteDiscountById(discountId: number): Observable<any> {
+    return this.httpClient.delete<any>(`${this.backendHostName}/v1/discounts/${discountId}`)
+      .pipe(
+        catchError((error: any) => {
+          console.error('Error deleting Discount:', error);
+          return of(null);
+        })
+      );
+  }
 }

@@ -6,9 +6,7 @@ import {DiscountServicesService} from "../../../../shared/services/discountServi
 import {MatDialog} from "@angular/material/dialog";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {AddContractDetailsContextComponent} from "../../add-contract-details-context.component";
-import {
-  ConfirmationDialogComponentComponent
-} from "../../../../shared/components/confirmation-dialog-component/confirmation-dialog-component.component";
+import { ConfirmationDialogComponentComponent } from "../../../../shared/components/confirmation-dialog-component/confirmation-dialog-component.component";
 
 @Component({
   selector: 'app-discount-details',

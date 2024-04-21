@@ -219,4 +219,24 @@ public class RoomTypeServiceImpl implements RoomTypeService {
         }
     }
 
+    @Override
+    public StandardResponse<Void> deleteRoomTypeById(Integer roomTypeId){
+        try {
+            roomTypeRepository.deleteById(roomTypeId);
+            return new StandardResponse<>(HttpStatus.OK.value(), "Room type deleted successfully", null);
+        } catch (Exception e) {
+            return new StandardResponse<>(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Room type deletion failed: " + e.getMessage(), null);
+        }
+    }
+
+    @Override
+    public StandardResponse<Void> deleteRoomTypesByIds(List<Integer> roomTypeIds){
+        try {
+            roomTypeRepository.deleteAllByIdInBatch(roomTypeIds);
+            return new StandardResponse<>(HttpStatus.OK.value(), "Room types deleted successfully", null);
+        } catch (Exception e) {
+            return new StandardResponse<>(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Room types deletion failed: " + e.getMessage(), null);
+        }
+    }
+
 }

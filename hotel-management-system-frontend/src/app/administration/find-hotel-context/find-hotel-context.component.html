@@ -1,6 +1,4 @@
-<app-search (submitClicked)="handleSubmitClicked($event)"></app-search>
+<app-admin-search></app-admin-search>
 <ng-container *ngIf="resultData">
-  <ng-container *ngFor="let hotel of resultData">
-      <app-results [hotel]="hotel"></app-results>
-  </ng-container>
+  <app-results [resultData]="resultData"></app-results>
 </ng-container>

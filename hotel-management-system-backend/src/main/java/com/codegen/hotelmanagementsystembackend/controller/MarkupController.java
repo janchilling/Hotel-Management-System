@@ -1,6 +1,9 @@
 package com.codegen.hotelmanagementsystembackend.controller;
 
+import com.codegen.hotelmanagementsystembackend.dto.DiscountRequestDTO;
+import com.codegen.hotelmanagementsystembackend.dto.DiscountResponseDTO;
 import com.codegen.hotelmanagementsystembackend.dto.MarkupRequestDTO;
+import com.codegen.hotelmanagementsystembackend.dto.MarkupResponseDTO;
 import com.codegen.hotelmanagementsystembackend.entities.Markup;
 import com.codegen.hotelmanagementsystembackend.services.MarkupService;
 import com.codegen.hotelmanagementsystembackend.util.StandardResponse;
@@ -25,5 +28,10 @@ public class MarkupController {
     @PutMapping("/")
     public StandardResponse<Markup> updateMarkup(@RequestBody MarkupRequestDTO markupRequestDTOS){
         return markupService.updateMarkup(markupRequestDTOS);
+    }
+
+    @DeleteMapping("/{markupId}")
+    public StandardResponse<Void> deleteMarkupById(@PathVariable Integer markupId) {
+        return markupService.deleteMarkupById(markupId);
     }
 }

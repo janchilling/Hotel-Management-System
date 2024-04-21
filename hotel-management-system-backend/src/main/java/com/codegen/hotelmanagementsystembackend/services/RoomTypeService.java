@@ -20,4 +20,8 @@ public interface RoomTypeService {
     StandardResponse<List<RoomTypeResponseDTO>> getRoomTypeByContract(Integer contractId);
 
     StandardResponse<List<RoomType>> updateRoomTypes(List<RoomTypeRequestDTO> roomTypeRequestDTOS);
+
+    StandardResponse<Void> deleteRoomTypeById(Integer roomTypeId);
+
+    StandardResponse<Void> deleteRoomTypesByIds(List<Integer> roomTypeIds);
 }

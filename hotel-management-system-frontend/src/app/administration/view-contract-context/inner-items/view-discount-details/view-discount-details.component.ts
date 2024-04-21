@@ -84,9 +84,19 @@ export class ViewDiscountDetailsComponent implements OnInit {
   }
 
   handleUpdate() {
-    this.editable = true;
-    this.enableEditableFields();
+    const resource = 'discount';
+    if (this.contractDetails && this.contractDetails.contractId) {
+      const contractId = this.contractDetails.contractId;
+      this.router.navigate([`/administration/update/${contractId}`], { queryParams: { resource } });
+    } else {
+      console.error('Contract details or contractId is missing.');
+    }
   }
+
+  // handleUpdate() {
+  //   this.editable = true;
+  //   this.enableEditableFields();
+  // }
 
   handleConfirmUpdate() {
     const dialogRef = this.dialog.open(ConfirmationDialogComponentComponent, {

@@ -1,1 +1,5 @@
-<p>update-contract-context works!</p>
+<app-discount-update *ngIf="discountUpdate"></app-discount-update>
+<app-markup-update *ngIf="markupUpdate"></app-markup-update>
+<app-room-type-update *ngIf="roomTypeUpdate"></app-room-type-update>
+<app-supplements-update *ngIf="supplementsUpdate"></app-supplements-update>
+<app-internal-server-error *ngIf="isError"></app-internal-server-error>

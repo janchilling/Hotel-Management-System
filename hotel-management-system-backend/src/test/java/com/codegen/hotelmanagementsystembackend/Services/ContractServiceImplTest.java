@@ -58,7 +58,8 @@ public class ContractServiceImplTest {
     @Test
     public void test_create_contract_successfully() {
         // Arrange
-        SeasonRequestDTO seasonRequestDTO = SeasonRequestDTO.builder().seasonName("string")
+        SeasonRequestDTO seasonRequestDTO = SeasonRequestDTO.builder()
+                .seasonName("string")
                 .startDate(new Date(System.currentTimeMillis()))
                 .endDate(new Date(System.currentTimeMillis()))
                 .build();
@@ -78,7 +79,7 @@ public class ContractServiceImplTest {
                 .build();
 
         Hotel mockHotel = new Hotel();
-        mockHotel.setHotelId(0);
+//        mockHotel.setHotelId(0);
         when(hotelRepository.findById(contractRequestDTO.getHotelId())).thenReturn(Optional.of(mockHotel));
 
         // Set contract request data
@@ -132,58 +133,6 @@ public class ContractServiceImplTest {
         assertEquals("Contract not found", response.getMessage());
         assertNull(response.getData());
     }
-
-//    @Test
-//    public void test_update_contract_successfully() {
-//        // Arrange
-//        Integer contractId = 1;
-//        SeasonRequestDTO seasonRequestDTO = SeasonRequestDTO.builder().seasonName("string")
-//                .startDate(new Date(System.currentTimeMillis()))
-//                .endDate(new Date(System.currentTimeMillis()))
-//                .build();
-//
-//        ContractRequestDTO contractRequestDTO = ContractRequestDTO.builder()
-//                .startDate(new Date(System.currentTimeMillis()))
-//                .endDate(new Date(System.currentTimeMillis()))
-//                .contractStatus("string")
-//                .cancellationDeadline(0)
-//                .cancellationAmount(0)
-//                .prepayment(0)
-//                .balancePayment(0)
-//                .hotelId(0)
-//                .seasons(Collections.singletonList(
-//                        seasonRequestDTO
-//                ))
-//                .build();
-//        // Set contract request data
-//
-//        ContractServiceImpl contractService = new ContractServiceImpl(modelMapper, contractRepository, hotelRepository, seasonRepository, utilityMethods);
-//
-//        // Act
-//        StandardResponse<Contract> response = contractService.updateContract(contractId, contractRequestDTO);
-//
-//        // Assert
-//        assertEquals(HttpStatus.OK.value(), response.getStatusCode());
-//        assertEquals("Contract updated successfully", response.getMessage());
-//        assertNotNull(response.getData());
-//    }
-
-//    @Test
-//    public void test_create_contract_with_overlapping_dates() {
-//        // Arrange
-//        ContractRequestDTO contractRequestDTO = new ContractRequestDTO();
-//        // Set contract request data
-//
-//        ContractServiceImpl contractService = new ContractServiceImpl(modelMapper, contractRepository, hotelRepository, seasonRepository, utilityMethods);
-//
-//        // Act
-//        StandardResponse<Contract> response = contractService.createContract(contractRequestDTO);
-//
-//        // Assert
-//        assertEquals(HttpStatus.CONFLICT.value(), response.getStatusCode());
-//        assertEquals("Contract dates overlap with existing contracts", response.getMessage());
-//        assertNull(response.getData());
-//    }
 
     @Test
     public void test_get_contracts_for_hotel_with_no_contracts() {

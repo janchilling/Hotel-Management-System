@@ -44,4 +44,14 @@ public class RoomTypeController {
     public StandardResponse<List<RoomType>> updateRoomTypes(@RequestBody List<RoomTypeRequestDTO> roomTypeRequestDTOS) {
         return roomTypeService.updateRoomTypes(roomTypeRequestDTOS);
     }
+
+    @DeleteMapping("/{roomTypeId}")
+    public StandardResponse<Void> deleteRoomTypeById(@PathVariable Integer roomTypeId){
+        return roomTypeService.deleteRoomTypeById(roomTypeId);
+    }
+
+    @DeleteMapping("/batch")
+    public StandardResponse<Void> deleteRoomTypesByIds(@RequestBody List<Integer> roomTypeIds){
+        return roomTypeService.deleteRoomTypesByIds(roomTypeIds);
+    }
 }

@@ -18,4 +18,6 @@ public interface MarkupService {
 
     @Transactional
     StandardResponse<Markup> updateMarkup(MarkupRequestDTO markupRequestDTO);
+
+    StandardResponse<Void> deleteMarkupById(Integer markupId);
 }

@@ -24,6 +24,8 @@ import {HotelDetailsComponent} from "./admin-hotel-details/inner-items/hotel-det
 import {AdminHotelDetailsComponent} from "./admin-hotel-details/admin-hotel-details.component";
 import {UpdateHotelContextComponent} from "./update-hotel-context/update-hotel-context.component";
 import {ViewContractContextComponent} from "./view-contract-context/view-contract-context.component";
+import {UpdateContractContextComponent} from "./update-contract-context/update-contract-context.component";
+import {DiscountUpdateComponent} from "./update-contract-context/inner-items/discount-update/discount-update.component";
 
 const routes: Routes = [{
   path: '',
@@ -32,12 +34,16 @@ const routes: Routes = [{
     { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
     { path: 'dashboard', component: DashboardContextComponent },
     { path: 'addHotel', component: AddHotelContextComponent },
-    { path: 'findHotel', component: FindHotelContextComponent },
+    { path: 'find', component: FindHotelContextComponent },
     { path: 'hotel/:hotelId', component: AdminHotelDetailsComponent },
     { path: 'updateHotel/:hotelId', component: UpdateHotelContextComponent },
     { path: 'addContract/:hotelId', component: AddContractContextComponent },
     { path: 'addContractDetails', component: AddContractDetailsContextComponent },
     { path: 'contracts/:contractId', component: ViewContractContextComponent },
+    {
+      path: 'update/:contractId',
+      component: UpdateContractContextComponent
+    },
 
 
 

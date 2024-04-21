@@ -15,7 +15,6 @@ import { DiscountDetailsComponent } from './add-contract-details-context/inner-i
 import { RoomtypesDetailsComponent } from './add-contract-details-context/inner-items/roomtypes-details/roomtypes-details.component';
 import { AddContractDetailsContextComponent } from './add-contract-details-context/add-contract-details-context.component';
 import { FindHotelContextComponent } from './find-hotel-context/find-hotel-context.component';
-import { SearchComponent } from './find-hotel-context/inner-items/search/search.component';
 import { ResultsComponent } from './find-hotel-context/inner-items/results/results.component';
 import { AdminHotelDetailsComponent } from './admin-hotel-details/admin-hotel-details.component';
 import { HotelDetailsComponent } from './admin-hotel-details/inner-items/hotel-details/hotel-details.component';
@@ -34,6 +33,7 @@ import { ViewMarkupDetailsComponent } from './view-contract-context/inner-items/
 import { ViewSupplementsDetailsComponent } from './view-contract-context/inner-items/view-supplements-details/view-supplements-details.component';
 import { ViewRoomtypesDetailsComponent } from './view-contract-context/inner-items/view-roomtypes-details/view-roomtypes-details.component';
 import { ContractUpdateComponent } from './update-contract-context/inner-items/contract-update/contract-update.component';
+import {MatDialogModule} from "@angular/material/dialog";
 
 
 @NgModule({
@@ -49,7 +49,6 @@ import { ContractUpdateComponent } from './update-contract-context/inner-items/c
     RoomtypesDetailsComponent,
     AddContractDetailsContextComponent,
     FindHotelContextComponent,
-    SearchComponent,
     ResultsComponent,
     AdminHotelDetailsComponent,
     HotelDetailsComponent,
@@ -75,7 +74,8 @@ import { ContractUpdateComponent } from './update-contract-context/inner-items/c
         SharedModule,
         NgOptimizedImage,
         FormsModule,
-        ReactiveFormsModule
+        ReactiveFormsModule,
+        MatDialogModule,
     ]
 })
 export class AdministrationModule { }
