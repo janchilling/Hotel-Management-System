@@ -3,7 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { AdministrationComponent } from './administration.component';
 import {DashboardContextComponent} from "./dashboard-context/dashboard-context.component";
 import {AddHotelContextComponent} from "./add-hotel-context/add-hotel-context.component";
-import {AddContractContextComponent} from "./add-contract-context/add-contract-context.component";
+import {AddContractContextComponent} from "./components/add-contract-context/add-contract-context.component";
 import {
   AddContractDetailsContextComponent
 } from "./add-contract-details-context/add-contract-details-context.component";
