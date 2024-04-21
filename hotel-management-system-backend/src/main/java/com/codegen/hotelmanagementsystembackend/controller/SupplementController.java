@@ -36,4 +36,14 @@ public class SupplementController {
         return supplementService.updateSupplements(supplementRequestDTO);
     }
 
+    @DeleteMapping("/{discountId}")
+    public StandardResponse<Void> deleteSupplementById(@PathVariable Integer supplementId){
+        return supplementService.deleteSupplementById(supplementId);
+    }
+
+    @DeleteMapping("/batch")
+    public StandardResponse<Void> deleteSupplementsByIds(@RequestBody List<Integer> discountIds){
+        return supplementService.deleteSupplementsByIds(discountIds);
+    }
+
 }

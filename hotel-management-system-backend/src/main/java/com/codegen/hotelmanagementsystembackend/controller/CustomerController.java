@@ -18,7 +18,7 @@ public class CustomerController {
     private final BookingService bookingService;
     private final CustomerService customerService;
 
-    @GetMapping("/{userId}/bookings/")
+    @GetMapping("/{userId}/bookings")
     public StandardResponse<List<BookingResponseDTO>> getBookingByCustomer(@PathVariable Long userId) {
         return bookingService.getBookingByCustomer(userId);
     }

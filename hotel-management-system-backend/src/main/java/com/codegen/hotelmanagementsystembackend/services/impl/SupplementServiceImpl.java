@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -166,6 +167,26 @@ public class SupplementServiceImpl implements SupplementService {
             return new StandardResponse<>(HttpStatus.NOT_FOUND.value(), e.getMessage(), null);
         } catch (Exception e) {
             return new StandardResponse<>(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Supplements update failed: " + e.getMessage(), null);
+        }
+    }
+
+    @Override
+    public StandardResponse<Void> deleteSupplementById(Integer supplementId) {
+        try {
+            supplementRepository.deleteById(supplementId);
+            return new StandardResponse<>(HttpStatus.OK.value(), "Supplement deleted successfully", null);
+        } catch (Exception e) {
+            return new StandardResponse<>(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Supplement deletion failed: " + e.getMessage(), null);
+        }
+    }
+
+    @Override
+    public StandardResponse<Void> deleteSupplementsByIds(List<Integer> supplementIds) {
+        try {
+            supplementRepository.deleteAllByIdInBatch(supplementIds);
+            return new StandardResponse<>(HttpStatus.OK.value(), "Supplements deleted successfully", null);
+        } catch (Exception e) {
+            return new StandardResponse<>(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Supplement deletion failed: " + e.getMessage(), null);
         }
     }
 }

@@ -1,114 +1,110 @@
-//package com.codegen.hotelmanagementsystembackend.services.impl;
-//
-//import com.codegen.hotelmanagementsystembackend.dto.MarkupRequestDTO;
-//import com.codegen.hotelmanagementsystembackend.dto.SeasonMarkupDTO;
-//import com.codegen.hotelmanagementsystembackend.entities.Contract;
-//import com.codegen.hotelmanagementsystembackend.entities.Markup;
-//import com.codegen.hotelmanagementsystembackend.exception.ResourceNotFoundException;
-//import com.codegen.hotelmanagementsystembackend.repository.ContractRepository;
-//import com.codegen.hotelmanagementsystembackend.repository.MarkupRepository;
-//import com.codegen.hotelmanagementsystembackend.repository.SeasonRepository;
-//import org.junit.jupiter.api.BeforeEach;
-//import org.junit.jupiter.api.Test;
-//import org.mockito.InjectMocks;
-//import org.mockito.Mock;
-//import org.mockito.MockitoAnnotations;
-//
-//import java.util.ArrayList;
-//import java.util.List;
-//import java.util.Optional;
-//import java.util.Set;
-//
-//import static org.junit.jupiter.api.Assertions.*;
-//import static org.mockito.Mockito.*;
-//
-//public class MarkupServiceImplTest {
-//
-//    @Mock
-//    private MarkupRepository markupRepository;
-//
-//    @Mock
-//    private SeasonRepository seasonRepository;
-//
-//    @Mock
-//    private ContractRepository contractRepository;
-//
-//    @InjectMocks
-//    private MarkupServiceImpl markupService;
-//
-//    @BeforeEach
-//    void setUp() {
-//        MockitoAnnotations.initMocks(this);
-//    }
-//
+package com.codegen.hotelmanagementsystembackend.Services;
+
+import com.codegen.hotelmanagementsystembackend.dto.MarkupRequestDTO;
+import com.codegen.hotelmanagementsystembackend.dto.MarkupResponseDTO;
+import com.codegen.hotelmanagementsystembackend.dto.SeasonMarkupDTO;
+import com.codegen.hotelmanagementsystembackend.dto.SeasonRequestDTO;
+import com.codegen.hotelmanagementsystembackend.entities.*;
+import com.codegen.hotelmanagementsystembackend.exception.ResourceNotFoundException;
+import com.codegen.hotelmanagementsystembackend.repository.ContractRepository;
+import com.codegen.hotelmanagementsystembackend.repository.HotelRepository;
+import com.codegen.hotelmanagementsystembackend.repository.MarkupRepository;
+import com.codegen.hotelmanagementsystembackend.repository.SeasonRepository;
+import com.codegen.hotelmanagementsystembackend.services.impl.MarkupServiceImpl;
+import com.codegen.hotelmanagementsystembackend.util.StandardResponse;
+import com.codegen.hotelmanagementsystembackend.util.UtilityMethods;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.modelmapper.ModelMapper;
+import org.springframework.http.HttpStatus;
+
+import java.util.*;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
+
+@ExtendWith(MockitoExtension.class)
+public class MarkupServiceImplTest {
+
+    @Mock
+    private MarkupRepository markupRepository;
+
+    @Mock
+    private SeasonRepository seasonRepository;
+
+    @Mock
+    private ContractRepository contractRepository;
+
+    @Mock
+    private HotelRepository hotelRepository;
+
+    @InjectMocks
+    private MarkupServiceImpl markupService;
+
+    @InjectMocks
+    private ModelMapper modelMapper;
+
+    @InjectMocks
+    private UtilityMethods utilityMethods;
+
+    @Test
+    public void test_createMarkup_validInput_returnsStandardResponseWithCreatedMarkup() {
+        // Given
+        SeasonMarkupDTO seasonMarkupDTO = SeasonMarkupDTO.builder()
+                .seasonId(1)
+                .markupPercentage(15.0)
+                .build();
+
+        Season mockSeason = new Season();
+        mockSeason.setSeasonId(1);
+        when(seasonRepository.findById(seasonMarkupDTO.getSeasonId())).thenReturn(Optional.of(mockSeason));
+
+        List<SeasonMarkupDTO> seasonMarkups = Collections.singletonList(seasonMarkupDTO);
+        Set<SeasonMarkupDTO> seasonMarkupsSet = new HashSet<>(seasonMarkups);
+
+        MarkupRequestDTO markupRequestDTO = MarkupRequestDTO.builder()
+                .contractId(1)
+                .seasonMarkups(seasonMarkupsSet)
+                .build();
+
+        Contract mockContract = new Contract();
+        mockContract.setContractId(0);
+        when(contractRepository.findById(markupRequestDTO.getContractId())).thenReturn(Optional.of(mockContract));
+
+        // When
+        StandardResponse<Markup> response = markupService.createMarkup(markupRequestDTO);
+
+        // Then
+        assertEquals(HttpStatus.CREATED.value(), response.getStatusCode());
+        assertEquals("Markup created successfully", response.getMessage());
+    }
+
 //    @Test
-//    void testCreateMarkup_Success() {
-//        MarkupRequestDTO markupRequestDTO = new MarkupRequestDTO();
-//        markupRequestDTO.setMarkupId(1);
-//        markupRequestDTO.setContractId(1);
+//    public void test_getMarkupById_validInput_returnsMarkupResponseDTOWithCorrectDetails() {
+//        // Given
+//        Integer markupId = 1;
+//        Markup markup = new Markup();
+//        markup.setMarkupId(markupId);
+//        markup.setContract(new Contract());
+//        markup.setSeasonMarkups(new ArrayList<>());
 //
-//        List<MarkupRequestDTO> markupRequestDTOS = new ArrayList<>();
-//        markupRequestDTOS.add(markupRequestDTO);
+//        given(utilityMethods.getMarkup(markupId)).willReturn(markup);
+//        given(utilityMethods.getContract(anyInt())).willReturn(new Contract());
+//        given(utilityMethods.getHotel(anyInt())).willReturn(new Hotel());
+//        given(utilityMethods.getSeason(anyInt())).willReturn(new Season());
 //
-//        Contract contract = new Contract();
-//        contract.setContract_id(1);
+//        // When
+//        MarkupResponseDTO response = markupService.getMarkupById(markupId);
 //
-//        when(contractRepository.findById(1)).thenReturn(Optional.of(contract));
-//        when(markupRepository.save(any())).thenReturn(new Markup());
-//
-//        String result = markupService.createMarkup(markupRequestDTOS);
-//
-//        assertEquals("Markups Added", result);
-//        verify(markupRepository, times(1)).save(any());
+//        // Then
+//        assertEquals(markupId, response.getMarkupId());
+//        assertNotNull(response.getSeasonMarkups());
+//        assertNotNull(response.getContractId());
+//        assertNotNull(response.getContractStatus());
+//        assertNotNull(response.getHotelId());
+//        assertNotNull(response.getHotelName());
 //    }
-//
-//    @Test
-//    void testCreateMarkup_NoMarkupsProvided() {
-//        List<MarkupRequestDTO> markupRequestDTOS = new ArrayList<>();
-//
-//        String result = markupService.createMarkup(markupRequestDTOS);
-//
-//        assertEquals("No markups provided.", result);
-//        verify(markupRepository, never()).save(any());
-//    }
-//
-//    @Test
-//    void testCreateMarkup_ContractNotFound() {
-//        MarkupRequestDTO markupRequestDTO = new MarkupRequestDTO();
-//        markupRequestDTO.setMarkupId(1);
-//        markupRequestDTO.setContractId(1);
-//
-//        List<MarkupRequestDTO> markupRequestDTOS = new ArrayList<>();
-//        markupRequestDTOS.add(markupRequestDTO);
-//
-//        when(contractRepository.findById(3)).thenReturn(Optional.empty());
-//
-//        assertThrows(ResourceNotFoundException.class, () -> markupService.createMarkup(markupRequestDTOS));
-//        verify(markupRepository, never()).save(any());
-//    }
-//
-//    @Test
-//    void testCreateMarkup_SeasonNotFound() {
-//        MarkupRequestDTO markupRequestDTO = new MarkupRequestDTO();
-//        markupRequestDTO.setMarkupId(1);
-//        markupRequestDTO.setContractId(1);
-//
-//        SeasonMarkupDTO seasonMarkupDTO = new SeasonMarkupDTO();
-//        seasonMarkupDTO.setSeasonId(1);
-//        seasonMarkupDTO.setMarkupPercentage(0.05);
-//
-//        markupRequestDTO.setSeasonMarkups(Set.of(seasonMarkupDTO));
-//
-//        List<MarkupRequestDTO> markupRequestDTOS = new ArrayList<>();
-//        markupRequestDTOS.add(markupRequestDTO);
-//
-//        Contract contract = new Contract();
-//        contract.setContract_id(1);
-//
-//        when(contractRepository.findById(1)).thenReturn(Optional.of(contract));
-//        when(seasonRepository.findById(1)).thenReturn(Optional.empty());
-//
-//        assertThrows(ResourceNotFoundException.class, () -> markupService.createMarkup(markupRequestDTOS));
-//        verify(markupRepository, never()).save(any());
-//    }
-//}
+}

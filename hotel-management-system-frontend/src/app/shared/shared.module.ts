@@ -23,6 +23,7 @@ import { MainAdminSidebarComponent } from './components/main-admin-sidebar/main-
 import { MainSmallButtonComponent } from './components/main-small-button/main-small-button.component';
 import { PopUpCarouselComponent } from './components/pop-up-carousel/pop-up-carousel.component';
 import { PopUpAvailabilityFormComponent } from './components/pop-up-availability-form/pop-up-availability-form.component';
+import { AdminSearchComponent } from './components/admin-search/admin-search.component';
 
 
 @NgModule({
@@ -45,6 +46,7 @@ import { PopUpAvailabilityFormComponent } from './components/pop-up-availability
     MainSmallButtonComponent,
     PopUpCarouselComponent,
     PopUpAvailabilityFormComponent,
+    AdminSearchComponent,
   ],
   exports: [
     MainHeaderNavbarComponent,
@@ -57,7 +59,8 @@ import { PopUpAvailabilityFormComponent } from './components/pop-up-availability
     BookingConfirmationCardComponent,
     MainHeaderNavbarAdminComponent,
     MainAdminSidebarComponent,
-    MainSmallButtonComponent
+    MainSmallButtonComponent,
+    AdminSearchComponent
   ],
   imports: [
     CommonModule,

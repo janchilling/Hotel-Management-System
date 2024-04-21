@@ -1,11 +1,11 @@
-<div *ngIf="loading"> <!-- Display loading component while loading -->
+<div *ngIf="isLoading"> <!-- Display loading component while loading -->
   <app-loading-spinner></app-loading-spinner>
 </div>
 
-<div *ngIf="!loading && !error"> <!-- Render content if not loading and no error -->
-  <app-booking-confirmation-card [bookingDetails]="bookingDetails"></app-booking-confirmation-card>
+<div *ngIf="!isLoading && !isError"> <!-- Render content if not loading and no error -->
+  <app-booking-confirmation-card [bookingId] ="bookingId" [isViewBookingContext]="true"></app-booking-confirmation-card>
 </div>
 
-<div *ngIf="error"> <!-- Display internal server error component if error occurred -->
+<div *ngIf="isError"> <!-- Display internal server error component if error occurred -->
   <app-internal-server-error></app-internal-server-error>
 </div>

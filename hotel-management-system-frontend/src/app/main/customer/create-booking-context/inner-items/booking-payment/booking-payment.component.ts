@@ -12,6 +12,7 @@ import {
 } from "../../../../../security/services/authenticationServices/authentication-services.service";
 import {ContractServicesService} from "../../../../../shared/services/contractServices/contract-services.service";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
   selector: 'app-booking-payment',
@@ -44,6 +45,9 @@ export class BookingPaymentComponent {
   hotelId: any;
   contract: any;
   cardDetailsForm: FormGroup;
+  noOfDays: number = 0;
+  isLoading: boolean = false;
+  isError: boolean = false;
 
   constructor(
     private markupServicesService: MarkupServicesService,
@@ -51,6 +55,7 @@ export class BookingPaymentComponent {
     private dateService: DateServiceService,
     private bookingServiceService :BookingServiceService,
     private dialog: MatDialog,
+    private snackBar: MatSnackBar,
     private authenticationService: AuthenticationServicesService,
     private contractService: ContractServicesService,
     private formBuilder: FormBuilder
@@ -72,6 +77,7 @@ export class BookingPaymentComponent {
 
     this.customerId = this.authenticationService.getUserId();
     this.today = new Date();
+    this.noOfDays = Math.ceil((new Date(this.checkOutDate).getTime() - new Date(this.checkInDate).getTime()) / (1000 * 3600 * 24));
 
     this.markupServicesService.getMarkupsByContractId(this.contractId).subscribe(data => {
       this.markupDetails = data[0];
@@ -83,10 +89,12 @@ export class BookingPaymentComponent {
   }
 
   calculateTotals(): void {
-    this.subtotal = +(this.bookingRooms.reduce((total: number, room: { bookedPrice: number; noOfRooms: number; }) => total + (room.bookedPrice * room.noOfRooms), 0).toFixed(3));
+    this.subtotal = +(this.bookingRooms.reduce((total: number, room: { bookedPrice: number;
+      noOfRooms: number; }) => total + (room.bookedPrice * room.noOfRooms) * this.noOfDays, 0).toFixed(3));
 
     if (this.bookingSupplements && this.bookingSupplements.length > 0) {
-      this.supplementsTotal = +(this.bookingSupplements.reduce((total: number, supplement: { supplementPrice: number; noOfRooms: number; }) => total + (supplement.supplementPrice * supplement.noOfRooms), 0).toFixed(3));
+      this.supplementsTotal = +(this.bookingSupplements.reduce((total: number, supplement: { supplementPrice: number;
+        noOfRooms: number; }) => total + (supplement.supplementPrice * supplement.noOfRooms) * this.noOfDays, 0).toFixed(3));
     }
 
     this.totalAfterDiscounts = +(this.subtotal + this.supplementsTotal).toFixed(3);
@@ -94,6 +102,7 @@ export class BookingPaymentComponent {
     if (this.discount && this.discount.discountPercentage) {
       const discountPercentage = this.discount.discountPercentage;
       this.discountedAmount = +(this.totalAfterDiscounts * (discountPercentage / 100)).toFixed(3);
+      this.discount.discountedAmount = this.discountedAmount;
       this.totalAfterDiscounts -= this.discountedAmount;
     }
 
@@ -147,6 +156,7 @@ export class BookingPaymentComponent {
   }
 
   createBooking(): void {
+    this.isLoading = true;
     const paymentStatus = this.selectedPaymentOption === 'prepayment' ? 'Pre' : 'Full';
 
     const bookingRequest = {
@@ -158,9 +168,9 @@ export class BookingPaymentComponent {
       supplementsTotal: this.supplementsTotal,
       discountedAmount: this.discountedAmount,
       tax: this.tax,
-      noOfAdults: this.noOfPersons, // Get the number of adults
+      noOfAdults: this.noOfPersons,
       bookingStatus: 'Confirmed',
-      paymentStatus: paymentStatus, // Set paymentStatus based on payment option
+      paymentStatus: paymentStatus,
       hotelHotelId: this.hotelId,
       customerCustomerId: this.customerId,
       contactEmail: this.contactDetails.email,
@@ -173,25 +183,25 @@ export class BookingPaymentComponent {
         paymentType: 'Credit Card'
       },
       bookingRooms: this.bookingRooms,
-        bookingDiscounts : [{
-          discountCode: this.discount ? this.discount.discountCode || null : null,
-          discountId: this.discount ? this.discount.discountId || null : null,
-          discountedAmount: this.discount ? this.discountedAmount || null : null
-        }],
+      bookingDiscounts : this.discount,
       bookingSupplements: this.bookingSupplements
     };
 
     this.bookingServiceService.addBooking(bookingRequest).subscribe({
       next: (response) => {
+        this.isLoading = false;
         if(response.statusCode == 201){
           this.bookingPlaced.emit(response.data);
         }else {
-          console.log('Booking not added successfully:', response);
-          console.log(response)
+          this.snackBar.open('Could not create booking', 'Close', {
+            duration: 3000, // Duration in milliseconds
+            verticalPosition: 'top'
+          });
         }
 
       },
       error: (error) => {
+        this.isLoading = false;
         console.error('Booking adding hotel:', error);
       }
     })

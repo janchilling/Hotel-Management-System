@@ -38,7 +38,7 @@ export class RoomTypeServicesService {
     const formattedCheckOutDate = this.formatDateForSQL(checkOutDate);
 
     // Construct the URL with roomTypeId and formatted dates as path variables
-    const url = `${this.backendHostName}/v1/roomTypes/${roomTypeId}/availableNoOfRooms/${formattedCheckInDate}/${formattedCheckOutDate}/${seasonId}`;
+    const url = `${this.backendHostName}/v1/roomTypes/${roomTypeId}/availability?seasonId=${seasonId}&checkInDate=${formattedCheckInDate}&checkOutDate=${formattedCheckOutDate}`;
 
     return this.httpClient.get<any>(url)
       .pipe(

@@ -8,7 +8,7 @@ import {Router} from "@angular/router";
 })
 export class ResultsComponent {
 
-  @Input() hotel: any;
+  @Input() resultData: any;
 
   constructor(
     private router: Router

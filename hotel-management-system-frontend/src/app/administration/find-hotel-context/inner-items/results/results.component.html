@@ -1,34 +1,60 @@
-<div class="mx-2 my-10 rounded-xl border bg-white px-4 shadow-md sm:mx-auto sm:max-w-xl sm:px-8">
-  <div class="mb-2 flex flex-col gap-y-6 border-b py-8 sm:flex-row sm:items-center sm:justify-between">
-    <div class="flex items-center">
-      <img class="h-14 w-14 rounded-full object-cover" src="/images/y9s3xOJV6rnQPKIrdPYJy.png" alt="Simon Lewis" />
-      <div class="ml-4 w-56">
-        <p class="text-slate-800 text-xl font-extrabold">{{hotel.hotelName}}</p>
-        <p class="text-slate-500">Algorithms Expert</p>
-      </div>
-    </div>
-    <app-main-button [buttonText]="'View Hotel'" (click)="viewHotelDetails(hotel.hotelId)"></app-main-button>
+<div class="relative max-w-screen-xl items-center justify-between mx-auto p-5">
+  <div class="my-4">
+    <p class="text-3xl sm:text-4xl md:text-4xl lg:text-4xl font-bold">Search Results</p>
   </div>
-  <div class="mb-2 flex justify-between border-b py-8 text-sm sm:text-base">
-    <div class="flex flex-col items-center">
-      <p class="text-slate-700 mb-1 text-xl font-extrabold">14</p>
-      <p class="text-slate-500 text-sm font-medium">Posts</p>
-    </div>
-    <div class="flex flex-col items-center">
-      <p class="text-slate-700 mb-1 text-xl font-extrabold">1124</p>
-      <p class="text-slate-500 text-sm font-medium">Followers</p>
-    </div>
-    <div class="flex flex-col items-center">
-      <p class="text-slate-700 mb-1 text-xl font-extrabold">25</p>
-      <p class="text-slate-500 text-sm font-medium">Sponsors</p>
-    </div>
-    <div class="flex flex-col items-center">
-      <p class="text-slate-700 mb-1 text-xl font-extrabold">3</p>
-      <p class="text-slate-500 text-sm font-medium">Awards</p>
-    </div>
+  <hr>
+  <div class="relative overflow-x-auto shadow-md sm:rounded-lg my-8">
+    <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+      <thead class="text-xs text-gray-700 uppercase bg-background-gray dark:bg-gray-700 dark:text-gray-400">
+      <tr>
+        <th scope="col" class="px-6 py-3">
+          Hotel ID
+        </th>
+        <th scope="col" class="px-6 py-3">
+          Hotel Name
+        </th>
+        <th scope="col" class="px-6 py-3">
+          Street Address
+        </th>
+        <th scope="col" class="px-6 py-3">
+          City
+        </th>
+        <th scope="col" class="px-6 py-3">
+          Country
+        </th>
+        <th scope="col" class="px-6 py-3">
+          Action
+        </th>
+
+      </tr>
+      </thead>
+      <tbody>
+      <ng-container *ngFor="let result of resultData">
+        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+          <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+            {{result.hotelId}}
+          </th>
+          <td class="px-6 py-4">
+            {{result.hotelName}}
+          </td>
+          <td class="px-6 py-4">
+            {{result.hotelStreetAddress}}
+          </td>
+          <td class="px-6 py-4">
+            {{result.hotelCity}}
+          </td>
+          <td class="px-6 py-4">
+            {{result.hotelCountry}}
+          </td>
+          <td class="px-6 py-4 flex-item">
+            <app-main-small-button buttonText="View Hotel" (click)="viewHotelDetails(result.hotelId)"></app-main-small-button>
+          </td>
+        </tr>
+      </ng-container>
+      </tbody>
+    </table>
   </div>
-  <div class="flex justify-between py-8">
-    <button class="text-slate-500 hover:bg-slate-100 rounded-lg border-2 px-4 py-2 font-medium focus:outline-none focus:ring">Message</button>
-    <button class="rounded-lg border-2 border-transparent bg-blue-600 px-4 py-2 font-medium text-white focus:outline-none focus:ring hover:bg-blue-700">Follow</button>
-  </div>
+
+  <!-- Content below your bookings -->
+  <!-- <app-all-booking-result-cards [booking]="booking"></app-all-booking-result-cards> -->
 </div>

@@ -36,20 +36,21 @@ export class LoginComponent implements OnInit{
 
   handleLogin() {
     if (this.loginForm.valid) {
-      this.isLoading = true; // Show loading spinner
+      this.isLoading = true;
       const { email, password } = this.loginForm.value;
       this.authService.login(email, password).subscribe({
         next: (response) => {
-          console.log(response)
-          if(response.statusCode === 200){
-            this.isLoading = false;
+          var role = localStorage.getItem("userRole")
+          this.isLoading = false;
+          if(response.statusCode === 200 && role === "CUSTOMER") {
             this.router.navigateByUrl(this.returnUrl);
             this.authService.redirectUrl = null;
-          }else if (response.statusCode === 401) {
-            this.isLoading = false;
+          }else if (response.statusCode === 200 && role === "SYSTEM_ADMIN") {
+            this.router.navigate(['/administration/dashboard']);
+          }
+          else if (response.statusCode === 401) {
             this.snackBar.open(response.message, 'Close', { duration: 5000, verticalPosition: 'top' });
           } else if (response.statusCode === 500) {
-            this.isLoading = false;
             this.isError = true;
           }
         },

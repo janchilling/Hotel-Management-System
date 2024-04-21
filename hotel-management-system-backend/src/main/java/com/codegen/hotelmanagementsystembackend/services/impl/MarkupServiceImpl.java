@@ -163,5 +163,17 @@ public class MarkupServiceImpl implements MarkupService {
         }
     }
 
+    @Override
+    public StandardResponse<Void> deleteMarkupById(Integer markupId) {
+        try {
+            markupRepository.deleteById(markupId);
+            return new StandardResponse<>(HttpStatus.OK.value(), "Markup deleted successfully", null);
+        } catch (ResourceNotFoundException e) {
+            return new StandardResponse<>(HttpStatus.NOT_FOUND.value(), e.getMessage(), null);
+        } catch (Exception e) {
+            return new StandardResponse<>(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Markup deletion failed: " + e.getMessage(), null);
+        }
+    }
+
 
 }

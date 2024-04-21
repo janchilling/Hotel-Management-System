@@ -11,8 +11,8 @@ export class ViewBookingContextComponent implements OnInit {
 
   bookingDetails: any;
   bookingId: any;
-  loading: boolean = false;
-  error: boolean = false;
+  isLoading: boolean = false;
+  isError: boolean = false;
 
   constructor(
     private bookingService: BookingServiceService,
@@ -21,26 +21,26 @@ export class ViewBookingContextComponent implements OnInit {
 
   ngOnInit(): void {
     this.bookingId = +this.route.snapshot.params['bookingId'];
-    this.fetchBookingDetails();
+    // this.fetchBookingDetails();
   }
 
   fetchBookingDetails() {
-    this.loading = true;
+    this.isLoading = true;
     this.bookingService.getBookingsByBookingId(this.bookingId).subscribe({
       next: (response: any) => {
         if(response.statusCode == 200){
           console.log(response);
           this.bookingDetails = response.data;
-          this.loading = false;
+          this.isLoading = false;
         }else{
-          this.loading = false;
-          this.error = true;
+          this.isLoading = false;
+          this.isError = true;
         }
       },
       error: (error) => {
         console.error(error);
-        this.loading = false;
-        this.error = true;
+        this.isLoading = false;
+        this.isError = true;
       }
     });
   }
