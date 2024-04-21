@@ -4,6 +4,8 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { SearchService } from "../../../../shared/services/search/search.service";
 import { SearchParamsService } from "../../../../shared/services/searchParams/search-params.service";
+import {HotelDetails} from "../../../../shared/interfaces/hotel-details";
+import {StandardResponse} from "../../../../shared/interfaces/StandardResponse";
 
 @Component({
   selector: 'app-search-results-context',
@@ -12,12 +14,12 @@ import { SearchParamsService } from "../../../../shared/services/searchParams/se
 })
 export class SearchResultsContextComponent implements OnInit, OnDestroy {
 
-  private unsubscribe$: Subject<void> = new Subject<void>();
+  private unsubscribe$ = new Subject<void>();
   searchParams: any;
-  searchData: any = [];
-  isLoading: boolean = false;
-  isError: boolean = false;
-  numberOfHotels: any;
+  searchData: HotelDetails[] = []; // Update the type to HotelDetails[]
+  isLoading = false;
+  isError = false;
+  numberOfHotels: number = 0;
 
   constructor(
     private searchService: SearchService,
@@ -27,16 +29,8 @@ export class SearchResultsContextComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.route.queryParams.pipe(takeUntil(this.unsubscribe$)).subscribe(params => {
-      const destination = params['destination'];
-      const noOfRooms = params['noOfRooms'];
-      const noofPersons = params['noofPersons'];
-      const checkIn = params['checkIn'];
-      const checkOut = params['checkOut'];
-
-      this.searchParams = { destination, noOfRooms, noofPersons, checkIn, checkOut };
-
+      this.searchParams = { ...params };
       this.searchParamsService.updateSearchParams(this.searchParams);
-
       this.search();
     });
   }
@@ -50,23 +44,25 @@ export class SearchResultsContextComponent implements OnInit, OnDestroy {
     this.isLoading = true;
     const { destination, noOfRooms, checkIn, checkOut } = this.searchParams;
 
-    this.searchService.getSearchData(destination, noOfRooms, checkIn, checkOut).subscribe({
-      next: (response: any) => {
-        if(response.statusCode === 200){
-          this.searchData = response.data;
-          this.numberOfHotels = this.searchData.length; // Count the elements in the array
+    this.searchService.getSearchData(destination, noOfRooms, checkIn, checkOut)
+      .subscribe({
+        next: (response: StandardResponse<HotelDetails>) => {
+          if (response.statusCode === 200) {
+            console.log(response);
+            this.searchData = response.data;
+            this.numberOfHotels = this.searchData.length;
+          } else if (response.statusCode === 500) {
+            console.log(response);
+            this.isError = true;
+          }
           this.isLoading = false;
-          console.log(this.searchData);
-        } else if(response.statusCode === 500){
-          console.log(response)
+        },
+        error: (error) => {
+          console.error(error);
           this.isLoading = false;
           this.isError = true;
         }
-      },
-      error: (error) => {
-        console.error(error);
-      }
-    });
+      });
   }
 
 }
