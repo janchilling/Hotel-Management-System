@@ -18,7 +18,7 @@ export class DiscountServicesService {
   backendHostName: string = this.apiPathService.baseURL;
 
   addDiscount(discount: any): Observable<any> {
-    return this.httpClient.post<any>(`${this.backendHostName}/v1/discounts/`, discount)
+    return this.httpClient.post<any>(`${this.backendHostName}/v1/discounts`, discount)
       .pipe(
         catchError((error: any) => {
           console.error('Error adding Discount:', error);
@@ -27,8 +27,8 @@ export class DiscountServicesService {
       );
   }
 
-  getDiscounts(contractId: number): Observable<StandardResponse<DiscountDetails>> {
-    return this.httpClient.get<StandardResponse<DiscountDetails>>(`${this.backendHostName}/v1/contracts/${contractId}/discounts/`)
+  getDiscounts(contractId: number): Observable<any> {
+    return this.httpClient.get<any>(`${this.backendHostName}/v1/contracts/${contractId}/discounts`)
       .pipe(
         catchError((error: any) => {
           console.error('Error fetching Discounts:', error);

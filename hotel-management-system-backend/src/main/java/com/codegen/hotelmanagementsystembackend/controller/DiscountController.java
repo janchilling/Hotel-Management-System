@@ -19,7 +19,7 @@ public class DiscountController {
 
     private final DiscountService discountService;
 
-    @PostMapping("/")
+    @PostMapping("")
     @PreAuthorize("hasAuthority('SYSTEM_ADMIN')")
     public StandardResponse<List<Discount>> createDiscount(@RequestBody List<DiscountRequestDTO> discountRequestDTOS){
         return discountService.createDiscount(discountRequestDTOS);

@@ -21,7 +21,7 @@ public class RoomTypeController {
 
     private final RoomTypeService roomTypeService;
 
-    @PostMapping("/")
+    @PostMapping("")
     public StandardResponse<List<RoomType>> createRoomType(@RequestBody List<RoomTypeRequestDTO> roomTypeRequestDTOS){
         return roomTypeService.createRoomType(roomTypeRequestDTOS);
     }

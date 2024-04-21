@@ -13,7 +13,7 @@ export class MarkupServicesService {
   backendHostName: string = this.apiPathService.baseURL;
 
   addMarkup(markup: any): Observable<any> {
-    return this.httpClient.post<any>(`${this.backendHostName}/v1/markups/`, markup)
+    return this.httpClient.post<any>(`${this.backendHostName}/v1/markups`, markup)
       .pipe(
         catchError((error: any) => {
           console.error('Error adding Markups:', error);
