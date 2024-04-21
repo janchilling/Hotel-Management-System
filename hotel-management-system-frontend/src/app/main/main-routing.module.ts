@@ -1,12 +1,12 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { MainComponent } from './main.component';
-import { HomeContextComponent } from './customer/home-context/home-context.component';
-import {SearchResultsContextComponent} from "./customer/search-results-context/search-results-context.component";
-import {HotelDetailsContextComponent} from "./customer/hotel-details-context/hotel-details-context.component";
-import {CreateBookingContextComponent} from "./customer/create-booking-context/create-booking-context.component";
-import {AllBookingsContextComponent} from "./customer/all-bookings-context/all-bookings-context.component";
-import {ViewBookingContextComponent} from "./customer/view-booking-context/view-booking-context.component";
+import { HomeContextComponent } from './customer/components/home-context/home-context.component';
+import {SearchResultsContextComponent} from "./customer/components/search-results-context/search-results-context.component";
+import {HotelDetailsContextComponent} from "./customer/components/hotel-details-context/hotel-details-context.component";
+import {CreateBookingContextComponent} from "./customer/components/create-booking-context/create-booking-context.component";
+import {AllBookingsContextComponent} from "./customer/components/all-bookings-context/all-bookings-context.component";
+import {ViewBookingContextComponent} from "./customer/components/view-booking-context/view-booking-context.component";
 import { PermissionsService } from '../security/services/permissionService/permission-service.service';
 
 const routes: Routes = [
