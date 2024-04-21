@@ -26,7 +26,7 @@ import { AllBookingResultCardsComponent } from './customer/components/all-bookin
 import {ViewBookingContextComponent} from "./customer/components/view-booking-context/view-booking-context.component";
 import {SecurityModule} from "../security/security.module";
 import { HotelOffersComponent } from './customer/components/hotel-details-context/inner-items/hotel-offers/hotel-offers.component';
-
+import {MainSearchbarComponent} from "./customer/shared/components/main-searchbar/main-searchbar.component";
 
 @NgModule({
   declarations: [
@@ -51,6 +51,7 @@ import { HotelOffersComponent } from './customer/components/hotel-details-contex
     AllBookingResultCardsComponent,
     ViewBookingContextComponent,
     HotelOffersComponent,
+    MainSearchbarComponent
   ],
   exports: [
     ResultCardComponent

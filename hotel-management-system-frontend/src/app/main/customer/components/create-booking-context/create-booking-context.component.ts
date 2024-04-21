@@ -1,8 +1,8 @@
 import {Component, OnInit} from '@angular/core';
-import {HotelDetailsByIdService} from "../../../../shared/services/hotelDetailsById/hotel-details-by-id.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {catchError, throwError, timeout} from "rxjs";
 import {HotelDetails} from "../../../../shared/interfaces/hotel-details";
+import {MainHotelServiceService} from "../../shared/services/mainHotelService/main-hotel-service.service";
 
 @Component({
   selector: 'app-create-booking-context',
@@ -27,7 +27,7 @@ export class CreateBookingContextComponent implements OnInit {
   error: boolean = false;
 
   constructor(
-    private hotelDetailsByIdService: HotelDetailsByIdService,
+    private hotelService: MainHotelServiceService,
     private route: ActivatedRoute
   ) {}
 
@@ -40,7 +40,7 @@ export class CreateBookingContextComponent implements OnInit {
   }
 
   fetchHotelDetails() {
-    this.hotelDetailsByIdService.getHotelDetailsById(this.hotelId).pipe(
+    this.hotelService.getHotelDetailsById(this.hotelId).pipe(
       timeout(30000),
       catchError(error => {
         this.error = true;

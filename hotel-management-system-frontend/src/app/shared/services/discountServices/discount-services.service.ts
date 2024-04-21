@@ -1,14 +1,19 @@
 import { Injectable } from '@angular/core';
 import {ApiPathService} from "../apiPath/api-path.service";
 import {HttpClient} from "@angular/common/http";
-import {catchError, Observable, of} from "rxjs";
+import {catchError, Observable, of, throwError} from "rxjs";
+import {StandardResponse} from "../../interfaces/standard-response";
+import {DiscountDetails} from "../../interfaces/discount-details";
 
 @Injectable({
   providedIn: 'root'
 })
 export class DiscountServicesService {
 
-  constructor(private apiPathService: ApiPathService, public httpClient: HttpClient) { }
+  constructor(
+    private apiPathService: ApiPathService,
+    public httpClient: HttpClient
+  ) { }
 
   backendHostName: string = this.apiPathService.baseURL;
 
@@ -17,7 +22,7 @@ export class DiscountServicesService {
       .pipe(
         catchError((error: any) => {
           console.error('Error adding Discount:', error);
-          return of(null);
+          return throwError(() => error)
         })
       );
   }
@@ -26,11 +31,12 @@ export class DiscountServicesService {
     return this.httpClient.get<any>(`${this.backendHostName}/v1/contracts/${contractId}/discounts`)
       .pipe(
         catchError((error: any) => {
-          console.error('Error fetching discounts:', error);
-          return of(null);
+          console.error('Error fetching Discounts:', error);
+          return throwError(() => error)
         })
       );
   }
+
 
 
   updateDiscounts(discounts: any[]): Observable<any> {
@@ -38,7 +44,7 @@ export class DiscountServicesService {
       .pipe(
         catchError((error: any) => {
           console.error('Error updating Discounts:', error);
-          return of(null);
+          return throwError(() => error)
         })
       );
   }
@@ -48,7 +54,7 @@ export class DiscountServicesService {
       .pipe(
         catchError((error: any) => {
           console.error('Error deleting Discount:', error);
-          return of(null);
+          return throwError(() => error)
         })
       );
   }

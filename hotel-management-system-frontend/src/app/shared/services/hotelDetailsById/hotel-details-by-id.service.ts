@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import {ApiPathService} from "../apiPath/api-path.service";
 import {HttpClient} from "@angular/common/http";
+import {catchError, throwError} from "rxjs";
 
 @Injectable({
   providedIn: 'root'
@@ -12,11 +13,13 @@ export class HotelDetailsByIdService {
 
   backendHostName: String = this.apiPathService.baseURL;
 
-  getHotelDetailsById(hotelId: number) {
-    return this.httpClient.get(this.backendHostName + "/v1/products/" + hotelId);
-  }
-
   getHotelDetailsByIdAdmin(hotelId: number) {
-    return this.httpClient.get(this.backendHostName + "/v1/hotels/" + hotelId);
+    return this.httpClient.get(this.backendHostName + "/v1/hotels/" + hotelId)
+      .pipe(
+        catchError((error: any) => {
+          console.error('Error fetching Hotel Details:', error);
+          return throwError(() => error)
+        })
+      );
   }
 }

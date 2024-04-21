@@ -4,10 +4,7 @@ import {CommonModule, NgOptimizedImage} from '@angular/common';
 import { SharedRoutingModule } from './shared-routing.module';
 import { SharedComponent } from './shared.component';
 import { MainHeaderNavbarComponent } from './components/main-header-navbar/main-header-navbar.component';
-import { MainFooterComponent } from './components/main-footer/main-footer.component';
-import { MainSearchbarComponent } from './components/main-searchbar/main-searchbar.component';
 import {ReactiveFormsModule} from "@angular/forms";
-import { PaymentPortalComponent } from './components/payment-portal/payment-portal.component';
 import { BookingConfirmationCardComponent } from './components/booking-confirmation-card/booking-confirmation-card.component';
 import { BookedRoomCardComponent } from './components/booked-room-card/booked-room-card.component';
 import { BookedBillCardComponent } from './components/booked-bill-card/booked-bill-card.component';
@@ -24,15 +21,13 @@ import { MainSmallButtonComponent } from './components/main-small-button/main-sm
 import { PopUpCarouselComponent } from './components/pop-up-carousel/pop-up-carousel.component';
 import { PopUpAvailabilityFormComponent } from './components/pop-up-availability-form/pop-up-availability-form.component';
 import { AdminSearchComponent } from './components/admin-search/admin-search.component';
+import {MainFooterComponent} from "./components/main-footer/main-footer.component";
 
 
 @NgModule({
   declarations: [
     SharedComponent,
     MainHeaderNavbarComponent,
-    MainFooterComponent,
-    MainSearchbarComponent,
-    PaymentPortalComponent,
     BookingConfirmationCardComponent,
     BookedRoomCardComponent,
     BookedBillCardComponent,
@@ -47,11 +42,10 @@ import { AdminSearchComponent } from './components/admin-search/admin-search.com
     PopUpCarouselComponent,
     PopUpAvailabilityFormComponent,
     AdminSearchComponent,
+    MainFooterComponent
   ],
   exports: [
     MainHeaderNavbarComponent,
-    MainFooterComponent,
-    MainSearchbarComponent,
     RoomCardComponent,
     LoadingSpinnerComponent,
     MainButtonComponent,
@@ -60,7 +54,8 @@ import { AdminSearchComponent } from './components/admin-search/admin-search.com
     MainHeaderNavbarAdminComponent,
     MainAdminSidebarComponent,
     MainSmallButtonComponent,
-    AdminSearchComponent
+    AdminSearchComponent,
+    MainFooterComponent
   ],
   imports: [
     CommonModule,
