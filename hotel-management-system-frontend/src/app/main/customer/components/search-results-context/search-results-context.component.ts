@@ -5,7 +5,7 @@ import { takeUntil } from 'rxjs/operators';
 import { SearchService } from "../../../../shared/services/search/search.service";
 import { SearchParamsService } from "../../../../shared/services/searchParams/search-params.service";
 import {HotelDetails} from "../../../../shared/interfaces/hotel-details";
-import {StandardResponse} from "../../../../shared/interfaces/StandardResponse";
+import {StandardResponse} from "../../../../shared/interfaces/standard-response";
 
 @Component({
   selector: 'app-search-results-context',
@@ -16,7 +16,7 @@ export class SearchResultsContextComponent implements OnInit, OnDestroy {
 
   private unsubscribe$ = new Subject<void>();
   searchParams: any;
-  searchData: HotelDetails[] = []; // Update the type to HotelDetails[]
+  searchData: HotelDetails[] = [];
   isLoading = false;
   isError = false;
   numberOfHotels: number = 0;
@@ -48,7 +48,6 @@ export class SearchResultsContextComponent implements OnInit, OnDestroy {
       .subscribe({
         next: (response: StandardResponse<HotelDetails>) => {
           if (response.statusCode === 200) {
-            console.log(response);
             this.searchData = response.data;
             this.numberOfHotels = this.searchData.length;
           } else if (response.statusCode === 500) {

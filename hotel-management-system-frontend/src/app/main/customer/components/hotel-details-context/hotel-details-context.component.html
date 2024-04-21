@@ -57,7 +57,7 @@
         <p class="text-base sm:text-lg md:text-lg lg:text-xl">{{hotelDetails.hotelStreetAddress}}
           , {{hotelDetails.hotelPostalCode}} {{hotelDetails.hotelCity}}, {{hotelDetails.hotelCountry}}</p>
       </div>
-      <app-main-button (click)="viewbookingContext()" [buttonText]="'Book for me'"></app-main-button>
+      <app-main-button (click)="viewBookingContext()" [buttonText]="'Book for me'"></app-main-button>
     </div>
     <ng-container *ngIf="isOverviewVisible">
       <app-hotel-overview [hotelDetails]="hotelDetails"></app-hotel-overview>

@@ -14,7 +14,9 @@ export class HotelOverviewComponent implements OnInit{
   activeIndex = 0;
 
   constructor(
-    private hotelServices: HotelServicesService) { }
+    private hotelServices: HotelServicesService
+  ) { }
+
   ngOnInit(): void {
     this.fetchImages();
   }
@@ -32,7 +34,7 @@ export class HotelOverviewComponent implements OnInit{
   }
 
   fetchImages() {
-    this.loading = true; // Set loading to true when fetching images
+    this.loading = true;
     this.hotelServices.getHotelImages(this.hotelDetails?.hotelId).subscribe(
       {
       next: (response) => {

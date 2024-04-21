@@ -1,5 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {DiscountServicesService} from "../../../../../../shared/services/discountServices/discount-services.service";
+import {StandardResponse} from "../../../../../../shared/interfaces/standard-response";
+import {DiscountDetails} from "../../../../../../shared/interfaces/discount-details";
 
 @Component({
   selector: 'app-hotel-offers',
@@ -12,34 +14,35 @@ export class HotelOffersComponent implements OnInit{
   discountDetails: any
   isLoading: boolean = false
   isError: boolean = false
+  errorMsg: string | null = null;
 
   constructor(
     private discountService: DiscountServicesService
-  ) {
-  }
+  ) { }
 
   ngOnInit(): void {
-    this.fetchDiscounts()
+    this.fetchDiscounts();
   }
 
   fetchDiscounts() {
-    this.isLoading = true
+    this.isLoading = true;
     this.discountService.getDiscounts(this.contractId).subscribe({
-      next: (response) => {
-        this.isLoading = false
+      next: (response : StandardResponse<DiscountDetails>) => {
+        this.isLoading = false;
         if (response.statusCode === 200){
-          this.discountDetails = response.data
-        }else {
+          this.discountDetails = response.data;
+        } else {
           console.log(response);
         }
-
       },
-      error: () => {
-        this.isError = true
-        this.isLoading = false
+      error: (error) => {
+        console.error('Error fetching Discounts in component:', error);
+        this.isError = true;
+        this.errorMsg = error; // Display custom error message to the user
+        this.isLoading = false;
       }
-    })
-
+    });
   }
+
 
 }

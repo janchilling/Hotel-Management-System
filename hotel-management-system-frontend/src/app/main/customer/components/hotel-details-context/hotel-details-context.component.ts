@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
-import { HotelDetailsByIdService } from '../../../../shared/services/hotelDetailsById/hotel-details-by-id.service';
 import {HotelDetails} from "../../../../shared/interfaces/hotel-details";
 import {catchError, throwError, timeout} from "rxjs";
+import {MainHotelServiceService} from "../../shared/services/mainHotelService/main-hotel-service.service";
+import {StandardResponse} from "../../../../shared/interfaces/standard-response";
 
 @Component({
   selector: 'app-hotel-details-context',
@@ -10,6 +11,7 @@ import {catchError, throwError, timeout} from "rxjs";
   styleUrls: ['./hotel-details-context.component.scss']
 })
 export class HotelDetailsContextComponent implements OnInit {
+
   hotelId: any;
   hotelDetails: any;
   isOverviewVisible: boolean = true;
@@ -19,10 +21,9 @@ export class HotelDetailsContextComponent implements OnInit {
   checkOutDate: any;
   loading: boolean = true;
   error: boolean = false;
-  showPopupCarousel = false;
 
   constructor(
-    private hotelDetailsByIdService: HotelDetailsByIdService,
+    private hotelService: MainHotelServiceService,
     private route: ActivatedRoute,
     private router: Router
   ) {}
@@ -38,31 +39,22 @@ export class HotelDetailsContextComponent implements OnInit {
   }
 
   fetchHotelDetails() {
-    this.hotelDetailsByIdService.getHotelDetailsById(this.hotelId).pipe(
+    this.hotelService.getHotelDetailsById(this.hotelId).pipe(
       timeout(30000),
       catchError(error => {
+        console.error('Error fetching hotel details:', error);
         this.error = true;
         this.loading = false;
         return throwError(() => error);
       })
-    ).subscribe({
-      next: (response: any) => {
-        if (response.statusCode === 200) {
-          this.hotelDetails = response.data as HotelDetails;
-          console.log(this.hotelDetails);
-          this.loading = false;
-        } else {
-          this.error = true;
-          this.loading = false;
-        }
-      },
-      error: (error) => {
-        console.error('Error fetching hotel details:', error);
+    ).subscribe((response: StandardResponse<HotelDetails>) => {
+      if (response.statusCode === 200) {
+        this.hotelDetails = response.data;
+      } else {
         this.error = true;
-        this.loading = false;
       }
-    }
-    );
+      this.loading = false;
+    });
   }
 
   showOverview() {
@@ -83,8 +75,7 @@ export class HotelDetailsContextComponent implements OnInit {
     this.isOffersVisible = true;
   }
 
-  viewbookingContext() {
+  viewBookingContext() {
     this.router.navigate(['/main/booking'], { queryParams: { hotelId: this.hotelId, checkIn: this.checkInDate, checkOut: this.checkOutDate } });
-
   }
 }
