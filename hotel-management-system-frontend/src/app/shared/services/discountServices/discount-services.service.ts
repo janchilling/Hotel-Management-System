@@ -36,26 +36,4 @@ export class DiscountServicesService {
         })
       );
   }
-
-
-
-  updateDiscounts(discounts: any[]): Observable<any> {
-    return this.httpClient.put<any>(`${this.backendHostName}/v1/discounts/batch`, discounts)
-      .pipe(
-        catchError((error: any) => {
-          console.error('Error updating Discounts:', error);
-          return throwError(() => error)
-        })
-      );
-  }
-
-  deleteDiscountById(discountId: number): Observable<any> {
-    return this.httpClient.delete<any>(`${this.backendHostName}/v1/discounts/${discountId}`)
-      .pipe(
-        catchError((error: any) => {
-          console.error('Error deleting Discount:', error);
-          return throwError(() => error)
-        })
-      );
-  }
 }

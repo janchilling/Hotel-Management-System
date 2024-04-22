@@ -11,6 +11,9 @@ import {
 import {finalize} from "rxjs/operators";
 import {AngularFireStorage} from "@angular/fire/compat/storage";
 import {LocationStrategy} from "@angular/common";
+import {
+  AdminDiscountServicesService
+} from "../../../../shared/services/AdminDiscountServices/admin-discount-services.service";
 
 @Component({
   selector: 'app-discount-update',
@@ -32,6 +35,7 @@ export class DiscountUpdateComponent implements OnInit{
     private fb: FormBuilder,
     private route: ActivatedRoute,
     private discountService: DiscountServicesService,
+    private adminDiscountServices: AdminDiscountServicesService,
     private seasonServicesService: SeasonServicesService,
     private router: Router,
     private dialog: MatDialog,
@@ -230,7 +234,7 @@ export class DiscountUpdateComponent implements OnInit{
   }
 
   deleteDiscount(discountId: number) {
-    this.discountService.deleteDiscountById(discountId).subscribe({
+    this.adminDiscountServices.deleteDiscountById(discountId).subscribe({
       next: (response) => {
         if(response.statusCode == 200){
           this.snackBar.open('Discount deleted successfully', 'Close', {
@@ -261,7 +265,7 @@ export class DiscountUpdateComponent implements OnInit{
       const dataToSend = this.discountForm.get("discounts")?.value;
       console.log(dataToSend)
 
-      this.discountService.updateDiscounts(dataToSend).subscribe({
+      this.adminDiscountServices.updateDiscounts(dataToSend).subscribe({
         next: (response) => {
           this.isLoading = false;
           if (response.statusCode == 200) {

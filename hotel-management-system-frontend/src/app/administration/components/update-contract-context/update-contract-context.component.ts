@@ -29,17 +29,24 @@ export class UpdateContractContextComponent implements OnInit{
   }
 
   updateComponentFlags(path: string) {
-    // Reset all flags to false initially
     this.discountUpdate = false;
     this.markupUpdate = false;
     this.roomTypeUpdate = false;
     this.supplementsUpdate = false;
     this.isError = false;
 
-    // Set the appropriate flag based on the route path
     switch (path) {
       case 'discount':
         this.discountUpdate = true;
+        break;
+      case 'markup':
+        this.markupUpdate = true;
+        break;
+      case 'roomType':
+        this.roomTypeUpdate = true;
+        break;
+      case 'supplement':
+        this.supplementsUpdate = true;
         break;
       default:
         this.isError = true;

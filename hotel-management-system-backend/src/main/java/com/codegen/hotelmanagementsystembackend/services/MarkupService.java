@@ -14,7 +14,7 @@ public interface MarkupService {
 
     MarkupResponseDTO getMarkupById(Integer markupId);
 
-    List<MarkupResponseDTO> getMarkupByContract(Integer contractId);
+    StandardResponse<List<MarkupResponseDTO>> getMarkupByContract(Integer contractId);
 
     @Transactional
     StandardResponse<Markup> updateMarkup(MarkupRequestDTO markupRequestDTO);

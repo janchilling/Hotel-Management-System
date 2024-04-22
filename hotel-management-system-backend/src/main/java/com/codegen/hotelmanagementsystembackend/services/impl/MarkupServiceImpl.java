@@ -112,19 +112,25 @@ public class MarkupServiceImpl implements MarkupService {
     }
 
     @Override
-    public List<MarkupResponseDTO> getMarkupByContract(Integer contractId) {
-        try{
-            List<Markup> markupList =  markupRepository.findAllMarkupsByContractContractId(contractId);
+    public StandardResponse<List<MarkupResponseDTO>> getMarkupByContract(Integer contractId) {
+        try {
+            List<Markup> markupList = markupRepository.findAllMarkupsByContractContractId(contractId);
             if (markupList.isEmpty()) {
                 throw new ResourceNotFoundException("No markups found for the contract" + contractId);
             }
 
-            return markupList.stream().map(markups -> getMarkupById(markups.getMarkupId())).collect(Collectors.toList());
+            List<MarkupResponseDTO> markupResponseDTOList = markupList.stream()
+                    .map(markup -> getMarkupById(markup.getMarkupId()))
+                    .collect(Collectors.toList());
 
-        }catch(Exception e){
-            throw new ServiceException("Getting markups failed");
+            return new StandardResponse<>(HttpStatus.OK.value(), "Markups retrieved successfully", markupResponseDTOList);
+        } catch (ResourceNotFoundException e) {
+            return new StandardResponse<>(HttpStatus.NOT_FOUND.value(), e.getMessage(), null);
+        } catch (Exception e) {
+            return new StandardResponse<>(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Getting markups failed: " + e.getMessage(), null);
         }
     }
+
 
     @Override
     @Transactional

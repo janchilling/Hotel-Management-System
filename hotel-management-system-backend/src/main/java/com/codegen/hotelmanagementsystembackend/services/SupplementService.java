@@ -16,7 +16,7 @@ public interface SupplementService {
 
     StandardResponse<List<SupplementResponseDTO>> getSupplementByContract(Integer contractId);
 
-    StandardResponse<List<Supplement>> updateSupplements(List<SupplementRequestDTO> supplementRequestDTOs);
+    StandardResponse<List<SupplementResponseDTO>> updateSupplements(List<SupplementRequestDTO> supplementRequestDTOs);
 
     StandardResponse<Void> deleteSupplementById(Integer supplementId);
 

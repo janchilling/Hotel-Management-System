@@ -146,28 +146,72 @@ public class SupplementServiceImpl implements SupplementService {
     }
 
     @Override
-    public StandardResponse<List<Supplement>> updateSupplements(List<SupplementRequestDTO> supplementRequestDTOs) {
-        List<Supplement> updatedSupplements = new ArrayList<>();
+    public StandardResponse<List<SupplementResponseDTO>> updateSupplements(List<SupplementRequestDTO> supplementRequestDTOs) {
+
+        if (supplementRequestDTOs == null || supplementRequestDTOs.isEmpty()) {
+            return new StandardResponse<>(HttpStatus.BAD_REQUEST.value(), "Empty request", null);
+        }
+
+        List<Supplement> updatedSupplementsList = new ArrayList<>();
+        List<SupplementRequestDTO> supplementsToBeCreated = new ArrayList<>();
 
         try {
             for (SupplementRequestDTO supplementRequestDTO : supplementRequestDTOs) {
-                Supplement existingSupplement = supplementRepository.findById(supplementRequestDTO.getSupplementId())
-                        .orElseThrow(() -> new ResourceNotFoundException("Supplement not found with ID: " + supplementRequestDTO.getSupplementId()));
+                Supplement existingSupplement = supplementRepository.findBySupplementId(supplementRequestDTO.getSupplementId());
+                if (existingSupplement == null) {
+                    supplementsToBeCreated.add(supplementRequestDTO);
+                    continue;
+                }
 
-                // Update supplement fields
+                // Update discount fields
                 existingSupplement.setSupplementName(supplementRequestDTO.getSupplementName());
                 existingSupplement.setSupplementDescription(supplementRequestDTO.getSupplementDescription());
+                existingSupplement.setImageIconURL(supplementRequestDTO.getImageIconURL());
 
-                // Save updated supplement
-                updatedSupplements.add(supplementRepository.save(existingSupplement));
+                // Update season discounts
+                List<SeasonSupplement> updatedSeasonSupplements = new ArrayList<>();
+                for (SeasonSupplementDTO seasonSupplementDTO : supplementRequestDTO.getSeasonSupplements()) {
+                    SeasonSupplement existingSeasonSupplement = existingSupplement.getSupplementsSeasons().stream()
+                            .filter(sd -> sd.getSeason().getSeasonId().equals(seasonSupplementDTO.getSeasonId()))
+                            .findFirst()
+                            .orElse(null);
+                    if (existingSeasonSupplement != null) {
+                        existingSeasonSupplement.setSupplementPrice(seasonSupplementDTO.getSupplementPrice());
+                        updatedSeasonSupplements.add(existingSeasonSupplement);
+                    } else {
+                        SeasonSupplement newSeasonSupplement = getSeasonSupplement(seasonSupplementDTO, existingSupplement);
+                        updatedSeasonSupplements.add(newSeasonSupplement);
+                    }
+                }
+
+                existingSupplement.setSupplementsSeasons(updatedSeasonSupplements);
+                updatedSupplementsList.add(existingSupplement);
             }
 
-            return new StandardResponse<>(HttpStatus.OK.value(), "Supplements updated successfully", updatedSupplements);
+            this.createSupplement(supplementsToBeCreated);
+            // Save updated discounts
+            List<Supplement> savedSupplements = supplementRepository.saveAll(updatedSupplementsList);
+            List<SupplementResponseDTO> responseDTOs = savedSupplements.stream()
+                    .map(supplement -> modelMapper.map(supplement, SupplementResponseDTO.class))
+                    .collect(Collectors.toList());
+
+            return new StandardResponse<>(HttpStatus.OK.value(), "Supplements updated successfully", responseDTOs);
         } catch (ResourceNotFoundException e) {
             return new StandardResponse<>(HttpStatus.NOT_FOUND.value(), e.getMessage(), null);
         } catch (Exception e) {
             return new StandardResponse<>(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Supplements update failed: " + e.getMessage(), null);
         }
+    }
+
+    private static SeasonSupplement getSeasonSupplement(SeasonSupplementDTO seasonSupplementDTO, Supplement existingSupplement) {
+        SeasonSupplement newSeasonSupplement = new SeasonSupplement();
+        newSeasonSupplement.setSupplement(existingSupplement);
+        SeasonSupplementKey seasonSupplementKey = new SeasonSupplementKey();
+        seasonSupplementKey.setSeasonId(seasonSupplementDTO.getSeasonId());
+        seasonSupplementKey.setSupplementId(existingSupplement.getSupplementId());
+        newSeasonSupplement.setSeasonSupplementKey(seasonSupplementKey);
+        newSeasonSupplement.setSupplementPrice(seasonSupplementDTO.getSupplementPrice());
+        return newSeasonSupplement;
     }
 
     @Override

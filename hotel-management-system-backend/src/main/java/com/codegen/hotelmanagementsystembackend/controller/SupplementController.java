@@ -31,12 +31,12 @@ public class SupplementController {
         return supplementService.getSupplementById(supplementId);
     }
 
-    @GetMapping("/batch")
-    public StandardResponse<List<Supplement>> updateSupplements(@RequestBody List<SupplementRequestDTO> supplementRequestDTO){
+    @PutMapping("/batch")
+    public StandardResponse<List<SupplementResponseDTO>> updateSupplements(@RequestBody List<SupplementRequestDTO> supplementRequestDTO){
         return supplementService.updateSupplements(supplementRequestDTO);
     }
 
-    @DeleteMapping("/{discountId}")
+    @DeleteMapping("/{supplementId}")
     public StandardResponse<Void> deleteSupplementById(@PathVariable Integer supplementId){
         return supplementService.deleteSupplementById(supplementId);
     }

@@ -60,7 +60,7 @@ public class ContractController {
     }
 
     @GetMapping("/{contractId}/markups")
-    public ResponseEntity<List<MarkupResponseDTO>> getMarkupByContract(@PathVariable Integer contractId){
-        return ResponseEntity.ok(markupService.getMarkupByContract(contractId));
+    public StandardResponse<List<MarkupResponseDTO>> getMarkupByContract(@PathVariable Integer contractId){
+        return markupService.getMarkupByContract(contractId);
     }
 }

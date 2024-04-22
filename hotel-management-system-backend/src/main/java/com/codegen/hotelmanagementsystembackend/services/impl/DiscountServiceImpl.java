@@ -177,13 +177,7 @@ public class DiscountServiceImpl implements DiscountService {
                         existingSeasonDiscount.setDiscountPercentage(seasonDiscountDTO.getDiscountPercentage());
                         updatedSeasonDiscounts.add(existingSeasonDiscount);
                     } else {
-                        SeasonDiscount newSeasonDiscount = new SeasonDiscount();
-                        newSeasonDiscount.setDiscount(existingDiscount);
-                        SeasonDiscountKey seasonDiscountKey = new SeasonDiscountKey();
-                        seasonDiscountKey.setSeasonId(seasonDiscountDTO.getSeasonId());
-                        seasonDiscountKey.setDiscountId(existingDiscount.getDiscountId());
-                        newSeasonDiscount.setSeasonDiscountKey(seasonDiscountKey);
-                        newSeasonDiscount.setDiscountPercentage(seasonDiscountDTO.getDiscountPercentage());
+                        SeasonDiscount newSeasonDiscount = getSeasonDiscount(seasonDiscountDTO, existingDiscount);
                         updatedSeasonDiscounts.add(newSeasonDiscount);
                     }
                 }
@@ -203,6 +197,17 @@ public class DiscountServiceImpl implements DiscountService {
         } catch (Exception e) {
             return new StandardResponse<>(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Discount update failed: " + e.getMessage(), null);
         }
+    }
+
+    private static SeasonDiscount getSeasonDiscount(SeasonDiscountDTO seasonDiscountDTO, Discount existingDiscount) {
+        SeasonDiscount newSeasonDiscount = new SeasonDiscount();
+        newSeasonDiscount.setDiscount(existingDiscount);
+        SeasonDiscountKey seasonDiscountKey = new SeasonDiscountKey();
+        seasonDiscountKey.setSeasonId(seasonDiscountDTO.getSeasonId());
+        seasonDiscountKey.setDiscountId(existingDiscount.getDiscountId());
+        newSeasonDiscount.setSeasonDiscountKey(seasonDiscountKey);
+        newSeasonDiscount.setDiscountPercentage(seasonDiscountDTO.getDiscountPercentage());
+        return newSeasonDiscount;
     }
 
     @Override

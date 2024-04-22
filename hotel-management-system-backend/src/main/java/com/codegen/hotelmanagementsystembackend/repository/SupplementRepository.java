@@ -10,4 +10,6 @@ public interface SupplementRepository extends JpaRepository<Supplement, Integer>
     Supplement findBySupplementNameAndContract(String supplementName, Contract contract);
 
     List<Supplement> findAllSupplementsByContractContractId(Integer contractId);
+
+    Supplement findBySupplementId(Integer supplementId);
 }
