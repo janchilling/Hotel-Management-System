@@ -23,10 +23,7 @@ export class ViewDiscountDetailsComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    private discountService: DiscountServicesService,
-    private dialog: MatDialog,
     private router: Router,
-    private snackBar: MatSnackBar,
   ) {
     this.discountDetailsForm = this.formBuilder.group({
       discountDetails: this.formBuilder.array([])
@@ -91,47 +88,5 @@ export class ViewDiscountDetailsComponent implements OnInit {
     } else {
       console.error('Contract details or contractId is missing.');
     }
-  }
-
-  // handleUpdate() {
-  //   this.editable = true;
-  //   this.enableEditableFields();
-  // }
-
-  handleConfirmUpdate() {
-    const dialogRef = this.dialog.open(ConfirmationDialogComponentComponent, {
-      width: '300px',
-      data: 'Are you sure you want to submit?'
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        this.handleUpdate();
-      }
-    });
-  }
-
-  sendData() {
-    const updatedDiscounts = this.discountDetailsForm.value.discountDetails;
-
-    // Call service to update discounts
-    this.discountService.updateDiscounts(updatedDiscounts).subscribe({
-      next: (response) => {
-        this.isLoading = false;
-        if (response.statusCode === 200) {
-          this.snackBar.open('Discounts updated successfully', 'Close', {
-            duration: 3000,
-            verticalPosition: 'top'
-          });
-          this.router.navigate([this.router.url]);
-        } else {
-          console.log(response);
-        }
-      },
-      error: (error) => {
-        // Handle error
-        console.error('Error updating discounts:', error);
-      }
-    });
   }
 }

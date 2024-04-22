@@ -1,5 +1,6 @@
 import {Component, Input} from '@angular/core';
 import {FormArray, FormBuilder, FormGroup} from "@angular/forms";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-view-roomtypes-details',
@@ -15,6 +16,7 @@ export class ViewRoomtypesDetailsComponent {
 
   constructor(
     private formBuilder: FormBuilder,
+    private router: Router
   ) {
     this.roomTypeDetailsForm = this.formBuilder.group({
       roomTypeDetails: this.formBuilder.array([])
@@ -59,8 +61,14 @@ export class ViewRoomtypesDetailsComponent {
     return seasonRoomTypesArray;
   }
 
-  handleUpdate(contractID: number) {
-    // Handle update logic
+  handleUpdate() {
+    const resource = 'roomType';
+    if (this.contractDetails && this.contractDetails.contractId) {
+      const contractId = this.contractDetails.contractId;
+      this.router.navigate([`/administration/update/${contractId}`], { queryParams: { resource } });
+    } else {
+      console.error('Contract details or contractId is missing.');
+    }
   }
 
 }
