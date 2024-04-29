@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {BookingServiceService} from "../../../../shared/services/bookingService/booking-service.service";
 import {ActivatedRoute} from "@angular/router";
+import {MainBookingServicesService} from "../../shared/services/mainBookingService/main-booking-services.service";
 
 @Component({
   selector: 'app-view-booking-context',
@@ -15,7 +15,7 @@ export class ViewBookingContextComponent implements OnInit {
   isError: boolean = false;
 
   constructor(
-    private bookingService: BookingServiceService,
+    private bookingService: MainBookingServicesService,
     private route: ActivatedRoute,
   ) { }
 

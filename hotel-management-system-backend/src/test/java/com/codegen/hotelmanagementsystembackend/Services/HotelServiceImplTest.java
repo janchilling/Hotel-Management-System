@@ -3,6 +3,7 @@ package com.codegen.hotelmanagementsystembackend.Services;
 import com.codegen.hotelmanagementsystembackend.dto.HotelRequestDTO;
 import com.codegen.hotelmanagementsystembackend.dto.HotelResponseDTO;
 import com.codegen.hotelmanagementsystembackend.entities.Hotel;
+import com.codegen.hotelmanagementsystembackend.repository.HotelImageRepository;
 import com.codegen.hotelmanagementsystembackend.repository.HotelRepository;
 import com.codegen.hotelmanagementsystembackend.services.impl.HotelServiceImpl;
 import com.codegen.hotelmanagementsystembackend.util.StandardResponse;
@@ -25,6 +26,9 @@ public class HotelServiceImplTest {
     @MockBean
     private HotelRepository hotelRepository;
 
+    @MockBean
+    private HotelImageRepository hotelImageRepository;
+
     @Autowired
     private ModelMapper modelMapper;
 
@@ -40,7 +44,7 @@ public class HotelServiceImplTest {
         HotelRequestDTO hotelRequestDTO = new HotelRequestDTO();
         // Set hotelRequestDTO properties
 
-        HotelServiceImpl hotelService = new HotelServiceImpl(modelMapper, hotelRepository, utilityMethods);
+        HotelServiceImpl hotelService = new HotelServiceImpl(modelMapper, hotelRepository, utilityMethods, hotelImageRepository);
 
         // Act
         StandardResponse<Hotel> response = hotelService.createHotel(hotelRequestDTO);
@@ -60,7 +64,7 @@ public class HotelServiceImplTest {
         when(hotelRepository.existsByHotelNameAndHotelStreetAddress(
                 hotelRequestDTO.getHotelName(), hotelRequestDTO.getHotelStreetAddress())).thenReturn(true);
 
-        HotelServiceImpl hotelService = new HotelServiceImpl(modelMapper, hotelRepository, utilityMethods);
+        HotelServiceImpl hotelService = new HotelServiceImpl(modelMapper, hotelRepository, utilityMethods, hotelImageRepository);
 
         // Act
         StandardResponse<Hotel> response = hotelService.createHotel(hotelRequestDTO);
@@ -83,7 +87,7 @@ public class HotelServiceImplTest {
 
         when(hotelRepository.findById(hotelId)).thenReturn(Optional.of(existingHotel));
 
-        HotelServiceImpl hotelService = new HotelServiceImpl(modelMapper, hotelRepository, utilityMethods);
+        HotelServiceImpl hotelService = new HotelServiceImpl(modelMapper, hotelRepository, utilityMethods, hotelImageRepository);
 
         // Act
         StandardResponse<Hotel> response = hotelService.updateHotel(hotelId, hotelRequestDTO);
@@ -104,7 +108,7 @@ public class HotelServiceImplTest {
 
         when(hotelRepository.findById(hotelId)).thenReturn(Optional.of(existingHotel));
 
-        HotelServiceImpl hotelService = new HotelServiceImpl(modelMapper, hotelRepository, utilityMethods);
+        HotelServiceImpl hotelService = new HotelServiceImpl(modelMapper, hotelRepository, utilityMethods, hotelImageRepository);
 
         // Act
         StandardResponse<HotelResponseDTO> response = hotelService.getHotelById(hotelId);
@@ -125,7 +129,7 @@ public class HotelServiceImplTest {
 
         when(hotelRepository.existsById(hotelId)).thenReturn(true);
 
-        HotelServiceImpl hotelService = new HotelServiceImpl(modelMapper, hotelRepository, utilityMethods);
+        HotelServiceImpl hotelService = new HotelServiceImpl(modelMapper, hotelRepository, utilityMethods, hotelImageRepository);
 
         // Act
         StandardResponse<Void> response = hotelService.deleteHotelById(hotelId);
@@ -145,7 +149,7 @@ public class HotelServiceImplTest {
 
         when(hotelRepository.findById(hotelId)).thenReturn(Optional.empty());
 
-        HotelServiceImpl hotelService = new HotelServiceImpl(modelMapper, hotelRepository, utilityMethods);
+        HotelServiceImpl hotelService = new HotelServiceImpl(modelMapper, hotelRepository, utilityMethods, hotelImageRepository);
 
         // Act
         StandardResponse<Hotel> response = hotelService.updateHotel(hotelId, hotelRequestDTO);

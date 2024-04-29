@@ -1,10 +1,10 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import {RoomTypeServicesService} from "../../services/roomTypesServices/room-type-services.service";
 import { MatSnackBar } from '@angular/material/snack-bar';
-import {DateServiceService} from "../../services/dateService/date-service.service";
-import {PopUpCarouselComponent} from "../pop-up-carousel/pop-up-carousel.component";
 import {MatDialog} from "@angular/material/dialog";
+import {RoomTypeServicesService} from "../../../../../shared/services/roomTypesServices/room-type-services.service";
+import {DateServiceService} from "../../../../../shared/services/dateService/date-service.service";
+import {PopUpCarouselComponent} from "../../../../../shared/components/pop-up-carousel/pop-up-carousel.component";
 
 @Component({
   selector: 'app-room-card',

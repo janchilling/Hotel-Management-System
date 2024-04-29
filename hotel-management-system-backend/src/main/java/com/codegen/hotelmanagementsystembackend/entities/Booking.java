@@ -52,6 +52,10 @@ public class Booking {
     @JsonBackReference("bookingHotelReference")
     private Hotel hotel;
 
+    @ManyToOne
+    @JsonBackReference("bookingContractReference")
+    private Contract contract;
+
     @OneToMany(mappedBy="booking", cascade = CascadeType.ALL)
     @JsonManagedReference("bookingPaymentReference")
     private List<Payment> payments = new ArrayList<>();
@@ -71,6 +75,4 @@ public class Booking {
     @OneToMany(mappedBy="booking")
     @JsonManagedReference("bookingBookingSupplementReference")
     private List<BookingSupplements> bookingSupplements = new ArrayList<>();
-
-
 }

@@ -5,10 +5,8 @@ import { SharedRoutingModule } from './shared-routing.module';
 import { SharedComponent } from './shared.component';
 import { MainHeaderNavbarComponent } from './components/main-header-navbar/main-header-navbar.component';
 import {ReactiveFormsModule} from "@angular/forms";
-import { BookingConfirmationCardComponent } from './components/booking-confirmation-card/booking-confirmation-card.component';
 import { BookedRoomCardComponent } from './components/booked-room-card/booked-room-card.component';
 import { BookedBillCardComponent } from './components/booked-bill-card/booked-bill-card.component';
-import { RoomCardComponent } from './components/room-card/room-card.component';
 import { LoadingSpinnerComponent } from './components/loading-spinner/loading-spinner.component';
 import { MainButtonComponent } from './components/main-button/main-button.component';
 import { InternalServerErrorComponent } from './components/internal-server-error/internal-server-error.component';
@@ -22,16 +20,15 @@ import { PopUpCarouselComponent } from './components/pop-up-carousel/pop-up-caro
 import { PopUpAvailabilityFormComponent } from './components/pop-up-availability-form/pop-up-availability-form.component';
 import { AdminSearchComponent } from './components/admin-search/admin-search.component';
 import {MainFooterComponent} from "./components/main-footer/main-footer.component";
+import { HotelImagesCarouselComponent } from './components/hotel-images-carousel/hotel-images-carousel.component';
 
 
 @NgModule({
   declarations: [
     SharedComponent,
     MainHeaderNavbarComponent,
-    BookingConfirmationCardComponent,
     BookedRoomCardComponent,
     BookedBillCardComponent,
-    RoomCardComponent,
     LoadingSpinnerComponent,
     MainButtonComponent,
     InternalServerErrorComponent,
@@ -42,20 +39,20 @@ import {MainFooterComponent} from "./components/main-footer/main-footer.componen
     PopUpCarouselComponent,
     PopUpAvailabilityFormComponent,
     AdminSearchComponent,
-    MainFooterComponent
+    MainFooterComponent,
+    HotelImagesCarouselComponent
   ],
   exports: [
     MainHeaderNavbarComponent,
-    RoomCardComponent,
     LoadingSpinnerComponent,
     MainButtonComponent,
     InternalServerErrorComponent,
-    BookingConfirmationCardComponent,
     MainHeaderNavbarAdminComponent,
     MainAdminSidebarComponent,
     MainSmallButtonComponent,
     AdminSearchComponent,
-    MainFooterComponent
+    MainFooterComponent,
+    HotelImagesCarouselComponent
   ],
   imports: [
     CommonModule,

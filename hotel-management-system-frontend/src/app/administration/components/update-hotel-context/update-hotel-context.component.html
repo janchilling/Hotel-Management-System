@@ -1,7 +1,7 @@
 <ng-template [ngIf]="!isLoading && !isError && hotelDetails">
   <div class="container mb-3 -mt-7 sm:mb-8 md:mb-12 lg:mb-16 xl:mb-20 ">
     <section class=" py-1 bg-blueGray-50">
-      <div class="w-full lg:w-8/12 px-4 mx-auto mt-6">
+      <div class="w-full lg:w-12/12 px-4 mx-auto mt-6">
         <div class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-lg bg-blueGray-100 border-0">
           <div class="rounded-t bg-white mb-0 px-6 py-6">
             <div class="text-center flex justify-between">
@@ -11,7 +11,7 @@
             </div>
           </div>
           <div class="flex-auto px-4 lg:px-10 py-10 pt-0">
-            <form [formGroup]="updateForm" (ngSubmit)="submitForm()">
+            <form [formGroup]="updateForm">
               <h3 class="text-blueGray-400 text-sm mt-3 mb-6 font-bold uppercase">
                 Update Hotel Information
               </h3>
@@ -37,7 +37,7 @@
                 <div class="w-full lg:w-6/12 px-4">
                   <div class="relative w-full mb-3">
                     <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2" for="hotelRating">
-                      Email address
+                      Hotel Rating
                     </label>
                     <input formControlName="hotelRating" id="hotelRating" type="number" class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" placeholder="{{hotelDetails?.hotelRating}}" required>
                   </div>
@@ -112,15 +112,18 @@
               </div>
               <!-- Submit button -->
               <div class="w-full lg:w-12/12 px-4">
-                <button type="submit" class="bg-pink-500 text-white active:bg-pink-600 font-bold uppercase text-sm px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 mt-4 ease-linear transition-all duration-150">
-                  Update Hotel
-                </button>
+                <app-main-button [buttonText]="'Confirm Update'" (click)="submitForm()"></app-main-button>
               </div>
             </form>
           </div>
         </div>
       </div>
     </section>
+    <div class="w-full flex justify-center">
+      <div class="w-full md:w-3/4 lg:w-1/2 xl:w-2/3">
+        <app-hotel-images-carousel [hotelId]="hotelId" [updateHotelVisible]="true"></app-hotel-images-carousel>
+      </div>
+    </div>
   </div>
 </ng-template>
 

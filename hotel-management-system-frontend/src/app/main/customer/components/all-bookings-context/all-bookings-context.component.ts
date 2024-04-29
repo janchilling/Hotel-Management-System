@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {BookingServiceService} from "../../../../shared/services/bookingService/booking-service.service";
 import {Router} from "@angular/router";
+import {MainBookingServicesService} from "../../shared/services/mainBookingService/main-booking-services.service";
 
 @Component({
   selector: 'app-all-bookings-context',
@@ -13,7 +13,7 @@ export class AllBookingsContextComponent implements OnInit{
   userId: any;
 
   constructor(
-    private bookingService :BookingServiceService,
+    private bookingService :MainBookingServicesService,
     private router: Router
   ) {
   }

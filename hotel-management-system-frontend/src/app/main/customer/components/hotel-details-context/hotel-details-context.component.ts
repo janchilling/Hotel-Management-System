@@ -34,7 +34,6 @@ export class HotelDetailsContextComponent implements OnInit {
       this.checkInDate = params['checkIn'];
       this.checkOutDate = params['checkOut'];
     });
-
     this.fetchHotelDetails();
   }
 

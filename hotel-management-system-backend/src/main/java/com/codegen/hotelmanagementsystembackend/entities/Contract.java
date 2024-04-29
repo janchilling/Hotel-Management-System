@@ -53,6 +53,10 @@ public class Contract {
     @JsonManagedReference("supplementContractReference")
     private List<Supplement> supplements;
 
+    @OneToMany(mappedBy = "contract", cascade = CascadeType.ALL)
+    @JsonManagedReference("bookingContractReference")
+    private List<Booking> bookings = new ArrayList<>();
+
     @ManyToOne
     @JsonBackReference("contractHoteltReference")
     private Hotel hotel;

@@ -52,4 +52,9 @@ public class HotelController {
     public StandardResponse<Void> deleteHotelById(@PathVariable Integer hotelId){
         return hotelService.deleteHotelById(hotelId);
     }
+
+    @DeleteMapping("/{hotelId}/images/{imageId}")
+    public StandardResponse<Void> deleteImagesByImageId(@PathVariable Integer imageId){
+        return hotelService.deleteHotelImageById(imageId);
+    }
 }

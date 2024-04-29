@@ -10,164 +10,162 @@
 //import com.codegen.hotelmanagementsystembackend.services.BookingService;
 //import com.codegen.hotelmanagementsystembackend.services.impl.BookingServiceImpl;
 //import com.codegen.hotelmanagementsystembackend.util.StandardResponse;
-//import com.codegen.hotelmanagementsystembackend.util.UtilityMethods;
 //import org.apache.logging.log4j.Logger;
-//import org.junit.jupiter.api.BeforeEach;
 //import org.junit.jupiter.api.Test;
 //import org.junit.jupiter.api.extension.ExtendWith;
 //import org.mockito.InjectMocks;
 //import org.mockito.Mock;
 //import org.mockito.junit.jupiter.MockitoExtension;
-//import org.modelmapper.ModelMapper;
 //import org.springframework.http.HttpStatus;
 //
+//import java.sql.Date;
 //import java.util.ArrayList;
 //import java.util.List;
 //
-//import org.junit.jupiter.api.extension.ExtendWith;
-//import org.mockito.junit.jupiter.MockitoExtension;
-//
 //import static org.junit.jupiter.api.Assertions.*;
-//import static org.mockito.ArgumentMatchers.anyInt;
-//import static org.mockito.ArgumentMatchers.anyLong;
-//import static org.mockito.Mockito.when;
 //
 //
 //@ExtendWith(MockitoExtension.class)
 //public class BookingServiceImplTest {
 //
-//    @Mock
-//    private BookingRepository bookingRepository;
-//
-//    @Mock
-//    private BookingDiscountRepository bookingDiscountRepository;
-//
-//    @Mock
-//    private BookingSupplementsRepository bookingSupplementsRepository;
-//
-//    @Mock
-//    private BookingRoomRepository bookingRoomRepository;
-//
-//    @Mock
-//    private ModelMapper modelMapper;
-//
-//    @Mock
-//    private UtilityMethods utilityMethods;
-//
-//    @Mock
-//    private Logger logger;
-//
 //    @InjectMocks
 //    private BookingServiceImpl bookingService;
 //
-//    private BookingRequestDTO bookingRequestDTO;
-//    private Booking booking;
-//
-//    @BeforeEach
-//    void setUp() {
-//        bookingRequestDTO = new BookingRequestDTO();
-//        booking = new Booking();
-//    }
-//
-////    @Test
-////    void createBooking_Success() {
-////        // Arrange
-////        when(utilityMethods.getCustomer(1L)).thenReturn(new Customer());
-////        when(utilityMethods.getHotel(1)).thenReturn(new Hotel());
-////        when(modelMapper.map(bookingRequestDTO, Booking.class)).thenReturn(booking);
-////        when(bookingRepository.save(booking)).thenReturn(booking);
-////        StandardResponse<BookingResponseDTO> expectedResponse = new StandardResponse<>(HttpStatus.CREATED.value(), "Booking created successfully", null);
-////
-////        // Act
-////        StandardResponse<BookingResponseDTO> actualResponse = bookingService.createBooking(bookingRequestDTO);
-////
-////        // Assert
-////        assertNotNull(actualResponse);
-////        assertEquals(expectedResponse.getStatusCode(), actualResponse.getStatusCode());
-////        assertEquals(expectedResponse.getMessage(), actualResponse.getMessage());
-////    }
-////
-////    @Test
-////    void createBooking_Failure() {
-////        // Arrange
-////        when(utilityMethods.getCustomer(anyLong())).thenThrow(new ResourceNotFoundException("Customer not found"));
-////        StandardResponse<BookingResponseDTO> expectedResponse = new StandardResponse<>(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Failed to create booking: Customer not found", null);
-////
-////        // Act
-////        StandardResponse<BookingResponseDTO> actualResponse = bookingService.createBooking(bookingRequestDTO);
-////
-////        // Assert
-////        assertNotNull(actualResponse);
-////        assertEquals(expectedResponse.getStatusCode(), actualResponse.getStatusCode());
-////        assertEquals(expectedResponse.getMessage(), actualResponse.getMessage());
-////    }
+//    @Mock
+//    Logger logger;
 //
 //    @Test
-//    public void test_valid_booking_id() {
+//    public void test_create_booking_successfully() {
+//        // Arrange
+//        BookingRequestDTO bookingRequestDTO = new BookingRequestDTO();
+//        // Set up booking request data
+//
+//        // Set up booking request data
+//        // Set customer ID
+//        bookingRequestDTO.setCustomerCustomerId(1L);
+//        // Set hotel ID
+//        bookingRequestDTO.setHotelHotelId(1);
+//
+//        // Set payment details
+//        PaymentRequestDTO paymentRequestDTO = new PaymentRequestDTO();
+//        paymentRequestDTO.setPaymentDate("2022-01-01");
+//        paymentRequestDTO.setPaymentAmount(100.0);
+//        paymentRequestDTO.setPaymentType("Credit Card");
+//        bookingRequestDTO.setPayment(paymentRequestDTO);
+//
+//        // Set booking room details
+//        BookingRoomDTO bookingRoomRequestDTO = new BookingRoomDTO();
+//        bookingRoomRequestDTO.setNoOfRooms(2);
+//        bookingRoomRequestDTO.setRoomTypeId(1);
+//        bookingRoomRequestDTO.setCheckInDate(Date.valueOf("2022-01-01"));
+//        bookingRoomRequestDTO.setCheckOutDate(Date.valueOf("2022-01-03"));
+//        bookingRoomRequestDTO.setBookedPrice(200.0);
+//        List<BookingRoomDTO> bookingRooms = new ArrayList<>();
+//        bookingRooms.add(bookingRoomRequestDTO);
+//        bookingRequestDTO.setBookingRooms(bookingRooms);
+//
+//        // Set booking discount details
+//        BookingDiscountDTO bookingDiscountDTO = new BookingDiscountDTO();
+//        bookingDiscountDTO.setDiscountCode("DISCOUNT123");
+//        bookingDiscountDTO.setDiscountedAmount(50.0);
+//        bookingDiscountDTO.setDiscountId(1);
+//        List<BookingDiscountDTO> bookingDiscounts = new ArrayList<>();
+//        bookingDiscounts.add(bookingDiscountDTO);
+//        bookingRequestDTO.setBookingDiscounts(bookingDiscounts);
+//
+//        // Set booking supplement details
+//        BookingSupplementDTO bookingSupplementRequestDTO = new BookingSupplementDTO();
+//        bookingSupplementRequestDTO.setNoOfRooms(1);
+//        bookingSupplementRequestDTO.setSupplementPrice(50L);
+//        bookingSupplementRequestDTO.setSupplementName("Breakfast");
+//        bookingSupplementRequestDTO.setRoomTypeId(1);
+//        List<BookingSupplementDTO> bookingSupplements = new ArrayList<>();
+//        bookingSupplements.add(bookingSupplementRequestDTO);
+//        bookingRequestDTO.setBookingSupplements(bookingSupplements);
+//
+//        // Act
+//        StandardResponse<BookingResponseDTO> response = null;
+//        try {
+//            response = bookingService.createBooking(bookingRequestDTO);
+//        } catch (NullPointerException e) {
+//            this.logger.error("Failed to create booking: ", e);
+//        }
+//
+//        // Assert
+//        assertEquals(HttpStatus.CREATED.value(), response.getStatusCode());
+//        assertNotNull(response.getData());
+//        assertEquals("Booking created successfully", response.getMessage());}
+//
+//    @Test
+//    public void test_retrieve_booking_by_id_successfully() {
 //        // Arrange
 //        Integer bookingId = 1;
-//        Booking booking = new Booking();
-//        booking.setBookingId(bookingId);
-//        // Mock the utilityMethods.getBooking() method to return the booking object
-//        when(utilityMethods.getBooking(bookingId)).thenReturn(booking);
-//
-//        BookingResponseDTO expectedResponse = new BookingResponseDTO();
-//        expectedResponse.setBookingId(bookingId);
-//        // Mock the mapToBookingResponseDTO() method to return the expected response
-//        when(bookingService.mapToBookingResponseDTO(booking)).thenReturn(expectedResponse);
 //
 //        // Act
 //        StandardResponse<BookingResponseDTO> response = bookingService.getBookingById(bookingId);
 //
 //        // Assert
 //        assertEquals(HttpStatus.OK.value(), response.getStatusCode());
+//        assertNotNull(response.getData());
 //        assertEquals("Booking found", response.getMessage());
-//        assertEquals(expectedResponse, response.getData());
 //    }
 //
 //    @Test
-//    void getBookingById_BookingNotFound() {
+//    public void test_retrieve_bookings_by_customer_id_successfully() {
 //        // Arrange
-//        Integer bookingId = 123;
-//        when(utilityMethods.getBooking(bookingId)).thenReturn(null);
+//        Long userId = 1L;
+//
+//        // Act
+//        StandardResponse<List<BookingResponseDTO>> response = bookingService.getBookingByCustomer(userId);
+//
+//        // Assert
+//        assertEquals(HttpStatus.OK.value(), response.getStatusCode());
+//        assertNotNull(response.getData());
+//        assertEquals("Bookings found for user ID: " + userId, response.getMessage());
+//    }
+//
+//    @Test
+//    public void test_create_booking_with_multiple_rooms_discounts_supplements_successfully() {
+//        // Arrange
+//        BookingRequestDTO bookingRequestDTO = new BookingRequestDTO();
+//        // Set up booking request data with multiple rooms, discounts, and supplements
+//
+//        // Act
+//        StandardResponse<BookingResponseDTO> response = bookingService.createBooking(bookingRequestDTO);
+//
+//        // Assert
+//        assertEquals(HttpStatus.CREATED.value(), response.getStatusCode());
+//        assertNotNull(response.getData());
+//        assertEquals("Booking created successfully", response.getMessage());
+//    }
+//
+//    @Test
+//    public void test_retrieve_booking_with_multiple_rooms_discounts_supplements_by_id_successfully() {
+//        // Arrange
+//        Integer bookingId = 1;
 //
 //        // Act
 //        StandardResponse<BookingResponseDTO> response = bookingService.getBookingById(bookingId);
 //
 //        // Assert
-//        assertEquals(HttpStatus.NOT_FOUND.value(), response.getStatusCode());
-//        assertEquals("Booking not found", response.getMessage());
-//        assertNull(response.getData());
+//        assertEquals(HttpStatus.OK.value(), response.getStatusCode());
+//        assertNotNull(response.getData());
+//        assertEquals("Booking found", response.getMessage());
 //    }
 //
 //    @Test
-//    void getBookingById_ResourceNotFoundException() {
+//    public void test_retrieve_booking_with_multiple_rooms_discounts_supplements_by_customer_id_successfully() {
 //        // Arrange
-//        Integer bookingId = 123;
-//        when(utilityMethods.getBooking(anyInt())).thenThrow(new ResourceNotFoundException("Booking not found"));
+//        Long userId = 1L;
 //
 //        // Act
-//        StandardResponse<BookingResponseDTO> response = bookingService.getBookingById(bookingId);
+//        StandardResponse<List<BookingResponseDTO>> response = bookingService.getBookingByCustomer(userId);
 //
 //        // Assert
-//        assertEquals(HttpStatus.NOT_FOUND.value(), response.getStatusCode());
-//        assertEquals("Booking not found", response.getMessage());
-//        assertNull(response.getData());
+//        assertEquals(HttpStatus.OK.value(), response.getStatusCode());
+//        assertNotNull(response.getData());
+//        assertEquals("Bookings found for user ID: " + userId, response.getMessage());
 //    }
 //
-//    @Test
-//    void getBookingById_InternalServerError() {
-//        // Arrange
-//        Integer bookingId = 123;
-//        when(utilityMethods.getBooking(anyInt())).thenThrow(new RuntimeException("Internal server error"));
-//
-//        // Act
-//        StandardResponse<BookingResponseDTO> response = bookingService.getBookingById(bookingId);
-//
-//        // Assert
-//        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR.value(), response.getStatusCode());
-//        assertEquals("Failed to retrieve booking: Internal server error", response.getMessage());
-//        assertNull(response.getData());
-//    }
 //
 //}
