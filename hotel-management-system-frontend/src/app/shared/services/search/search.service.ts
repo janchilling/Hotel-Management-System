@@ -17,8 +17,8 @@ export class SearchService {
 
   backendHostName: String = this.apiPathService.baseURL;
 
-  getSearchData(destination: string, noOfRooms: string, checkIn: string, checkOut: string): Observable<StandardResponse<HotelDetails>> {
-    return this.httpClient.get<StandardResponse<HotelDetails>>(`${this.backendHostName}/v1/products?destination=${destination}&noOfRooms=${noOfRooms}&checkIn=${checkIn}&checkOut=${checkOut}`)
+  getSearchData(destination: string, noOfRooms: string, noOfPersons: string, checkIn: string, checkOut: string): Observable<StandardResponse<HotelDetails>> {
+    return this.httpClient.get<StandardResponse<HotelDetails>>(`${this.backendHostName}/v1/products?destination=${destination}&noOfRooms=${noOfRooms}&noOfAdults=${noOfPersons}&checkIn=${checkIn}&checkOut=${checkOut}`)
       .pipe(
         catchError((error: any) => {
           console.error('Error fetching Search Results:', error);

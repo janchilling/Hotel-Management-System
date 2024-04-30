@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import java.sql.Date;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -42,18 +43,21 @@ public class ProductServiceImpl implements ProductService {
      * @return              a standard response containing a list of search response DTOs
      */
     @Override
-    public StandardResponse<List<SearchResponseDTO>> searchHotels(String destination, Integer noOfRooms, Date checkIn, Date checkOut) {
+    public StandardResponse<List<SearchResponseDTO>> searchHotels(String destination, Integer noOfRooms, Integer noOfAdults, Date checkIn, Date checkOut) {
         try {
             List<Hotel> hotels = hotelRepository.findByHotelNameContainingOrHotelCityContainingOrHotelCountryContaining(destination, destination, destination);
 
-            List<Contract> activeHotelContracts = hotels.stream().map(hotel -> getActiveContract(hotel, checkIn, checkOut)).toList();
+            List<Contract> activeHotelContracts = hotels.stream()
+                    .map(hotel -> getActiveContract(hotel, checkIn, checkOut))
+                    .filter(Objects::nonNull)
+                    .toList();
 
             if (activeHotelContracts == null) {
                 return new StandardResponse<>(404, "No hotels found with active contracts within the specified dates", null);
             }
 
             List<Contract> contractsOfHotelsWithAvailableRooms = activeHotelContracts.stream()
-                    .filter(contract -> hasAvailableRooms(contract, checkIn, checkOut, noOfRooms))
+                    .filter(contract -> hasAvailableRooms(contract, checkIn, checkOut, noOfRooms, noOfAdults))
                     .toList();
 
             List<SearchResponseDTO> searchResponseDTOS = contractsOfHotelsWithAvailableRooms.stream()
@@ -102,7 +106,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public StandardResponse<Boolean> checkAvailabilityByHotelId(Integer hotelId, Integer noOfRooms, Date checkIn, Date checkOut) {
+    public StandardResponse<Boolean> checkAvailabilityByHotelId(Integer hotelId, Integer noOfRooms, Integer noOfAdults, Date checkIn, Date checkOut) {
         try {
             // Get the hotel by ID
             Hotel hotel = utilityMethods.getHotel(hotelId);
@@ -121,7 +125,7 @@ public class ProductServiceImpl implements ProductService {
             }
 
             // Check if there are enough available rooms in the active contract
-            boolean availability = hasAvailableRooms(activeContract, checkIn, checkOut, noOfRooms);
+            boolean availability = hasAvailableRooms(activeContract, checkIn, checkOut, noOfRooms, noOfAdults);
 
             return new StandardResponse<>(200, "Availability checked", availability);
         } catch (Exception e) {
@@ -160,28 +164,35 @@ public class ProductServiceImpl implements ProductService {
         return activeContractOptional.orElse(null);
     }
 
-    public boolean hasAvailableRooms(Contract contract, Date checkIn, Date checkOut, Integer noOfRooms) {
+    public boolean hasAvailableRooms(Contract contract, Date checkIn, Date checkOut, Integer noOfRooms, Integer noOfAdults) {
 
-        Integer totalNumberOfRooms = 0;
+        int totalNumberOfRooms = 0;
+        int totalAdultsAllowed = 0;
+        int maxAdultCountForAnyRoom = 0;
         int bookedRooms = 0;
         // Get the season ID for the provided check-in and check-out dates
         Integer seasonId = seasonService.getSeasonByCheckInOutDates(contract, checkIn, checkOut);
 
         for (RoomType roomType : contract.getRoomTypes()) {
             Integer bookedRoomsCount = bookingRoomRepository.countBookedRooms(roomType.getRoomTypeId(), checkIn, checkOut);
+            int adultsAllowed = roomType.getMaxAdults();
+            if(maxAdultCountForAnyRoom < adultsAllowed) {
+                maxAdultCountForAnyRoom = adultsAllowed;
+            }
             if (bookedRoomsCount != null) {
                 bookedRooms += bookedRoomsCount;
             }
             for (SeasonRoomType seasonRoomType : roomType.getSeasonRoomtype()) {
                 if (seasonRoomType.getSeason().getSeasonId().equals(seasonId)) {
                     totalNumberOfRooms += seasonRoomType.getNoOfRooms();
+                    totalAdultsAllowed += adultsAllowed * (totalNumberOfRooms - bookedRooms);
                     break;
                 }
             }
         }
 
         // Check if there are enough available rooms
-        return totalNumberOfRooms - bookedRooms >= noOfRooms;
+        return totalNumberOfRooms - bookedRooms >= noOfRooms && totalAdultsAllowed >= noOfAdults  && maxAdultCountForAnyRoom * noOfRooms >= noOfAdults;
     }
 
     private Double lowestRoomTypePrice(Contract contract, Date checkIn, Date checkOut) {

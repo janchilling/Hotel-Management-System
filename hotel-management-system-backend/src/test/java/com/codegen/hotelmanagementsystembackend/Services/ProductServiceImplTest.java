@@ -51,11 +51,12 @@ public class ProductServiceImplTest {
         ProductService productService = new ProductServiceImpl(modelMapper, hotelRepository, utilityMethods, seasonService, bookingRoomRepository, logger);
         String destination = "New York";
         Integer noOfRooms = 2;
+        Integer noOfAdults = 2;
         Date checkIn = Date.valueOf("2022-10-01");
         Date checkOut = Date.valueOf("2022-10-05");
 
         // Act
-        StandardResponse<List<SearchResponseDTO>> response = productService.searchHotels(destination, noOfRooms, checkIn, checkOut);
+        StandardResponse<List<SearchResponseDTO>> response = productService.searchHotels(destination, noOfRooms, noOfAdults,checkIn, checkOut);
 
         // Assert
         assertEquals(200, response.getStatusCode());
@@ -82,11 +83,12 @@ public class ProductServiceImplTest {
         ProductService productService = new ProductServiceImpl(modelMapper, hotelRepository, utilityMethods, seasonService, bookingRoomRepository, logger);
         Integer hotelId = 1;
         Integer noOfRooms = 2;
+        Integer noOfAdults = 2;
         Date checkIn = Date.valueOf("2022-10-01");
         Date checkOut = Date.valueOf("2022-10-05");
 
         // Act
-        StandardResponse<Boolean> response = productService.checkAvailabilityByHotelId(hotelId, noOfRooms, checkIn, checkOut);
+        StandardResponse<Boolean> response = productService.checkAvailabilityByHotelId(hotelId, noOfRooms, noOfAdults, checkIn, checkOut);
 
         // Assert
         assertNotNull(response.getData());

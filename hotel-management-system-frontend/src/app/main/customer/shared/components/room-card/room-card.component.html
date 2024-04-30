@@ -26,6 +26,7 @@
           <li class="icon1"><i class="fa-solid fa-tv"></i> TV</li>
           <li class="icon1"><i class="fa-solid fa-hot-tub-person"></i> Jacuzzi</li>
         </ul>
+        <a (click)="openMoreInfoPopup()" class="mt-20 text-blue-500 cursor-pointer"><i class="fa-solid fa-circle-info" style="color: #74C0FC;"></i> More Info</a>
         <p class="text-red-700" *ngIf="numRooms >= availableRooms">Maximum rooms reached</p>
         <p class="text-red-700" *ngIf="availableRooms < 5">Only 2 available</p>
       </div>

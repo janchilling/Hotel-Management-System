@@ -50,7 +50,7 @@ export class HotelServicesService {
   }
 
   checkAvailabilityByHotel(hotelId: number, noOfRooms: number, noOfPersons: number, checkIn: String, checkOut: String): Observable<any> {
-    return this.httpClient.get(`${this.backendHostName}/v1/products/${hotelId}/availability?noOfRooms=${noOfRooms}&checkIn=${checkIn}&checkOut=${checkOut}`)
+    return this.httpClient.get(`${this.backendHostName}/v1/products/${hotelId}/availability?noOfRooms=${noOfRooms}&noOfAdults=${noOfPersons}&checkIn=${checkIn}&checkOut=${checkOut}`)
       .pipe(
         catchError((error: any) => {
           console.error('Error fetching hotel availability:', error);

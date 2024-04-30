@@ -9,11 +9,11 @@ import java.util.List;
 
 public interface ProductService {
 
-    StandardResponse<List<SearchResponseDTO>> searchHotels(String destination, Integer noOfRooms, Date checkIn, Date checkOut);
+    StandardResponse<List<SearchResponseDTO>> searchHotels(String destination, Integer noOfRooms, Integer noOfAdults, Date checkIn, Date checkOut);
 
     StandardResponse<SearchResponseDTO> getHotelByIdActive(Integer hotelId);
 
-    StandardResponse<Boolean> checkAvailabilityByHotelId(Integer hotelId, Integer noOfRooms, Date checkIn, Date checkOut);
+    StandardResponse<Boolean> checkAvailabilityByHotelId(Integer hotelId, Integer noOfRooms, Integer noOfAdults, Date checkIn, Date checkOut);
 
     StandardResponse<List<SearchResponseDTO>> adminSearchHotels(String hotel);
 

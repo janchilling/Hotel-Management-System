@@ -66,6 +66,7 @@ import {
   PopUpClashingBookingsComponent
 } from './customer/shared/components/pop-up-clashing-bookings/pop-up-clashing-bookings.component';
 import {RoomCardComponent} from "./customer/shared/components/room-card/room-card.component";
+import { PopUpMoreInfoComponent } from './customer/shared/components/pop-up-more-info/pop-up-more-info/pop-up-more-info.component';
 
 @NgModule({
   declarations: [
@@ -93,7 +94,8 @@ import {RoomCardComponent} from "./customer/shared/components/room-card/room-car
     MainSearchbarComponent,
     BookingConfirmationCardComponent,
     PopUpClashingBookingsComponent,
-    RoomCardComponent
+    RoomCardComponent,
+    PopUpMoreInfoComponent
   ],
   exports: [
     ResultCardComponent

@@ -59,7 +59,7 @@ export class MainSearchbarComponent implements OnInit {
 
   updateMinCheckoutDate(): void {
     const checkInDate = new Date(this.searchForm.value.checkIn);
-    let checkOutDate = new Date(checkInDate.getTime() + (2 * 24 * 60 * 60 * 1000));
+    let checkOutDate = new Date(checkInDate.getTime() + (24 * 60 * 60 * 1000));
 
     if (checkOutDate < checkInDate) {
       checkOutDate = new Date(checkInDate.getTime() + (24 * 60 * 60 * 1000));

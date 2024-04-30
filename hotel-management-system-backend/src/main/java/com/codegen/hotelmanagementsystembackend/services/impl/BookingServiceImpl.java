@@ -14,6 +14,8 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.Logger;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.config.Configuration;
+import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -52,9 +54,11 @@ public class BookingServiceImpl implements BookingService {
             // Map BookingRequestDTO to Booking entity
             Booking booking = modelMapper.map(bookingRequestDTO, Booking.class);
 
+            System.out.println(booking);
             // Set customer and hotel for the booking
             booking.setHotel(hotel);
             booking.setCustomer(customer);
+            booking.setContract(contract);
 
             // Map and set payment
             Payment newPayment = modelMapper.map(bookingRequestDTO.getPayment(), Payment.class);
@@ -64,18 +68,24 @@ public class BookingServiceImpl implements BookingService {
 
             Booking savedBooking = bookingRepository.save(booking);
 
-            bookingRequestDTO.getBookingRooms()
-                    .forEach(bookingRoomDTO -> {
-                        BookingRoom newBookingRoom = new BookingRoom();
-                        newBookingRoom.setNoOfRooms(bookingRoomDTO.getNoOfRooms());
-                        newBookingRoom.setRoomTypeName(bookingRoomDTO.getRoomTypeName());
-                        newBookingRoom.setBookedPrice(bookingRoomDTO.getBookedPrice());
-                        newBookingRoom.setCheckInDate(bookingRoomDTO.getCheckInDate());
-                        newBookingRoom.setCheckOutDate(bookingRoomDTO.getCheckOutDate());
-                        newBookingRoom.setBooking(savedBooking);
-                        newBookingRoom.setRoomType(utilityMethods.getRoomType(bookingRoomDTO.getRoomTypeId()));
-                        bookingRoomRepository.save(newBookingRoom);
-                    });
+            bookingRequestDTO.getBookingRooms().forEach(bookingRoomDTO -> {
+                BookingRoom newBookingRoom = new BookingRoom();
+                newBookingRoom.setNoOfRooms(bookingRoomDTO.getNoOfRooms());
+                newBookingRoom.setRoomTypeName(bookingRoomDTO.getRoomTypeName());
+                newBookingRoom.setBookedPrice(bookingRoomDTO.getBookedPrice());
+                newBookingRoom.setCheckInDate(bookingRoomDTO.getCheckInDate());
+                newBookingRoom.setCheckOutDate(bookingRoomDTO.getCheckOutDate());
+
+                // Set the booking for the new booking room
+                newBookingRoom.setBooking(savedBooking);
+
+                // Set the room type for the new booking room
+                newBookingRoom.setRoomType(utilityMethods.getRoomType(bookingRoomDTO.getRoomTypeId()));
+
+                // Save the new booking room
+                bookingRoomRepository.save(newBookingRoom);
+            });
+
 
             // Map booking discounts
             if (bookingRequestDTO.getBookingDiscounts() != null) {
@@ -88,7 +98,7 @@ public class BookingServiceImpl implements BookingService {
                     booking.getBookingDiscounts().add(newBookingDiscount);
             }
 
-            bookingRequestDTO.getBookingSupplements().stream()
+            bookingRequestDTO.getBookingSupplements()
                     .forEach(bookingSupplementDTO -> {
                         BookingSupplements newBookingSupplement = new BookingSupplements();
                         newBookingSupplement.setNoOfRooms(bookingSupplementDTO.getNoOfRooms());
