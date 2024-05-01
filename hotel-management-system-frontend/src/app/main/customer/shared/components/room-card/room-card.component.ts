@@ -5,7 +5,7 @@ import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
 import {RoomTypeServicesService} from "../../../../../shared/services/roomTypesServices/room-type-services.service";
 import {DateServiceService} from "../../../../../shared/services/dateService/date-service.service";
 import {PopUpCarouselComponent} from "../../../../../shared/components/pop-up-carousel/pop-up-carousel.component";
-import {PopUpMoreInfoComponent} from "../pop-up-more-info/pop-up-more-info/pop-up-more-info.component";
+import {PopUpMoreInfoComponent} from "../pop-up-more-info/pop-up-more-info.component";
 
 @Component({
   selector: 'app-room-card',
@@ -226,7 +226,7 @@ export class RoomCardComponent implements OnInit {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.maxWidth = '100vw';
     dialogConfig.maxHeight = '100vh';
-    dialogConfig.data = { roomType: this.roomType, slides: this.slides }; // Pass roomType to dialog
+    dialogConfig.data = { roomType: this.roomType, slides: this.slides };
 
     this.dialog.open(PopUpMoreInfoComponent, dialogConfig);
   }
