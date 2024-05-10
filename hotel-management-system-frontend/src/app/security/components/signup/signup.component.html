@@ -1,7 +1,11 @@
-<section>
+<div *ngIf="isLoading" class="loading-spinner-overlay">
+  <app-loading-spinner></app-loading-spinner>
+</div>
+
+<section *ngIf="!isLoading && !isError">
   <div class="flex flex-col items-center justify-center px-2 py-2 mx-auto md:h-full my-20 lg:py-0">
-    <a href="#" class="flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white">
-      <img class="w-64 h-32 mr-2" src="/assets/images/Travee_white_logo.svg" alt="logo">
+    <a class="flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white" href="#">
+      <img alt="logo" class="w-64 h-32 mr-2" src="/assets/images/Travee_white_logo.svg">
     </a>
     <div class="w-full bg-white rounded-lg shadow-md md:shadow-lg dark:border dark:border-gray-700 md:mt-0 sm:max-w-screen-md xl:p-0 dark:bg-gray-800">
       <div class="p-6 space-y-4 md:space-y-6 sm:p-8 border-2 border-gray-100 max-w-full mx-auto">
@@ -9,36 +13,36 @@
           Register now
         </h1>
 
-    <form [formGroup]="signupForm" (ngSubmit)="onSubmit()">
+    <form (ngSubmit)="onSubmit()" [formGroup]="signupForm">
       <div class="formbold-input-flex">
         <div>
-          <label for="firstname" class="formbold-form-label">
+          <label class="formbold-form-label" for="firstName">
             First name
           </label>
           <input
-            type="text"
-            name="firstname"
-            id="firstname"
             class="formbold-form-input w-full"
-            formControlName="firstname"
+            formControlName="firstName"
+            id="firstName"
+            name="firstName"
+            type="text"
           />
-          <div *ngIf="signupForm.get('firstname')?.invalid && signupForm.get('firstname')?.touched">
-            <div *ngIf="signupForm.get('firstname')?.errors?.['required']" class="text-red-500">
+          <div *ngIf="signupForm.get('firstName')?.invalid && signupForm.get('firstName')?.touched">
+            <div *ngIf="signupForm.get('firstName')?.errors?.['required']" class="text-red-500">
               First name is required.
             </div>
           </div>
         </div>
         <div>
-          <label for="lastname" class="formbold-form-label"> Last name </label>
+          <label class="formbold-form-label" for="lastName"> Last name </label>
           <input
-            type="text"
-            name="lastname"
-            id="lastname"
             class="formbold-form-input w-full"
-            formControlName="lastname"
+            formControlName="lastName"
+            id="lastName"
+            name="lastName"
+            type="text"
           />
-          <div *ngIf="signupForm.get('lastname')?.invalid && signupForm.get('lastname')?.touched">
-            <div *ngIf="signupForm.get('lastname')?.errors?.['required']" class="text-red-500">
+          <div *ngIf="signupForm.get('lastName')?.invalid && signupForm.get('lastName')?.touched">
+            <div *ngIf="signupForm.get('lastName')?.errors?.['required']" class="text-red-500">
               Last name is required.
             </div>
           </div>
@@ -47,31 +51,31 @@
 
       <div class="formbold-input-flex">
         <div>
-          <label for="email" class="formbold-form-label"> Email </label>
+          <label class="formbold-form-label" for="email"> Email </label>
           <input
-            type="email"
-            name="email"
-            id="email"
             class="formbold-form-input w-full"
             formControlName="email"
+            id="email"
+            name="email"
+            type="email"
           />
           <div *ngIf="signupForm.get('email')?.invalid && signupForm.get('email')?.touched">
             <div *ngIf="signupForm.get('email')?.errors?.['required']" class="text-red-500">
               Email is required.
             </div>
             <div *ngIf="signupForm.get('email')?.errors?.['email']" class="text-red-500">
-              Please enter a valid email address.
+              Please enter a valid email streetAddress.
             </div>
           </div>
         </div>
         <div>
-          <label for="phone" class="formbold-form-label"> Phone number </label>
+          <label class="formbold-form-label" for="phone"> Phone number </label>
           <input
-            type="text"
-            name="phone"
-            id="phone"
             class="formbold-form-input w-full"
             formControlName="phone"
+            id="phone"
+            name="phone"
+            type="text"
           />
           <div *ngIf="signupForm.get('phone')?.invalid && signupForm.get('phone')?.touched">
             <div *ngIf="signupForm.get('phone')?.errors?.['required']" class="text-red-500">
@@ -82,18 +86,18 @@
       </div>
 
       <div class="formbold-mb-3">
-        <label for="address" class="formbold-form-label">
+        <label class="formbold-form-label" for="streetAddress">
           Street Address
         </label>
         <input
-          type="text"
-          name="address"
-          id="address"
           class="formbold-form-input w-full"
-          formControlName="address"
+          formControlName="streetAddress"
+          id="streetAddress"
+          name="streetAddress"
+          type="text"
         />
-        <div *ngIf="signupForm.get('address')?.invalid && signupForm.get('address')?.touched">
-          <div *ngIf="signupForm.get('address')?.errors?.['required']" class="text-red-500">
+        <div *ngIf="signupForm.get('streetAddress')?.invalid && signupForm.get('streetAddress')?.touched">
+          <div *ngIf="signupForm.get('streetAddress')?.errors?.['required']" class="text-red-500">
             Address is required.
           </div>
         </div>
@@ -101,13 +105,13 @@
 
       <div class="formbold-input-flex">
         <div>
-          <label for="state" class="formbold-form-label"> State/Province </label>
+          <label class="formbold-form-label" for="state"> State/Province </label>
           <input
-            type="text"
-            name="state"
-            id="state"
             class="formbold-form-input w-full"
             formControlName="state"
+            id="state"
+            name="state"
+            type="text"
           />
           <div *ngIf="signupForm.get('state')?.invalid && signupForm.get('state')?.touched">
             <div *ngIf="signupForm.get('state')?.errors?.['required']" class="text-red-500">
@@ -116,13 +120,13 @@
           </div>
         </div>
         <div>
-          <label for="country" class="formbold-form-label"> Country </label>
+          <label class="formbold-form-label" for="country"> Country </label>
           <input
-            type="text"
-            name="country"
-            id="country"
             class="formbold-form-input w-full"
             formControlName="country"
+            id="country"
+            name="country"
+            type="text"
           />
           <div *ngIf="signupForm.get('country')?.invalid && signupForm.get('country')?.touched">
             <div *ngIf="signupForm.get('country')?.errors?.['required']" class="text-red-500">
@@ -134,28 +138,28 @@
 
       <div class="formbold-input-flex">
         <div>
-          <label for="post" class="formbold-form-label"> Post/Zip code </label>
+          <label class="formbold-form-label" for="postalCode"> Post/Zip code </label>
           <input
-            type="text"
-            name="post"
-            id="post"
             class="formbold-form-input w-full"
-            formControlName="post"
+            formControlName="postalCode"
+            id="postalCode"
+            name="postalCode"
+            type="text"
           />
-          <div *ngIf="signupForm.get('post')?.invalid && signupForm.get('post')?.touched">
-            <div *ngIf="signupForm.get('post')?.errors?.['required']" class="text-red-500">
+          <div *ngIf="signupForm.get('postalCode')?.invalid && signupForm.get('postalCode')?.touched">
+            <div *ngIf="signupForm.get('postalCode')?.errors?.['required']" class="text-red-500">
               Post/Zip code is required.
             </div>
           </div>
         </div>
         <div>
-          <label for="city" class="formbold-form-label"> City </label>
+          <label class="formbold-form-label" for="city"> City </label>
           <input
-            type="text"
-            name="city"
-            id="city"
             class="formbold-form-input w-full"
             formControlName="city"
+            id="city"
+            name="city"
+            type="text"
           />
           <div *ngIf="signupForm.get('city')?.invalid && signupForm.get('city')?.touched">
             <div *ngIf="signupForm.get('city')?.errors?.['required']" class="text-red-500">
@@ -166,15 +170,15 @@
       </div>
 
       <div class="formbold-mb-3">
-        <label for="password" class="formbold-form-label">
+        <label class="formbold-form-label" for="password">
           Password
         </label>
         <input
-          type="password"
-          name="password"
-          id="password"
           class="formbold-form-input w-full"
           formControlName="password"
+          id="password"
+          name="password"
+          type="password"
         />
         <div *ngIf="signupForm.get('password')?.invalid && signupForm.get('password')?.touched">
           <div *ngIf="signupForm.get('password')?.errors?.['required']" class="text-red-500">
@@ -187,15 +191,15 @@
       </div>
 
       <div class="formbold-mb-3">
-        <label for="confirmPassword" class="formbold-form-label">
+        <label class="formbold-form-label" for="confirmPassword">
           Confirm Password
         </label>
         <input
-          type="password"
-          name="confirmPassword"
-          id="confirmPassword"
           class="formbold-form-input w-full"
           formControlName="confirmPassword"
+          id="confirmPassword"
+          name="confirmPassword"
+          type="password"
         />
         <div *ngIf="signupForm.get('confirmPassword')?.invalid && signupForm.get('confirmPassword')?.touched">
           <div *ngIf="signupForm.get('confirmPassword')?.errors?.['required']" class="text-red-500">
@@ -207,10 +211,14 @@
         </div>
       </div>
       <div class="flex justify-center"> <!-- Add this line to center the button -->
-        <button type="submit" class="bg-button-gold hover:bg-black text-white font-bold focus:ring-4 focus:outline-none focus:ring-primary-300 rounded-lg text-lg py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800" style="padding: 8px 150px; margin: 4px;" [disabled]="signupForm.invalid">Register Now</button>
+        <button [disabled]="signupForm.invalid" class="bg-button-gold hover:bg-black text-white font-bold focus:ring-4 focus:outline-none focus:ring-primary-300 rounded-lg text-lg py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800" style="padding: 8px 150px; margin: 4px;" type="submit">Register Now</button>
       </div>
     </form>
       </div>
     </div>
   </div>
 </section>
+
+<div *ngIf="isError" class="loading-spinner-overlay">
+  <app-internal-server-error></app-internal-server-error>
+</div>
