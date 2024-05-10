@@ -14,7 +14,8 @@ export class PopUpMoreInfoComponent implements OnInit{
   constructor(@Inject(MAT_DIALOG_DATA) public data: any) { }
 
   ngOnInit(): void {
-    this.roomType = this.data.roomType; // Access roomType data
+    this.roomType = this.data.roomType;
+    console.log(this.roomType)
   }
 
 }

@@ -33,8 +33,9 @@
         </svg>
       </span>
           </li>
-          <li class="icon1"><span
-            class="cursor-pointer rounded-full border border-gray-900/5 bg-gray-900/5 p-3 text-gray-900 transition-colors hover:border-gray-900/10 hover:bg-gray-900/10 hover:!opacity-100 group-hover:opacity-70">
+          <li class="icon1">
+            <span
+              class="cursor-pointer rounded-full border border-gray-900/5 bg-gray-900/5 p-3 text-gray-900 transition-colors hover:border-gray-900/10 hover:bg-gray-900/10 hover:!opacity-100 group-hover:opacity-70">
         <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
           <path d="M12 7.5a2.25 2.25 0 100 4.5 2.25 2.25 0 000-4.5z"></path>
           <path clip-rule="evenodd"
@@ -44,7 +45,8 @@
             d="M2.25 18a.75.75 0 000 1.5c5.4 0 10.63.722 15.6 2.075 1.19.324 2.4-.558 2.4-1.82V18.75a.75.75 0 00-.75-.75H2.25z">
           </path>
         </svg>
-      </span></li>
+      </span>
+          </li>
           <li class="icon1"><span
             class="cursor-pointer rounded-full border border-gray-900/5 bg-gray-900/5 p-3 text-gray-900 transition-colors hover:border-gray-900/10 hover:bg-gray-900/10 hover:!opacity-100 group-hover:opacity-70">
         <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -75,9 +77,11 @@
         </svg>
       </span></li>
         </ul>
-        <a (click)="openMoreInfoPopup()" class="mt-20 text-blue-500 cursor-pointer"><i class="fa-solid fa-circle-info"
-                                                                                       style="color: #74C0FC;"></i> More
-          Info</a>
+        <div class="flex justify-start mt-10 ml-2">
+          <a (click)="openMoreInfoPopup()" class="text-blue-500 cursor-pointer"><i class="fa-solid fa-circle-info"
+                                                                                   style="color: #74C0FC;"></i> More
+            Info</a>
+        </div>
         <p *ngIf="numRooms >= availableRooms" class="text-red-700">Maximum rooms reached</p>
         <p *ngIf="availableRooms < 5" class="text-red-700">Only 2 available</p>
       </div>
@@ -103,3 +107,4 @@
     </div>
   </div>
 </div>
+

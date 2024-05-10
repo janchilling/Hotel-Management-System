@@ -31,6 +31,7 @@ export class HotelOffersComponent implements OnInit{
         this.isLoading = false;
         if (response.statusCode === 200){
           this.discountDetails = response.data;
+          console.log(this.discountDetails);
         } else {
           console.log(response);
         }

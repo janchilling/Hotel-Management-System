@@ -58,11 +58,9 @@ export class RoomCardComponent implements OnInit {
       // Setting the number of rooms available in the room type of the particular Hotel
       this.roomTypeServicesService.availableNoOfRooms(this.roomType.roomTypeId, this.checkInDate, this.checkOutDate, this.seasonId).subscribe((data: any) => {
         this.availableRooms = data.data;
-        console.log(this.availableRooms)
       })
     });
     this.slides = this.roomType?.roomTypeImages
-    console.log(this.slides)
   }
 
   getRoomTypePriceAndSetSeasonId(): void {

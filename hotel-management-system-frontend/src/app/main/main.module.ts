@@ -46,9 +46,6 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {
   AllHotelsTopContainerComponent
 } from './customer/components/search-results-context/inner-items/all-hotels-top-container/all-hotels-top-container.component';
-import {
-  AllHotelsBottomContainerComponent
-} from './customer/components/search-results-context/inner-items/all-hotels-bottom-container/all-hotels-bottom-container.component';
 import {AllBookingsContextComponent} from './customer/components/all-bookings-context/all-bookings-context.component';
 import {
   AllBookingResultCardsComponent
@@ -67,6 +64,7 @@ import {
 } from './customer/shared/components/pop-up-clashing-bookings/pop-up-clashing-bookings.component';
 import {RoomCardComponent} from "./customer/shared/components/room-card/room-card.component";
 import { PopUpMoreInfoComponent } from './customer/shared/components/pop-up-more-info/pop-up-more-info.component';
+import { BlogContextComponent } from './customer/components/blog-context/blog-context.component';
 
 @NgModule({
   declarations: [
@@ -86,7 +84,6 @@ import { PopUpMoreInfoComponent } from './customer/shared/components/pop-up-more
     BookingPaymentComponent,
     BookingConfirmationComponent,
     AllHotelsTopContainerComponent,
-    AllHotelsBottomContainerComponent,
     AllBookingsContextComponent,
     AllBookingResultCardsComponent,
     ViewBookingContextComponent,
@@ -95,7 +92,8 @@ import { PopUpMoreInfoComponent } from './customer/shared/components/pop-up-more
     BookingConfirmationCardComponent,
     PopUpClashingBookingsComponent,
     RoomCardComponent,
-    PopUpMoreInfoComponent
+    PopUpMoreInfoComponent,
+    BlogContextComponent
   ],
   exports: [
     ResultCardComponent
