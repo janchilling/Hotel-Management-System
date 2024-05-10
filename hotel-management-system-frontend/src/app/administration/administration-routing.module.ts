@@ -14,10 +14,14 @@ import {AdminHotelDetailsComponent} from "./components/admin-hotel-details/admin
 import {UpdateHotelContextComponent} from "./components/update-hotel-context/update-hotel-context.component";
 import {ViewContractContextComponent} from "./components/view-contract-context/view-contract-context.component";
 import {UpdateContractContextComponent} from "./components/update-contract-context/update-contract-context.component";
+import {PermissionsService} from "../security/services/permissionService/permission-service.service";
+import {AuthGuard} from "../security/services/permissionService/permission-service.service";
 
 const routes: Routes = [{
   path: '',
   component: AdministrationComponent,
+  canActivate: [AuthGuard],
+  data: { expectedRole: 'SYSTEM_ADMIN' },
   children: [
     {path: '', redirectTo: 'dashboard', pathMatch: 'full'},
     {path: 'dashboard', component: DashboardContextComponent},
@@ -43,7 +47,8 @@ const routes: Routes = [{
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
+  providers: [PermissionsService]
 })
 export class AdministrationRoutingModule {
 }

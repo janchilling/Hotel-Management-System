@@ -38,7 +38,7 @@
                 class="border-b border-gray-200 md:flex-row flex-col flex justify-between items-start w-full py-3 space-y-4 md:space-y-0">
                 <div class="w-full flex flex-col justify-start items-start">
                   <h3 class="text-xl dark:text-white xl:text-2xl font-semibold leading-6 text-gray-800">
-                    <b>{{room.roomTypeName}} Room(s)</b></h3>
+                    <b>{{room.roomTypeName}} Room</b></h3>
                   <div class="flex justify-start items-start flex-col">
                     <p class="text-sm dark:text-white font-semibold leading-4 text-center md:text-left text-black-800">
                       Supplements</p>
@@ -128,6 +128,15 @@
                 </div>
               </div>
               <p class="text-base font-semibold dark:text-gray-300 leading-4 text-black-600">{{payment.paymentType}}
+                Payment</p>
+            </div>
+            <div *ngIf="isViewBookingContext && bookingDetails.paymentStatus == 'Pre'" class="flex justify-between items-start w-full">
+              <div class="flex justify-center items-center space-x-4">
+                <div class="flex flex-col justify-start items-center">
+                  <span class="text-base dark:text-white leading-4 text-gray-800">Final Payment Due </span>
+                </div>
+              </div>
+              <p class="text-base font-semibold dark:text-gray-300 leading-4 text-black-600">{{checkInDate - bookingDetails.balancePayment}}
                 Payment</p>
             </div>
           </div>

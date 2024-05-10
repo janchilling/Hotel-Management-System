@@ -1,11 +1,10 @@
 import {Component, Input, OnInit} from '@angular/core';
+import {switchMap} from "rxjs";
 import {
   AuthenticationServicesService
-} from "../../../security/services/authenticationServices/authentication-services.service";
-import {CustomerServicesService} from "../../services/customerServices/customer-services.service";
-import {RoomTypeServicesService} from "../../services/roomTypesServices/room-type-services.service";
-import {BookingServiceService} from "../../services/bookingService/booking-service.service";
-import {switchMap} from "rxjs";
+} from "../../../../../security/services/authenticationServices/authentication-services.service";
+import {CustomerServicesService} from "../../../../../shared/services/customerServices/customer-services.service";
+import {MainBookingServicesService} from "../../services/mainBookingService/main-booking-services.service";
 
 @Component({
   selector: 'app-booking-confirmation-card',
@@ -32,8 +31,7 @@ export class BookingConfirmationCardComponent implements OnInit {
   constructor(
     private authenticationService: AuthenticationServicesService,
     private customerService: CustomerServicesService,
-    private roomTypeService: RoomTypeServicesService,
-    private bookingService: BookingServiceService,
+    private bookingService: MainBookingServicesService,
   ) {}
 
   ngOnInit(): void {
@@ -46,7 +44,6 @@ export class BookingConfirmationCardComponent implements OnInit {
     this.bookingService.getBookingsByBookingId(this.bookingId).pipe(
       switchMap((response: any) => {
         if (response.statusCode === 200) {
-          console.log(response)
           this.bookingDetails = response.data;
           this.rooms = this.bookingDetails?.rooms;
           this.supplements = this.bookingDetails?.supplements;

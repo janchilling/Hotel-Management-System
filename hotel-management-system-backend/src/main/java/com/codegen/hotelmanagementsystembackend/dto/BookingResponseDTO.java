@@ -21,6 +21,8 @@ public class BookingResponseDTO {
     private String paymentStatus;
     private String hotelName;
     private Integer hotelId;
+    private Integer contractId;
+    private Integer balancePayment;
     private String customerName;
     private Long customerId;
     private String contactEmail;

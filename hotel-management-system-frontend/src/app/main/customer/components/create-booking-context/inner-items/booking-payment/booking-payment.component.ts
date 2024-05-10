@@ -2,7 +2,6 @@ import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {MarkupServicesService} from "../../../../../../shared/services/markupServices/markup-services.service";
 import {ActivatedRoute} from "@angular/router";
 import {DateServiceService} from "../../../../../../shared/services/dateService/date-service.service";
-import {BookingServiceService} from "../../../../../../shared/services/bookingService/booking-service.service";
 import {MatDialog} from "@angular/material/dialog";
 import {
   ConfirmationDialogComponentComponent
@@ -13,6 +12,7 @@ import {
 import {ContractServicesService} from "../../../../../../shared/services/contractServices/contract-services.service";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {MatSnackBar} from "@angular/material/snack-bar";
+import {MainBookingServicesService} from "../../../../shared/services/mainBookingService/main-booking-services.service";
 
 @Component({
   selector: 'app-booking-payment',
@@ -53,7 +53,7 @@ export class BookingPaymentComponent {
     private markupServicesService: MarkupServicesService,
     private route: ActivatedRoute,
     private dateService: DateServiceService,
-    private bookingServiceService :BookingServiceService,
+    private bookingServiceService :MainBookingServicesService,
     private dialog: MatDialog,
     private snackBar: MatSnackBar,
     private authenticationService: AuthenticationServicesService,
@@ -79,13 +79,26 @@ export class BookingPaymentComponent {
     this.today = new Date();
     this.noOfDays = Math.ceil((new Date(this.checkOutDate).getTime() - new Date(this.checkInDate).getTime()) / (1000 * 3600 * 24));
 
-    this.markupServicesService.getMarkupsByContractId(this.contractId).subscribe(data => {
-      this.markupDetails = data[0];
-      this.calculateTotals();
-    });
+    this.getMarkupDetails()
 
     console.log(this.bookingRooms)
     this.fetchContract();
+  }
+
+  getMarkupDetails(){
+      this.markupServicesService.getMarkupsByContractId(this.contractId).subscribe({
+          next: (response: any) => {
+              if (response.statusCode === 200) {
+                console.log(response)
+                  this.markupDetails = response.data[0];
+                  console.log(this.markupDetails)
+                  this.calculateTotals();
+              }
+          },
+          error: (error) => {
+              console.error('Error fetching contract:', error);
+          }
+      })
   }
 
   calculateTotals(): void {
@@ -171,6 +184,7 @@ export class BookingPaymentComponent {
       noOfAdults: this.noOfPersons,
       bookingStatus: 'Confirmed',
       paymentStatus: paymentStatus,
+      contractId: this.contractId,
       hotelHotelId: this.hotelId,
       customerCustomerId: this.customerId,
       contactEmail: this.contactDetails.email,
@@ -187,6 +201,7 @@ export class BookingPaymentComponent {
       bookingSupplements: this.bookingSupplements
     };
 
+    console.log(bookingRequest)
     this.bookingServiceService.addBooking(bookingRequest).subscribe({
       next: (response) => {
         this.isLoading = false;

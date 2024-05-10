@@ -22,6 +22,7 @@ public class BookingRequestDTO {
     private String bookingStatus;
     private String paymentStatus;
     private Integer hotelHotelId;
+    private Integer contractId;
     private Long customerCustomerId;
     private String contactEmail;
     private String contactPhone;
@@ -29,7 +30,7 @@ public class BookingRequestDTO {
     private String contactLastName;
     private PaymentRequestDTO payment;
     private List<BookingRoomDTO> bookingRooms;
-    private List<BookingDiscountDTO> bookingDiscounts;
+    private BookingDiscountDTO bookingDiscounts;
     private List<BookingSupplementDTO> bookingSupplements;
 
 }

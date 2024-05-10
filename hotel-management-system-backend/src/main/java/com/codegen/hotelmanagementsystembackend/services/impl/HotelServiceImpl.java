@@ -6,6 +6,7 @@ import com.codegen.hotelmanagementsystembackend.dto.HotelResponseDTO;
 import com.codegen.hotelmanagementsystembackend.entities.Hotel;
 import com.codegen.hotelmanagementsystembackend.entities.HotelImage;
 import com.codegen.hotelmanagementsystembackend.entities.HotelPhone;
+import com.codegen.hotelmanagementsystembackend.repository.HotelImageRepository;
 import com.codegen.hotelmanagementsystembackend.repository.HotelRepository;
 import com.codegen.hotelmanagementsystembackend.services.HotelService;
 import com.codegen.hotelmanagementsystembackend.entities.Contract;
@@ -28,6 +29,7 @@ public class HotelServiceImpl implements HotelService {
     private final ModelMapper modelMapper;
     private final HotelRepository hotelRepository;
     private final UtilityMethods utilityMethods;
+    private final HotelImageRepository hotelImageRepository;
 
     /**
      * Creates a new Hotel using the provided HotelRequestDTO.
@@ -159,6 +161,23 @@ public class HotelServiceImpl implements HotelService {
             }
            } catch (Exception e) {
             return new StandardResponse<>(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Failed to retrieve hotel images", null);
+        }
+    }
+
+    @Override
+    public StandardResponse<Void> deleteHotelImageById(Integer imageId) {
+        try {
+            // Check if the hotel image exists
+            if (!hotelImageRepository.existsById(imageId)) {
+                return new StandardResponse<>(HttpStatus.NOT_FOUND.value(), "Hotel image not found", null);
+            }
+
+            // Delete the hotel image by ID
+            hotelImageRepository.deleteById(imageId);
+
+            return new StandardResponse<>(HttpStatus.OK.value(), "Hotel image deleted successfully", null);
+        } catch (Exception e) {
+            return new StandardResponse<>(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Failed to delete hotel image", null);
         }
     }
 

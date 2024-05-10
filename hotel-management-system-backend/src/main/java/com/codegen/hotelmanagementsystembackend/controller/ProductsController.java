@@ -25,10 +25,11 @@ public class ProductsController {
     public StandardResponse<List<SearchResponseDTO>> searchHotels(
             @RequestParam(required = false) String destination,
             @RequestParam(required = false) Integer noOfRooms,
+            @RequestParam(required = false) Integer noOfAdults,
             @RequestParam(required = false) Date checkIn,
             @RequestParam(required = false) Date checkOut) {
         try {
-            return productService.searchHotels(destination, noOfRooms, checkIn, checkOut);
+            return productService.searchHotels(destination, noOfRooms, noOfAdults, checkIn, checkOut);
         } catch (Exception e) {
             // Log the exception
             // logger.error("An error occurred while searching hotels", e);
@@ -63,10 +64,11 @@ public class ProductsController {
     public StandardResponse<Boolean> checkAvailabilityByHotelId(
             @PathVariable Integer hotelId,
             @RequestParam(required = false) Integer noOfRooms,
+            @RequestParam(required = false) Integer noOfAdults,
             @RequestParam(required = false) Date checkIn,
             @RequestParam(required = false) Date checkOut)  {
         try {
-            return productService.checkAvailabilityByHotelId(hotelId, noOfRooms, checkIn, checkOut);
+            return productService.checkAvailabilityByHotelId(hotelId, noOfRooms, noOfAdults,checkIn, checkOut);
         } catch (Exception e) {
             // Log the exception
             // logger.error("An error occurred while searching hotels", e);

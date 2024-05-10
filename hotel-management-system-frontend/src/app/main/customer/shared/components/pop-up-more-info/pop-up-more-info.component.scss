@@ -1,0 +1,75 @@
+
+.room-img .room-image {
+  border-top-right-radius: 15px;
+  border-bottom-right-radius: 15px;
+}
+
+.lh-room-contain .lh-room-price h4 {
+  font-family: "Roboto", serif;
+  color: #C99D00;
+}
+.lh-room-contain .lh-main-features .lh-room-features .lh-cols-room:last-child {
+  padding-left: 25px;
+}
+.lh-room-contain .lh-main-features .lh-room-features .lh-cols-room ul {
+  list-style-type: disc;
+}
+.lh-room-contain .lh-main-features .lh-room-features .lh-cols-room ul li:not(:last-child) {
+  padding-bottom: 15px;
+}
+.lh-room-contain .lh-main-features .lh-room-features .lh-cols-room ul li::marker {
+  color: #C99D00;
+}
+
+@media screen and (max-width: 1279px) {
+  .room-img {
+    padding: 0 24px 24px 24px;
+  }
+  .room-img .room-image {
+    border-radius: 15px !important;
+  }
+}
+@media screen and (max-width: 991px) {
+  .tab-content {
+    margin-top: 0px;
+  }
+  .lh-room button {
+    font-size: 18px;
+  }
+  .nav-tabs.rooms .nav-link {
+    width: 50%;
+    margin-bottom: 24px !important;
+  }
+}
+@media screen and (max-width: 767px) {
+  .lh-room button {
+    font-size: 16px;
+  }
+}
+@media screen and (max-width: 575px) {
+  .lh-room-contain .lh-contain-heading {
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+  }
+  .lh-room-contain .lh-contain-heading .lh-room-price {
+    margin-top: 15px;
+  }
+  .lh-room-contain .lh-main-features .lh-room-features {
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+  }
+  .lh-room-contain .lh-main-features .lh-room-features .lh-cols-room:last-child {
+    padding-top: 15px;
+    padding-left: 0;
+  }
+}
+@media screen and (max-width: 360px) {
+  .nav-tabs.rooms .nav-link {
+    width: 100%;
+  }
+}
+

@@ -13,29 +13,29 @@
           id="default-styled-tab"
           role="tablist">
         <li class="me-2" role="presentation">
-          <button (click)="showBookingDetails()" [class.gold-underline]="isBookingDetailsVisible"
+          <p (click)="showBookingDetails()" [class.gold-underline]="isBookingDetailsVisible"
                   aria-controls="profile" aria-selected="false"
                   class="inline-block p-4 border-b-2 rounded-t-lg"
-                  data-tabs-target="#styled-profile" id="profile-styled-tab" role="tab" type="button">1.Booking Details
-          </button>
+                  data-tabs-target="#styled-profile" id="profile-styled-tab" role="tab">1.Booking Details
+          </p>
         </li>
         <li class="me-2" role="presentation">
-          <button
+          <p
             [class.gold-underline]="isPaymentVisible"
             aria-controls="dashboard" aria-selected="false"
             class="inline-block p-4 border-b-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"
-            data-tabs-target="#styled-dashboard" id="dashboard-styled-tab" role="tab" type="button">2.Payment
-          </button>
+            data-tabs-target="#styled-dashboard" id="dashboard-styled-tab" role="tab">2.Payment
+          </p>
         </li>
         <li class="me-2" role="presentation">
-          <button
+          <p
+            [class.gold-underline]="isConfirmationVisible"
             aria-controls="settings"
             aria-selected="false"
             class="inline-block p-4 border-b-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"
             data-tabs-target="#styled-settings" id="settings-styled-tab"
-            role="tab"
-            type="button">3.Booking Confirmation
-          </button>
+            role="tab">3.Booking Confirmation
+          </p>
         </li>
       </ul>
       <hr>

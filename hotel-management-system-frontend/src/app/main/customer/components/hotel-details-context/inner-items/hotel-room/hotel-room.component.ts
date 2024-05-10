@@ -47,7 +47,6 @@ export class HotelRoomComponent implements OnInit {
         next: (response) => {
           if (response.statusCode === 200) {
             this.roomTypesDetails = response.data;
-            console.log(this.roomTypesDetails);
             this.checkLoadingState();
           } else {
             console.error('Error fetching room types:', response.message);
@@ -69,7 +68,6 @@ export class HotelRoomComponent implements OnInit {
         next: (response) => {
           if (response.statusCode === 200) {
             this.supplementsDetails = response.data;
-            console.log(this.supplementsDetails)
             this.checkLoadingState();
           } else {
             console.error('Error fetching supplements:', response.message);

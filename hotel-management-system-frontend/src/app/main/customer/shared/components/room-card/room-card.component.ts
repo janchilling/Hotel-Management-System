@@ -1,10 +1,11 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import {RoomTypeServicesService} from "../../services/roomTypesServices/room-type-services.service";
 import { MatSnackBar } from '@angular/material/snack-bar';
-import {DateServiceService} from "../../services/dateService/date-service.service";
-import {PopUpCarouselComponent} from "../pop-up-carousel/pop-up-carousel.component";
-import {MatDialog} from "@angular/material/dialog";
+import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
+import {RoomTypeServicesService} from "../../../../../shared/services/roomTypesServices/room-type-services.service";
+import {DateServiceService} from "../../../../../shared/services/dateService/date-service.service";
+import {PopUpCarouselComponent} from "../../../../../shared/components/pop-up-carousel/pop-up-carousel.component";
+import {PopUpMoreInfoComponent} from "../pop-up-more-info/pop-up-more-info.component";
 
 @Component({
   selector: 'app-room-card',
@@ -57,11 +58,9 @@ export class RoomCardComponent implements OnInit {
       // Setting the number of rooms available in the room type of the particular Hotel
       this.roomTypeServicesService.availableNoOfRooms(this.roomType.roomTypeId, this.checkInDate, this.checkOutDate, this.seasonId).subscribe((data: any) => {
         this.availableRooms = data.data;
-        console.log(this.availableRooms)
       })
     });
     this.slides = this.roomType?.roomTypeImages
-    console.log(this.slides)
   }
 
   getRoomTypePriceAndSetSeasonId(): void {
@@ -219,6 +218,15 @@ export class RoomCardComponent implements OnInit {
       panelClass: 'pop-up-carousel-dialog',
       data: { slides: this.slides }
     });
+  }
+
+  openMoreInfoPopup(): void {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.maxWidth = '100vw';
+    dialogConfig.maxHeight = '100vh';
+    dialogConfig.data = { roomType: this.roomType, slides: this.slides };
+
+    this.dialog.open(PopUpMoreInfoComponent, dialogConfig);
   }
 
 }

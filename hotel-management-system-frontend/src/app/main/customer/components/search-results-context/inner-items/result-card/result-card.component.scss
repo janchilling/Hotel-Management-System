@@ -1,5 +1,21 @@
+.p-5 {
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.image {
+  height: 100%; /* Ensure the image fills the height of its container */
+}
+
+.subheading {
+  flex: 1;
+}
+
+.prices {
+  padding-top: 1rem; /* Adjust as needed */
+}
+
 .facility-list-1 {
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Adjust the values as needed */
+  box-shadow: 4px 4px 6px rgba(0, 0, 0, 0.1);
   border-radius: 0.5rem;
   padding: 1rem;
   margin-top: 10px;
@@ -11,13 +27,18 @@
 
 .address-description {
   flex-basis: 66.666%;
-  padding-right: 10px; /* Add padding to the right */
-}
-
-.prices {
-  padding-left: 10px; /* Remove flex-basis and change padding */
+  padding-right: 10px;
 }
 
 .prices > div {
-  flex: 1; /* Add flex property */
+  flex: 1;
+}
+
+.image-container {
+  height: 260px; /* Set the height to 60 units */
+}
+
+.image-container img {
+  height: 100%; /* Ensure the image fills the container */
+  width: 100%; /* Allow the width to adjust according to the aspect ratio */
 }

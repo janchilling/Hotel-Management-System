@@ -26,7 +26,7 @@ public class BookingRoom {
 
     private Date checkOutDate;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JsonBackReference("bookingBookingRoomReference")
     private Booking booking;
 

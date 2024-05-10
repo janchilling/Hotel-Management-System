@@ -25,8 +25,8 @@ export class MainSearchbarComponent implements OnInit {
   ngOnInit(): void {
     this.searchForm = this.formBuilder.group({
       destination: ['', Validators.required],
-      noOfRooms: ['', Validators.required],
-      noOfPersons: ['', Validators.required],
+      noOfRooms: [1, Validators.required],
+      noOfPersons: [2, Validators.required],
       checkIn: ['', Validators.required],
       checkOut: ['', Validators.required]
     });
@@ -59,7 +59,7 @@ export class MainSearchbarComponent implements OnInit {
 
   updateMinCheckoutDate(): void {
     const checkInDate = new Date(this.searchForm.value.checkIn);
-    let checkOutDate = new Date(this.searchForm.value.checkOut);
+    let checkOutDate = new Date(checkInDate.getTime() + (24 * 60 * 60 * 1000));
 
     if (checkOutDate < checkInDate) {
       checkOutDate = new Date(checkInDate.getTime() + (24 * 60 * 60 * 1000));
@@ -102,4 +102,37 @@ export class MainSearchbarComponent implements OnInit {
   validatePersons(): void {
     this.validateField('noOfPersons', 1, 30, 'Number of Persons must be between 1 and 30');
   }
+
+  incrementRooms() {
+    const rooms = this.searchForm.get('noOfRooms');
+    if (rooms) {
+      rooms.setValue(rooms.value + 1);
+      this.validateRooms();
+    }
+  }
+
+  decrementRooms() {
+    const rooms = this.searchForm.get('noOfRooms');
+    if (rooms) {
+      rooms.setValue(Math.max(1, rooms.value - 1));
+      this.validateRooms();
+    }
+  }
+
+  incrementPersons() {
+    const persons = this.searchForm.get('noOfPersons');
+    if (persons) {
+      persons.setValue(persons.value + 1);
+      this.validatePersons();
+    }
+  }
+
+  decrementPersons() {
+    const persons = this.searchForm.get('noOfPersons');
+    if (persons) {
+      persons.setValue(Math.max(1, persons.value - 1));
+      this.validatePersons();
+    }
+  }
+
 }

@@ -8,6 +8,7 @@ import {CreateBookingContextComponent} from "./customer/components/create-bookin
 import {AllBookingsContextComponent} from "./customer/components/all-bookings-context/all-bookings-context.component";
 import {ViewBookingContextComponent} from "./customer/components/view-booking-context/view-booking-context.component";
 import { PermissionsService } from '../security/services/permissionService/permission-service.service';
+import {BlogContextComponent} from "./customer/components/blog-context/blog-context.component";
 
 const routes: Routes = [
   {
@@ -20,6 +21,9 @@ const routes: Routes = [
       },
       { path: 'home',
         component: HomeContextComponent
+      },
+      { path: 'blog',
+        component: BlogContextComponent
       },
       { path: 'results',
         component: SearchResultsContextComponent

@@ -25,7 +25,6 @@ public class RoomType {
     private String roomDimensions;
 
     private Integer maxAdults;
-    // Add services beds
 
     @OneToMany(mappedBy = "roomType", cascade = CascadeType.ALL)
     @JsonManagedReference("roomTypeImagesRoomTypeReference")

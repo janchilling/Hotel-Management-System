@@ -42,9 +42,9 @@ export class SearchResultsContextComponent implements OnInit, OnDestroy {
 
   search(): void {
     this.isLoading = true;
-    const { destination, noOfRooms, checkIn, checkOut } = this.searchParams;
+    const { destination, noOfRooms, noOfPersons, checkIn, checkOut } = this.searchParams;
 
-    this.searchService.getSearchData(destination, noOfRooms, checkIn, checkOut)
+    this.searchService.getSearchData(destination, noOfRooms, noOfPersons, checkIn, checkOut)
       .subscribe({
         next: (response: StandardResponse<HotelDetails>) => {
           if (response.statusCode === 200) {

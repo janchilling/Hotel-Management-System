@@ -1,0 +1,49 @@
+<div class="tab-pane fade active show" id="nav-Deluxe" role="tabpanel" aria-labelledby="nav-Deluxe-tab">
+  <div class="flex flex-wrap justify-between mx-auto 2xl:max-w-[1320px] xl:max-w-[1140px] lg:max-w-[960px] md:max-w-[720px] sm:max-w-[540px]">
+    <div class="xl:w-1/2 w-full px-[12px]">
+      <div class="lh-room-contain relative px-[12px] py-[24px]">
+        <div class="lh-contain-heading pb-[15px] flex justify-between">
+          <h4 class="xl:text-[22px] text-[18px] leading-[1.2] font-bold text-[#000] text-left">{{roomType.roomTypeName}} Room</h4>
+          <div class="lh-room-price">
+            <h4 class="xl:text-[22px] text-[18px] text-[#ed5b31] font-bold leading-[22px]">USD {{roomType.roomTypePrice}} /<span class="ml-[5px] text-[14px] font-normal text-[#777]">Per night</span></h4>
+          </div>
+        </div>
+        <div class="flex flex-wrap">
+          <p class="pb-[15px] text-[14px] text-[#777] leading-[1.2]">{{roomType.roomDimensions}} sq.ft <span class="px-[15px]">|</span></p>
+          <p class="pb-[15px] text-[14px] text-[#777] leading-[1.2]">1 king Bed <span class="px-[15px]">|</span></p>
+          <p class="pb-[15px] text-[14px] text-[#777] leading-[1.2]">Up to {{roomType.maxAdults}} Guest</p>
+        </div>
+        <p>This is the dolor sit amet consectetur adipisicing elit. Culpa necessitatibus
+          consequatur nostrum iure? Similique voluptatibus totam nobis exercitationem
+          perferendis id, cupiditate at et praesentium quas? Quae amet, magni suscipit
+          sequi.</p>
+        <div class="lh-main-features border-t border-solid border-[#e3e1e1] pt-[30px] mt-[30px]">
+          <div class="lh-contain-heading pb-[15px] flex justify-between">
+            <h4 class="xl:text-[22px] text-[18px] leading-[1.2] font-bold text-[#000] text-left">Room Facilities</h4>
+          </div>
+          <div class="lh-room-features flex">
+            <div class="lh-cols-room">
+              <ul class="pl-[16px] mb-0">
+                <li class="text-[15px] text-[#777] leading-[1.2]">42 Inch flat screen TV</li>
+                <li class="text-[15px] text-[#777] leading-[1.2]">In-room Safe</li>
+                <li class="text-[15px] text-[#777] leading-[1.2]">Mini-refrigerator</li>
+              </ul>
+            </div>
+            <div class="lh-cols-room">
+              <ul class="pl-[16px] mb-0">
+                <li class="text-[15px] text-[#777] leading-[1.2]">Mini-refrigerator</li>
+                <li class="text-[15px] text-[#777] leading-[1.2]">Breakfast</li>
+                <li class="text-[15px] text-[#777] leading-[1.2]">complimeatary bottled water</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="xl:w-1/2 w-full">
+      <div class="room-img h-full w-full relative">
+        <img src="{{roomType.roomTypeImages[0].roomTypeImageUrl}}" alt="room-img" class="room-image h-full w-full">
+      </div>
+    </div>
+  </div>
+</div>
