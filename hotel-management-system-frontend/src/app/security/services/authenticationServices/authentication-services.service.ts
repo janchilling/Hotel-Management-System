@@ -11,10 +11,10 @@ import {JwtHelperService} from "@auth0/angular-jwt";
 })
 export class AuthenticationServicesService {
 
-  private userSubject: BehaviorSubject<User | null>;
   public user: Observable<User | null>;
   backendHostName: string = this.apiPathService.baseURL;
   redirectUrl: any;
+  private userSubject: BehaviorSubject<User | null>;
 
   constructor(
     private router: Router,
@@ -49,6 +49,8 @@ export class AuthenticationServicesService {
 
   logout() {
     localStorage.removeItem('token');
+    localStorage.removeItem('userId');
+    localStorage.removeItem('userRole');
     this.userSubject.next(null);
     this.router.navigate(['/auth/login']);
   }

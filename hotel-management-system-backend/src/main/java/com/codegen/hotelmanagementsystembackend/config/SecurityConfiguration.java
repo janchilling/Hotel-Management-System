@@ -5,6 +5,7 @@ import com.codegen.hotelmanagementsystembackend.services.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -32,22 +33,24 @@ public class SecurityConfiguration {
         http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(request -> request
                         .requestMatchers("/api/v1/auth/**").permitAll()
-                        .requestMatchers("/api/v1/admin").hasAnyAuthority(Role.SYSTEM_ADMIN.name())
-                        .requestMatchers("/api/v1/user").permitAll()
-                        .requestMatchers("/api/v1/contracts/**").permitAll()
-                        .requestMatchers("/api/v1/markups/**").hasAnyAuthority(Role.CUSTOMER.name(), Role.SYSTEM_ADMIN.name())
-                        .requestMatchers("/api/v1/discounts/**").permitAll()
-                        .requestMatchers("/api/v1/roomTypes/**").permitAll()
-                        .requestMatchers("/api/v1/hotels/**").permitAll()
-                        .requestMatchers("/api/v1/bookings/**").hasAnyAuthority(Role.CUSTOMER.name(), Role.SYSTEM_ADMIN.name())
-                        .requestMatchers("/api/v1/supplements/**").permitAll()
-                        .requestMatchers("/api/v1/seasons/**").permitAll()
-                        .requestMatchers("/api/v1/payments/**").hasAnyAuthority(Role.CUSTOMER.name(), Role.SYSTEM_ADMIN.name())
                         .requestMatchers("/api/v1/products/**").permitAll()
+                        .requestMatchers("/api/v1/user").permitAll()
+                        .requestMatchers("/api/v1/admin").hasAnyAuthority(Role.SYSTEM_ADMIN.name())
+                        .requestMatchers(HttpMethod.POST, "/api/v1/contracts/**","/api/v1/markups/**", "/api/v1/discounts/**", "/api/v1/seasons/**", "/api/v1/roomTypes/**",
+                                                          "/api/v1/hotels/**", "/api/v1/supplements/**").hasAnyAuthority(Role.SYSTEM_ADMIN.name())
+                        .requestMatchers(HttpMethod.POST, "/api/v1/bookings/**", "/api/v1/payments/**").hasAnyAuthority(Role.CUSTOMER.name())
+                        .requestMatchers(HttpMethod.GET, "/api/v1/contracts/**","/api/v1/markups/**", "/api/v1/discounts/**", "/api/v1/seasons/**", "/api/v1/roomTypes/**",
+                                                         "/api/v1/hotels/**", "/api/v1/supplements/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/v1/bookings/**", "/api/v1/payments/**").hasAnyAuthority(Role.CUSTOMER.name(), Role.SYSTEM_ADMIN.name())
+                        .requestMatchers(HttpMethod.PUT, "/api/v1/contracts/**","/api/v1/markups/**", "/api/v1/discounts/**", "/api/v1/seasons/**", "/api/v1/roomTypes/**",
+                                                         "/api/v1/hotels/**", "/api/v1/supplements/**").hasAnyAuthority(Role.SYSTEM_ADMIN.name())
+                        .requestMatchers(HttpMethod.PUT, "/api/v1/bookings/**", "/api/v1/payments/**").hasAnyAuthority(Role.CUSTOMER.name())
+                        .requestMatchers(HttpMethod.DELETE, "/api/v1/contracts/**","/api/v1/markups/**", "/api/v1/discounts/**", "/api/v1/seasons/**", "/api/v1/roomTypes/**",
+                                "/api/v1/hotels/**", "/api/v1/supplements/**").hasAnyAuthority(Role.SYSTEM_ADMIN.name())
+                        .requestMatchers(HttpMethod.DELETE, "/api/v1/bookings/**", "/api/v1/payments/**").hasAnyAuthority(Role.CUSTOMER.name())
                         .requestMatchers("/api/v1/customers/**").hasAnyAuthority(Role.CUSTOMER.name(), Role.SYSTEM_ADMIN.name())
                         .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html", "/swagger-resources/**").permitAll()
                         .anyRequest().authenticated())
-
                 .sessionManagement(manager -> manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider()).addFilterBefore(
                         jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class
