@@ -4,7 +4,7 @@
 <ng-template [ngIf]="!loading && !error">
   <div class="container-padding mb-10">
     <div
-      class="mb-10 mt-8 border-gray-200 dark:border-gray-700 max-w-screen-xl flex flex-wrap items-center justify-between mx-auto">
+      class="mb-10 mt-8 border-gray-200 dark:border-gray-700 max-w-screen-xl 3xl:max-w-screen-2xl flex flex-wrap items-center justify-between mx-auto">
       <ul class="flex flex-wrap -mb-px text-md font-medium text-center"
           id="default-styled-tab"
           role="tablist">
@@ -39,7 +39,7 @@
       </ul>
       <hr>
     </div>
-    <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
+    <div class="max-w-screen-xl 3xl:max-w-screen-2xl flex flex-wrap items-center justify-between mx-auto p-4">
       <div>
         <p class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold">{{hotelDetails.hotelName}}</p>
         <hr class="h-1 my-2 bg-button-gold border-0 dark:bg-gray-700">
@@ -49,7 +49,7 @@
       <app-main-button (click)="viewBookingContext()" [buttonText]="'Book for me'"></app-main-button>
     </div>
     <ng-container *ngIf="isOverviewVisible">
-      <app-hotel-overview [hotelDetails]="hotelDetails"></app-hotel-overview>
+      <app-hotel-overview [contractId]="hotelDetails?.contractId" [hotelDetails]="hotelDetails"></app-hotel-overview>
     </ng-container>
     <ng-container *ngIf="isRoomsVisible">
       <app-hotel-room [contractId]="hotelDetails?.contractId"></app-hotel-room>

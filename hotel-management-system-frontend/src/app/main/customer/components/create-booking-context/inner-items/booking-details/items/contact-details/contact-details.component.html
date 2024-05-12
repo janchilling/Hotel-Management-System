@@ -1,4 +1,4 @@
-<div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto px-4">
+<div class="max-w-screen-xl 3xl:max-w-screen-2xl flex flex-wrap items-center justify-between mx-auto px-4">
 <div class="bg-background-gray w-full pt-3 px-3">
   <div class="flex items-start">
     <div class="w-full">
@@ -6,31 +6,31 @@
       <form [formGroup]="contactForm" class="px-5">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div class="mb-5">
-            <label for="firstName" class="block text-base font-medium text-[#07074D] mb-3">First Name</label>
-            <input type="text" formControlName="firstName" id="firstName" placeholder="First Name" class="w-full px-3 py-2 rounded-md border border-[#e0e0e0] bg-white text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md" />
+            <label class="block text-base font-medium text-[#07074D] mb-3" for="firstName">First Name</label>
+            <input class="w-full px-3 py-2 rounded-md border border-[#e0e0e0] bg-white text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md" formControlName="firstName" id="firstName" placeholder="First Name" type="text" />
             <!-- Display error message for first name -->
             <span *ngIf="contactForm.get('firstName')?.errors?.['required'] && contactForm.get('firstName')?.touched" class="text-red-600">First name is required</span>
           </div>
 
           <div class="mb-5">
-            <label for="lastName" class="block text-base font-medium text-[#07074D] mb-3">Last Name</label>
-            <input type="text" formControlName="lastName" id="lastName" placeholder="Last Name" class="w-full px-3 py-2 rounded-md border border-[#e0e0e0] bg-white text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md" />
+            <label class="block text-base font-medium text-[#07074D] mb-3" for="lastName">Last Name</label>
+            <input class="w-full px-3 py-2 rounded-md border border-[#e0e0e0] bg-white text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md" formControlName="lastName" id="lastName" placeholder="Last Name" type="text" />
             <!-- Display error message for last name -->
             <span *ngIf="contactForm.get('lastName')?.errors?.['required'] && contactForm.get('lastName')?.touched" class="text-red-600">Last name is required</span>
           </div>
         </div>
 
         <div class="mb-5">
-          <label for="email" class="block text-base font-medium text-[#07074D] mb-3">Email Address</label>
-          <input type="email" formControlName="email" id="email" placeholder="example@domain.com" class="w-full px-3 py-2 rounded-md border border-[#e0e0e0] bg-white text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md" />
+          <label class="block text-base font-medium text-[#07074D] mb-3" for="email">Email Address</label>
+          <input class="w-full px-3 py-2 rounded-md border border-[#e0e0e0] bg-white text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md" formControlName="email" id="email" placeholder="example@domain.com" type="email" />
           <!-- Display error message for email -->
           <span *ngIf="contactForm.get('email')?.errors?.['required'] && contactForm.get('email')?.touched" class="text-red-600">Email is required</span>
           <span *ngIf="contactForm.get('email')?.errors?.['email'] && contactForm.get('email')?.touched" class="text-red-600">Invalid email format</span>
         </div>
 
         <div class="mb-5">
-          <label for="phoneNumber" class="block text-base font-medium text-[#07074D] mb-3">Phone Number</label>
-          <input type="tel" formControlName="phoneNumber" id="phoneNumber" placeholder="1234567890" class="w-full px-3 py-2 rounded-md border border-[#e0e0e0] bg-white text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md" pattern="[0-9]{10}" />
+          <label class="block text-base font-medium text-[#07074D] mb-3" for="phoneNumber">Phone Number</label>
+          <input class="w-full px-3 py-2 rounded-md border border-[#e0e0e0] bg-white text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md" formControlName="phoneNumber" id="phoneNumber" pattern="[0-9]{10}" placeholder="1234567890" type="tel" />
           <!-- Display error message for phone number -->
           <span *ngIf="contactForm.get('phoneNumber')?.errors?.['required'] && contactForm.get('phoneNumber')?.touched" class="text-red-600">Phone number is required</span>
           <span *ngIf="contactForm.get('phoneNumber')?.errors?.['pattern'] && contactForm.get('phoneNumber')?.touched" class="text-red-600">Invalid phone number format (1234567890)</span>

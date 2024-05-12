@@ -178,7 +178,6 @@ export class RoomCardComponent implements OnInit {
 
   updateRoomData() {
     if (this.numRooms === 0) {
-      // If the number of rooms is 0, clear the selected supplements
       this.selectedSupplements = [];
     }
     const bookingRooms = {
@@ -224,7 +223,7 @@ export class RoomCardComponent implements OnInit {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.maxWidth = '100vw';
     dialogConfig.maxHeight = '100vh';
-    dialogConfig.data = { roomType: this.roomType, slides: this.slides };
+    dialogConfig.data = { roomType: this.roomType, roomTypePrice: this.roomTypePrice, slides: this.slides };
 
     this.dialog.open(PopUpMoreInfoComponent, dialogConfig);
   }

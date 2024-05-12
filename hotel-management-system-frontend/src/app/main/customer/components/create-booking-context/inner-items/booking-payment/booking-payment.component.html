@@ -1,184 +1,209 @@
 <div *ngIf="!isLoading && !isError">
-<div class="sm:px-4 py-4 lg:px-4 xl:px-4">
-  <!-- Order Summary Section -->
-  <div class="lg:w-full"> <!-- Adjusted width for order summary -->
-    <div class="px-4 pt-3 bg-background-gray">
-      <div class="flex flex-col">
-        <div class="px-2 py-2 sm:px-6">
-          <p class="text-xl font-medium">Order Summary</p>
-          <p class="text-gray-400">Check if the items in the summary are correct.</p>
-        </div>
-        <ng-container *ngFor="let room of bookingRooms">
-          <div class="bg-white my-4 md:mt-4 flex flex-col md:flex-row justify-start items-start md:items-center md:space-x-6 xl:space-x-8 w-full">
-            <div class="md:pb-8 w-full md:w-40 px-2">
-              <img class="w-full py-2 hidden md:block" src="{{room.imageURL}}" alt="Room Image" />
-            </div>
-            <div class="border-b border-gray-200 md:flex-row flex-col flex justify-between items-start w-full py-3 space-y-4 md:space-y-0">
-              <div class="w-full flex flex-col justify-start items-start">
-                <h3 class="text-xl dark:text-white xl:text-2xl font-semibold leading-6 text-gray-800"><b>{{room.roomTypeName}} Room(s) with maximum occupancy of {{room.maxAdults}}</b></h3>
-                <div class="flex justify-start items-start flex-col">
-                  <p class="text-sm dark:text-white font-semibold leading-4 text-center md:text-left text-black-800">Supplements</p>
-                  <ng-container *ngFor="let supplement of bookingSupplements">
-                    <p class="text-sm dark:text-white leading-none text-gray-800" *ngIf="supplement.roomTypeId == room.roomTypeId">{{supplement.supplementName}} at USD {{supplement.supplementPrice}} per Room</p>
-                  </ng-container>
+  <div class="max-w-screen-xl 3xl:max-w-screen-2xl flex flex-wrap items-center justify-between mx-auto p-4">
+    <!-- Order Summary Section -->
+    <div class="lg:w-full"> <!-- Adjusted width for order summary -->
+      <div class="px-4 pt-3 bg-background-gray">
+        <div class="flex flex-col">
+          <div class="px-2 py-2 sm:px-6">
+            <p class="text-xl font-medium">Order Summary</p>
+            <p class="text-gray-400">Check if the items in the summary are correct.</p>
+          </div>
+          <ng-container *ngFor="let room of bookingRooms">
+            <div
+              class="bg-white my-4 md:mt-4 flex flex-col md:flex-row justify-start items-start md:items-center md:space-x-6 xl:space-x-8 w-full">
+              <div class="md:pb-8 w-full md:w-40 px-2">
+                <img alt="Room Image" class="w-full py-2 hidden md:block" src="{{room.imageURL}}"/>
+              </div>
+              <div
+                class="border-b border-gray-200 md:flex-row flex-col flex justify-between items-start w-full py-3 space-y-4 md:space-y-0">
+                <div class="w-full flex flex-col justify-start items-start">
+                  <h3 class="text-xl dark:text-white xl:text-2xl font-semibold leading-6 text-gray-800">
+                    <b>{{room.roomTypeName}} Room(s) with maximum occupancy of {{room.maxAdults}}</b></h3>
+                  <div class="flex justify-start items-start flex-col">
+                    <p class="text-sm dark:text-white font-semibold leading-4 text-center md:text-left text-black-800">
+                      Supplements</p>
+                    <ng-container *ngFor="let supplement of bookingSupplements">
+                      <p *ngIf="supplement.roomTypeId == room.roomTypeId"
+                         class="text-sm dark:text-white leading-none text-gray-800">{{supplement.supplementName}} at
+                        USD {{supplement.supplementPrice}} per Room</p>
+                    </ng-container>
+                  </div>
+                </div>
+                <div class="flex justify-end space-x-8 px-4 items-start w-full">
+                  <p class="text-base dark:text-white xl:text-lg leading-6 text-gray-800">USD {{room.bookedPrice}} Per
+                    Room</p>
+                  <p class="text-base dark:text-white xl:text-md leading-6 text-gray-800">{{room.noOfRooms}}
+                    Room(s), {{noOfDays}} Night(s)</p>
+                  <p class="text-base dark:text-white xl:text-lg font-semibold leading-6 text-gray-800">
+                    USD {{(room.bookedPrice * room.noOfRooms) * noOfDays}}</p>
                 </div>
               </div>
-              <div class="flex justify-end space-x-8 px-4 items-start w-full">
-                <p class="text-base dark:text-white xl:text-lg leading-6 text-gray-800">USD {{room.bookedPrice}} Per Room</p>
-                <p class="text-base dark:text-white xl:text-md leading-6 text-gray-800">{{room.noOfRooms}} Room(s), {{noOfDays}} Night(s)</p>
-                <p class="text-base dark:text-white xl:text-lg font-semibold leading-6 text-gray-800">USD {{(room.bookedPrice * room.noOfRooms) * noOfDays}}</p>
+            </div>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="max-w-screen-xl 3xl:max-w-screen-2xl flex flex-wrap items-center justify-between mx-auto p-4">
+  <div class="grid w-full lg:grid-cols-2">
+    <!-- Total Section -->
+    <div class="lg:w-full">
+      <div class="border-t border-gray-300 lg:hidden"></div>
+      <div class="">
+        <div class="mt-10 bg-background-gray px-4 py-4 lg:mt-0">
+          <div class="px-2 py-4 sm:px-6">
+            <p class="text-xl font-medium">Payment Summary </p>
+            <p class="text-gray-400">Your Payment breakdown</p>
+          </div>
+          <div class="mt-4 space-y-3 rounded-lg border bg-white px-2 py-4 sm:px-6">
+            <div class="flex items-center justify-between">
+              <p class="text-sm font-medium text-gray-900">Subtotal</p>
+              <p class="font-semibold text-gray-900">USD {{ subtotal }}</p>
+            </div>
+
+            <!-- Total price for supplements -->
+            <div *ngIf="supplementsTotal > 0" class="flex items-center justify-between">
+              <p class="text-sm font-medium text-gray-900">Total Supplements</p>
+              <p class="font-semibold text-gray-900">USD {{ supplementsTotal }}</p>
+            </div>
+            <div *ngIf="supplementsTotal == 0" class="flex items-center justify-between">
+              <p class="text-sm font-medium text-gray-900">Total Supplements</p>
+              <p class="font-semibold text-gray-900">USD 0</p>
+            </div>
+
+            <!-- Discounted amount -->
+            <div *ngIf="discountedAmount > 0" class="flex items-center justify-between">
+              <p class="text-sm font-medium text-gray-900">Discount</p>
+              <p class="font-semibold text-gray-900">- USD {{ discountedAmount }}</p>
+            </div>
+            <div *ngIf="discountedAmount == 0" class="flex items-center justify-between">
+              <p class="text-sm font-medium text-gray-900">Discount</p>
+              <p class="font-semibold text-gray-900">USD 0</p>
+            </div>
+
+            <!-- Tax (Markup amount) -->
+            <div class="flex items-center justify-between">
+              <p class="text-sm font-medium text-gray-900">Tax (Markup)</p>
+              <p class="font-semibold text-gray-900">USD {{ tax }}</p>
+            </div>
+
+            <hr>
+
+            <div class="flex items-center justify-between">
+              <p class="text-sm font-medium font-bold text-gray-900">Grand Total</p>
+              <p class="font-bold text-gray-900">USD {{ finalPrice }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Payment Details -->
+    <div class="pl-4">
+      <div class="mt-10 bg-background-gray px-4 pt-4 lg:mt-0">
+        <div class="px-2 py-4 sm:px-6">
+          <p class="text-xl font-medium">Payment Details</p>
+          <p class="text-gray-400">Complete your booking by providing your payment details.</p>
+        </div>
+        <div class="mb-2">
+          <label class="block text-sm font-medium" for="payment-option">Payment Option</label>
+          <select [(ngModel)]="selectedPaymentOption"
+                  class="w-full rounded-md border border-gray-200 px-4 py-3 text-sm shadow-sm outline-none focus:z-10 focus:border-blue-500 focus:ring-blue-500"
+                  id="payment-option"
+                  name="payment-option">
+            <option value="full">Full Payment</option>
+            <option *ngIf="isPrepaymentEligible" value="prepayment">Prepayment ({{contract.prepayment}}% deposit)
+            </option>
+          </select>
+        </div>
+        <form [formGroup]="cardDetailsForm">
+          <div class="">
+            <label class="mt-4 mb-2 block text-sm font-medium" for="card-holder">Card Holder</label>
+            <div class="relative">
+              <input
+                class="w-full rounded-md border border-gray-200 px-4 py-3 pl-11 text-sm uppercase shadow-sm outline-none focus:z-10 focus:border-blue-500 focus:ring-blue-500"
+                formControlName="cardHolder" id="card-holder"
+                name="card-holder"
+                placeholder="Your full name here"
+                type="text"/>
+              <div
+                *ngIf="cardDetailsForm.get('cardHolder')?.invalid && (cardDetailsForm.get('cardHolder')?.dirty || cardDetailsForm.get('cardHolder')?.touched)"
+                class="text-red-500 text-sm mt-1">Card holder name is required.
+              </div>
+              <div class="pointer-events-none absolute inset-y-0 left-0 inline-flex items-center px-3">
+                <svg class="h-4 w-4 text-gray-400" fill="none" stroke="currentColor" stroke-width="2"
+                     viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path
+                    d="M15 9h3.75M15 12h3.75M15 15h3.75M4.5 19.5h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25v10.5A2.25 2.25 0 004.5 19.5zm6-10.125a1.875 1.875 0 11-3.75 0 1.875 1.875 0 013.75 0zm1.294 6.336a6.721 6.721 0 01-3.17.789 6.721 6.721 0 01-3.168-.789 3.376 3.376 0 016.338 0z"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"/>
+                </svg>
+              </div>
+            </div>
+            <label class="mt-4 mb-2 block text-sm font-medium" for="card-no">Card Details</label>
+            <div class="flex">
+              <div class="relative w-7/12 flex-shrink-0">
+                <input
+                  class="w-full rounded-md border border-gray-200 px-2 py-3 pl-11 text-sm shadow-sm outline-none focus:z-10 focus:border-blue-500 focus:ring-blue-500"
+                  formControlName="cardNumber" id="card-no"
+                  name="card-no"
+                  pattern="[0-9]{4}-[0-9]{4}-[0-9]{4}-[0-9]{4}"
+                  placeholder="xxxx-xxxx-xxxx-xxxx"
+                  required
+                  type="text"/>
+                <div
+                  *ngIf="cardDetailsForm.get('cardNumber')?.invalid && (cardDetailsForm.get('cardNumber')?.dirty || cardDetailsForm.get('cardNumber')?.touched)"
+                  class="text-red-500 text-sm mt-1">Invalid card number.
+                </div>
+                <div class="pointer-events-none absolute inset-y-0 left-0 inline-flex items-center px-3">
+                  <svg class="h-4 w-4 text-gray-400" fill="currentColor" height="16" viewBox="0 0 16 16"
+                       width="16" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M11 5.5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1-.5-.5v-1z"/>
+                    <path
+                      d="M2 2a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H2zm13 2v5H1V4a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1zm-1 9H2a1 1 0 0 1-1-1v-1h14v1a1 1 0 0 1-1 1z"/>
+                  </svg>
+                </div>
+              </div>
+              <input
+                class="w-full rounded-md border border-gray-200 px-2 py-3 text-sm shadow-sm outline-none focus:z-10 focus:border-blue-500 focus:ring-blue-500"
+                formControlName="expiryDate"
+                name="credit-expiry"
+                pattern="[0-9]{2}/[0-9]{2}"
+                placeholder="MM/YY"
+                required
+                type="text"/>
+              <div
+                *ngIf="cardDetailsForm.get('expiryDate')?.invalid && (cardDetailsForm.get('expiryDate')?.dirty || cardDetailsForm.get('expiryDate')?.touched)"
+                class="text-red-500 text-sm mt-1">Invalid expiry date.
+              </div>
+              <input
+                class="w-1/6 flex-shrink-0 rounded-md border border-gray-200 px-2 py-3 text-sm shadow-sm outline-none focus:z-10 focus:border-blue-500 focus:ring-blue-500"
+                formControlName="cvc"
+                name="credit-cvc"
+                pattern="[0-9]{3}"
+                placeholder="CVC"
+                required
+                type="text"/>
+              <div
+                *ngIf="cardDetailsForm.get('cvc')?.invalid && (cardDetailsForm.get('cvc')?.dirty || cardDetailsForm.get('cvc')?.touched)"
+                class="text-red-500 text-sm mt-1">Invalid CVC.
               </div>
             </div>
           </div>
-        </ng-container>
-      </div>
-    </div>
-  </div>
-</div>
-<div class="grid sm:px-4 lg:grid-cols-2 lg:px-4 xl:px-4">
-  <!-- Total Section -->
-  <div class="lg:w-full">
-    <div class="border-t border-gray-300 lg:hidden"></div>
-    <div class="">
-      <div class="mt-10 bg-background-gray px-4 py-4 lg:mt-0">
-        <div class="px-2 py-4 sm:px-6">
-          <p class="text-xl font-medium">Payment Summary </p>
-          <p class="text-gray-400">Your Payment breakdown</p>
-        </div>
-        <div class="mt-4 space-y-3 rounded-lg border bg-white px-2 py-4 sm:px-6">
-          <div class="flex items-center justify-between">
-            <p class="text-sm font-medium text-gray-900">Subtotal</p>
-            <p class="font-semibold text-gray-900">USD {{ subtotal }}</p>
-          </div>
-
-          <!-- Total price for supplements -->
-          <div *ngIf="supplementsTotal > 0" class="flex items-center justify-between">
-            <p class="text-sm font-medium text-gray-900">Total Supplements</p>
-            <p class="font-semibold text-gray-900">USD {{ supplementsTotal }}</p>
-          </div>
-          <div *ngIf="supplementsTotal == 0" class="flex items-center justify-between">
-            <p class="text-sm font-medium text-gray-900">Total Supplements</p>
-            <p class="font-semibold text-gray-900">USD 0</p>
-          </div>
-
-          <!-- Discounted amount -->
-          <div *ngIf="discountedAmount > 0" class="flex items-center justify-between">
-            <p class="text-sm font-medium text-gray-900">Discount</p>
-            <p class="font-semibold text-gray-900">- USD {{ discountedAmount }}</p>
-          </div>
-          <div *ngIf="discountedAmount == 0" class="flex items-center justify-between">
-            <p class="text-sm font-medium text-gray-900">Discount</p>
-            <p class="font-semibold text-gray-900">USD 0</p>
-          </div>
-
-          <!-- Tax (Markup amount) -->
-          <div class="flex items-center justify-between">
-            <p class="text-sm font-medium text-gray-900">Tax (Markup)</p>
-            <p class="font-semibold text-gray-900">USD {{ tax }}</p>
-          </div>
-
-          <hr>
-
-          <div class="flex items-center justify-between">
-            <p class="text-sm font-medium font-bold text-gray-900">Grand Total</p>
-            <p class="font-bold text-gray-900">USD {{ finalPrice }}</p>
-          </div>
+        </form>
+        <div class="mt-6 flex items-center justify-between">
+          <p class="text-sm font-medium text-gray-900">Total</p>
+          <p class="text-2xl font-semibold text-gray-900">USD {{ getTotal() }}</p>
         </div>
       </div>
     </div>
   </div>
-
-  <!-- Payment Details -->
-  <div class="pl-4">
-    <div class="mt-10 bg-background-gray px-4 pt-4 lg:mt-0">
-      <div class="px-2 py-4 sm:px-6">
-        <p class="text-xl font-medium">Payment Details</p>
-        <p class="text-gray-400">Complete your booking by providing your payment details.</p>
-      </div>
-      <div class="mb-2">
-        <label class="block text-sm font-medium" for="payment-option">Payment Option</label>
-        <select [(ngModel)]="selectedPaymentOption"
-                class="w-full rounded-md border border-gray-200 px-4 py-3 text-sm shadow-sm outline-none focus:z-10 focus:border-blue-500 focus:ring-blue-500"
-                id="payment-option"
-                name="payment-option">
-          <option value="full">Full Payment</option>
-          <option *ngIf="isPrepaymentEligible" value="prepayment">Prepayment ({{contract.prepayment}}% deposit)</option>
-        </select>
-      </div>
-      <form [formGroup]="cardDetailsForm">
-      <div class="">
-        <label class="mt-4 mb-2 block text-sm font-medium" for="card-holder">Card Holder</label>
-        <div class="relative">
-          <input
-            class="w-full rounded-md border border-gray-200 px-4 py-3 pl-11 text-sm uppercase shadow-sm outline-none focus:z-10 focus:border-blue-500 focus:ring-blue-500"
-            id="card-holder" name="card-holder"
-            placeholder="Your full name here"
-            formControlName="cardHolder"
-            type="text"/>
-          <div *ngIf="cardDetailsForm.get('cardHolder')?.invalid && (cardDetailsForm.get('cardHolder')?.dirty || cardDetailsForm.get('cardHolder')?.touched)" class="text-red-500 text-sm mt-1">Card holder name is required.</div>
-          <div class="pointer-events-none absolute inset-y-0 left-0 inline-flex items-center px-3">
-            <svg class="h-4 w-4 text-gray-400" fill="none" stroke="currentColor" stroke-width="2"
-                 viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path
-                d="M15 9h3.75M15 12h3.75M15 15h3.75M4.5 19.5h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25v10.5A2.25 2.25 0 004.5 19.5zm6-10.125a1.875 1.875 0 11-3.75 0 1.875 1.875 0 013.75 0zm1.294 6.336a6.721 6.721 0 01-3.17.789 6.721 6.721 0 01-3.168-.789 3.376 3.376 0 016.338 0z"
-                stroke-linecap="round"
-                stroke-linejoin="round"/>
-            </svg>
-          </div>
-        </div>
-        <label class="mt-4 mb-2 block text-sm font-medium" for="card-no">Card Details</label>
-        <div class="flex">
-          <div class="relative w-7/12 flex-shrink-0">
-            <input
-              class="w-full rounded-md border border-gray-200 px-2 py-3 pl-11 text-sm shadow-sm outline-none focus:z-10 focus:border-blue-500 focus:ring-blue-500"
-              id="card-no" name="card-no"
-              placeholder="xxxx-xxxx-xxxx-xxxx"
-              required
-              formControlName="cardNumber"
-              pattern="[0-9]{4}-[0-9]{4}-[0-9]{4}-[0-9]{4}"
-              type="text"/>
-            <div *ngIf="cardDetailsForm.get('cardNumber')?.invalid && (cardDetailsForm.get('cardNumber')?.dirty || cardDetailsForm.get('cardNumber')?.touched)" class="text-red-500 text-sm mt-1">Invalid card number.</div>
-            <div class="pointer-events-none absolute inset-y-0 left-0 inline-flex items-center px-3">
-              <svg class="h-4 w-4 text-gray-400" fill="currentColor" height="16" viewBox="0 0 16 16"
-                   width="16" xmlns="http://www.w3.org/2000/svg">
-                <path d="M11 5.5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1-.5-.5v-1z"/>
-                <path
-                  d="M2 2a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H2zm13 2v5H1V4a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1zm-1 9H2a1 1 0 0 1-1-1v-1h14v1a1 1 0 0 1-1 1z"/>
-              </svg>
-            </div>
-          </div>
-          <input
-            class="w-full rounded-md border border-gray-200 px-2 py-3 text-sm shadow-sm outline-none focus:z-10 focus:border-blue-500 focus:ring-blue-500"
-            name="credit-expiry"
-            placeholder="MM/YY"
-            required
-            formControlName="expiryDate"
-            pattern="[0-9]{2}/[0-9]{2}"
-            type="text"/>
-          <div *ngIf="cardDetailsForm.get('expiryDate')?.invalid && (cardDetailsForm.get('expiryDate')?.dirty || cardDetailsForm.get('expiryDate')?.touched)" class="text-red-500 text-sm mt-1">Invalid expiry date.</div>
-          <input
-            class="w-1/6 flex-shrink-0 rounded-md border border-gray-200 px-2 py-3 text-sm shadow-sm outline-none focus:z-10 focus:border-blue-500 focus:ring-blue-500"
-            name="credit-cvc"
-            placeholder="CVC"
-            required
-            formControlName="cvc"
-            pattern="[0-9]{3}"
-            type="text"/>
-          <div *ngIf="cardDetailsForm.get('cvc')?.invalid && (cardDetailsForm.get('cvc')?.dirty || cardDetailsForm.get('cvc')?.touched)" class="text-red-500 text-sm mt-1">Invalid CVC.</div>
-        </div>
-      </div>
-      </form>
-      <div class="mt-6 flex items-center justify-between">
-        <p class="text-sm font-medium text-gray-900">Total</p>
-        <p class="text-2xl font-semibold text-gray-900">USD {{ getTotal() }}</p>
-      </div>
-    </div>
+  </div>
+  <div class="max-w-screen-xl 3xl:max-w-screen-2xl flex flex-wrap items-center justify-end mx-auto p-4 py-4">
+    <app-main-button (click)="openConfirmationDialog()" [buttonText]="'Confirm Payment'"></app-main-button>
   </div>
 </div>
-<div class="flex justify-end sm:px-4 lg:px-4 xl:px-4 py-4">
-  <app-main-button [buttonText]="'Confirm Payment'" (click)="openConfirmationDialog()"></app-main-button>
-</div>
-</div>
+
 
 <div *ngIf="isLoading"> <!-- Display loading component while loading -->
   <app-loading-spinner></app-loading-spinner>

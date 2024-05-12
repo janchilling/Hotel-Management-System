@@ -1,4 +1,4 @@
-<div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto px-4">
+<div class="max-w-screen-xl 3xl:max-w-screen-2xl flex flex-wrap items-center justify-between mx-auto px-4">
   <div class="w-full md:w-1/2">
     <h3>Current Check In Date: {{ checkInDateFormatted }}</h3>
     <h3>Current Check Out Date: {{ checkOutDateFormatted }}</h3>
@@ -7,23 +7,23 @@
     <div class="text-right">
       <h3>Want to Change Dates?</h3>
       <div>
-        <app-main-button [buttonText]="'Check Availability'" (click)="openPopUpAvailabilityForm()"></app-main-button>
+        <app-main-button (click)="openPopUpAvailabilityForm()" [buttonText]="'Check Availability'"></app-main-button>
       </div>
     </div>
   </div>
 </div>
 
-<div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto px-4">
+<div class="max-w-screen-xl 3xl:max-w-screen-2xl flex flex-wrap items-center justify-between mx-auto px-4">
   <div *ngIf="roomTypesDetails && supplementsDetails && discountDetails; else loadingOrError" class="w-full">
     <h2>Select Details</h2>
     <ng-container *ngFor="let roomType of roomTypesDetails">
-      <app-room-card [roomType]="roomType" (roomSelected)="receiveRoomSelection($event)" [showSelectSupplements]="true" [supplements]="supplementsDetails"></app-room-card>
+      <app-room-card (roomSelected)="receiveRoomSelection($event)" [roomType]="roomType" [showSelectSupplements]="true" [supplements]="supplementsDetails"></app-room-card>
     </ng-container>
     <div class="bg-background-gray my-10 pt-3 px-3">
       <h2>Enter Discount Code</h2>
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div class="mb-5 px-5">
-          <input type="text" name="discountCode" id="discountCode" class="block w-full px-3 py-2 rounded-md border border-[#e0e0e0] bg-white text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md" placeholder="Enter Discount Code" (keyup)="applyDiscount($event)" />
+          <input (keyup)="applyDiscount($event)" class="block w-full px-3 py-2 rounded-md border border-[#e0e0e0] bg-white text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md" id="discountCode" name="discountCode" placeholder="Enter Discount Code" type="text" />
         </div>
       </div>
       <!-- Display invalid message if the discount code is invalid -->
@@ -33,7 +33,7 @@
       <h2>Enter Number of Guests</h2>
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div class="mb-5 px-5">
-          <input type="number" name="noOfPersons" id="noOfPersons" class="block w-full px-3 py-2 rounded-md border border-[#e0e0e0] bg-white text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md" placeholder="Enter Number of Guests" [(ngModel)]="noOfPersons" (change)="validateGuests()" />
+          <input (change)="validateGuests()" [(ngModel)]="noOfPersons" class="block w-full px-3 py-2 rounded-md border border-[#e0e0e0] bg-white text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md" id="noOfPersons" name="noOfPersons" placeholder="Enter Number of Guests" type="number" />
         </div>
       </div>
       <!-- Display invalid message if the number of guests is invalid -->
