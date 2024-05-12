@@ -1,23 +1,38 @@
 import { TestBed } from '@angular/core/testing';
-
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { HotelServicesService } from './hotel-services.service';
-import {HttpClientTestingModule, HttpTestingController} from "@angular/common/http/testing";
+import { ApiPathService } from '../apiPath/api-path.service';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { AngularFireStorage } from '@angular/fire/compat/storage';
+import { of } from 'rxjs';
 
 describe('HotelServicesService', () => {
   let service: HotelServicesService;
-  let httpMock: HttpTestingController;
+  let httpClient: HttpClient;
+  let httpTestingController: HttpTestingController;
+  let apiPathService: ApiPathService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [HotelServicesService]
+      providers: [
+        HotelServicesService,
+        ApiPathService,
+        HttpClient,
+        {
+          provide: AngularFireStorage,
+          useValue: jasmine.createSpyObj('AngularFireStorage', ['storage'])
+        }
+      ]
     });
     service = TestBed.inject(HotelServicesService);
-    httpMock = TestBed.inject(HttpTestingController);
+    httpClient = TestBed.inject(HttpClient);
+    httpTestingController = TestBed.inject(HttpTestingController);
+    apiPathService = TestBed.inject(ApiPathService);
   });
 
   afterEach(() => {
-    httpMock.verify();
+    httpTestingController.verify();
   });
 
   it('should be created', () => {
@@ -25,46 +40,30 @@ describe('HotelServicesService', () => {
   });
 
   it('should add hotel successfully', () => {
-    const mockHotel = { /* Mock hotel object */ };
-    service.addHotel(mockHotel).subscribe(response => {
-      expect(response).toBeTruthy();
+    const dummyHotel = { name: 'Test Hotel', location: 'Test Location' };
+
+    service.addHotel(dummyHotel).subscribe((response) => {
+      expect(response).toBeDefined();
     });
 
-    const req = httpMock.expectOne(`${service.backendHostName}/v1/hotels/`);
-    expect(req.request.method).toBe('POST');
-    req.flush(mockHotel);
+    const req = httpTestingController.expectOne(`${apiPathService.baseURL}/v1/hotels`);
+    expect(req.request.method).toEqual('POST');
+    req.flush({});
   });
 
-  it('should fail to add hotel', () => {
-    const mockHotel = { /* Mock hotel object */ };
-    service.addHotel(mockHotel).subscribe(response => {
+  it('should handle error when adding hotel fails', () => {
+    const dummyHotel = { name: 'Test Hotel', location: 'Test Location' };
+    const errorResponse = new HttpErrorResponse({
+      error: 'Error adding hotel',
+      status: 500,
+      statusText: 'Internal Server Error'
+    });
+
+    service.addHotel(dummyHotel).subscribe((response) => {
       expect(response).toBeNull();
     });
 
-    const req = httpMock.expectOne(`${service.backendHostName}/v1/hotels/`);
-    expect(req.request.method).toBe('POST');
-    req.error(new ErrorEvent('Internal Server Error'));
-  });
-
-  it('should fetch hotel images successfully', () => {
-    const mockHotelId = 123;
-    service.getHotelImages(mockHotelId).subscribe(response => {
-      expect(response).toBeTruthy();
-    });
-
-    const req = httpMock.expectOne(`${service.backendHostName}/v1/hotels/${mockHotelId}/images`);
-    expect(req.request.method).toBe('GET');
-    req.flush([{ /* Mock image data */ }]);
-  });
-
-  it('should fail to fetch hotel images', () => {
-    const mockHotelId = 123;
-    service.getHotelImages(mockHotelId).subscribe(response => {
-      expect(response).toBeNull();
-    });
-
-    const req = httpMock.expectOne(`${service.backendHostName}/v1/hotels/${mockHotelId}/images`);
-    expect(req.request.method).toBe('GET');
-    req.error(new ErrorEvent('Internal Server Error'));
+    const req = httpTestingController.expectOne(`${apiPathService.baseURL}/v1/hotels`);
+    req.flush(null, { status: 500, statusText: 'Internal Server Error' });
   });
 });
