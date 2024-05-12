@@ -29,8 +29,8 @@ export class HotelDetailsContextComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.hotelId = +this.route.snapshot.params['hotelId'];
     this.route.queryParams.subscribe(params => {
+      this.hotelId = params['hotelId'];
       this.checkInDate = params['checkIn'];
       this.checkOutDate = params['checkOut'];
     });

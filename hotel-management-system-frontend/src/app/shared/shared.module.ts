@@ -5,8 +5,6 @@ import { SharedRoutingModule } from './shared-routing.module';
 import { SharedComponent } from './shared.component';
 import { MainHeaderNavbarComponent } from './components/main-header-navbar/main-header-navbar.component';
 import {ReactiveFormsModule} from "@angular/forms";
-import { BookedRoomCardComponent } from './components/booked-room-card/booked-room-card.component';
-import { BookedBillCardComponent } from './components/booked-bill-card/booked-bill-card.component';
 import { LoadingSpinnerComponent } from './components/loading-spinner/loading-spinner.component';
 import { MainButtonComponent } from './components/main-button/main-button.component';
 import { InternalServerErrorComponent } from './components/internal-server-error/internal-server-error.component';
@@ -27,8 +25,6 @@ import { HotelImagesCarouselComponent } from './components/hotel-images-carousel
   declarations: [
     SharedComponent,
     MainHeaderNavbarComponent,
-    BookedRoomCardComponent,
-    BookedBillCardComponent,
     LoadingSpinnerComponent,
     MainButtonComponent,
     InternalServerErrorComponent,

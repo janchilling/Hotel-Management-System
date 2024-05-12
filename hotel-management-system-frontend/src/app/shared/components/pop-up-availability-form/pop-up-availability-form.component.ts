@@ -60,6 +60,7 @@ export class PopUpAvailabilityFormComponent implements OnInit {
       const checkOut = this.availabilityForm.value.checkOut;
       const noOfRooms = this.availabilityForm.value.noOfRooms;
       const noOfPersons = this.availabilityForm.value.noOfPersons;
+      console.log(this.hotelId, noOfRooms, noOfPersons, checkIn, checkOut)
       this.hotelServicesService.checkAvailabilityByHotel(this.hotelId, noOfRooms, noOfPersons, checkIn, checkOut).subscribe({
         next: (response: any) => {
           this.isLoading = false;

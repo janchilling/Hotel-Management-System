@@ -1,11 +1,11 @@
-<div class="tab-pane fade active show" id="nav-Deluxe" role="tabpanel" aria-labelledby="nav-Deluxe-tab">
+<div aria-labelledby="nav-Deluxe-tab" class="tab-pane fade active show" id="nav-Deluxe" role="tabpanel">
   <div class="flex flex-wrap justify-between mx-auto 2xl:max-w-[1320px] xl:max-w-[1140px] lg:max-w-[960px] md:max-w-[720px] sm:max-w-[540px]">
     <div class="xl:w-1/2 w-full px-[12px]">
       <div class="lh-room-contain relative px-[12px] py-[24px]">
         <div class="lh-contain-heading pb-[15px] flex justify-between">
           <h4 class="xl:text-[22px] text-[18px] leading-[1.2] font-bold text-[#000] text-left">{{roomType.roomTypeName}} Room</h4>
           <div class="lh-room-price">
-            <h4 class="xl:text-[22px] text-[18px] text-[#ed5b31] font-bold leading-[22px]">USD {{roomType.roomTypePrice}} /<span class="ml-[5px] text-[14px] font-normal text-[#777]">Per night</span></h4>
+            <h4 class="xl:text-[22px] text-[18px] text-[#ed5b31] font-bold leading-[22px]">USD {{roomTypePrice}} /<span class="ml-[5px] text-[14px] font-normal text-[#777]">Per night</span></h4>
           </div>
         </div>
         <div class="flex flex-wrap">
@@ -42,7 +42,7 @@
     </div>
     <div class="xl:w-1/2 w-full">
       <div class="room-img h-full w-full relative">
-        <img src="{{roomType.roomTypeImages[0].roomTypeImageUrl}}" alt="room-img" class="room-image h-full w-full">
+        <img alt="room-img" class="room-image h-full w-full" src="{{roomType.roomTypeImages[0].roomTypeImageUrl}}">
       </div>
     </div>
   </div>

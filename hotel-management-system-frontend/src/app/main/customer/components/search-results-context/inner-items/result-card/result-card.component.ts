@@ -13,7 +13,7 @@ export class ResultCardComponent {
 
   constructor(private router: Router) {}
   viewHotelDetails(hotelId: number) {
-    this.router.navigate(['/main/hotel', hotelId], { queryParams: { checkIn: this.checkIn, checkOut: this.checkOut } });
+    this.router.navigate(['/main/hotels'], { queryParams: { hotelId: hotelId, checkIn: this.checkIn, checkOut: this.checkOut } });
   }
 
   getStars(rating: number): any[] {

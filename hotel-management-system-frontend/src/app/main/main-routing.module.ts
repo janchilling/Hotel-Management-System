@@ -28,7 +28,7 @@ const routes: Routes = [
       { path: 'results',
         component: SearchResultsContextComponent
       },
-      { path: 'hotel/:hotelId',
+      { path: 'hotels',
         component: HotelDetailsContextComponent
       },
       { path: 'booking',

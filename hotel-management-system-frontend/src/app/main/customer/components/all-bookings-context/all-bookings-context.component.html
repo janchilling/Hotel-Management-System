@@ -1,4 +1,4 @@
-<div class="relative max-w-screen-xl items-center justify-between mx-auto p-5">
+<div class="relative max-w-screen-xl 3xl:max-w-screen-2xl items-center justify-between mx-auto p-5">
   <div class="my-4">
     <p class="text-3xl sm:text-4xl md:text-4xl lg:text-4xl font-bold">My Bookings</p>
   </div>
@@ -7,29 +7,29 @@
     <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
       <thead class="text-xs text-gray-700 uppercase bg-background-gray dark:bg-gray-700 dark:text-gray-400">
       <tr>
-        <th scope="col" class="px-6 py-3">
+        <th class="px-6 py-3" scope="col">
           Hotel Name
         </th>
-        <th scope="col" class="px-6 py-3">
+        <th class="px-6 py-3" scope="col">
           Check In Date
         </th>
-        <th scope="col" class="px-6 py-3">
+        <th class="px-6 py-3" scope="col">
           Check Out Date
         </th>
-        <th scope="col" class="px-6 py-3">
+        <th class="px-6 py-3" scope="col">
           Payment Status
         </th>
-        <th scope="col" class="px-6 py-3">
+        <th class="px-6 py-3" scope="col">
           Booking Status
         </th>
-        <th scope="col" class="px-6 py-3">
+        <th class="px-6 py-3" scope="col">
         </th>
       </tr>
       </thead>
       <tbody>
       <ng-container *ngFor="let booking of allBookings">
         <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-          <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+          <th class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white" scope="row">
             {{booking.hotelName}}
           </th>
           <td class="px-6 py-4">
@@ -45,7 +45,7 @@
             {{booking.bookingStatus}}
           </td>
           <td class="px-6 py-4">
-            <app-main-small-button buttonText="View Booking" (click)="viewBookingDetails(booking.bookingId)"></app-main-small-button>
+            <app-main-small-button (click)="viewBookingDetails(booking.bookingId)" buttonText="View Booking"></app-main-small-button>
           </td>
         </tr>
       </ng-container>
