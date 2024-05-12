@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { HttpClientModule } from '@angular/common/http';
 import { AllBookingsContextComponent } from './all-bookings-context.component';
 
 describe('AllBookingsContextComponent', () => {
@@ -8,7 +8,8 @@ describe('AllBookingsContextComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [AllBookingsContextComponent]
+      declarations: [AllBookingsContextComponent],
+      imports: [HttpClientModule],
     });
     fixture = TestBed.createComponent(AllBookingsContextComponent);
     component = fixture.componentInstance;

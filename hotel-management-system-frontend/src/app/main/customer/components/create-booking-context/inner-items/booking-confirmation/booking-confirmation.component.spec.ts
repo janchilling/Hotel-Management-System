@@ -1,6 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { BookingConfirmationComponent } from './booking-confirmation.component';
+import {LoadingSpinnerComponent} from "../../../../../../shared/components/loading-spinner/loading-spinner.component";
+import {
+  InternalServerErrorComponent
+} from "../../../../../../shared/components/internal-server-error/internal-server-error.component";
 
 describe('BookingConfirmationComponent', () => {
   let component: BookingConfirmationComponent;
@@ -8,7 +11,7 @@ describe('BookingConfirmationComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [BookingConfirmationComponent]
+      declarations: [BookingConfirmationComponent, LoadingSpinnerComponent, InternalServerErrorComponent],
     });
     fixture = TestBed.createComponent(BookingConfirmationComponent);
     component = fixture.componentInstance;

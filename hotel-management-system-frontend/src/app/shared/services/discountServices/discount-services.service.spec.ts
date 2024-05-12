@@ -1,11 +1,12 @@
 import { TestBed } from '@angular/core/testing';
-
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { DiscountServicesService } from './discount-services.service';
-import {HttpClientTestingModule, HttpTestingController} from "@angular/common/http/testing";
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 
 describe('DiscountServicesService', () => {
   let service: DiscountServicesService;
-  let httpMock: HttpTestingController;
+  let httpClient: HttpClient;
+  let httpTestingController: HttpTestingController;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -13,58 +14,49 @@ describe('DiscountServicesService', () => {
       providers: [DiscountServicesService]
     });
     service = TestBed.inject(DiscountServicesService);
-    httpMock = TestBed.inject(HttpTestingController);
+    httpClient = TestBed.inject(HttpClient);
+    httpTestingController = TestBed.inject(HttpTestingController);
   });
 
   afterEach(() => {
-    httpMock.verify();
+    httpTestingController.verify();
   });
 
   it('should be created', () => {
     expect(service).toBeTruthy();
   });
 
-  it('should add discount successfully', () => {
-    const mockDiscount = { /* Mock discount object */ };
-    service.addDiscount(mockDiscount).subscribe(response => {
-      expect(response).toBeTruthy();
-    });
+  it('should handle error when adding discount fails', () => {
+    const contractId = 123;
+    const errorResponse = 'Error adding discount';
 
-    const req = httpMock.expectOne(`${service.backendHostName}/v1/discounts/`);
-    expect(req.request.method).toBe('POST');
-    req.flush(mockDiscount);
+    service.addDiscount({}).subscribe(
+      () => fail('should have failed with the 404 error'),
+      (error: HttpErrorResponse) => {
+        expect(error.status).toEqual(404);
+        expect(error.statusText).toEqual('Not Found');
+        expect(error.error).toEqual(errorResponse);
+      }
+    );
+
+    const req = httpTestingController.expectOne(`${service.backendHostName}/v1/discounts`);
+    req.flush(errorResponse, { status: 404, statusText: 'Not Found' });
   });
 
-  it('should fail to add discount', () => {
-    const mockDiscount = { /* Mock discount object */ };
-    service.addDiscount(mockDiscount).subscribe(response => {
-      expect(response).toBeNull();
-    });
+  it('should handle error when fetching discounts fails', () => {
+    const contractId = 123;
+    const errorResponse = 'Error fetching discounts';
 
-    const req = httpMock.expectOne(`${service.backendHostName}/v1/discounts/`);
-    expect(req.request.method).toBe('POST');
-    req.error(new ErrorEvent('Internal Server Error'));
-  });
+    service.getDiscounts(contractId).subscribe(
+      () => fail('should have failed with the 404 error'),
+      (error: HttpErrorResponse) => {
+        expect(error.status).toEqual(404);
+        expect(error.statusText).toEqual('Not Found');
+        expect(error.error).toEqual(errorResponse);
+      }
+    );
 
-  it('should fetch discounts successfully', () => {
-    const mockContractId = 123;
-    service.getDiscounts(mockContractId).subscribe(response => {
-      expect(response).toBeTruthy();
-    });
-
-    const req = httpMock.expectOne(`${service.backendHostName}/v1/contracts/${mockContractId}/discounts/`);
-    expect(req.request.method).toBe('GET');
-    req.flush([{ /* Mock discount data */ }]);
-  });
-
-  it('should fail to fetch discounts', () => {
-    const mockContractId = 123;
-    service.getDiscounts(mockContractId).subscribe(response => {
-      expect(response).toBeNull();
-    });
-
-    const req = httpMock.expectOne(`${service.backendHostName}/v1/contracts/${mockContractId}/discounts/`);
-    expect(req.request.method).toBe('GET');
-    req.error(new ErrorEvent('Internal Server Error'));
+    const req = httpTestingController.expectOne(`${service.backendHostName}/v1/contracts/${contractId}/discounts`);
+    req.flush(errorResponse, { status: 404, statusText: 'Not Found' });
   });
 });

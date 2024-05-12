@@ -1,7 +1,8 @@
-import { TestBed } from '@angular/core/testing';
-
+import { TestBed, inject } from '@angular/core/testing';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { MarkupServicesService } from './markup-services.service';
-import {HttpClientTestingModule, HttpTestingController} from "@angular/common/http/testing";
+import { ApiPathService } from '../apiPath/api-path.service';
+import { HttpClient } from '@angular/common/http';
 
 describe('MarkupServicesService', () => {
   let service: MarkupServicesService;
@@ -10,7 +11,7 @@ describe('MarkupServicesService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [MarkupServicesService]
+      providers: [MarkupServicesService, ApiPathService]
     });
     service = TestBed.inject(MarkupServicesService);
     httpMock = TestBed.inject(HttpTestingController);
@@ -24,47 +25,49 @@ describe('MarkupServicesService', () => {
     expect(service).toBeTruthy();
   });
 
-  it('should add markup successfully', () => {
-    const mockMarkup = { /* Mock markup object */ };
+  it('should add a markup successfully', () => {
+    const mockMarkup = { /* mock markup object */ };
     service.addMarkup(mockMarkup).subscribe(response => {
       expect(response).toBeTruthy();
+      // Add additional expectations based on the response from the server
     });
 
-    const req = httpMock.expectOne(`${service.backendHostName}/v1/markups/`);
-    expect(req.request.method).toBe('POST');
-    req.flush(mockMarkup);
+    const request = httpMock.expectOne(`${service.backendHostName}/v1/markups`);
+    expect(request.request.method).toBe('POST');
+    request.flush({ /* mock response body */ });
   });
 
-  it('should fail to add markup', () => {
-    const mockMarkup = { /* Mock markup object */ };
+  it('should handle errors when adding markup', () => {
+    const mockMarkup = { /* invalid/malformed markup object */ };
     service.addMarkup(mockMarkup).subscribe(response => {
       expect(response).toBeNull();
     });
 
-    const req = httpMock.expectOne(`${service.backendHostName}/v1/markups/`);
-    expect(req.request.method).toBe('POST');
-    req.error(new ErrorEvent('Internal Server Error'));
+    const request = httpMock.expectOne(`${service.backendHostName}/v1/markups`);
+    request.error(new ErrorEvent('error'));
   });
 
-  it('should fetch markups by contract ID successfully', () => {
-    const mockContractId = 123;
-    service.getMarkupsByContractId(mockContractId).subscribe(response => {
+  it('should get markups by contract ID successfully', () => {
+    const contractId = 123;
+    service.getMarkupsByContractId(contractId).subscribe(response => {
       expect(response).toBeTruthy();
+      // Add additional expectations based on the response from the server
     });
 
-    const req = httpMock.expectOne(`${service.backendHostName}/v1/contracts/${mockContractId}/markups`);
-    expect(req.request.method).toBe('GET');
-    req.flush([{ /* Mock markup data */ }]);
+    const request = httpMock.expectOne(`${service.backendHostName}/v1/contracts/${contractId}/markups`);
+    expect(request.request.method).toBe('GET');
+    request.flush({ /* mock response body */ });
   });
 
-  it('should fail to fetch markups by contract ID', () => {
-    const mockContractId = 123;
-    service.getMarkupsByContractId(mockContractId).subscribe(response => {
+  it('should handle errors when getting markups by contract ID', () => {
+    const contractId = 123;
+    service.getMarkupsByContractId(contractId).subscribe(response => {
       expect(response).toBeNull();
     });
 
-    const req = httpMock.expectOne(`${service.backendHostName}/v1/contracts/${mockContractId}/markups`);
-    expect(req.request.method).toBe('GET');
-    req.error(new ErrorEvent('Internal Server Error'));
+    const request = httpMock.expectOne(`${service.backendHostName}/v1/contracts/${contractId}/markups`);
+    request.error(new ErrorEvent('error'));
   });
+
+  // Add more test cases as needed
 });

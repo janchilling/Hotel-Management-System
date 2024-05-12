@@ -14,7 +14,7 @@ export class AllBookingsContextComponent implements OnInit{
 
   constructor(
     private bookingService :MainBookingServicesService,
-    private router: Router
+    public router: Router
   ) {
   }
 

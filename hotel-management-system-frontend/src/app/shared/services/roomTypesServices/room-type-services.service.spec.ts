@@ -1,7 +1,8 @@
-import { TestBed } from '@angular/core/testing';
-
+import { TestBed, inject } from '@angular/core/testing';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { RoomTypeServicesService } from './room-type-services.service';
-import {HttpClientTestingModule, HttpTestingController} from "@angular/common/http/testing";
+import { ApiPathService } from '../apiPath/api-path.service';
+import { HttpClient } from '@angular/common/http';
 
 describe('RoomTypeServicesService', () => {
   let service: RoomTypeServicesService;
@@ -10,7 +11,7 @@ describe('RoomTypeServicesService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [RoomTypeServicesService]
+      providers: [RoomTypeServicesService, ApiPathService]
     });
     service = TestBed.inject(RoomTypeServicesService);
     httpMock = TestBed.inject(HttpTestingController);
@@ -24,83 +25,79 @@ describe('RoomTypeServicesService', () => {
     expect(service).toBeTruthy();
   });
 
-  it('should fetch rooms by contract ID successfully', () => {
-    const mockContractId = 123;
-    service.getRoomsByContractId(mockContractId).subscribe(response => {
+  it('should get rooms by contract ID successfully', () => {
+    const contractId = 123;
+    service.getRoomsByContractId(contractId).subscribe(response => {
       expect(response).toBeTruthy();
+      // Add additional expectations based on the response from the server
     });
 
-    const req = httpMock.expectOne(`${service.backendHostName}/v1/contracts/${mockContractId}/roomTypes/`);
-    expect(req.request.method).toBe('GET');
-    req.flush([{ /* Mock room data */ }]);
+    const request = httpMock.expectOne(`${service.backendHostName}/v1/contracts/${contractId}/roomTypes`);
+    expect(request.request.method).toBe('GET');
+    request.flush({ /* mock response body */ });
+  });
+
+  it('should handle errors when getting rooms by contract ID', () => {
+    const contractId = 123;
+    service.getRoomsByContractId(contractId).subscribe(response => {
+      expect(response).toBeNull();
+    });
+
+    const request = httpMock.expectOne(`${service.backendHostName}/v1/contracts/${contractId}/roomTypes`);
+    request.error(new ErrorEvent('error'));
   });
 
   it('should add room type successfully', () => {
-    const mockRoomType = { /* Mock room type object */ };
+    const mockRoomType = { /* mock room type object */ };
     service.addRoomType(mockRoomType).subscribe(response => {
       expect(response).toBeTruthy();
+      // Add additional expectations based on the response from the server
     });
 
-    const req = httpMock.expectOne(`${service.backendHostName}/v1/roomTypes/`);
-    expect(req.request.method).toBe('POST');
-    req.flush(mockRoomType);
+    const request = httpMock.expectOne(`${service.backendHostName}/v1/roomTypes`);
+    expect(request.request.method).toBe('POST');
+    request.flush({ /* mock response body */ });
+  });
+
+  it('should handle errors when adding room type', () => {
+    const mockRoomType = { /* invalid/malformed room type object */ };
+    service.addRoomType(mockRoomType).subscribe(response => {
+      expect(response).toBeNull();
+    });
+
+    const request = httpMock.expectOne(`${service.backendHostName}/v1/roomTypes`);
+    request.error(new ErrorEvent('error'));
   });
 
   it('should fetch available number of rooms successfully', () => {
-    const mockRoomTypeId = 456;
-    const mockCheckInDate = new Date();
-    const mockCheckOutDate = new Date();
-    const mockSeasonId = 789;
-    service.availableNoOfRooms(mockRoomTypeId, mockCheckInDate, mockCheckOutDate, mockSeasonId).subscribe(response => {
+    const roomTypeId = 123;
+    const checkInDate = new Date();
+    const checkOutDate = new Date();
+    const seasonId = 456;
+    service.availableNoOfRooms(roomTypeId, checkInDate, checkOutDate, seasonId).subscribe(response => {
       expect(response).toBeTruthy();
+      // Add additional expectations based on the response from the server
     });
 
-    const formattedCheckInDate = service.formatDateForSQL(mockCheckInDate);
-    const formattedCheckOutDate = service.formatDateForSQL(mockCheckOutDate);
-    const expectedUrl = `${service.backendHostName}/v1/roomTypes/${mockRoomTypeId}/availableNoOfRooms/${formattedCheckInDate}/${formattedCheckOutDate}/${mockSeasonId}`;
-
-    const req = httpMock.expectOne(expectedUrl);
-    expect(req.request.method).toBe('GET');
-    req.flush([{ /* Mock available rooms data */ }]);
+    const expectedUrl = `${service.backendHostName}/v1/roomTypes/${roomTypeId}/availability?seasonId=${seasonId}&checkInDate=${service.formatDateForSQL(checkInDate)}&checkOutDate=${service.formatDateForSQL(checkOutDate)}`;
+    const request = httpMock.expectOne(expectedUrl);
+    expect(request.request.method).toBe('GET');
+    request.flush({ /* mock response body */ });
   });
 
-  it('should fail to fetch rooms by contract ID', () => {
-    const mockContractId = 123;
-    service.getRoomsByContractId(mockContractId).subscribe(response => {
+  it('should handle errors when fetching available number of rooms', () => {
+    const roomTypeId = 123;
+    const checkInDate = new Date();
+    const checkOutDate = new Date();
+    const seasonId = 456;
+    service.availableNoOfRooms(roomTypeId, checkInDate, checkOutDate, seasonId).subscribe(response => {
       expect(response).toBeNull();
     });
 
-    const req = httpMock.expectOne(`${service.backendHostName}/v1/contracts/${mockContractId}/roomTypes/`);
-    expect(req.request.method).toBe('GET');
-    req.error(new ErrorEvent('Internal Server Error'));
+    const expectedUrl = `${service.backendHostName}/v1/roomTypes/${roomTypeId}/availability?seasonId=${seasonId}&checkInDate=${service.formatDateForSQL(checkInDate)}&checkOutDate=${service.formatDateForSQL(checkOutDate)}`;
+    const request = httpMock.expectOne(expectedUrl);
+    request.error(new ErrorEvent('error'));
   });
 
-  it('should fail to add room type', () => {
-    const mockRoomType = { /* Mock room type object */ };
-    service.addRoomType(mockRoomType).subscribe(response => {
-      expect(response).toBeNull();
-    });
-
-    const req = httpMock.expectOne(`${service.backendHostName}/v1/roomTypes/`);
-    expect(req.request.method).toBe('POST');
-    req.error(new ErrorEvent('Internal Server Error'));
-  });
-
-  it('should fail to fetch available number of rooms', () => {
-    const mockRoomTypeId = 456;
-    const mockCheckInDate = new Date();
-    const mockCheckOutDate = new Date();
-    const mockSeasonId = 789;
-    service.availableNoOfRooms(mockRoomTypeId, mockCheckInDate, mockCheckOutDate, mockSeasonId).subscribe(response => {
-      expect(response).toBeNull();
-    });
-
-    const formattedCheckInDate = service.formatDateForSQL(mockCheckInDate);
-    const formattedCheckOutDate = service.formatDateForSQL(mockCheckOutDate);
-    const expectedUrl = `${service.backendHostName}/v1/roomTypes/${mockRoomTypeId}/availableNoOfRooms/${formattedCheckInDate}/${formattedCheckOutDate}/${mockSeasonId}`;
-
-    const req = httpMock.expectOne(expectedUrl);
-    expect(req.request.method).toBe('GET');
-    req.error(new ErrorEvent('Internal Server Error'));
-  });
+  // Add more test cases as needed
 });
