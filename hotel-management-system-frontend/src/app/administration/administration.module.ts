@@ -34,6 +34,11 @@ import { ViewSupplementsDetailsComponent } from './components/view-contract-cont
 import { ViewRoomtypesDetailsComponent } from './components/view-contract-context/inner-items/view-roomtypes-details/view-roomtypes-details.component';
 import { ContractUpdateComponent } from './components/update-contract-context/inner-items/contract-update/contract-update.component';
 import {MatDialogModule} from "@angular/material/dialog";
+import {AdminSearchComponent} from "./shared/components/admin-search/admin-search.component";
+import {MainAdminSidebarComponent} from "./shared/components/main-admin-sidebar/main-admin-sidebar.component";
+import {
+  MainHeaderNavbarAdminComponent
+} from "./shared/components/main-header-navbar-admin/main-header-navbar-admin.component";
 
 
 @NgModule({
@@ -67,6 +72,9 @@ import {MatDialogModule} from "@angular/material/dialog";
     ViewSupplementsDetailsComponent,
     ViewRoomtypesDetailsComponent,
     ContractUpdateComponent,
+    AdminSearchComponent,
+    MainAdminSidebarComponent,
+    MainHeaderNavbarAdminComponent
   ],
     imports: [
         CommonModule,

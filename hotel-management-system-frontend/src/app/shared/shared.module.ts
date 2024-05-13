@@ -11,12 +11,9 @@ import { InternalServerErrorComponent } from './components/internal-server-error
 import { ConfirmationDialogComponentComponent } from './components/confirmation-dialog-component/confirmation-dialog-component.component';
 import {MatDialogModule} from "@angular/material/dialog";
 import {MatButtonModule} from "@angular/material/button";
-import { MainHeaderNavbarAdminComponent } from './components/main-header-navbar-admin/main-header-navbar-admin.component';
-import { MainAdminSidebarComponent } from './components/main-admin-sidebar/main-admin-sidebar.component';
 import { MainSmallButtonComponent } from './components/main-small-button/main-small-button.component';
 import { PopUpCarouselComponent } from './components/pop-up-carousel/pop-up-carousel.component';
 import { PopUpAvailabilityFormComponent } from './components/pop-up-availability-form/pop-up-availability-form.component';
-import { AdminSearchComponent } from './components/admin-search/admin-search.component';
 import {MainFooterComponent} from "./components/main-footer/main-footer.component";
 import { HotelImagesCarouselComponent } from './components/hotel-images-carousel/hotel-images-carousel.component';
 
@@ -29,12 +26,9 @@ import { HotelImagesCarouselComponent } from './components/hotel-images-carousel
     MainButtonComponent,
     InternalServerErrorComponent,
     ConfirmationDialogComponentComponent,
-    MainHeaderNavbarAdminComponent,
-    MainAdminSidebarComponent,
     MainSmallButtonComponent,
     PopUpCarouselComponent,
     PopUpAvailabilityFormComponent,
-    AdminSearchComponent,
     MainFooterComponent,
     HotelImagesCarouselComponent
   ],
@@ -43,10 +37,7 @@ import { HotelImagesCarouselComponent } from './components/hotel-images-carousel
     LoadingSpinnerComponent,
     MainButtonComponent,
     InternalServerErrorComponent,
-    MainHeaderNavbarAdminComponent,
-    MainAdminSidebarComponent,
     MainSmallButtonComponent,
-    AdminSearchComponent,
     MainFooterComponent,
     HotelImagesCarouselComponent
   ],
