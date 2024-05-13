@@ -133,11 +133,10 @@
             <div *ngIf="isViewBookingContext && bookingDetails.paymentStatus == 'Pre'" class="flex justify-between items-start w-full">
               <div class="flex justify-center items-center space-x-4">
                 <div class="flex flex-col justify-start items-center">
-                  <span class="text-base dark:text-white leading-4 text-gray-800">Final Payment Due </span>
+                  <span class="text-base dark:text-white leading-4 text-red-600">Final Payment Due </span>
                 </div>
               </div>
-              <p class="text-base font-semibold dark:text-gray-300 leading-4 text-black-600">{{checkInDate - bookingDetails.balancePayment}}
-                Payment</p>
+              <p class="text-base font-semibold dark:text-gray-300 leading-4 text-black-600">{{finalPaymentDue}}</p>
             </div>
           </div>
         </div>

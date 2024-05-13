@@ -8,12 +8,12 @@ import {catchError, Observable, of} from "rxjs";
 })
 export class MainBookingServicesService {
 
+  backendHostName: string = this.apiPathService.baseURL;
+
   constructor(
     private apiPathService: ApiPathService,
     private httpClient: HttpClient
   ) { }
-
-  backendHostName: string = this.apiPathService.baseURL;
 
   addBooking(booking: any): Observable<any> {
     return this.httpClient.post<any>(`${this.backendHostName}/v1/bookings`, booking)
@@ -53,5 +53,14 @@ export class MainBookingServicesService {
           return of(null);
         })
       );
+  }
+
+  cancelBooking(bookingId: number): Observable<any> {
+    return this.httpClient.patch<any>(`${this.backendHostName}/v1/bookings/${bookingId}`, {}).pipe(
+      catchError((error: any) => {
+        console.error('Error fetching Bookings:', error);
+        return of(null);
+      })
+    );
   }
 }
