@@ -10,11 +10,12 @@
           role="tablist">
         <li class="me-2" role="presentation">
           <a (click)="showOverview()"
-             [class.decoration-gold]="isOverviewVisible"
-             aria-controls="profile" aria-selected="false"
-             class="p-4 cursor-pointer border-b-2 hover:text-gray-600 hover:border-button-gold dark:hover:text-gray-300"
+             [class.gold-underline]="isOverviewVisible"
+             aria-controls="profile"
+             aria-selected="false" class="p-4 cursor-pointer border-b-2 hover:text-gray-600 hover:border-button-gold dark:hover:text-gray-300"
              data-tabs-target="#styled-profile" role="tab">Overview
           </a>
+
         </li>
         <li class="me-2" role="presentation">
           <a (click)="showRooms()"
@@ -37,7 +38,6 @@
           </a>
         </li>
       </ul>
-      <hr>
     </div>
     <div class="max-w-screen-xl 3xl:max-w-screen-2xl flex flex-wrap items-center justify-between mx-auto p-4">
       <div>
