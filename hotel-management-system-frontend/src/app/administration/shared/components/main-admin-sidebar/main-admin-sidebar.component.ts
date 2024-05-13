@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import {Router} from "@angular/router";
-import {PopUpAvailabilityFormComponent} from "../pop-up-availability-form/pop-up-availability-form.component";
 import {MatDialog, MatDialogRef} from "@angular/material/dialog";
 import {AdminSearchComponent} from "../admin-search/admin-search.component";
 

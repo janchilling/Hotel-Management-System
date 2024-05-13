@@ -1,8 +1,8 @@
 import {Component, OnInit} from '@angular/core';
+import {Router} from "@angular/router";
 import {
   AuthenticationServicesService
-} from "../../../security/services/authenticationServices/authentication-services.service";
-import {Router} from "@angular/router";
+} from "../../../../security/services/authenticationServices/authentication-services.service";
 
 @Component({
   selector: 'app-main-header-navbar-admin',
