@@ -26,4 +26,9 @@ public class BookingController {
     public StandardResponse<BookingResponseDTO>getBookingById(@PathVariable Integer bookingId) {
         return bookingService.getBookingById(bookingId);
     }
+
+    @PatchMapping("/{bookingId}/cancel")
+    public StandardResponse<Void> cancelBooking(@PathVariable Integer bookingId) {
+        return bookingService.cancelBooking(bookingId);
+    }
 }
