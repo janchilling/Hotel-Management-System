@@ -15,4 +15,5 @@ public interface BookingService {
 
     StandardResponse<List<BookingResponseDTO>> getBookingByCustomer(Long userId);
 
+    StandardResponse<Void> cancelBooking(Integer bookingId);
 }

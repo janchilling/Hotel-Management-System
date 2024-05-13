@@ -14,14 +14,10 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.Logger;
 import org.modelmapper.ModelMapper;
-import org.modelmapper.config.Configuration;
-import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -168,6 +164,35 @@ public class BookingServiceImpl implements BookingService {
             return new StandardResponse<>(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Failed to get bookings", null);
         }
     }
+
+    /**
+     * Cancel a booking by setting its status to "cancelled".
+     *
+     * @param  bookingId   the ID of the booking to cancel
+     * @return             a standard response indicating the result of the operation
+     */
+    @Override
+    public StandardResponse<Void> cancelBooking(Integer bookingId) {
+        try {
+            Booking booking = utilityMethods.getBooking(bookingId);
+            if (booking == null) {
+                return new StandardResponse<>(HttpStatus.NOT_FOUND.value(), "Booking not found", null);
+            }
+
+            // Update the booking status to "cancelled"
+            booking.setBookingStatus("Cancelled");
+            bookingRepository.save(booking);
+
+            return new StandardResponse<>(HttpStatus.OK.value(), "Booking cancelled successfully", null);
+        } catch (ResourceNotFoundException e) {
+            logger.error("Failed to cancel booking: ", e.getMessage());
+            return new StandardResponse<>(HttpStatus.NOT_FOUND.value(), e.getMessage(), null);
+        } catch (Exception e) {
+            logger.error("Failed to cancel booking: ", e.getMessage());
+            return new StandardResponse<>(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Failed to cancel booking: " + e.getMessage(), null);
+        }
+    }
+
 
     // Helper method to map Booking entity to BookingResponseDTO
     public BookingResponseDTO mapToBookingResponseDTO(Booking booking) {
