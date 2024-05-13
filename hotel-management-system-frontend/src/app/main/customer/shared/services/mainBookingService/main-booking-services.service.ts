@@ -56,7 +56,8 @@ export class MainBookingServicesService {
   }
 
   cancelBooking(bookingId: number): Observable<any> {
-    return this.httpClient.patch<any>(`${this.backendHostName}/v1/bookings/${bookingId}`, {}).pipe(
+    return this.httpClient.patch<any>(`${this.backendHostName}/v1/bookings/${bookingId}/cancel`, {})
+      .pipe(
       catchError((error: any) => {
         console.error('Error fetching Bookings:', error);
         return of(null);

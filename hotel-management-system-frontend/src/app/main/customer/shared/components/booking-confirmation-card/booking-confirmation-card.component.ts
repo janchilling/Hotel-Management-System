@@ -1,11 +1,11 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {switchMap} from "rxjs";
 import {
   AuthenticationServicesService
 } from "../../../../../security/services/authenticationServices/authentication-services.service";
-import {CustomerServicesService} from "../../../../../shared/services/customerServices/customer-services.service";
 import {MainBookingServicesService} from "../../services/mainBookingService/main-booking-services.service";
 import {ContractServicesService} from "../../../../../shared/services/contractServices/contract-services.service";
+import {MatSnackBar} from "@angular/material/snack-bar";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-booking-confirmation-card',
@@ -32,9 +32,10 @@ export class BookingConfirmationCardComponent implements OnInit {
 
   constructor(
     private authenticationService: AuthenticationServicesService,
-    private customerService: CustomerServicesService,
+    private snackBar: MatSnackBar,
     private contractService: ContractServicesService,
     private bookingService: MainBookingServicesService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -97,9 +98,39 @@ export class BookingConfirmationCardComponent implements OnInit {
     }
   }
 
-
-
   onCancelBooking(){
+    if(this.checkNonPaymentEligibility()){
+      this.isLoading = true;
+      this.bookingService.cancelBooking(this.bookingId).subscribe({
+        next: (response: any) => {
+          this.isLoading = false;
+          if (response.statusCode === 200) {
+            this.router.navigate(['main/myBookings/', this.userId]);
+          }
+        },
+        error: (error) => {
+          console.error(error);
+          this.isError = true;
+          this.isLoading = false;
+        }
+      });
+    }else {
+      this.snackBar.open('Cannot cancel booking, deadline exceeded.', 'Close', {
+        duration: 3000,
+        verticalPosition: 'top'
+      });
+    }
 
   }
+
+  checkNonPaymentEligibility(): boolean {
+    if (this.bookingDetails && this.contract) {
+      const checkInDate = new Date(this.bookingDetails.checkInDate);
+      const finalEligibleDate = new Date(checkInDate.getTime() - (this.contract.cacellationDeadline || 0));
+      const currentDate = new Date();
+      return currentDate < finalEligibleDate;
+    }
+    return false;
+  }
+
 }
