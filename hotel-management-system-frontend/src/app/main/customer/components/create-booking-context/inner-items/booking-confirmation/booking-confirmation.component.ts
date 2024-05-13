@@ -20,7 +20,7 @@ export class BookingConfirmationComponent {
       this.error = false;
     } else {
       this.loading = true;
-      this.error = true; // For example, assuming error if no booking details are provided
+      this.error = true;
     }
   }
 

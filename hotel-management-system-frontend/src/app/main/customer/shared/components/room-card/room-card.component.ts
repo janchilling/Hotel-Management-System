@@ -213,7 +213,7 @@ export class RoomCardComponent implements OnInit {
   openCarouselDialog(): void {
     this.dialog.open(PopUpCarouselComponent, {
       width: '80vw',
-      height: '70vh',
+      height: '53vh',
       panelClass: 'pop-up-carousel-dialog',
       data: { slides: this.slides }
     });
