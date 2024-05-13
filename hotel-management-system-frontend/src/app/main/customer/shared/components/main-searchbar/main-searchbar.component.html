@@ -6,8 +6,9 @@
             <label class="form-label font-medium text-slate-900 dark:text-white">Destination:</label>
             <div class="relative mt-2">
               <svg class="feather feather-search size-[18px] absolute top-[10px] start-3" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><circle cx="11" cy="11" r="8"></circle><line x1="21" x2="16.65" y1="21" y2="16.65"></line></svg>
-              <input [placeholder]="searchForm.get('destination')?.touched && searchForm.get('destination')?.invalid ? 'Destination (required)' : 'Destination'" class="w-full border-gray-300 shadow-sm py-2 px-3 ps-10 h-10 bg-white dark:bg-slate-900 dark:text-slate-200 rounded-md outline-none border dark:border-gray-800 focus:ring-0" formControlName="destination" type="text">
+              <input class="w-full border-gray-300 shadow-sm py-2 px-3 ps-10 h-10 bg-white dark:bg-slate-900 dark:text-slate-200 rounded-md outline-none border dark:border-gray-800 focus:ring-0" formControlName="destination" placeholder="Destination" type="text">
             </div>
+            <label *ngIf="searchForm.get('destination')?.touched && searchForm.get('destination')?.invalid" class="form-label text-md text-red-600 dark:text-white">Destination required</label>
           </div>
 
           <div class="col-span-1">
@@ -20,8 +21,9 @@
                     <path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z"/>
                   </svg>
                 </div>
-                <input (change)="updateMinCheckoutDate()" [min]="minCheckInDate" [placeholder]="searchForm.get('checkIn')?.touched && searchForm.get('checkIn')?.invalid ? 'Check In (required)' : 'Check In'" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" datepicker formControlName="checkIn" type="date">
+                <input (change)="updateMinCheckoutDate()" [min]="minCheckInDate" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" datepicker formControlName="checkIn" type="date">
               </div>
+              <label *ngIf="searchForm.get('checkIn')?.touched && searchForm.get('checkIn')?.invalid" class="form-label text-md text-red-600 dark:text-white">Check In required</label>
             </div>
           </div>
           <div class="col-span-1">
@@ -35,8 +37,9 @@
                     <path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z"/>
                   </svg>
                 </div>
-                <input [min]="minCheckOutDate" [placeholder]="searchForm.get('checkOut')?.touched && searchForm.get('checkOut')?.invalid ? 'Check Out (required)' : 'Check Out'" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" datepicker formControlName="checkOut" type="date">
+                <input [min]="minCheckOutDate" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" datepicker formControlName="checkOut" type="date">
               </div>
+              <label *ngIf="searchForm.get('checkOut')?.touched && searchForm.get('checkOut')?.invalid" class="form-label text-md text-red-600 dark:text-white">Check Out required</label>
             </div>
           </div>
 
@@ -97,7 +100,7 @@
 
           <div class="col-span-1">
             <div class="relative mt-6">
-            <button [disabled]="searchForm.invalid" class="bg-button-gold hover:bg-black w-full text-white text-xl px-3 sm:px-5 py-2 rounded-r-lg" type="submit">Search</button>
+            <button class="bg-button-gold hover:bg-black w-full text-white text-xl px-3 sm:px-5 py-2 rounded-r-lg" type="submit">Search</button>
             </div>
           </div>
         </div><!--end grid-->

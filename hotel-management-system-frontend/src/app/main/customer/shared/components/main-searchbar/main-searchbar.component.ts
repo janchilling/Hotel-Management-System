@@ -37,15 +37,28 @@ export class MainSearchbarComponent implements OnInit {
   }
 
   onSearch(): void {
+    console.log("Hello");
+    this.markFormGroupTouched(this.searchForm);
     if (this.searchForm.valid) {
       const { destination, noOfRooms, noOfPersons, checkIn, checkOut } = this.searchForm.value;
       this.router.navigate(['/main/results'], { queryParams: { destination, noOfRooms, noOfPersons, checkIn, checkOut } });
     } else {
       this.snackBar.open('Please correct the errors in the form', 'Dismiss', {
         duration: 3000,
+        verticalPosition: 'top',
         panelClass: ['snackbar-error']
       });
     }
+  }
+
+  markFormGroupTouched(formGroup: FormGroup) {
+    Object.values(formGroup.controls).forEach(control => {
+      if (control instanceof FormGroup) {
+        this.markFormGroupTouched(control);
+      } else {
+        control.markAsTouched();
+      }
+    });
   }
 
   setCheckinMinDate(): void {
