@@ -6,6 +6,10 @@ import {MainBookingServicesService} from "../../services/mainBookingService/main
 import {ContractServicesService} from "../../../../../shared/services/contractServices/contract-services.service";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {Router} from "@angular/router";
+import {
+  ConfirmationDialogComponentComponent
+} from "../../../../../shared/components/confirmation-dialog-component/confirmation-dialog-component.component";
+import {MatDialog} from "@angular/material/dialog";
 
 @Component({
   selector: 'app-booking-confirmation-card',
@@ -35,7 +39,8 @@ export class BookingConfirmationCardComponent implements OnInit {
     private snackBar: MatSnackBar,
     private contractService: ContractServicesService,
     private bookingService: MainBookingServicesService,
-    private router: Router
+    private router: Router,
+    private dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
@@ -99,6 +104,10 @@ export class BookingConfirmationCardComponent implements OnInit {
   }
 
   onCancelBooking(){
+    this.openConfirmationDialog()
+  }
+
+  cancelBooking(){
     if(this.checkNonPaymentEligibility()){
       this.isLoading = true;
       this.bookingService.cancelBooking(this.bookingId).subscribe({
@@ -131,6 +140,19 @@ export class BookingConfirmationCardComponent implements OnInit {
       return currentDate < finalEligibleDate;
     }
     return false;
+  }
+
+  openConfirmationDialog(): void {
+    const dialogRef = this.dialog.open(ConfirmationDialogComponentComponent, {
+      width: '300px',
+      data: 'Are you sure you want to proceed with Cancelling?'
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.cancelBooking();
+      }
+    });
   }
 
 }
