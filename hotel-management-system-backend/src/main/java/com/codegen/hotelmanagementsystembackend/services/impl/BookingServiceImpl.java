@@ -17,7 +17,9 @@ import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -42,25 +44,30 @@ public class BookingServiceImpl implements BookingService {
     public StandardResponse<BookingResponseDTO> createBooking(BookingRequestDTO bookingRequestDTO) {
 
         try {
-            // Retrieve customer and hotel
             Customer customer = utilityMethods.getCustomer(bookingRequestDTO.getCustomerCustomerId());
             Hotel hotel = utilityMethods.getHotel(bookingRequestDTO.getHotelHotelId());
             Contract contract = utilityMethods.getContract(bookingRequestDTO.getContractId());
 
-            // Map BookingRequestDTO to Booking entity
             Booking booking = modelMapper.map(bookingRequestDTO, Booking.class);
 
-            System.out.println(booking);
-            // Set customer and hotel for the booking
             booking.setHotel(hotel);
             booking.setCustomer(customer);
             booking.setContract(contract);
 
-            // Map and set payment
             Payment newPayment = modelMapper.map(bookingRequestDTO.getPayment(), Payment.class);
             newPayment.setCustomer(customer);
             newPayment.setBooking(booking);
             booking.getPayments().add(newPayment);
+
+            if (bookingRequestDTO.getBookingDiscounts() != null) {
+                BookingDiscountDTO bookingDiscountDTO = bookingRequestDTO.getBookingDiscounts();
+                BookingDiscount newBookingDiscount = modelMapper.map(bookingDiscountDTO, BookingDiscount.class);
+                newBookingDiscount.setBooking(booking);
+                if(bookingDiscountDTO.getDiscountId() != null) {
+                    newBookingDiscount.setDiscount(utilityMethods.getDiscount(bookingDiscountDTO.getDiscountId()));
+                }
+                booking.getBookingDiscounts().add(newBookingDiscount);
+            }
 
             Booking savedBooking = bookingRepository.save(booking);
 
@@ -71,28 +78,11 @@ public class BookingServiceImpl implements BookingService {
                 newBookingRoom.setBookedPrice(bookingRoomDTO.getBookedPrice());
                 newBookingRoom.setCheckInDate(bookingRoomDTO.getCheckInDate());
                 newBookingRoom.setCheckOutDate(bookingRoomDTO.getCheckOutDate());
-
-                // Set the booking for the new booking room
                 newBookingRoom.setBooking(savedBooking);
-
-                // Set the room type for the new booking room
                 newBookingRoom.setRoomType(utilityMethods.getRoomType(bookingRoomDTO.getRoomTypeId()));
 
-                // Save the new booking room
                 bookingRoomRepository.save(newBookingRoom);
             });
-
-
-            // Map booking discounts
-            if (bookingRequestDTO.getBookingDiscounts() != null) {
-                BookingDiscountDTO bookingDiscountDTO = bookingRequestDTO.getBookingDiscounts();
-                    BookingDiscount newBookingDiscount = modelMapper.map(bookingDiscountDTO, BookingDiscount.class);
-                    newBookingDiscount.setBooking(savedBooking);
-                    if(bookingDiscountDTO.getDiscountId() != null) {
-                        newBookingDiscount.setDiscount(utilityMethods.getDiscount(bookingDiscountDTO.getDiscountId()));
-                    }
-                    booking.getBookingDiscounts().add(newBookingDiscount);
-            }
 
             bookingRequestDTO.getBookingSupplements()
                     .forEach(bookingSupplementDTO -> {
@@ -106,7 +96,6 @@ public class BookingServiceImpl implements BookingService {
                         bookingSupplementsRepository.save(newBookingSupplement);
                     });
 
-            // Map the saved booking to response DTO
             BookingResponseDTO bookingResponseDTO = mapToBookingResponseDTO(savedBooking);
 
             return new StandardResponse<>(HttpStatus.CREATED.value(), "Booking created successfully", bookingResponseDTO);
@@ -127,7 +116,7 @@ public class BookingServiceImpl implements BookingService {
         try {
             Booking booking = utilityMethods.getBooking(bookingId);
             if (booking == null) {
-                 return new StandardResponse<>(HttpStatus.NOT_FOUND.value(), "Booking not found", null);
+                return new StandardResponse<>(HttpStatus.NOT_FOUND.value(), "Booking not found", null);
             }
 
             BookingResponseDTO bookingResponseDTO = mapToBookingResponseDTO(booking);

@@ -22,7 +22,7 @@ public class BookingSupplements {
 
     private Integer noOfRooms;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
+    @ManyToOne
     @JsonBackReference("bookingBookingSupplementReference")
     private Booking booking;
 

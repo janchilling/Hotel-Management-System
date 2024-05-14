@@ -120,17 +120,27 @@ export class BookingPaymentComponent {
     }
 
     // Find applicable markup percentage based on season
-    const currentDate = new Date();
+    const checkInDate = new Date(this.checkInDate);
+
+    // Find applicable markup percentage based on season
+    console.log("Check-In Date:", checkInDate);
+    console.log("Markup Details:", this.markupDetails);
     const seasonMarkup = this.markupDetails.seasonMarkups.find((season: { startDate: string | number | Date; endDate: string | number | Date; }) => {
       const startDate = new Date(season.startDate);
       const endDate = new Date(season.endDate);
-      return currentDate >= startDate && currentDate <= endDate;
+      console.log("Season Start Date:", startDate);
+      console.log("Season End Date:", endDate);
+      return checkInDate >= startDate && checkInDate <= endDate;
     });
 
-    if (this.markupDetails && seasonMarkup.markupPercentage) {
+    console.log("Season Markup:", seasonMarkup);
+
+    if (seasonMarkup && seasonMarkup.markupPercentage) {
+      console.log("Markup Percentage:", seasonMarkup.markupPercentage);
       const markupPercentage = seasonMarkup.markupPercentage;
       this.tax = +(this.totalAfterDiscounts * (markupPercentage / 100)).toFixed(3);
     } else {
+      console.log("No applicable season markup found. Applying default markup.");
       this.tax = 0;
     }
 
@@ -185,8 +195,8 @@ export class BookingPaymentComponent {
       bookingStatus: 'Confirmed',
       paymentStatus: paymentStatus,
       contractId: this.contractId,
-      hotelHotelId: this.hotelId,
-      customerCustomerId: this.customerId,
+      hotelHotelId: Number(this.hotelId),
+      customerCustomerId: Number(this.customerId),
       contactEmail: this.contactDetails.email,
       contactPhone: this.contactDetails.phoneNumber,
       contactFirstName: this.contactDetails.firstName,

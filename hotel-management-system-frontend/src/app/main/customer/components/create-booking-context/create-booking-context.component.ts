@@ -75,7 +75,7 @@ export class CreateBookingContextComponent implements OnInit {
               duration: 5000, // Duration in milliseconds
               verticalPosition: 'top', // Position of the snackbar
             })
-            this.router.navigate(['/main/hotel', this.hotelId], { queryParams: { checkIn: this.checkInDate, checkOut: this.checkOutDate } });
+            this.router.navigate(['/main/hotels'], { queryParams: { hotelId: this.hotelId, checkIn: this.checkInDate, checkOut: this.checkOutDate } });
           }else {
             console.error('Internal Server Error :', response.message);
             this.error = true;
